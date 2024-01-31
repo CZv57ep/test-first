@@ -1,0 +1,76 @@
+"""
+
+    The mergeron project documentation follows numpydoc style, with
+    the exception that the return type is given in the function
+    signature and not included under the heading, "Returns". This
+    follows from the fact that mergeron is a typed package, so we avoid
+    redundant type annotations except when defining class attributes,
+    type annotations of which aren't included in documentation by Sphinx
+    and extensions.
+
+"""
+
+import sys
+from pathlib import Path
+
+import mergeron
+import semver
+
+version_dict = semver.parse(mergeron.__version__)
+
+# Configuration file for the Sphinx documentation builder.
+#
+# For the full list of built-in configuration values, see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
+
+# -- Project information -----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+
+project = "mergeron"
+copyright = "2023, S. Murthy Kambhampaty"
+author = "S. Murthy Kambhampaty"
+version = "{major}.{minor}".format(**version_dict)
+release = "{major}.{minor}.{patch}".format(**version_dict)
+
+# -- General configuration ---------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.intersphinx",
+    "enum_tools.autoenum",
+    "sphinx_autodoc_typehints",
+]
+
+autoclass_content = "both"
+autodoc_member_order = "bysource"
+
+napoleon_include_init_with_doc = False
+napoleon_attr_annotations = True
+napoleon_use_rtype = False
+
+typehints_fully_qualified = False
+always_document_param_types = True
+typehints_document_rtype = True
+typehints_use_rtype = False
+
+templates_path = ["_templates"]
+
+# -- Options for HTML output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
+html_theme = "pydata_sphinx_theme"  # "alabaster" "furo" "pydata_sphinx_theme"
+html_static_path = ["_static"]
+html_title = f"{project} {release}"
+html_short_title = f"{project} {version}"
+
+# -- Path setup --------------------------------------------------------------
+
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+#
+sys.path.insert(0, f'{Path.resolve(Path("../../src"))}')
