@@ -32,16 +32,18 @@ from collections.abc import Mapping
 from importlib import metadata
 from pathlib import Path
 from types import MappingProxyType
-from urllib.request import urlretrieve
 
-import matplotlib.pyplot as plt
 import msgpack  # type:ignore
 import numpy as np
-import seaborn as sns  # type: ignore
+import requests
+from matplotlib.ticker import StrMethodFormatter
 from numpy.random import PCG64DXSM, Generator, SeedSequence
 from numpy.typing import NDArray
+from requests_toolbelt.downloadutils import stream
 from scipy import stats
 from xlrd import open_workbook
+
+from mergeron.core.gsf_lib import boundary_plot
 
 __version__ = metadata.version(Path(__file__).parents[1].stem)
 
@@ -49,6 +51,8 @@ prog_path = Path(__file__)
 modl_path = prog_path.parents[1]
 
 MGNDATA_DUMP_PATH = Path.home() / modl_path.stem / "damodaran_margin_data_dict.msgpack"
+
+CERT_BUNDLE_PATH = prog_path.parent.joinpath("pages-stern-nyu-edu-cas-direct.pem")
 
 
 def scrape_data_table(
@@ -62,13 +66,22 @@ def scrape_data_table(
             "This code is designed for parsing Prof. Damodaran's margin tables."
         )
 
-    _mgn_urlstr = "{}{}{}".format(
-        "https://pages.stern.nyu.edu/", "~adamodar/pc/datasets/", f"{_table_name}.xls"
-    )
+    _mgn_urlstr = f"https://pages.stern.nyu.edu/~adamodar/pc/datasets/{_table_name}.xls"
     _mgn_path = data_dump_path.parent.joinpath(f"damodaran_{_table_name}_data.xls")
     if _mgn_path.is_file() and not data_download_flag:
         return MappingProxyType(msgpack.unpackb(data_dump_path.read_bytes()))
-    _, _mgn_url_hdrs = urlretrieve(url=_mgn_urlstr, filename=_mgn_path)  # noqa: S310
+    elif _mgn_path.is_file():
+        _mgn_path.unlink()
+
+    _REQ_TIMEOUT = (9.05, 27)
+    try:
+        _urlopen_handle = requests.get(_mgn_urlstr, timeout=_REQ_TIMEOUT, stream=True)
+    except requests.exceptions.SSLError:
+        _urlopen_handle = requests.get(
+            _mgn_urlstr, timeout=_REQ_TIMEOUT, verify=str(CERT_BUNDLE_PATH)
+        )
+
+    _mgn_filename = stream.stream_response_to_file(_urlopen_handle, path=_mgn_path)
 
     _xl_book = open_workbook(_mgn_path, ragged_rows=True, on_demand=True)
     _xl_sheet = _xl_book.sheet_by_name("Industry Averages")
@@ -100,28 +113,32 @@ def mgn_data_builder(
     if _mgn_tbl_dict is None:
         _mgn_tbl_dict = scrape_data_table()
 
-    _mgn_data_wts, _mgn_data_obs = np.split(
-        np.array([
-            tuple(_mgn_tbl_dict[_g][_h] for _h in ["Number of firms", "Gross Margin"])
-            for _g in _mgn_tbl_dict
-            if not _g.startswith("Total Market")
-            and _g
-            not in (
-                "Bank (Money Center)",
-                "Banks (Regional)",
-                "Brokerage & Investment Banking",
-                "Financial Svcs. (Non-bank & Insurance)",
-                "Insurance (General)",
-                "Insurance (Life)",
-                "Insurance (Prop/Cas.)",
-                "Investments & Asset Management",
-                "R.E.I.T.",
-                "Retail (REITs)",
-                "Reinsurance",
-            )
-        ]),
-        2,
-        axis=1,
+    _mgn_data_wts, _mgn_data_obs = (
+        _f.flatten()
+        for _f in np.hsplit(
+            np.array([
+                tuple(
+                    _mgn_tbl_dict[_g][_h] for _h in ["Number of firms", "Gross Margin"]
+                )
+                for _g in _mgn_tbl_dict
+                if not _g.startswith("Total Market")
+                and _g
+                not in (
+                    "Bank (Money Center)",
+                    "Banks (Regional)",
+                    "Brokerage & Investment Banking",
+                    "Financial Svcs. (Non-bank & Insurance)",
+                    "Insurance (General)",
+                    "Insurance (Life)",
+                    "Insurance (Prop/Cas.)",
+                    "Investments & Asset Management",
+                    "R.E.I.T.",
+                    "Retail (REITs)",
+                    "Reinsurance",
+                )
+            ]),
+            2,
+        )
     )
 
     _mgn_wtd_avg = np.average(_mgn_data_obs, weights=_mgn_data_wts)
@@ -142,15 +159,10 @@ def mgn_data_builder(
 
 def resample_mgn_data(
     _sample_size: int | tuple[int, ...] = (10**6, 2),
-    _mgn_obs_and_wts: tuple[
-        NDArray[np.floating], NDArray[np.floating] | NDArray[np.integer]
-    ]
-    | None = None,
     /,
     *,
-    data_download_flag: bool = False,
     seed_sequence: SeedSequence | None = None,
-) -> NDArray[np.float_]:
+) -> tuple[stats.gaussian_kde, NDArray[np.float_]]:
     """
     Given average margin and firm-count by industry from the margin data
     compiled by Prof. Damodaran, generate the specified number of draws
@@ -160,9 +172,6 @@ def resample_mgn_data(
     ----------
     _sample_size
         Number of draws
-
-    data_download_flag
-        Specify whether the latest data are to be downloaded
 
     seed_sequence
         SeedSequence for seeding random-number generator when results
@@ -177,68 +186,55 @@ def resample_mgn_data(
     if seed_sequence is None:
         seed_sequence = SeedSequence(pool_size=8)
 
-    if _mgn_obs_and_wts is None:
-        _mgn_data_obs, *_ = mgn_data_builder(scrape_data_table())
-        _mgn_data_wts = np.ones_like(_mgn_data_obs)
-    else:
-        _mgn_data_obs, _mgn_data_wts = _mgn_obs_and_wts
+    _seed = Generator(PCG64DXSM(seed_sequence))
 
-    return Generator(PCG64DXSM(seed_sequence)).choice(
-        _mgn_data_obs.flatten(),
-        size=_sample_size,
-        p=(_mgn_data_wts / _mgn_data_wts.sum()).flatten(),
+    _x, _w, _ = mgn_data_builder(scrape_data_table())
+
+    _mgn_kde = stats.gaussian_kde(_x, weights=_w)
+
+    return _mgn_kde, np.array(
+        _mgn_kde.resample(_sample_size, _seed).flatten(), np.float_
     )
 
 
 if __name__ == "__main__":
     mgn_data_obs, mgn_data_wts, mgn_data_stats = mgn_data_builder(
         scrape_data_table(
-            "margin", data_dump_path=MGNDATA_DUMP_PATH, data_download_flag=True
+            "margin", data_dump_path=MGNDATA_DUMP_PATH, data_download_flag=False
         )
     )
     print(repr(mgn_data_obs))
     print(repr(mgn_data_stats))
 
-    mgn_hist, mgn_edges = np.histogram(
-        mgn_data_obs.flatten(), weights=mgn_data_wts.flatten(), bins=25, density=True
-    )
-
-    mgn_fig, mgn_ax = plt.subplots(figsize=(9, 6.5))
-    plt.rcParams.update({
-        "font.family": "Fira Sans",
-        "font.stretch": "condensed",
-        "font.weight": 300,
-        "pdf.fonttype": 42,
-    })
+    plt, mgn_fig, mgn_ax, set_axis_def = boundary_plot(share_axes_flag=False)
+    mgn_fig.set_figheight(6.5)
+    mgn_fig.set_figwidth(9.0)
 
     bin_count = 25
     mgn_ax.hist(
-        x=mgn_data_obs.flatten(),
-        weights=mgn_data_wts.flatten(),
+        x=mgn_data_obs,
+        weights=mgn_data_wts,
         bins=bin_count,
-        alpha=0.6,
+        alpha=0.4,
         density=True,
-        kde=True,
         label="Downlaoded data",
         color="blue",
     )
     # Add KDE plot
     #   https://stackoverflow.com/questions/33323432
-    mgn_kde = stats.gaussian_kde(x)
-    mgn_xx = np.linspace(0, bin_count, 1000)
-    mgn_ax.plot(mgn_xx, mgn_kde(mgn_xx), color="blue")
+    mgn_kde, mgn_data_sample = resample_mgn_data(10**6)
+    mgn_xx = np.linspace(0, bin_count, 10**5)
+    mgn_ax.plot(mgn_xx, mgn_kde(mgn_xx), color="blue", rasterized=True)
 
-    sns.histplot(
-        data=resample_mgn_data(10**6, (mgn_data_obs, mgn_data_wts)),
+    mgn_ax.hist(
+        x=mgn_data_sample,
         color="green",
         alpha=0.4,
         bins=25,
-        stat="density",
-        ax=mgn_ax,
+        density=True,
         label="Generated data",
     )
 
-    mgn_ax.set_xlim(0.0, 1.0)
     mgn_ax.legend(
         loc="best",
         fancybox=False,
@@ -250,5 +246,10 @@ if __name__ == "__main__":
         fontsize="small",
     )
 
+    mgn_ax.set_xlim(0.0, 1.0)
+    mgn_ax.xaxis.set_major_formatter(StrMethodFormatter("{x:>3.0%}"))
+    mgn_ax.set_xlabel("Price Cost Margin, $m$", fontsize=10)
+    mgn_ax.set_ylabel("Frequency", fontsize=10)
+
     mgn_fig.tight_layout()
-    mgn_fig.savefig(MGNDATA_DUMP_PATH.parent.joinpath(f"{prog_path.stem}.pdf"))
+    plt.savefig(MGNDATA_DUMP_PATH.parent.joinpath(f"{prog_path.stem}.pdf"))
