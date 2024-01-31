@@ -19,12 +19,12 @@ import tables as ptb  # type: ignore
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gsftl
 import mergeron.gen.investigations_stats as clstl
-from mergeron.core.gsf_lib import GuidelinesStandards
-from mergeron.core.parse_ftc_merger_investigations_data import (
+from mergeron.core.guidelines_standards import GuidelinesStandards
+from mergeron.core.ftc_merger_investigations_data import (
     construct_invdata,
     invdata_dump_path,
 )
-from mergeron.core.propn_ci_lib import propn_ci
+from mergeron.core.proportions_tests import propn_ci
 
 __version__ = metadata.version(Path(__file__).parents[1].stem)
 

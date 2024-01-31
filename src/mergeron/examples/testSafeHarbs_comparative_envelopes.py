@@ -23,10 +23,10 @@ from matplotlib.ticker import StrMethodFormatter
 from numpy import arange, argsort, column_stack, einsum, ones_like
 from numpy.typing import NDArray
 
-import mergeron.core.gsf_lib as gsf
+import mergeron.core.guidelines_standards as gsf
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.investigations_stats as clstl
-from mergeron.core.prng_cpu_multi import DEFAULT_PARM_ARRAY
+from mergeron.core.psuedorandom_numbers import DEFAULT_PARM_ARRAY
 
 prog_path = Path(__file__)
 data_path = Path.home() / prog_path.parents[1].stem

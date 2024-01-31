@@ -18,9 +18,9 @@ from jinja2 import Environment, FileSystemLoader, Template, select_autoescape
 from numpy.typing import NDArray
 from scipy.interpolate import interp1d  # type: ignore
 
-import mergeron.core.parse_ftc_merger_investigations_data as fid
-from mergeron.core.parse_ftc_merger_investigations_data import TableData
-from mergeron.core.propn_ci_lib import propn_ci
+import mergeron.core.ftc_merger_investigations_data as fid
+from mergeron.core.ftc_merger_investigations_data import TableData
+from mergeron.core.proportions_tests import propn_ci
 
 m.patch()
 

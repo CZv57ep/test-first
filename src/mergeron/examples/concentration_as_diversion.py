@@ -33,8 +33,8 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy import pi
 from xlsxwriter import Workbook  # type: ignore
 
-import mergeron.core.gsf_lib as gsf
-import mergeron.core.xlsxw_helper as xlh
+import mergeron.core.guidelines_standards as gsf
+import mergeron.core.excel_helper as xlh
 import mergeron.ext.tol_colors as ptcolor  # type: ignore
 
 mod_path = Path(__file__)

@@ -11,7 +11,7 @@ from matplotlib import cm as colormgr
 from matplotlib import colors as mcolors
 from matplotlib.ticker import AutoMinorLocator, MultipleLocator, StrMethodFormatter
 
-import mergeron.core.gsf_lib as gsf
+import mergeron.core.guidelines_standards as gsf
 
 prog_path = Path(__file__)
 data_path = Path.home() / prog_path.parents[1].stem

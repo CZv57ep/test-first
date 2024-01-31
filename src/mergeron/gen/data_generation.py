@@ -13,8 +13,8 @@ import numpy as np
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from mergeron.core.parse_damodaran_margin_data import resample_mgn_data
-from mergeron.core.prng_cpu_multi import DEFAULT_PARM_ARRAY, MultithreadedRNG, prng
+from mergeron.core.damodaran_margin_data import resample_mgn_data
+from mergeron.core.psuedorandom_numbers import DEFAULT_PARM_ARRAY, MultithreadedRNG, prng
 
 __version__ = metadata.version(Path(__file__).parents[1].stem)
 

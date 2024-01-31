@@ -43,7 +43,7 @@ from requests_toolbelt.downloadutils import stream
 from scipy import stats
 from xlrd import open_workbook
 
-from mergeron.core.gsf_lib import boundary_plot
+from mergeron.core.guidelines_standards import boundary_plot
 
 __version__ = metadata.version(Path(__file__).parents[1].stem)
 

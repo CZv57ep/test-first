@@ -26,7 +26,7 @@ from numpy import (
     vstack,
 )
 
-import mergeron.core.gsf_lib as gsf
+import mergeron.core.guidelines_standards as gsf
 
 mod_path = Path(__file__)
 data_path = Path.home() / mod_path.parents[1].stem

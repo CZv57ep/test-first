@@ -10,7 +10,7 @@ from typing import NamedTuple
 from numpy import column_stack, divide
 from numpy.typing import NDArray
 
-from mergeron.core.prng_cpu_multi import prng
+from mergeron.core.psuedorandom_numbers import prng
 from mergeron.gen.data_generation import (
     RECConstants,
     gen_market_shares_dirichlet,

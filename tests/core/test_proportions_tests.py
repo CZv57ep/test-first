@@ -2,7 +2,7 @@ from collections.abc import Mapping, Sequence
 from types import MappingProxyType
 from typing import Literal
 
-import mergeron.core.propn_ci_lib as pci
+import mergeron.core.proportions_tests as pci
 import numpy as np
 import pytest
 from numpy.testing import assert_array_almost_equal

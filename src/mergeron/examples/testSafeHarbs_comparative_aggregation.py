@@ -20,7 +20,7 @@ from matplotlib import colors as mcolors
 from matplotlib.ticker import MultipleLocator, StrMethodFormatter
 from numpy.typing import NDArray
 
-import mergeron.core.gsf_lib as gsf
+import mergeron.core.guidelines_standards as gsf
 import mergeron.gen.data_generation as dgl
 
 prog_path = Path(__file__)

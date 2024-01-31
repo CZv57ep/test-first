@@ -10,7 +10,7 @@ from pathlib import Path
 
 from numpy import einsum, row_stack, unique
 
-import mergeron.core.parse_ftc_merger_investigations_data as fid
+import mergeron.core.ftc_merger_investigations_data as fid
 import mergeron.gen.investigations_stats as clstl
 
 data_path = Path.home() / Path(__file__).parents[1].stem

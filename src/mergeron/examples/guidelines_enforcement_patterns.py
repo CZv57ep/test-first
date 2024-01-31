@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from numpy import array, column_stack
 
-import mergeron.core.propn_ci_lib as pcl
+import mergeron.core.proportions_tests as pcl
 
 enf_counts = array((
     (24, 25, 33, 33),

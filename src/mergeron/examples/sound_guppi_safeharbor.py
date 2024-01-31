@@ -8,7 +8,7 @@ from typing import Literal
 import numpy as np
 import tables as ptb  # type: ignore
 
-import mergeron.core.gsf_lib as gsf
+import mergeron.core.guidelines_standards as gsf
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as clstl
