@@ -17,8 +17,8 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-import mergeron.gen.clrenf_stats_lib as clstl
-import mergeron.gen.datagen_lib as dgl
+import mergeron.gen.data_generation as dgl
+import mergeron.gen.investigations_stats as clstl
 
 __version__ = metadata.version(Path(__file__).parents[1].stem)
 

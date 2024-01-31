@@ -11,7 +11,7 @@ License:  Standard 3-clause BSD
 
 from collections import namedtuple
 from collections.abc import Callable, Sequence
-from typing import Any, Literal
+from typing import Literal
 
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap, to_rgba_array

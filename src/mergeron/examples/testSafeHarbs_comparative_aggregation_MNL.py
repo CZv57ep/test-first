@@ -19,7 +19,7 @@ from matplotlib.ticker import MultipleLocator, StrMethodFormatter
 from numpy.typing import NDArray
 
 import mergeron.core.gsf_lib as gsf
-import mergeron.gen.datagen_lib as dgl
+import mergeron.gen.data_generation as dgl
 
 prog_path = Path(__file__)
 data_path = Path.home() / prog_path.parents[1].stem

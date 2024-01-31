@@ -19,13 +19,13 @@ from typing import Final
 import numpy as np
 import tables as tb
 from matplotlib import cm, colors
-from matplotlib.ticker import MultipleLocator, StrMethodFormatter
+from matplotlib.ticker import StrMethodFormatter
 from numpy import arange, argsort, column_stack, einsum, ones_like
 from numpy.typing import NDArray
 
 import mergeron.core.gsf_lib as gsf
-import mergeron.gen.clrenf_stats_lib as clstl
-import mergeron.gen.datagen_lib as dgl
+import mergeron.gen.data_generation as dgl
+import mergeron.gen.investigations_stats as clstl
 from mergeron.core.prng_cpu_multi import DEFAULT_PARM_ARRAY
 
 prog_path = Path(__file__)

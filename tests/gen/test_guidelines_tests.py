@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 import mergeron.core.gsf_lib as gsf
 import mergeron.core.prng_cpu_multi as rmp
-import mergeron.gen.clrenf_stats_lib as clstl
-import mergeron.gen.datagen_lib as dgl
-import mergeron.gen.gsftestgen_lib as gtl
+import mergeron.gen.data_generation as dgl
+import mergeron.gen.guidelines_tests as gtl
+import mergeron.gen.investigations_stats as clstl
 import numpy as np
 import re2 as re  # type: ignore
 

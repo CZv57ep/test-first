@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mergeron"
 # See get_version_str.py
-version = "2024.738888.20"
+version = "2024.738888.21"
 description = "Analysis of standards defined in Horizontal Merger Guidelines"
 keywords = [
     "merger policy analysis",
@@ -194,9 +194,11 @@ testpaths = ["tests"]
 addopts = ["--import-mode=importlib"]
 filterwarnings = [
     "all",
+    "ignore::DeprecationWarning:dateutil.tz.tz",
     "ignore::DeprecationWarning:jinja2.lexer",
+    "ignore::DeprecationWarning:joblib._utils",
     "ignore::DeprecationWarning:openpyxl.packaging.core",
-    "ignore::RuntimeWarning:mergeron.clrenf_stats_lib",
-    "ignore::RuntimeWarning:mergeron.core.propn_ci_lib",
+    "ignore::RuntimeWarning:mergeron.gen.investigations_stats",
+    "ignore::RuntimeWarning:mergeron.core.proportions_tests",
 ]
 tmp_path_retention_policy = "failed"

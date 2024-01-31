@@ -11,7 +11,7 @@ from numpy import column_stack, divide
 from numpy.typing import NDArray
 
 from mergeron.core.prng_cpu_multi import prng
-from mergeron.gen.datagen_lib import (
+from mergeron.gen.data_generation import (
     RECConstants,
     gen_market_shares_dirichlet,
     gen_market_shares_uniform,

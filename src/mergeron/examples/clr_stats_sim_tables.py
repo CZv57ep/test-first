@@ -16,9 +16,9 @@ import numpy as np
 import re2 as re  # type: ignore
 import tables as ptb  # type: ignore
 
-import mergeron.gen.clrenf_stats_lib as clstl
-import mergeron.gen.datagen_lib as dgl
-import mergeron.gen.gsftestgen_lib as gsftl
+import mergeron.gen.data_generation as dgl
+import mergeron.gen.guidelines_tests as gsftl
+import mergeron.gen.investigations_stats as clstl
 from mergeron.core.gsf_lib import GuidelinesStandards
 from mergeron.core.parse_ftc_merger_investigations_data import (
     construct_invdata,
@@ -48,7 +48,7 @@ def clrenf_stats_sim_setup(
     _ind_sample_spec: dgl.MarketSampleSpec,
     _clr_enf_stats_kwargs: Mapping | None = None,
     /,
-):
+) -> None:
     _table_ind_group = (
         _merger_class
         if _merger_class == clstl.INDGRPConstants.IIC
@@ -175,9 +175,9 @@ def clrenf_stats_sim_render(
     _stats_group_dict_sub: Mapping,
     _clrenf_parm_vec: Sequence,
     _sim_clrenf_sel: Sequence,
-    _clrenf_rate_table_dottex,
+    _clrenf_rate_table_dottex: Path.file,
     /,
-):
+) -> None:
     _clrenf_rate_table_content = clstl.ClearanceRateDataContainer()
 
     _obs_sample_sz, _sim_sample_sz = (

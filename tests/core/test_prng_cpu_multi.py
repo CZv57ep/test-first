@@ -1,12 +1,11 @@
 import numpy as np
+from mergeron.core.prng_cpu_multi import MultithreadedRNG, gen_seed_seq_list_default
 from numpy.testing import (
     assert_almost_equal,
     assert_array_almost_equal,
     assert_array_equal,
     assert_equal,
 )
-
-from mergeron.core.prng_cpu_multi import MultithreadedRNG, gen_seed_seq_list_default
 
 np.set_printoptions(precision=18)
 
