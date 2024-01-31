@@ -1,7 +1,7 @@
 import gc
 from collections.abc import Sequence
 
-import mergeron.core.gsf_lib as gsf
+import mergeron.core.guidelines_standards as gsf
 import pytest
 from mpmath import mp, mpf  # type: ignore
 from numpy.testing import assert_almost_equal, assert_equal

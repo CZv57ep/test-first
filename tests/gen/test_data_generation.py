@@ -1,6 +1,6 @@
 import gc
 
-import mergeron.core.prng_cpu_multi as rmp
+import mergeron.core.psuedorandom_numbers as rmp
 import mergeron.gen.data_generation as dgl
 import numpy as np
 import pytest

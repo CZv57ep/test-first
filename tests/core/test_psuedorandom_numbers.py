@@ -1,5 +1,5 @@
 import numpy as np
-from mergeron.core.prng_cpu_multi import MultithreadedRNG, gen_seed_seq_list_default
+from mergeron.core.psuedorandom_numbers import MultithreadedRNG, gen_seed_seq_list_default
 from numpy.testing import (
     assert_almost_equal,
     assert_array_almost_equal,

@@ -3,7 +3,7 @@ from typing import Any
 
 import numpy as np
 import pytest
-from mergeron.core.parse_ftc_merger_investigations_data import (
+from mergeron.core.ftc_merger_investigations_data import (
     construct_invdata,
     invdata_dump_path,
 )

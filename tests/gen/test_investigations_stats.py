@@ -1,8 +1,8 @@
-import mergeron.core.parse_ftc_merger_investigations_data as fid
+import mergeron.core.ftc_merger_investigations_data as fid
 import mergeron.gen.investigations_stats as clstl
 import numpy as np
 import pytest
-from mergeron.core.parse_ftc_merger_investigations_data import TableData  # noqa F401
+from mergeron.core.ftc_merger_investigations_data import TableData  # noqa F401
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
 

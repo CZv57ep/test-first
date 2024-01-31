@@ -1,7 +1,7 @@
 import gc
 from pathlib import Path
 
-import mergeron.core.xlsxw_helper as xlh
+import mergeron.core.excel_helper as xlh
 import pytest
 from openpyxl import load_workbook
 from pytest import TempPathFactory

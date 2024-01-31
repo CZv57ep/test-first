@@ -1,8 +1,8 @@
 import gc
 from datetime import datetime, timedelta
 
-import mergeron.core.gsf_lib as gsf
-import mergeron.core.prng_cpu_multi as rmp
+import mergeron.core.guidelines_standards as gsf
+import mergeron.core.psuedorandom_numbers as rmp
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as clstl
