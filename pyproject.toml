@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mergeron"
-# See get_version_str.py
-version = "2024.738888.21"
+# See ./get_version_str.py
+version = "2024.738888.24"
 description = "Analysis of standards defined in Horizontal Merger Guidelines"
 keywords = [
     "merger policy analysis",
@@ -20,8 +20,6 @@ readme = "README.md"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",
-    "Environment :: Web Environment",
-    "Framework :: Matplotlib",
     "Intended Audience :: End Users/Desktop",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
@@ -35,7 +33,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 # You may need to apply the fixes in, https://github.com/python-poetry/poetry/issues/3365
-# if poetry takes forever to resolve dependencies (read the page at link to the end)
+# if poetry dependency resolution appears to hang (read the page at link to the end)
 aenum = "^3.1"
 attrs = "^23.2"
 bs4 = "^0.0.1"
@@ -55,23 +53,26 @@ pymupdf = "^1.23"
 python = "^3.11"
 requests = "^2.31"
 scipy = "^1.12"
-seaborn = "^0.13"
 sympy = "^1.12"
 tables = "^3.8"
 xlrd = "^2.0"
 xlsxwriter = "^3.1"
 certifi = "^2023.11.17"
 requests-toolbelt = "^1.0.0"
+importlib-metadata = "^7.0.1"
+sphinx = "^7.2.6"
+semver = "^3.0.2"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0.0"
-mypy = ">=1.8.0"
-ruff = ">=0.1.15"
-sphinx = ">=7.2.6"
+mypy = "^1.8.0"
+ruff = "^0.2.1"
 sphinx-autodoc-typehints = ">=1.25.3"
 sphinx-toolbox = ">=3.5.0"
 pydata-sphinx-theme = ">=0.15.2"
+numpy = "^1.26.3"
+enum-tools = {extras = ["sphinx"], version = "^0.11.0"}
 
 [build-system]
 requires = ["poetry-core"]
@@ -186,7 +187,6 @@ no_implicit_reexport = true
 allow_redefinition = true
 
 plugins = "numpy.typing.mypy_plugin"
-
 
 [tool.pytest.ini_options]
 minversion = "8.0"
