@@ -1,20 +1,20 @@
 R"""
 
-    Demonstrates the correspondence between concentration standards and
-    diversion ratio standards, graphically
+Demonstrates the correspondence between concentration standards and
+diversion ratio standards, graphically
 
-    Here, *correspondence* is defined as the close approximation of
-    boundaries for sets of mergers meeting a guidelines concentration
-    standard to boundaries for sets of mergers meeting a
-    matching diversion ratio. Separate demonstrations based on
-    1992 Guidelines concentration standards and 2010 Guidelines concentration
-    standards are generated as,
-    1.) Plots of the boundaries write to separate PDF files
-    2.) Tables of boundary coordinates written to separate Excel files
+Here, *correspondence* is defined as the close approximation of
+boundaries for sets of mergers meeting a guidelines concentration
+standard to boundaries for sets of mergers meeting a
+matching diversion ratio. Separate demonstrations based on
+1992 Guidelines concentration standards and 2010 Guidelines concentration
+standards are generated as,
+1.) Plots of the boundaries write to separate PDF files
+2.) Tables of boundary coordinates written to separate Excel files
 
-    Output is written in the `mergeron` sub-folder within a user's home directory,
-    i.e., `%USERPROFILE%\mergeron` on Windows, or `~/mergeron/` on Unix-like
-    systems.
+Output is written in the `mergeron` sub-folder within a user's home directory,
+i.e., `%USERPROFILE%\mergeron` on Windows, or `~/mergeron/` on Unix-like
+systems.
 
 """
 
@@ -33,8 +33,8 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy import pi
 from xlsxwriter import Workbook  # type: ignore
 
-import mergeron.core.guidelines_standards as gsf
 import mergeron.core.excel_helper as xlh
+import mergeron.core.guidelines_standards as gsf
 import mergeron.ext.tol_colors as ptcolor  # type: ignore
 
 mod_path = Path(__file__)
@@ -498,7 +498,6 @@ def _plot_annotator(
     _h_align: str,
     _v_align: str = "bottom",
     _font_sz: int = 3,
-    _font_wt: int = 300,
     _z_order: float = 5.0,
     /,
 ) -> None:
@@ -510,7 +509,6 @@ def _plot_annotator(
         ha=_h_align,
         va=_v_align,
         fontsize=_font_sz,
-        fontweight=_font_wt,
         zorder=_z_order,
     )
 

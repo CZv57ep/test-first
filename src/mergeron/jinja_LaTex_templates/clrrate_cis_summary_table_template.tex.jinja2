@@ -16,7 +16,7 @@
 
 	\begin{center}
 	\caption{
-            \JINVAR{ prop_title } and Simulated \JINVAR{ tmpl_data.CLRENFSelector} Rates
+            \JINVAR{ prop_title } and Simulated \JINVAR{ tmpl_data.PolicySelector} Rates
             for FTC Investigated Mergers
         }\label{tbl:clearanceRates_\JINVAR{ tmpl_data.obs_summary_type|replace(" ", "") -}_\JINVAR{ tmpl_data.obs_merger_class|replace(" ", "") -}_\JINVAR{ tmpl_data.obs_period|last -}}
 	{\footnotesize
@@ -28,14 +28,14 @@
 			\matrix[datatable,
 				column 1/.style = {nodes = {align=right, text width = 27pt,},},
 				column 2/.style = {nodes = {align=right, text width = 77pt,},},
-				] (clrenf_rate_cis) {
-				\JINVAR{ tmpl_data.clrenf_rate_cis -}
+				] (stats_cis) {
+				\JINVAR{ tmpl_data.stats_cis -}
 				};
-			\draw[color = OBSHDRFill, line width = 1pt,] (clrenf_rate_cis-\JINVAR{- tmpl_data.clrenf_rate_numrows -}-1.north west) -- (clrenf_rate_cis-\JINVAR{- tmpl_data.clrenf_rate_numrows -}-2.north east);
+			\draw[color = OBSHDRFill, line width = 1pt,] (stats_cis-\JINVAR{- tmpl_data.stats_numrows -}-1.north west) -- (stats_cis-\JINVAR{- tmpl_data.stats_numrows -}-2.north east);
 		\end{pgfonlayer}
 		% Header row - column heads
 		\matrix[hrow,
-			above = 0 pt of clrenf_rate_cis,
+			above = 0 pt of stats_cis,
 			column 1/.style = {
 				nodes = {
 					minimum height = 33pt,
@@ -67,11 +67,11 @@
 			};
 
 		% Header column - row heads
-		\matrix[hcol, left = 0pt of clrenf_rate_cis, nodes = {
+		\matrix[hcol, left = 0pt of stats_cis, nodes = {
 				text width = \JINVAR{ tmpl_data.hdrcol_cis_width -},
 				inner xsep = 3 pt,
 				},] (hdrcol_cis) {
-			\JINVAR{ tmpl_data.clrenf_rate_hdrstr -}
+			\JINVAR{ tmpl_data.stats_hdrstr -}
 			};
 		% Header column - row heads - description
 		\JINVAR{ tmpl_data.hdrcoldescstr }
@@ -85,10 +85,10 @@
 		% Notes below table
 		\matrix[anytable,
 			below right = 4pt and 8pt of hdrcol_cis.south west,
-			nodes = {notetext, minimum height = 10pt, text width = \JINVAR{ tmpl_data.clrenf_rate_cis_notewidth -}\linewidth,},
+			nodes = {notetext, minimum height = 10pt, text width = \JINVAR{ tmpl_data.stats_cis_notewidth -}\linewidth,},
 			] (notestext) {
 			NOTES: \\
-			\JINVAR{ tmpl_data.clrenf_rate_cis_notestr -}
+			\JINVAR{ tmpl_data.stats_cis_notestr -}
             \\
 			SOURCES: \\
 			\(\cdot\) See notes to Table~\ref{tbl:FTCInvData_\JINVAR{ tmpl_data.obs_summary_type|replace(" ", "") -}} for Observed Data \\
@@ -96,22 +96,22 @@
 
 		% === Simulated clearance rate data and headers ===
 		\begin{pgfonlayer}{background}
-			\matrix[datatable, right = 3pt of clrenf_rate_cis, nodes = {text width = 27pt,},
-			] (clrenf_rate_sim) {
-				\JINVAR{ tmpl_data.clrenf_rate_sim -}
+			\matrix[datatable, right = 3pt of stats_cis, nodes = {text width = 27pt,},
+			] (stats_sim) {
+				\JINVAR{ tmpl_data.stats_sim -}
 				};
-			\draw[color = SIMHDRFill, line width = 1pt,] (clrenf_rate_sim-\JINVAR{- tmpl_data.clrenf_rate_numrows -}-1.north west) -- (clrenf_rate_sim-\JINVAR{- tmpl_data.clrenf_rate_numrows -}-4.north east);
+			\draw[color = SIMHDRFill, line width = 1pt,] (stats_sim-\JINVAR{- tmpl_data.stats_numrows -}-1.north west) -- (stats_sim-\JINVAR{- tmpl_data.stats_numrows -}-4.north east);
 		\end{pgfonlayer}
 		% Header row - column heads
 		\matrix[hrow,
-			above = 0pt of clrenf_rate_sim,
+			above = 0pt of stats_sim,
 			nodes = {fill = SIMHDRFill, minimum height = 33pt, text width = 60pt, text depth = 16pt, align = left, inner sep = 3pt,}, %
 			column 1/.style = {nodes = {text depth = 8pt, },},
 			] (hdrrow_sim) {
 			\node [rotate = 90, pos = 0.0] {Relative \\ Frequency \\}; &
-			\node [rotate = 90, pos = 0.0] {\JINVAR{tmpl_data.CLRENFSelector -} \\ Rate \\ {\tiny \(\safeharb{g} = \JINVAR{ tmpl_data.guppi_bound -}; \safeharb{d} = \JINVAR{ tmpl_data.rbar -}\)} \\}; &
-			\node [rotate = 90, pos = 0.0] {\JINVAR{tmpl_data.CLRENFSelector -} \\ Rate \\ {\tiny \(\safeharb{g} = \JINVAR{ tmpl_data.guppi_bound -}; \safeharb{d} = \JINVAR{ tmpl_data.dbar -}\)} \\}; &
-			\node [rotate = 90, pos = 0.0] {\JINVAR{tmpl_data.CLRENFSelector -} \\ Rate \\ {\tiny \(\safeharb{CMCR} = \JINVAR{ tmpl_data.cmcr_bound -}\)} \\}; \\
+			\node [rotate = 90, pos = 0.0] {\JINVAR{tmpl_data.PolicySelector -} \\ Rate \\ {\tiny \(\safeharb{g} = \JINVAR{ tmpl_data.guppi_bound -}; \safeharb{d} = \JINVAR{ tmpl_data.rbar -}\)} \\}; &
+			\node [rotate = 90, pos = 0.0] {\JINVAR{tmpl_data.PolicySelector -} \\ Rate \\ {\tiny \(\safeharb{g} = \JINVAR{ tmpl_data.guppi_bound -}; \safeharb{d} = \JINVAR{ tmpl_data.dbar -}\)} \\}; &
+			\node [rotate = 90, pos = 0.0] {\JINVAR{tmpl_data.PolicySelector -} \\ Rate \\ {\tiny \(\safeharb{CMCR} = \JINVAR{ tmpl_data.cmcr_bound -}\)} \\}; \\
 			};
 		\matrix[hrow, above = 0pt of hdrrow_sim,
 			nodes = {fill = SIMHDRFill, minimum height = 12.5pt, text width = 130.8pt}] (hdrrowdesc_sim) {

@@ -20,7 +20,7 @@ from numpy.typing import NDArray
 __version__ = metadata.version(Path(__file__).parents[1].stem)
 
 NTHREADS = 2 * cpu_count()
-DEFAULT_PARM_ARRAY = np.array([0.0, 1.0])
+DIST_PARMS_DEFAULT = np.array([0.0, 1.0])
 
 
 def prng(_s: SeedSequence | None = None, /) -> np.random.Generator:
@@ -111,13 +111,13 @@ def gen_seed_seq_list_default(
 class MultithreadedRNG:
     def __init__(
         self,
-        _out_array: NDArray[np.float_],
+        _out_array: NDArray[np.float64],
         /,
         *,
-        rng_dist_type: Literal[
+        dist_type: Literal[
             "Beta", "Dirichlet", "Gaussian", "Normal", "Random", "Uniform"
         ] = "Uniform",
-        rng_dist_parms: NDArray[np.floating] = DEFAULT_PARM_ARRAY,
+        dist_parms: NDArray[np.floating] = DIST_PARMS_DEFAULT,
         seed_sequence: SeedSequence | None = None,
         nthreads: int = NTHREADS,
     ):
@@ -134,9 +134,9 @@ class MultithreadedRNG:
         _out_array
             The output array to which generated data are written.
             Its dimensions define the size of the sample.
-        rng_dist_type
+        dist_type
             Distribution for the generated random numbers
-        rng_dist_parms
+        dist_parms
             Parameters, if any, for tailoring random number generation
         seed_sequence
             SeedSequence object for generating repeatable draws.
@@ -153,49 +153,49 @@ class MultithreadedRNG:
 
         self.sample_sz = len(_out_array)
 
-        if rng_dist_type not in (_rdts := ("Beta", "Dirichlet", "Normal", "Uniform")):
+        if dist_type not in (_rdts := ("Beta", "Dirichlet", "Normal", "Uniform")):
             raise ValueError("Specified distribution must be one of {_rds!r}")
 
         if not (
-            rng_dist_parms is None or isinstance(rng_dist_parms, Sequence | np.ndarray)
+            dist_parms is None or isinstance(dist_parms, Sequence | np.ndarray)
         ):
             raise ValueError(
                 "When specified, distribution parameters must be a list, tuple or Numpy array"
             )
-            if isinstance(rng_dist_parms, Sequence):
-                rng_dist_parms = np.array(rng_dist_parms)
-            elif not rng_dist_parms.any():
-                rng_dist_parms = None
+            if isinstance(dist_parms, Sequence):
+                dist_parms = np.array(dist_parms)
+            elif not dist_parms.any():
+                dist_parms = None
 
-        self.rng_dist_type = rng_dist_type
+        self.dist_type = dist_type
 
-        if np.array_equal(rng_dist_parms, DEFAULT_PARM_ARRAY):
-            if rng_dist_type in ("Beta", "Dirichlet"):
+        if np.array_equal(dist_parms, DIST_PARMS_DEFAULT):
+            if dist_type in ("Beta", "Dirichlet"):
                 raise ValueError(
-                    f"Specified distribution, '{rng_dist_type}' requires "
+                    f"Specified distribution, '{dist_type}' requires "
                     f"further parameter specification."
                 )
-            elif rng_dist_type == "Uniform":
-                self.rng_dist_type = "Random"
-            elif rng_dist_type == "Normal":
-                self.rng_dist_type = "Gaussian"
+            elif dist_type == "Uniform":
+                self.dist_type = "Random"
+            elif dist_type == "Normal":
+                self.dist_type = "Gaussian"
             else:
                 raise ValueError(
-                    f"The given distribution parameters, {rng_dist_parms!r} "
-                    f"are insufficient for the given distribution, {rng_dist_type}"
+                    f"The given distribution parameters, {dist_parms!r} "
+                    f"are insufficient for the given distribution, {dist_type}"
                 )
 
-        elif rng_dist_type == "Dirichlet":
-            if len(rng_dist_parms) != _out_array.shape[1]:
+        elif dist_type == "Dirichlet":
+            if len(dist_parms) != _out_array.shape[1]:
                 raise ValueError(
                     f"Insufficient shape parameters for requested Dirichlet sample "
                     f"of size, {_out_array.shape!r}"
                 )
 
-        elif (_lrdp := len(rng_dist_parms)) != 2:
+        elif (_lrdp := len(dist_parms)) != 2:
             raise ValueError(f"Expected 2 parameters, got {_lrdp}")
 
-        self.rng_dist_parms = rng_dist_parms
+        self.dist_parms = dist_parms
 
         self.values = _out_array
         self.executor = concurrent.futures.ThreadPoolExecutor(self.thread_count)
@@ -209,7 +209,7 @@ class MultithreadedRNG:
             _rng: np.random.Generator,
             _dist_type: str,
             _dist_parms: NDArray[np.floating],
-            _out: NDArray[np.float_],
+            _out: NDArray[np.float64],
             _first: int,
             _last: int,
             /,
@@ -239,8 +239,8 @@ class MultithreadedRNG:
             args = (
                 _fill,
                 self._random_generators[i],
-                self.rng_dist_type,
-                self.rng_dist_parms,
+                self.dist_type,
+                self.dist_parms,
                 self.values,
                 _range_first,
                 _range_last,

@@ -1,6 +1,6 @@
 import gc
 
-import mergeron.core.psuedorandom_numbers as rmp
+import mergeron.core.pseudorandom_numbers as rmp
 import mergeron.gen.data_generation as dgl
 import numpy as np
 import pytest
@@ -148,7 +148,7 @@ def test_gen_market_sample(
         np.array([0.0, 1.0]),
     )
     if _mktshr_dist_type_test == dgl.SHRConstants.UNI:
-        _fcount_weights = dgl.DEFAULT_EMPTY_ARRAY
+        _fcount_weights = dgl.EMPTY_ARRAY_DEFAULT
         _test_func = _tfunc_sample_with_unrestricted_shares
     else:
         _fcount_weights = np.arange(1, 6)[::-1] / np.arange(1, 6).sum()

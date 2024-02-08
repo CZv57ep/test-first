@@ -1,5 +1,8 @@
 import numpy as np
-from mergeron.core.psuedorandom_numbers import MultithreadedRNG, gen_seed_seq_list_default
+from mergeron.core.pseudorandom_numbers import (
+    MultithreadedRNG,
+    gen_seed_seq_list_default,
+)
 from numpy.testing import (
     assert_almost_equal,
     assert_array_almost_equal,
@@ -17,8 +20,8 @@ def test_mrng_dirichlet(_tcount: int = 10**8, _fcount: int = 5) -> None:
     _test_out = np.empty((_tcount, _fcount), dtype=np.float64)
     _mrng = MultithreadedRNG(
         _test_out,
-        rng_dist_type="Dirichlet",
-        rng_dist_parms=np.ones(_fcount),
+        dist_type="Dirichlet",
+        dist_parms=np.ones(_fcount),
         seed_sequence=gen_seed_seq_list_default(1)[0],
         nthreads=16,
     )
@@ -52,8 +55,8 @@ def test_mrng_beta(_tcount: int = 10**8, _fcount: int = 5) -> None:
     _test_out = np.empty((_tcount, _fcount), dtype=np.float64)
     _mrng = MultithreadedRNG(
         _test_out,
-        rng_dist_type="Beta",
-        rng_dist_parms=np.ones(2),
+        dist_type="Beta",
+        dist_parms=np.ones(2),
         seed_sequence=gen_seed_seq_list_default(1)[0],
         nthreads=16,
     )
@@ -82,13 +85,13 @@ def test_mrng_beta(_tcount: int = 10**8, _fcount: int = 5) -> None:
     _test_out = np.empty((_tcount, 1), dtype=np.float64)
     _beta_mu, _beta_sigma = [0.5, 0.28867513459481287]
     _mul = np.divide(_beta_mu - _beta_mu**2 - _beta_sigma**2, _beta_sigma**2)
-    _beta_dist_parms = np.array(
+    _dist_parms_beta = np.array(
         [_beta_mu * _mul, (1 - _beta_mu) * _mul], dtype=np.float_
     )
     _mrng = MultithreadedRNG(
         _test_out,
-        rng_dist_type="Beta",
-        rng_dist_parms=_beta_dist_parms,
+        dist_type="Beta",
+        dist_parms=_dist_parms_beta,
         seed_sequence=gen_seed_seq_list_default(1)[0],
         nthreads=16,
     )

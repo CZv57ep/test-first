@@ -1,8 +1,7 @@
 """
-
-    Functions to estimate confidence intervals for
-        (a.) a proportion or muliple proportions, and (b.) contrast between
-        two independent proportions or two series of independent propotions.
+Functions to estimate confidence intervals for
+    (a.) a proportion or muliple proportions, and (b.) contrast between
+    two independent proportions or two series of independent propotions.
 
 """
 
@@ -10,20 +9,23 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from importlib import metadata
-from pathlib import Path
-from typing import Literal, NamedTuple
+from typing import Literal, NamedTuple, TypeVar
 
 import numpy as np
-from numpy.typing import NDArray
+from numpy.typing import NBitBase, NDArray
 from scipy.optimize import OptimizeResult, root  # type: ignore
 from scipy.stats import beta, chi2, norm  # type: ignore
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = metadata.version(_PKG_NAME)
+
+B = TypeVar("B", bound=NBitBase)
 
 
 def propn_ci(
-    _npos: NDArray[np.int_] | int = 4,
-    _nobs: NDArray[np.int_] | int = 10,
+    _npos: NDArray[np.integer[B]] | int = 4,
+    _nobs: NDArray[np.integer[B]] | int = 10,
     /,
     *,
     alpha: float = 0.05,
@@ -31,10 +33,10 @@ def propn_ci(
         "Agresti-Coull", "Clopper-Pearson", "Exact", "Wilson", "Score"
     ] = "Wilson",
 ) -> tuple[
-    NDArray[np.float_] | float,
-    NDArray[np.float_] | float,
-    NDArray[np.float_] | float,
-    NDArray[np.float_] | float,
+    NDArray[np.float64] | float,
+    NDArray[np.float64] | float,
+    NDArray[np.float64] | float,
+    NDArray[np.float64] | float,
 ]:
     """Returns point estimates and confidence interval for a proportion
 
@@ -86,10 +88,10 @@ def propn_ci(
     if not _nobs:
         return (np.nan,) * 4
 
-    _raw_phat: NDArray[np.float_] | float = _npos / _nobs
-    _est_phat: NDArray[np.float_] | float
-    _est_ci_l: NDArray[np.float_] | float
-    _est_ci_u: NDArray[np.float_] | float
+    _raw_phat: NDArray[np.float64] | float = _npos / _nobs
+    _est_phat: NDArray[np.float64] | float
+    _est_ci_l: NDArray[np.float64] | float
+    _est_ci_u: NDArray[np.float64] | float
 
     match method:
         case "Clopper-Pearson" | "Exact":
@@ -135,13 +137,13 @@ def propn_ci(
 
 
 def propn_ci_multinomial(
-    _counts: NDArray[np.integer],
+    _counts: NDArray[np.integer[B]],
     /,
     *,
     alpha: float = 0.05,
     method: Literal["goodman", "quesenberry-hurst"] = "goodman",
     alternative: Literal["default", "simplified"] = "default",
-) -> NDArray[np.float_]:
+) -> NDArray[np.float64]:
     """Confidence intervals for multiple proportions.
 
     Parameters
@@ -166,7 +168,7 @@ def propn_ci_multinomial(
             f'Invalid value {method!r} for "method". Must be one of {_mli!r}.'
         )
 
-    _n = np.einsum("j->", _counts).astype(np.int_)
+    _n = np.einsum("j->", _counts).astype(np.int64)
     _prob = _counts / _n
     _chi2_cr = (
         chi2(len(_counts) - 1).ppf(1 - alpha)
@@ -408,7 +410,7 @@ def _propn_diff_chisq_mn(
     method: Literal["M-N", "Mee"] = "M-N",
 ) -> float:
     R"""Estimate the :math:`\chi^2` statistic for the Meittinen-Nurminen (1985),
-    and Newcombe (1998) for difference in binomial proportions.
+    and Newcombe (1998) confidence intervals for a difference in binomial proportions.
 
     Parameters
     ----------
@@ -431,7 +433,7 @@ def _propn_diff_chisq_mn(
 
     _np1, _no1, _np2, _no2 = _counts
     _p1h, _p2h = _np1 / _no1, _np2 / _no2
-    _diff: float = _p1h - _p2h - _rd
+    _diff = _p1h - _p2h - _rd
 
     if not _diff:
         return 0.0
@@ -448,18 +450,18 @@ def _propn_diff_chisq_mn(
     _p = np.sign(_q) * np.sqrt(_l2**2 - 3 * _l3 * _l1) / (3 * _l3)
     _a = (np.pi + np.arccos(_q / _p**3)) / 3
 
-    _p2t = 2 * _p * np.cos(_a) - _l2_to_3l3
-    _p1t = _p2t + _rd
+    _p2t: float = 2 * _p * np.cos(_a) - _l2_to_3l3
+    _p1t: float = _p2t + _rd
 
     return _diff**2 / (
-        float(_p1t * (1 - _p1t) / _no1 + _p2t * (1 - _p2t) / _no2)
-        * float(_no / (_no - 1) if method == "M-N" else 1.0)
+        (_p1t * (1 - _p1t) / _no1 + _p2t * (1 - _p2t) / _no2)
+        * (_no / (_no - 1) if method == "M-N" else 1.0)
     )
 
 
 def propn_ci_diff_multinomial(
-    _counts: NDArray[np.integer], /, *, alpha: float = 0.05
-) -> NDArray[np.float_]:
+    _counts: NDArray[np.integer[B]], /, *, alpha: float = 0.05
+) -> NDArray[np.float64]:
     """Estimate confidence intervals of pair-wise differences in multinomial proportions
 
     Differences in multinomial proportions sum to zero.
@@ -484,7 +486,7 @@ def propn_ci_diff_multinomial(
             "for differences in two (2) sets of multinomial proportions."
         )
 
-    _prob = _counts / np.einsum("jk->k", _counts).astype(np.int_)
+    _prob = _counts / np.einsum("jk->k", _counts).astype(np.int64)
     _var = np.einsum("jk->j", _prob * (1 - _prob) / _counts)[:, None]
 
     _d, _d_cr = np.diff(_prob, axis=1), norm.ppf(1 - (alpha / len(_counts)))
@@ -492,15 +494,15 @@ def propn_ci_diff_multinomial(
 
 
 class MultinomialDiffTest(NamedTuple):
-    estimate: np.float_
+    estimate: np.float64
     dof: int
-    critical_value: np.float_
-    p_value: np.float_
+    critical_value: np.float64
+    p_value: np.float64
 
 
 def propn_diff_multinomial_chisq(
-    _counts: NDArray[np.integer], /, *, alpha: float = 0.05
-) -> NamedTuple:
+    _counts: NDArray[np.integer[B]], /, *, alpha: float = 0.05
+) -> MultinomialDiffTest:
     """Chi-square test for homogeneity of differences in multinomial proportions.
 
     Differences in multinomial proportions sum to zero.
@@ -519,8 +521,8 @@ def propn_diff_multinomial_chisq(
 
     """
 
-    _n = np.einsum("jk->", _counts).astype(np.int_)
-    _n_k = np.einsum("jk->k", _counts).astype(np.int_)
+    _n = np.einsum("jk->", _counts).astype(np.int64)
+    _n_k = np.einsum("jk->k", _counts).astype(np.int64)
     _prob = _counts / _n_k
 
     _p_bar = _n / np.einsum("jk->j", _n_k / _prob)

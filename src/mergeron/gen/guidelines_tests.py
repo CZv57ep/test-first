@@ -8,7 +8,7 @@ import enum
 from collections.abc import Mapping, Sequence
 from importlib import metadata
 from pathlib import Path
-from typing import Any, Literal, NamedTuple
+from typing import Any, Literal, NamedTuple, TypeAlias
 
 import numpy as np
 import tables as ptb  # type: ignore
@@ -18,7 +18,7 @@ from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
 import mergeron.gen.data_generation as dgl
-import mergeron.gen.investigations_stats as clstl
+import mergeron.gen.investigations_stats as isl
 
 __version__ = metadata.version(Path(__file__).parents[1].stem)
 
@@ -27,6 +27,8 @@ data_path = Path.home() / mod_path.parent.stem
 
 ptb.parameters.MAX_NUMEXPR_THREADS = 8
 ptb.parameters.MAX_BLOSC_THREADS = 4
+
+SaveDataSpec: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, str]
 
 
 @enum.unique
@@ -46,6 +48,11 @@ class GUPPIWghtngSelector(enum.StrEnum):
     OSD = "own-share-weighted distance"
 
 
+UPPTestSpec: TypeAlias = tuple[
+    isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
+]
+
+
 class UPPTests(NamedTuple):
     guppi_test_simple: NDArray[np.bool_]
     guppi_test_compound: NDArray[np.bool_]
@@ -53,17 +60,17 @@ class UPPTests(NamedTuple):
     ipr_test: NDArray[np.bool_]
 
 
-def sim_clrenf_cnts_ll(
-    _clrenf_parm_vec: Sequence[float],
+def sim_inv_cnts_ll(
+    _inv_parm_vec: Sequence[float],
     _mkt_sample_spec: dgl.MarketSampleSpec,
-    _sim_clrenf_cnts_kwargs: Mapping[str, Any],
+    _sim_inv_cnts_kwargs: Mapping[str, Any],
     /,
-) -> tuple[NDArray[np.int_], NDArray[np.int_], NDArray[np.int_]]:
+) -> tuple[NDArray[np.int64], NDArray[np.int64], NDArray[np.int64]]:
     """
     A function to parallelize simulations
 
-    The parameters _sim_clrenf_cnts_kwargs is passed unaltered to
-    the parent function, sim_clrenf_cnts(), except that, if provided,
+    The parameters _sim_inv_cnts_kwargs is passed unaltered to
+    the parent function, sim_inv_cnts(), except that, if provided,
     "seed_seq_list" is used to spawn a seed sequence for each thread,
     to assure independent samples in each thread. The number of draws
     in each thread may be tuned, by trial and error, to the amount of
@@ -79,27 +86,27 @@ def sim_clrenf_cnts_ll(
     # Crate a copy, to avoid side effects in the outer scope
     _mkt_sample_spec_here = evolve(_mkt_sample_spec, sample_size=_subsample_sz)
 
-    if _sim_clrenf_cnts_kwargs:
-        if (_sseql := _sim_clrenf_cnts_kwargs.get("seed_seq_list", None)) is None:
+    if _sim_inv_cnts_kwargs:
+        if (_sseql := _sim_inv_cnts_kwargs.get("seed_seq_list", None)) is None:
             _rng_seed_seq_list = [None] * _iter_count
         else:
             _rng_seed_seq_list = list(
                 zip(*[g.spawn(_iter_count) for g in _sseql], strict=True)  # type: ignore
             )
 
-        _sim_clrenf_cnts_ll_kwargs = {
-            _k: _sim_clrenf_cnts_kwargs[_k]
-            for _k in _sim_clrenf_cnts_kwargs
+        _sim_inv_cnts_ll_kwargs = {
+            _k: _sim_inv_cnts_kwargs[_k]
+            for _k in _sim_inv_cnts_kwargs
             if _k != "seed_seq_list"
         }
     else:
-        _sim_clrenf_cnts_ll_kwargs = {}
+        _sim_inv_cnts_ll_kwargs = {}
 
     _res_list = Parallel(n_jobs=_thread_count, prefer="threads")(
-        delayed(sim_clrenf_cnts)(
-            _clrenf_parm_vec,
+        delayed(sim_inv_cnts)(
+            _inv_parm_vec,
             _mkt_sample_spec_here,
-            **_sim_clrenf_cnts_ll_kwargs,
+            **_sim_inv_cnts_ll_kwargs,
             saved_array_name_suffix=f"{_thread_id:0{int(np.ceil(np.log10(_thread_count)))}d}",
             seed_seq_list=_rng_seed_seq_list_ch,
         )
@@ -108,38 +115,38 @@ def sim_clrenf_cnts_ll(
 
     _res_list_stacks = [np.stack([_j[_k] for _j in _res_list]) for _k in range(3)]
     (
-        _clrenf_cnts_sim_byfirmcount_array,
-        _clrenf_cnts_sim_bydelta_array,
-        _clrenf_cnts_sim_byconczone_array,
+        _inv_cnts_sim_byfirmcount_array,
+        _inv_cnts_sim_bydelta_array,
+        _inv_cnts_sim_byconczone_array,
     ) = (
         np.column_stack((
             _g[0, :, :_h],
-            np.einsum("ijk->jk", np.int_(1) * _g[:, :, _h:]),
+            np.einsum("ijk->jk", np.int64(1) * _g[:, :, _h:]),
         ))
         for _g, _h in zip(_res_list_stacks, [1, 1, 3], strict=True)
     )
     del _res_list, _res_list_stacks
 
     return (
-        _clrenf_cnts_sim_byfirmcount_array,
-        _clrenf_cnts_sim_bydelta_array,
-        _clrenf_cnts_sim_byconczone_array,
+        _inv_cnts_sim_byfirmcount_array,
+        _inv_cnts_sim_bydelta_array,
+        _inv_cnts_sim_byconczone_array,
     )
 
 
-def sim_clrenf_cnts(
+def sim_inv_cnts(
     _guppi_test_parms: Sequence[float],
     _mkt_sample_spec: dgl.MarketSampleSpec,
     /,
     *,
-    sim_clrenf_sel: tuple[
-        clstl.CLRENFSelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
+    sim_inv_sel: tuple[
+        isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
     ],
     saved_array_name_suffix: str = "",
-    save_data_to_file: Literal[False] | tuple[Literal[True], ptb.File, str] = False,
+    save_data_to_file: SaveDataSpec = False,
     seed_seq_list: list[SeedSequence] | None = None,
     nthreads: int = 16,
-) -> tuple[NDArray[np.int_], NDArray[np.int_], NDArray[np.int_]]:
+) -> tuple[NDArray[np.int64], NDArray[np.int64], NDArray[np.int64]]:
     if _mkt_sample_spec.recapture_rate != _guppi_test_parms[0]:
         raise ValueError(
             "{} {} {} {}".format(
@@ -171,7 +178,7 @@ def sim_clrenf_cnts(
     _upp_tests_data = gen_guppi_arrays(
         _guppi_test_parms,
         _market_data,
-        sim_clrenf_sel,
+        sim_inv_sel,
         saved_array_name_suffix=saved_array_name_suffix,
         save_data_to_file=save_data_to_file,
     )
@@ -190,12 +197,12 @@ def sim_clrenf_cnts(
         if hasattr(_firm_counts_prob_weights, "__len__")
         else 9
     )
-    _clrenf_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int_)
+    _inv_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
     for _firm_cnt in 2 + np.arange(_max_firm_count):
         _firm_count_test = _fcounts == _firm_cnt
 
-        _clrenf_cnts_sim_byfirmcount_array = np.row_stack((
-            _clrenf_cnts_sim_byfirmcount_array,
+        _inv_cnts_sim_byfirmcount_array = np.row_stack((
+            _inv_cnts_sim_byfirmcount_array,
             np.array([
                 _firm_cnt,
                 np.einsum("ij->", 1 * _firm_count_test),
@@ -205,15 +212,15 @@ def sim_clrenf_cnts(
                 ],
             ]),
         ))
-    _clrenf_cnts_sim_byfirmcount_array = _clrenf_cnts_sim_byfirmcount_array[1:]
+    _inv_cnts_sim_byfirmcount_array = _inv_cnts_sim_byfirmcount_array[1:]
 
-    _hhi_delta_ranged = clstl.hhi_delta_ranger(_hhi_delta)
-    _clrenf_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int_)
-    for _hhi_delta_lim in clstl.hhi_delta_knots[:-1]:
+    _hhi_delta_ranged = isl.hhi_delta_ranger(_hhi_delta)
+    _inv_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int64)
+    for _hhi_delta_lim in isl.HHI_DELTA_KNOTS[:-1]:
         _hhi_delta_test = _hhi_delta_ranged == _hhi_delta_lim
 
-        _clrenf_cnts_sim_bydelta_array = np.row_stack((
-            _clrenf_cnts_sim_bydelta_array,
+        _inv_cnts_sim_bydelta_array = np.row_stack((
+            _inv_cnts_sim_bydelta_array,
             np.array([
                 _hhi_delta_lim,
                 np.einsum("ij->", 1 * _hhi_delta_test),
@@ -224,17 +231,17 @@ def sim_clrenf_cnts(
             ]),
         ))
 
-    _clrenf_cnts_sim_bydelta_array = _clrenf_cnts_sim_bydelta_array[1:]
+    _inv_cnts_sim_bydelta_array = _inv_cnts_sim_bydelta_array[1:]
 
     # Clearance/enfrocement counts --- by zone, coded
     try:
-        _hhi_zone_post_ranged = clstl.hhi_zone_post_ranger(_hhi_post)
+        _hhi_zone_post_ranged = isl.hhi_zone_post_ranger(_hhi_post)
     except ValueError as _err:
         print(_hhi_post)
         raise _err
 
-    _stats_byconczone_sim = -1 * np.ones(_stats_rowlen + 1, np.int_)
-    for _hhi_zone_post_knot in clstl.hhi_zone_post_knots[:-1]:
+    _stats_byconczone_sim = -1 * np.ones(_stats_rowlen + 1, np.int64)
+    for _hhi_zone_post_knot in isl.HHI_POST_ZONE_KNOTS[:-1]:
         _level_test = _hhi_zone_post_ranged == _hhi_zone_post_knot
 
         for _hhi_zone_delta_knot in [0, 100, 200]:
@@ -259,33 +266,31 @@ def sim_clrenf_cnts(
                 ]),
             ))
 
-    _clrenf_cnts_sim_byconczone_array = clstl.clrenf_cnts_byconczone(
-        _stats_byconczone_sim[1:]
-    )
+    _inv_cnts_sim_byconczone_array = isl.inv_cnts_byconczone(_stats_byconczone_sim[1:])
     del _stats_byconczone_sim
     del _hhi_delta, _hhi_post, _fcounts
 
     return (
-        _clrenf_cnts_sim_byfirmcount_array,
-        _clrenf_cnts_sim_bydelta_array,
-        _clrenf_cnts_sim_byconczone_array,
+        _inv_cnts_sim_byfirmcount_array,
+        _inv_cnts_sim_bydelta_array,
+        _inv_cnts_sim_byconczone_array,
     )
 
 
 def gen_guppi_arrays(
     _guppi_test_parms: Sequence[float],
     _market_data: dgl.MarketSample,
-    _sim_clrenf_sel: tuple[
-        clstl.CLRENFSelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
+    _sim_inv_sel: tuple[
+        isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
     ],
     /,
     *,
     saved_array_name_suffix: str = "",
-    save_data_to_file: Literal[False] | tuple[Literal[True], ptb.File, str] = False,
+    save_data_to_file: SaveDataSpec = False,
 ) -> UPPTests:
     _r_bar, _g_bar, _divr_bar, _cmcr_bar, _ipr_bar = _guppi_test_parms
 
-    _clrenf_sel, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_clrenf_sel
+    _inv_sel, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_inv_sel
 
     _guppi_array = np.empty_like(_market_data.divr_array)
     np.einsum(
@@ -304,19 +309,21 @@ def gen_guppi_arrays(
     )
 
     _ipr_array = np.empty_like(_market_data.divr_array)
-    np.divide(_guppi_array, (1 - _market_data.divr_array[:, ::-1]), out=_ipr_array)
+    np.divide(
+        np.einsum("ij,ij->ij", _market_data.pcm_array, _market_data.divr_array),
+        1 - _market_data.divr_array,
+        out=_ipr_array,
+    )
 
+    # This one needs further testing:
     # _ipr_array_alt = np.empty_like(_market_data.divr_array)
-    # np.divide(
-    #     np.einsum("ij,ij->ij", _market_data.pcm_array, _market_data.divr_array),
-    #     1 - _market_data.divr_array,
-    #     out=_ipr_array_alt,
-    # )
+    # np.divide(_guppi_array, (1 - _market_data.divr_array[:, ::-1]), out=_ipr_array_alt)
 
     _test_measure_seq = (_market_data.divr_array, _guppi_array, _cmcr_array, _ipr_array)
 
     _wt_array = (
-        _market_data.frmshr_array / np.einsum("ij->i", _market_data.frmshr_array)
+        _market_data.frmshr_array
+        / np.einsum("ij->i", _market_data.frmshr_array)[:, None]
         if _guppi_wgtng_policy
         in (
             GUPPIWghtngSelector.CPA,
@@ -324,7 +331,7 @@ def gen_guppi_arrays(
             GUPPIWghtngSelector.OSA,
             GUPPIWghtngSelector.OSD,
         )
-        else dgl.DEFAULT_EMPTY_ARRAY
+        else dgl.EMPTY_ARRAY_DEFAULT
     )
 
     match _guppi_wgtng_policy:
@@ -375,7 +382,7 @@ def gen_guppi_arrays(
     if _divr_wgtng_policy == GUPPIWghtngSelector.MAX:
         _divr_test_vector = _market_data.divr_array.max(axis=1, keepdims=True)
 
-    if _clrenf_sel == clstl.CLRENFSelector.ENFT:
+    if _inv_sel == isl.PolicySelector.ENFT:
         _upp_tests_data = UPPTests(
             _guppi_test_vector >= _g_bar,
             (_guppi_test_vector >= _g_bar) | (_divr_test_vector >= _divr_bar),
@@ -407,29 +414,21 @@ def save_namedtuple_to_hdf5(
     _excl_attrs: Sequence[str] = (),
     /,
     *,
-    save_data_to_file: Literal[False] | tuple[Literal[True], ptb.File, str] = False,
+    save_data_to_file: SaveDataSpec = False,
 ) -> None:
-    match save_data_to_file:
-        case False:
-            _save_data_to_file_flag = False
-        case True, _h5_datafile, _h5_hier:
-            # Save market data arrays
-            for _array_name in _dclass._fields:
-                if _excl_attrs and _array_name in _excl_attrs:
-                    pass
-                save_to_hdf(
-                    _dclass,
-                    _array_name,
-                    _h5_datafile,
-                    _h5_hier,
-                    saved_array_name_suffix=_saved_array_name_suffix,
-                )
-        case _:
-            print(
-                'Object, "save_data_to_file" must be one of',
-                "(False, (True, <PyTables file handle>, <HDF5 hierarchy>),)",
+    if save_data_to_file:
+        _, _h5_datafile, _h5_hier = save_data_to_file
+        # Save market data arrays
+        for _array_name in _dclass._fields:
+            if _excl_attrs and _array_name in _excl_attrs:
+                pass
+            save_to_hdf(
+                _dclass,
+                _array_name,
+                _h5_datafile,
+                _h5_hier,
+                saved_array_name_suffix=_saved_array_name_suffix,
             )
-            raise ValueError
 
 
 def save_to_hdf(

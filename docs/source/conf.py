@@ -1,12 +1,12 @@
 """
 
-    The mergeron project documentation follows numpydoc style, with
-    the exception that the return type is given in the function
-    signature and not included under the heading, "Returns". This
-    follows from the fact that mergeron is a typed package, so we avoid
-    redundant type annotations except when defining class attributes,
-    type annotations of which aren't included in documentation by Sphinx
-    and extensions.
+The mergeron project documentation follows numpydoc style, with
+the exception that the return type is given in the function
+signature and not included under the heading, "Returns". This
+follows from the fact that mergeron is a typed package, so we avoid
+redundant type annotations except when defining class attributes,
+type annotations of which aren't included in documentation by Sphinx
+and extensions.
 
 """
 
@@ -37,7 +37,7 @@ release = "{major}.{minor}.{patch}".format(**version_dict)
 
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
+    "autoapi.extension",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
@@ -45,8 +45,17 @@ extensions = [
     "sphinx_autodoc_typehints",
 ]
 
-autoclass_content = "both"
-autodoc_member_order = "bysource"
+autodoc_typehints = "description"
+
+autoapi_add_toctree_entry = False
+autoapi_member_order = "source"
+autoapi_options = [
+    "members",
+    "undoc-members",
+    "show-inheritance",
+    "show-module-summary",
+    "imported-members",
+]
 
 napoleon_include_init_with_doc = False
 napoleon_attr_annotations = True
@@ -58,6 +67,7 @@ typehints_document_rtype = True
 typehints_use_rtype = False
 
 templates_path = ["_templates"]
+autoapi_template_dir = "_autoapi_templates"
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -76,3 +86,4 @@ html_short_title = f"{project} {version}"
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 sys.path.insert(0, f'{Path.resolve(Path("../../src"))}')
+autoapi_dirs = ["../../src/"]

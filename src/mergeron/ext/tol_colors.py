@@ -696,9 +696,9 @@ def tol_cset(  # noqa: PLR0911
 
     Define a namedtuple instance with the colors.
     Examples for: cset = tol_cset(<scheme>)
-      - cset.red and cset[1] give the same color (in default 'bright' colorset)
-      - cset._fields gives a tuple with all color names
-      - list(cset) gives a list with all colors
+    - cset.red and cset[1] give the same color (in default 'bright' colorset)
+    - cset._fields gives a tuple with all color names
+    - list(cset) gives a list with all colors
     """
 
     namelist = (

@@ -5,35 +5,35 @@ with a canvas on which to draw boundaries for Guidelines standards.
 """
 
 import decimal
+from collections.abc import Mapping
 from dataclasses import dataclass
 from importlib import metadata
-from pathlib import Path
 from types import MappingProxyType
-from typing import Any, Final, Literal
+from typing import Any, Final, Literal, TypeAlias
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.backends.backend_pgf import FigureCanvasPgf
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = metadata.version(_PKG_NAME)
 
 mp.prec = 80
 mp.trap_complex = True
 
-recapture_spec_values = ("inside-out", "proportional")
-
+HMGPubYear: TypeAlias = Literal[1992, 2010, 2023]
 # In the 2023 Guidlines, the agencies do not specify a safeharbor
 #   Practically speaking, given resource constraints and loss aversion,
 #   it is likely that staff only investigates mergers that meet the presumption
 #   as evidenced by the data for 2003--2011
-guidelines_bounds_dict = MappingProxyType({
-    1992: (0.18, 0.005, 0.01),
-    2010: (0.25, 0.01, 0.02),
-    2023: (0.18, 0.01, 0.01),
-})  #: maps _pub_year to (post-merger HHI threshold, delta HHI bound)
+GUIDELINES_BOUNDS_DICT: Mapping[HMGPubYear, tuple[float, float, float]] = (
+    MappingProxyType({
+        1992: (0.18, 0.005, 0.01),
+        2010: (0.25, 0.01, 0.02),
+        2023: (0.18, 0.01, 0.01),
+    })
+)  #: maps _pub_year to (post-merger HHI threshold, delta HHI bound)
 
 
 @dataclass
@@ -44,13 +44,13 @@ class GuidelinesStandards:
 
     Attributes
     ----------
-    pub_year: Literal[1992, 2010, 2023]
+    pub_year: HMGPubYear
         Year of publication of the U.S. Horizontal Merger Guidelines (HMG);
         1992, 2010, or 2023
     safeharbor: tuple
         ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
         diversion ratio limit at ΔHHI safeharbor
-    strict_presumption: tuple
+    inferred_presumption: tuple
         ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
         diversion ratio limit at enforcement margin for Guidelines
         presumption of harm, interpreted strictly
@@ -61,28 +61,15 @@ class GuidelinesStandards:
         on merger enforcement
     """
 
-    def __init__(self, _pub_year: Literal[1992, 2010, 2023] = 1992, /):
-        """
-
-        Parameters
-        ----------
-        _pub_year
-            Guidelines publication year, 1992 or 2010
-
-        Raises
-        ------
-        ValueError
-            If pub_year is invalid
-
-        """
+    def __init__(self, _pub_year: HMGPubYear = 1992, /):
         if _pub_year not in (1992, 2010, 2023):
             raise ValueError("Argument must be 1992, 2010 or 2023")
         self.pub_year: Literal[1992, 2010, 2023] = _pub_year
 
-        _hhi, _dh_s, _dh_p = guidelines_bounds_dict[_pub_year]
+        _hhi_p, _dh_s, _dh_p = GUIDELINES_BOUNDS_DICT[_pub_year]
         self.safeharbor: Final = (
             _dh_s,
-            _fc := np.ceil(1 / _hhi),
+            _fc := np.ceil(1 / _hhi_p),
             _r := round_cust(_fc / (_fc + 1)),
             _g_s := gbd_from_dsf(_dh_s, m_star=1.0, r_bar=_r),
             _dr := round_cust(1 / (_fc + 1)),
@@ -91,26 +78,34 @@ class GuidelinesStandards:
         )
         self.inferred_presumption: Final = (
             (
-                _dh := 2 * (_s := 1 / (_fc + 1)) * _s,
+                _dh_i := 2 * (_s := 1 / (_fc + 1)) * _s,
                 _fc,
                 _r,
-                _g_p := gbd_from_dsf(_dh, m_star=1.0, r_bar=_r),
+                _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r),
                 _dr,
                 _cmcr,
-                _ipr := _g_p,
+                _ipr := _g_i,
             )
             if _pub_year in (1992, 2023)
             else (
-                _dh := 2 * (_s := 0.5 / _fc) * _s,
+                _dh_i := 2 * (_s := 0.5 / _fc) * _s,
                 _fc,
                 _r,  # _rs := round_cust((_fc - 1 / 2) / (_fc + 1 / 2)),
-                _g_p := gbd_from_dsf(_dh, m_star=1.0, r_bar=_r),
+                _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r),
                 round_cust((1 / 2) / (_fc - 1 / 2)),
                 _cmcr,
-                _ipr := _g_p,
+                _ipr := _g_i,
             )
         )
-        self.presumption: Final = (_dh_p, _fc, _r, _g_p, _dr, _cmcr, _ipr)
+        self.presumption: Final = (
+            _dh_p,
+            _fc,
+            _r,
+            _g_p := gbd_from_dsf(_dh_p, m_star=1.0, r_bar=_r),
+            _dr,
+            _cmcr,
+            _ipr := _g_p,
+        )
 
 
 def round_cust(
@@ -163,11 +158,11 @@ def round_cust(
 
 
 def lerp(
-    _x1: int | float | mpf | NDArray[np.float_ | np.int_] = 3,
-    _x2: int | float | mpf | NDArray[np.float_ | np.int_] = 1,
+    _x1: int | float | mpf | NDArray[np.float64 | np.int64] = 3,
+    _x2: int | float | mpf | NDArray[np.float64 | np.int64] = 1,
     _r: float | mpf = 0.25,
     /,
-) -> float | mpf | NDArray[np.float_]:
+) -> float | mpf | NDArray[np.float64]:
     """
     From the C++ standard function of the same name.
 
@@ -272,15 +267,20 @@ def shr_from_gbd(
     return round_cust((_d0 := critical_shrratio(_gbd, m_star, r_bar)) / (1 + _d0))
 
 
-def boundary_plot(*, share_axes_flag: bool = True) -> tuple[Any, ...]:
+def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
     """Setup basic figure and axes for plots of safe harbor boundaries.
 
     See, https://matplotlib.org/stable/tutorials/text/pgf.html
     """
 
+    import matplotlib as mpl
+
+    mpl.use("pgf")
+    import matplotlib.pyplot as plt
     # from matplotlib.backends.backend_pgf import FigureCanvasPgf
-    mpl.backend_bases.register_backend("pdf", FigureCanvasPgf)
-    # mpl.use("pgf")
+
+    # from matplotlib.backends.backend_pgf import FigureCanvasPgf
+    # mpl.backend_bases.register_backend("pdf", FigureCanvasPgf)
     # import matplotlib.pyplot as plt
 
     plt.rcParams.update({
@@ -326,7 +326,7 @@ def boundary_plot(*, share_axes_flag: bool = True) -> tuple[Any, ...]:
     _ax_out = _fig.add_subplot()
 
     def _set_axis_def(
-        _ax1: mpl.axes._axes.Axes, /, share_axes_flag: bool = False
+        _ax1: mpl.axes._axes.Axes, /, mktshares_plot_flag: bool = False
     ) -> mpl.axes.Axes:
         # Set the width of axis gridlines, and tick marks:
         # both axes, both major and minor ticks
@@ -366,7 +366,7 @@ def boundary_plot(*, share_axes_flag: bool = True) -> tuple[Any, ...]:
         _ax1.set_ylabel("Firm 2 Market Share, $s_2$", fontsize=10)
         _ax1.yaxis.set_label_coords(-0.1, 0.75)
 
-        if share_axes_flag:
+        if mktshares_plot_flag:
             # Plot the ray of symmetry
             _ax1.plot(
                 [0, 1], [0, 1], linewidth=0.5, linestyle=":", color="grey", zorder=1
@@ -420,7 +420,7 @@ def boundary_plot(*, share_axes_flag: bool = True) -> tuple[Any, ...]:
 
         return _ax1
 
-    _ax_out = _set_axis_def(_ax_out, share_axes_flag=share_axes_flag)
+    _ax_out = _set_axis_def(_ax_out, mktshares_plot_flag=mktshares_plot_flag)
 
     return plt, _fig, _ax_out, _set_axis_def
 
@@ -499,7 +499,7 @@ def dh_area_quad(_dh_val: float = 0.01, /, *, dh_dps: int = 9) -> float:
 
 def delta_hhi_boundary(
     _dh_val: float = 0.01, /, *, dh_dps: int = 5
-) -> tuple[NDArray[np.float_], float]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Generate the list of share combination on the ΔHHI boundary.
 
@@ -536,14 +536,17 @@ def delta_hhi_boundary(
 
     _s_1_pts, _s_2_pts = np.split(_dh_bdry_pts, 2, axis=1)
     return (
-        np.column_stack((np.array(_s_1_pts, np.float_), np.array(_s_2_pts, np.float_))),
+        np.column_stack((
+            np.array(_s_1_pts, np.float64),
+            np.array(_s_2_pts, np.float64),
+        )),
         dh_area(_dh_val, dh_dps=dh_dps),
     )
 
 
 def combined_share_boundary(
     _s_incpt: float = 0.0625, /, *, bdry_dps: int = 10
-) -> tuple[NDArray[np.float_], float]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Share combinations on the merging-firms' combined share boundary.
 
@@ -569,8 +572,8 @@ def combined_share_boundary(
     _s1_pts = (0, _s_mid, _s_incpt)
     return (
         np.column_stack((
-            np.array(_s1_pts, np.float_),
-            np.array(_s1_pts[::-1], np.float_),
+            np.array(_s1_pts, np.float64),
+            np.array(_s1_pts[::-1], np.float64),
         )),
         round(float(_s_incpt * _s_mid), bdry_dps),
     )
@@ -578,7 +581,7 @@ def combined_share_boundary(
 
 def hhi_pre_contrib_boundary(
     _hhi_contrib: float = 0.03125, /, *, bdry_dps: int = 5
-) -> tuple[NDArray[np.float_], float]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Share combinations on the premerger HHI contribution boundary.
 
@@ -599,8 +602,8 @@ def hhi_pre_contrib_boundary(
 
     _bdry_step_sz = mp.power(10, -bdry_dps)
     # Range-limit is 0 less a step, which is -1 * step-size
-    _s_1 = np.array(mp.arange(_s_mid, -_bdry_step_sz, -_bdry_step_sz), np.float_)
-    _s_2 = np.sqrt(_hhi_contrib - _s_1**2).astype(np.float_)
+    _s_1 = np.array(mp.arange(_s_mid, -_bdry_step_sz, -_bdry_step_sz), np.float64)
+    _s_2 = np.sqrt(_hhi_contrib - _s_1**2).astype(np.float64)
     _bdry_pts_mid = np.column_stack((_s_1, _s_2))
     return (
         np.row_stack((np.flip(_bdry_pts_mid, 0), np.flip(_bdry_pts_mid[1:], 1))),
@@ -610,7 +613,7 @@ def hhi_pre_contrib_boundary(
 
 def shrratio_mgnsym_boundary_max(
     _delta_star: float = 0.075, _r_val: float = 0.80, /, *, gbd_dps: int = 10
-) -> tuple[NDArray[np.float_], float]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Share combinations on the minimum GUPPI boundary with symmetric
     merging-firm margins.
@@ -647,8 +650,8 @@ def shrratio_mgnsym_boundary_max(
 
     return (
         np.column_stack((
-            np.array(_s1_pts, np.float_),
-            np.array(_s1_pts[::-1], np.float_),
+            np.array(_s1_pts, np.float64),
+            np.array(_s1_pts[::-1], np.float64),
         )),
         round(float(_s_incpt * _s_mid), gbd_dps),  # simplified calculation
     )
@@ -661,7 +664,7 @@ def shrratio_mgnsym_boundary_min(
     *,
     recapture_spec: str = "inside-out",
     gbd_dps: int = 10,
-) -> tuple[NDArray[np.float_], float]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Share combinations on the minimum GUPPI boundary, with symmetric
     merging-firm margins.
@@ -717,12 +720,12 @@ def shrratio_mgnsym_boundary_min(
                 _smax_nr / _guppi_bdry_env_dr,
                 _s_incpt,
             ),
-            np.float_,
+            np.float64,
         )
 
         _gbd_area = (_smin_nr + (_smax_nr - _smin_nr) * _s_mid) / _guppi_bdry_env_dr
     else:
-        _s1_pts, _gbd_area = np.array((0, _s_mid, _s_incpt), np.float_), _s_mid
+        _s1_pts, _gbd_area = np.array((0, _s_mid, _s_incpt), np.float64), _s_mid
 
     return np.column_stack((_s1_pts, _s1_pts[::-1])), round(float(_gbd_area), gbd_dps)
 
@@ -736,7 +739,7 @@ def shrratio_mgnsym_boundary_wtd_avg(
     wgtng_policy: Literal["own-share", "cross-product-share"] = "own-share",
     recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
     gbd_dps: int = 5,
-) -> tuple[NDArray[np.float_], float]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Share combinations for the share-weighted average GUPPI boundary with symmetric
     merging-firm margins.
@@ -911,7 +914,7 @@ def shrratio_mgnsym_boundary_wtd_avg(
             mpf("0.0"),
             _delta_star if wgtng_policy == "cross-product-share" else mpf("1.0"),
         ),
-    )).astype(np.float_)
+    )).astype(np.float64)
     # Points defining boundary to point-of-symmetry
     return (
         np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
@@ -926,7 +929,7 @@ def shrratio_mgnsym_boundary_xact_avg(
     *,
     recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
     gbd_dps: int = 5,
-) -> tuple[NDArray[np.float_], float]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Share combinations for the simple average GUPPI boundary with symmetric
     merging-firm margins.
@@ -996,7 +999,7 @@ def shrratio_mgnsym_boundary_xact_avg(
     _gbd_step_sz = mp.power(10, -gbd_dps)
 
     _gbdry_points_start = np.array([(_s_mid, _s_mid)])
-    _s_1 = np.array(mp.arange(_s_mid - _gbd_step_sz, 0, -_gbd_step_sz), np.float_)
+    _s_1 = np.array(mp.arange(_s_mid - _gbd_step_sz, 0, -_gbd_step_sz), np.float64)
     if recapture_spec == "inside-out":
         _s_incpt = mp.fdiv(
             mp.fsub(
@@ -1030,10 +1033,10 @@ def shrratio_mgnsym_boundary_xact_avg(
         _nr_t2_s1 = _nr_sqrt_s1sq + _nr_sqrt_s1 + _nr_sqrt_nos1
 
         if not np.isclose(
-            np.einsum("i->", _nr_t2_mdr.astype(np.float_)),
-            np.einsum("i->", _nr_t2_s1.astype(np.float_)),
+            np.einsum("i->", _nr_t2_mdr.astype(np.float64)),  # from mpf to float64
+            np.einsum("i->", _nr_t2_s1.astype(np.float64)),
             rtol=0,
-            atol=2 * gbd_dps,
+            atol=0.5 * gbd_dps,
         ):
             raise RuntimeError(
                 "Calculation of sq. root term in exact average GUPPI"
@@ -1058,7 +1061,7 @@ def shrratio_mgnsym_boundary_xact_avg(
         )
 
     _gbdry_points_inner = np.column_stack((_s_1, _s_2))
-    _gbdry_points_end = np.array([(mpf("0.0"), _s_incpt)], np.float_)
+    _gbdry_points_end = np.array([(mpf("0.0"), _s_incpt)], np.float64)
 
     _gbdry_points = np.row_stack((
         _gbdry_points_end,
@@ -1066,12 +1069,12 @@ def shrratio_mgnsym_boundary_xact_avg(
         _gbdry_points_start,
         np.flip(_gbdry_points_inner, 1),
         np.flip(_gbdry_points_end, 1),
-    )).astype(np.float_)
-    _s_2 = np.concatenate((np.array([_s_mid], np.float_), _s_2))
+    )).astype(np.float64)
+    _s_2 = np.concatenate((np.array([_s_mid], np.float64), _s_2))
 
     _gbdry_ends = [0, -1]
-    _gbdry_odds = np.array(range(1, len(_s_2), 2), np.int_)
-    _gbdry_evns = np.array(range(2, len(_s_2), 2), np.int_)
+    _gbdry_odds = np.array(range(1, len(_s_2), 2), np.int64)
+    _gbdry_evns = np.array(range(2, len(_s_2), 2), np.int64)
 
     # Double the are under the curve, and subtract the double counted bit.
     _gbdry_area_simpson = 2 * _gbd_step_sz * (
@@ -1095,7 +1098,7 @@ def shrratio_mgnsym_boundary_avg(
     avg_method: Literal["arithmetic", "geometric", "distance"] = "arithmetic",
     recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
     gbd_dps: int = 5,
-) -> tuple[NDArray[np.float_], float]:
+) -> tuple[NDArray[np.float64], float]:
     """
     Share combinations along the average GUPPI boundary, with
     symmetric merging-firm margins.
@@ -1190,7 +1193,7 @@ def shrratio_mgnsym_boundary_avg(
         + mp.fmul(1 / 3, _s_mid + _s_incpt)
     ) - mp.power(_s_mid, 2)
 
-    _gbdry_points = np.array(_gbdry_points, np.float_)
+    _gbdry_points = np.array(_gbdry_points, np.float64)
     return (
         np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbd_prtlarea), gbd_dps),

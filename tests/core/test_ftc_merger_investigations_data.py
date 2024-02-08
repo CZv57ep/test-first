@@ -1,16 +1,10 @@
 from collections.abc import Mapping
 from typing import Any
 
+import mergeron.core.ftc_merger_investigations_data as fid
 import numpy as np
 import pytest
-from mergeron.core.ftc_merger_investigations_data import (
-    construct_invdata,
-    invdata_dump_path,
-)
 from numpy.testing import assert_array_equal
-
-if invdata_dump_path.is_file():
-    invdata_dump_path.unlink()
 
 test_dict = {
     "1996-2003": {
@@ -199,18 +193,14 @@ def unnest_dict_to_list(_dict: Mapping[str, Any]) -> list[Any]:
 @pytest.mark.parametrize(
     "_data_period, _table_type, _table_no, _test_val", unnest_dict_to_list(test_dict)
 )
-def test_invdata_array_dict(
+def test_invdata(
     _data_period: str, _table_type: str, _table_no: str, _test_val: tuple[int, int]
 ) -> None:
-    _array_dict = construct_invdata(
-        invdata_dump_path,
-        flag_backward_compatibility=True,
-        flag_pharma_for_exclusion=True,
-    )
+    _invdata = fid.construct_data(fid.INVDATA_ARCHIVE_PATH)
 
-    _inv_data_tots = np.einsum(
-        "ij->j", _array_dict[_data_period][_table_type][_table_no][-1][:, -3:]
+    _invdata_tots = np.einsum(
+        "ij->j", _invdata[_data_period][_table_type][_table_no][-1][:, -3:]
     )
-    _inv_data_test = (*_test_val, np.sum(_test_val))
+    _invdata_test = (*_test_val, np.sum(_test_val))
 
-    assert_array_equal(_inv_data_tots, _inv_data_test)
+    assert_array_equal(_invdata_tots, _invdata_test)

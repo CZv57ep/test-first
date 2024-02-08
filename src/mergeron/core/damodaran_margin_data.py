@@ -12,18 +12,20 @@ Important caveats:
 Prof. Damodaran clarifies that the data construction may not be
 consistent from iteration to iteration. He also notes that,
 "the best use for my data is in real time corporate financial analysis
-and valuation." In other words, the margin data compiled by Dr. Damodaran
-may not precisely and consistently identify the distribution of margins
-across firms in long-run equilibrium. Here, Prof. Damodaran's compiled
-data are used to proxy the distribution of margins across firms that
+and valuation." Here, gross margin data compiled by Prof. Damodaran are
+used to model the distribution of price-cost margin across firms that
 antitrust enforcement agencies are likely to review in
-merger enforcement investigations.
+merger enforcement investigations over a span of time. The
+implicit assumption is that refinements in data construction from
+iteration to iteration do not result in inconsistent estimates of
+the empirical distribution of margins.
 
-A further caveat applies here, when the researcher generates data on
-a single firm's margins, with margins for all other firms in a given
-industry/market being inferred based on FOCs for profit maximization
-by firms facing MNL demand. In that exercise, the distribution of
-inferred margins is then further constrained by the distribution of
+Second, other procedures included in this package allow the researcher to
+generate margins for a single firm and impute margins of other firms in
+a given industry/market based on FOCs for profit maximization by
+firms facing MNL demand. In that exercise, the distribution of
+inferred margins does not follow the empirical distribution estimated
+from the source data, but is further constrained by the distribution of
 market shares across firms.
 
 """
@@ -36,29 +38,24 @@ from types import MappingProxyType
 import msgpack  # type:ignore
 import numpy as np
 import requests
-from matplotlib.ticker import StrMethodFormatter
 from numpy.random import PCG64DXSM, Generator, SeedSequence
 from numpy.typing import NDArray
-from requests_toolbelt.downloadutils import stream
-from scipy import stats
-from xlrd import open_workbook
+from requests_toolbelt.downloadutils import stream  # type: ignore
+from scipy import stats  # type: ignore
+from xlrd import open_workbook  # type: ignore
 
-from mergeron.core.guidelines_standards import boundary_plot
+from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+__version__ = metadata.version(_PKG_NAME)
 
-prog_path = Path(__file__)
-modl_path = prog_path.parents[1]
 
-MGNDATA_DUMP_PATH = Path.home() / modl_path.stem / "damodaran_margin_data_dict.msgpack"
-
-CERT_BUNDLE_PATH = prog_path.parent.joinpath("pages-stern-nyu-edu-cas-direct.pem")
+MGNDATA_ARCHIVE_PATH = DATA_DIR / "damodaran_margin_data_dict.msgpack"
 
 
 def scrape_data_table(
     _table_name: str = "margin",
     *,
-    data_dump_path: Path = MGNDATA_DUMP_PATH,
+    data_archive_path: Path | None = None,
     data_download_flag: bool = False,
 ) -> MappingProxyType[str, Mapping[str, float | int]]:
     if _table_name != "margin":  # Not validated for other tables
@@ -66,19 +63,32 @@ def scrape_data_table(
             "This code is designed for parsing Prof. Damodaran's margin tables."
         )
 
+    _data_archive_path = data_archive_path or MGNDATA_ARCHIVE_PATH
+
     _mgn_urlstr = f"https://pages.stern.nyu.edu/~adamodar/pc/datasets/{_table_name}.xls"
-    _mgn_path = data_dump_path.parent.joinpath(f"damodaran_{_table_name}_data.xls")
-    if _mgn_path.is_file() and not data_download_flag:
-        return MappingProxyType(msgpack.unpackb(data_dump_path.read_bytes()))
+    _mgn_path = _data_archive_path.parent.joinpath(f"damodaran_{_table_name}_data.xls")
+    if _data_archive_path.is_file() and not data_download_flag:
+        return MappingProxyType(msgpack.unpackb(_data_archive_path.read_bytes()))
     elif _mgn_path.is_file():
         _mgn_path.unlink()
+        _data_archive_path.unlink()
 
     _REQ_TIMEOUT = (9.05, 27)
+    # NYU will eventually updates its server certificate, to one signed with
+    #   "InCommon RSA Server CA 2.pem", the step below will be obsolete. In
+    #   the interim, it is necessary to provide the certificate chain to the
+    #   root CA, so that the obsolete CA certificate is validated.
+    _INCOMMON_2014_CERT_CHAIN_PATH = (
+        Path(__file__).parent / "InCommon RSA Server CA cert chain.pem"
+    )
     try:
         _urlopen_handle = requests.get(_mgn_urlstr, timeout=_REQ_TIMEOUT, stream=True)
     except requests.exceptions.SSLError:
         _urlopen_handle = requests.get(
-            _mgn_urlstr, timeout=_REQ_TIMEOUT, verify=str(CERT_BUNDLE_PATH)
+            _mgn_urlstr,
+            timeout=_REQ_TIMEOUT,
+            stream=True,
+            verify=str(_INCOMMON_2014_CERT_CHAIN_PATH),
         )
 
     _mgn_filename = stream.stream_response_to_file(_urlopen_handle, path=_mgn_path)
@@ -102,14 +112,14 @@ def scrape_data_table(
         _xl_row[1] = int(_xl_row[1])
         _mgn_dict[_xl_row[0]] = dict(zip(_mgn_row_keys[1:], _xl_row[1:], strict=True))
 
-    _ = data_dump_path.write_bytes(msgpack.packb(_mgn_dict))
+    _ = _data_archive_path.write_bytes(msgpack.packb(_mgn_dict))
 
     return MappingProxyType(_mgn_dict)
 
 
 def mgn_data_builder(
-    _mgn_tbl_dict: Mapping[str, Mapping[str, float | int]] | None, /
-) -> tuple[NDArray[np.float_], NDArray[np.float_], NDArray[np.float_]]:
+    _mgn_tbl_dict: Mapping[str, Mapping[str, float | int]] | None = None, /
+) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
     if _mgn_tbl_dict is None:
         _mgn_tbl_dict = scrape_data_table()
 
@@ -158,15 +168,16 @@ def mgn_data_builder(
 
 
 def resample_mgn_data(
-    _sample_size: int | tuple[int, ...] = (10**6, 2),
+    _sample_size: int | tuple[int, int] = (10**6, 2),
     /,
     *,
     seed_sequence: SeedSequence | None = None,
-) -> tuple[stats.gaussian_kde, NDArray[np.float_]]:
+) -> NDArray[np.float64]:
     """
-    Given average margin and firm-count by industry from the margin data
-    compiled by Prof. Damodaran, generate the specified number of draws
-    from this empirical distribution.
+    Generate the specified number of draws from the empirical distribution
+    for Prof. Damodaran's margin data using the estimated Gaussian KDE.
+    Margins for firms in finance, investment, insurance, reinsurance, and REITs
+    are excluded from the sample used to estimate the Gaussian KDE.
 
     Parameters
     ----------
@@ -183,73 +194,30 @@ def resample_mgn_data(
 
     """
 
-    if seed_sequence is None:
-        seed_sequence = SeedSequence(pool_size=8)
-
-    _seed = Generator(PCG64DXSM(seed_sequence))
+    _seed_sequence = seed_sequence or SeedSequence(pool_size=8)
 
     _x, _w, _ = mgn_data_builder(scrape_data_table())
 
     _mgn_kde = stats.gaussian_kde(_x, weights=_w)
 
-    return _mgn_kde, np.array(
-        _mgn_kde.resample(_sample_size, _seed).flatten(), np.float_
-    )
+    def _generate_draws(
+        _mgn_kde: stats.gaussian_kde, _ssz: int, _seed_seq: SeedSequence
+    ) -> NDArray[np.float64]:
+        _seed = Generator(PCG64DXSM(_seed_sequence))
 
-
-if __name__ == "__main__":
-    mgn_data_obs, mgn_data_wts, mgn_data_stats = mgn_data_builder(
-        scrape_data_table(
-            "margin", data_dump_path=MGNDATA_DUMP_PATH, data_download_flag=False
+        # We enlarge the sample, then truncate to
+        # the range between [0.0, 1.0)
+        ssz_up = int(_ssz / (_mgn_kde.integrate_box_1d(0.0, 1.0) ** 2))
+        sample_1 = _mgn_kde.resample(ssz_up, seed=_seed)[0]
+        return np.array(
+            sample_1[(sample_1 >= 0.0) & (sample_1 <= 1)][:_ssz], np.float64
         )
-    )
-    print(repr(mgn_data_obs))
-    print(repr(mgn_data_stats))
 
-    plt, mgn_fig, mgn_ax, set_axis_def = boundary_plot(share_axes_flag=False)
-    mgn_fig.set_figheight(6.5)
-    mgn_fig.set_figwidth(9.0)
-
-    bin_count = 25
-    mgn_ax.hist(
-        x=mgn_data_obs,
-        weights=mgn_data_wts,
-        bins=bin_count,
-        alpha=0.4,
-        density=True,
-        label="Downlaoded data",
-        color="blue",
-    )
-    # Add KDE plot
-    #   https://stackoverflow.com/questions/33323432
-    mgn_kde, mgn_data_sample = resample_mgn_data(10**6)
-    mgn_xx = np.linspace(0, bin_count, 10**5)
-    mgn_ax.plot(mgn_xx, mgn_kde(mgn_xx), color="blue", rasterized=True)
-
-    mgn_ax.hist(
-        x=mgn_data_sample,
-        color="green",
-        alpha=0.4,
-        bins=25,
-        density=True,
-        label="Generated data",
-    )
-
-    mgn_ax.legend(
-        loc="best",
-        fancybox=False,
-        shadow=False,
-        frameon=True,
-        facecolor="white",
-        edgecolor="white",
-        framealpha=1,
-        fontsize="small",
-    )
-
-    mgn_ax.set_xlim(0.0, 1.0)
-    mgn_ax.xaxis.set_major_formatter(StrMethodFormatter("{x:>3.0%}"))
-    mgn_ax.set_xlabel("Price Cost Margin, $m$", fontsize=10)
-    mgn_ax.set_ylabel("Frequency", fontsize=10)
-
-    mgn_fig.tight_layout()
-    plt.savefig(MGNDATA_DUMP_PATH.parent.joinpath(f"{prog_path.stem}.pdf"))
+    if isinstance(_sample_size, int):
+        return _generate_draws(_mgn_kde, _sample_size, _seed_sequence)
+    else:
+        _ssz, _num_cols = _sample_size
+        _ret_array = np.empty(_sample_size, np.float64)
+        for _idx, _seed_seq in enumerate(_seed_sequence.spawn(_num_cols)):
+            _ret_array[:, _idx] = _generate_draws(_mgn_kde, _ssz, _seed_seq)
+        return _ret_array

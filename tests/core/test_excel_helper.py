@@ -2,6 +2,7 @@ import gc
 from pathlib import Path
 
 import mergeron.core.excel_helper as xlh
+import numpy as np
 import pytest
 from openpyxl import load_workbook
 from pytest import TempPathFactory
@@ -23,8 +24,8 @@ def test_excel(excel_file_path: Path) -> None:
     Test functions to create Excel instance and write to worksheet.
     """
 
-    _hdr_val = (("col1", "col2"),)
-    _data_val = ((10.0, 11.0),)
+    _hdr_val = ("col1", "col2")
+    _data_val = np.arange(16).reshape(8, 2)
 
     _xl_book = Workbook(excel_file_path)
     _xl_sheet = _xl_book.add_worksheet()
@@ -35,7 +36,7 @@ def test_excel(excel_file_path: Path) -> None:
             _xl_sheet,
             0,
             _col_idx,
-            _hdr_val[0][_col_idx],
+            _hdr_val[_col_idx],
             (xlh.CFmt.HDR_BORDER, xlh.CFmt.A_RIGHT),
         )
 
@@ -53,14 +54,16 @@ def test_excel(excel_file_path: Path) -> None:
     del _xl_book
 
     _xl_book = load_workbook(excel_file_path)
-    _xl_sheet_vals = _xl_book.active.values
+    _xl_sheet_vals = tuple(_xl_book.active.values)
     _xl_book.close()
 
-    _test_values = tuple(_g[0] for _g in (_hdr_val, _data_val))
     try:
-        assert tuple(_xl_sheet_vals) == _test_values
+        assert all((
+            _xl_sheet_vals[0] == _hdr_val,
+            np.array_equal(np.array(_xl_sheet_vals[1:]), _data_val),
+        ))
     except AssertionError as _aer:
-        print(_xl_sheet_vals, _test_values)
+        print(_xl_sheet_vals, _hdr_val, _data_val)
         raise _aer
 
     gc.collect()

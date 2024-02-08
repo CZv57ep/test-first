@@ -1,9 +1,6 @@
 """
+
 Draw boundaries for various standards from 1992 and 2010 Guidelines.
-
-Created on Thu Oct 19 16:36:31 2017
-
-@author: smk
 """
 
 from itertools import product as iterprod
@@ -414,7 +411,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
         format=StrMethodFormatter("{x:>3.0%}"),
         pad=0.0,
     )
-    _cm_plot.set_label(label="Price-Cost Margin", fontsize=8, fontweight=300)
+    _cm_plot.set_label(label="Price-Cost Margin", fontsize=8)
     _cm_plot.ax.tick_params(length=5, width=0.5, labelsize=6)
     _cm_plot.ax.set_ylim(0, 1.0)
     _cm_plot.outline.set_visible(False)

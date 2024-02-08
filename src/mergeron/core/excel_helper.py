@@ -1,12 +1,11 @@
 """
-    Defines helper functions for creating Excel workbooks using
-    the III-party package, `xlsxwriter`
+Defines helper functions for creating Excel workbooks using
+the third-party package, `xlsxwriter`.
 
 """
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
 from importlib import metadata
-from pathlib import Path
 from typing import Any, ClassVar
 
 import aenum  # type: ignore
@@ -14,10 +13,12 @@ import numpy as np
 import numpy.typing as npt
 import xlsxwriter  # type: ignore
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = metadata.version(_PKG_NAME)
 
 
-class CFmt(aenum.UniqueEnum):
+class CFmt(aenum.UniqueEnum):  # type: ignore
     """
     Add formats for xlsxwriter.
 
@@ -65,7 +66,8 @@ def matrix_to_sheet(
     """
     Write a 2-D array to a worksheet.
 
-    The given array is required be a 2-D np.array.
+    The given array is required be a two-dimensional array, whether
+    a nested list, nested tuple, or a 2-D numpy ndarray.
 
     Parameters
     ----------
@@ -95,10 +97,10 @@ def matrix_to_sheet(
         Tuple giving address of cell (at left) below range written
 
     """
-    _data_array: npt.NDArray[np.float_ | np.int_ | np.bool_] = np.array(_data_table)
+    _data_array: npt.NDArray[Any] = np.array(_data_table)
     del _data_table
 
-    if not (np.iterable(_data_array) and len(_data_array.shape) == 2):
+    if not len(_data_array.shape) == 2:
         raise ValueError(
             "Array to write must be a 2-D array, but"
             f"the given array has shape, {_data_array.shape}."
@@ -109,12 +111,10 @@ def matrix_to_sheet(
     _right_column_id: int = _col_id + _data_array.shape[1]
 
     if isinstance(cell_format, tuple):
-        if not (
-            (len(cell_format) == len(_data_array[0]))
-            and test_cell_format_spec_tuple(cell_format)
-        ):
-            raise ValueError("Format tuple poorly specified.")
-        _cell_format = cell_format
+        ensure_cell_format_spec_tuple(cell_format)
+        if not len(cell_format) == len(_data_array[0]):
+            raise ValueError("Format tuple does not match data in length.")
+        _cell_format: Sequence[CFmt] = cell_format
     elif isinstance(cell_format, CFmt):
         _cell_format = (cell_format,) * len(_data_array[0])
     else:
@@ -122,12 +122,12 @@ def matrix_to_sheet(
 
     for _cell_row in range(_row_id, _bottom_row_id):
         for _cell_col in range(_col_id, _right_column_id):
-            _cell_fmt = _cell_format[_cell_col - _col_id]
             _cell_fmt = (
-                (_cell_fmt, CFmt.BAR_FILL)
+                (_cell_format[_cell_col - _col_id], CFmt.BAR_FILL)
                 if green_bar_flag and (_cell_row - _row_id) % 2
-                else _cell_fmt
+                else _cell_format[_cell_col - _col_id]
             )
+
             scalar_to_sheet(
                 _xl_book,
                 _xl_sheet,
@@ -206,21 +206,20 @@ def xl_fmt(
         :code:`xlsxwriter` `Format`  object
 
     """
+    _cell_fmt_dict: dict[str, Any] = {}
     if isinstance(_cell_fmt, tuple):
-        if not test_cell_format_spec_tuple(_cell_fmt):
-            raise ValueError("Improperly specified format tuple.")
-        _cell_fmt_dict: dict[str, bool | float | int | str] = {}
+        ensure_cell_format_spec_tuple(_cell_fmt)
         for _cf in _cell_fmt:
             _cell_fmt_dict |= _cf.value
     elif isinstance(_cell_fmt, CFmt):
-        _cell_fmt_dict: Mapping[str, str] = _cell_fmt.value
+        _cell_fmt_dict = _cell_fmt.value
     else:
-        _cell_fmt_dic: Mapping[str, str] = CFmt.XL_DEFAULT.value
+        _cell_fmt_dict = CFmt.XL_DEFAULT.value
 
     return _xl_book.add_format(_cell_fmt_dict)
 
 
-def test_cell_format_spec_tuple(_cell_formats: Sequence[CFmt], /) -> bool:
+def ensure_cell_format_spec_tuple(_cell_formats: Sequence[CFmt], /) -> None:
     """
     Test that a given format specification is tuple of CFmt enums
 
@@ -234,11 +233,10 @@ def test_cell_format_spec_tuple(_cell_formats: Sequence[CFmt], /) -> bool:
         True if format specification passes, else False
 
     """
-    _test_tup: tuple[bool, ...] = ()
+
     for _cell_format in _cell_formats:
         if isinstance(_cell_format, tuple):
-            test_cell_format_spec_tuple(_cell_format)
-        else:
-            _test_tup += (isinstance(_cell_format, CFmt),)
+            ensure_cell_format_spec_tuple(_cell_format)
 
-    return all(_test_tup)
+        if not (isinstance(_cell_format, CFmt),):
+            raise ValueError("Improperly specified format tuple.")

@@ -12,7 +12,7 @@ from importlib import metadata
 from operator import itemgetter
 from pathlib import Path
 from types import MappingProxyType
-from typing import Any, NamedTuple
+from typing import Any, NamedTuple, TypeAlias
 
 import fitz  # type: ignore
 import msgpack  # type: ignore
@@ -24,26 +24,25 @@ from bs4 import BeautifulSoup
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
 
+from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
+
 m.patch()
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+__version__ = metadata.version(_PKG_NAME)
 
-pkg_path = Path(__file__).parent.parent
-data_dir = Path.home() / pkg_path.stem / "FTCData"
-if not data_dir.is_dir():
-    data_dir.mkdir(parents=True)
-invdata_dump_path = data_dir.parent / "ftc_invdata_array_dict.msgpack"
+FTCDATA_DIR = DATA_DIR / "FTCData"
+if not FTCDATA_DIR.is_dir():
+    FTCDATA_DIR.mkdir(parents=True)
 
-table_no_re = re.compile(r"Table \d+\.\d+")
-table_types = ("ByHHIandDelta", "ByFirmCount")
-ind_grp_key = "Industry Group"
-evid_grp_key = "Additional Evidence"
-data_array_key = "Data Detail"
-conc_table_all = "Table 3.1"
-cnt_table_all = "Table 4.1"
+INVDATA_ARCHIVE_PATH = DATA_DIR / "ftc_invdata.msgpack"
 
-ttl_key = 86825
-conchhi_dict = {
+TABLE_NO_RE = re.compile(r"Table \d+\.\d+")
+TABLE_TYPES = ("ByHHIandDelta", "ByFirmCount")
+CONC_TABLE_ALL = "Table 3.1"
+CNT_TABLE_ALL = "Table 4.1"
+
+TTL_KEY = 86825
+CONC_HHI_DICT = {
     "0 - 1,799": 0,
     "1,800 - 1,999": 1800,
     "2,000 - 2,399": 2000,
@@ -52,9 +51,9 @@ conchhi_dict = {
     "4,000 - 4,999": 4000,
     "5,000 - 6,999": 5000,
     "7,000 +": 7000,
-    "TOTAL": ttl_key,
+    "TOTAL": TTL_KEY,
 }
-concdelta_dict = {
+CONC_DELTA_DICT = {
     "0 - 100": 0,
     "100 - 200": 100,
     "200 - 300": 200,
@@ -63,9 +62,9 @@ concdelta_dict = {
     "800 - 1,200": 800,
     "1,200 - 2,500": 1200,
     "2,500 +": 2500,
-    "TOTAL": ttl_key,
+    "TOTAL": TTL_KEY,
 }
-frmcnt_dict = {
+CNT_FCOUNT_DICT = {
     "2 to 1": 2,
     "3 to 2": 3,
     "4 to 3": 4,
@@ -76,18 +75,21 @@ frmcnt_dict = {
     "9 to 8": 9,
     "10 to 9": 10,
     "10 +": 11,
-    "TOTAL": ttl_key,
+    "TOTAL": TTL_KEY,
 }
 
 
 class TableData(NamedTuple):
     ind_grp: str
     evid_cond: str
-    data_array: NDArray[np.int_]
+    data_array: NDArray[np.int64]
 
 
-def construct_invdata(
-    _invdata_dump_path: Path | None = None,
+INVData: TypeAlias = Mapping[str, dict[str, dict[str, TableData]]]
+
+
+def construct_data(
+    _archive_path: Path | None = None,
     *,
     flag_backward_compatibility: bool = True,
     flag_pharma_for_exclusion: bool = True,
@@ -109,7 +111,7 @@ def construct_invdata(
 
     Parameters
     ----------
-    _invdata_dump_path
+    _archive_path
         Path to file container for serialized constructed data
     flag_backward_compatibility
         Flag whether the reported data should be treated as backward-compatible
@@ -122,40 +124,38 @@ def construct_invdata(
         A dictionary of merger investigations data keyed to reporting periods
 
     """
-    _invdata_dump_path = _invdata_dump_path or invdata_dump_path
-    if _invdata_dump_path.is_file() and not rebuild_data:
-        _invdata_dict_loaded = msgpack.unpackb(
-            _invdata_dump_path.read_bytes(), use_list=False
-        )
+    _archive_path = _archive_path or INVDATA_ARCHIVE_PATH
+    if _archive_path.is_file() and not rebuild_data:
+        _archived_data = msgpack.unpackb(_archive_path.read_bytes(), use_list=False)
 
-        _invdata_dict: dict[str, dict[str, dict[str, TableData]]] = {}
-        for _period in _invdata_dict_loaded:
-            _invdata_dict[_period] = {}
-            for _table_type in _invdata_dict_loaded[_period]:
-                _invdata_dict[_period][_table_type] = {}
-                for _table_no in _invdata_dict_loaded[_period][_table_type]:
-                    _invdata_dict[_period][_table_type][_table_no] = TableData(
-                        *_invdata_dict_loaded[_period][_table_type][_table_no]
+        _invdata: dict[str, dict[str, dict[str, TableData]]] = {}
+        for _period in _archived_data:
+            _invdata[_period] = {}
+            for _table_type in _archived_data[_period]:
+                _invdata[_period][_table_type] = {}
+                for _table_no in _archived_data[_period][_table_type]:
+                    _invdata[_period][_table_type][_table_no] = TableData(
+                        *_archived_data[_period][_table_type][_table_no]
                     )
-        return MappingProxyType(_invdata_dict)
+        return MappingProxyType(_invdata)
 
-    _invdata_array_dict = dict(parse_invdata())  # Convert immutable to mutable
+    _invdata = dict(parse_invdata())  # Convert immutable to mutable
 
     # Add some data periods (
     #   only periods ending in 2011, others have few observations and
     #   some incompatibilities
     #   )
     for _data_period in "2004-2011", "2006-2011", "2008-2011":
-        _invdata_array_dict_bld = _construct_new_period_data(
-            _invdata_array_dict,
+        _invdata_bld = _construct_new_period_data(
+            _invdata,
             _data_period,
             flag_backward_compatibility=flag_backward_compatibility,
         )
-        _invdata_array_dict |= {_data_period: _invdata_array_dict_bld}
+        _invdata |= {_data_period: _invdata_bld}
 
     # Create data for industries with no evidence on entry
-    for _data_period in _invdata_array_dict:
-        _construct_no_entry_evidence_data(_invdata_array_dict, _data_period)
+    for _data_period in _invdata:
+        _construct_no_entry_evidence_data(_invdata, _data_period)
 
     # Create a list of exclusions to named industries in the base period,
     #   for construction of aggregate enforcement statistics where feasible
@@ -168,69 +168,63 @@ def construct_invdata(
     )
     for _data_period in "1996-2003", "1996-2011", "2004-2011":
         for _table_type, _table_no in zip(
-            table_types, (conc_table_all, cnt_table_all), strict=True
+            TABLE_TYPES, (CONC_TABLE_ALL, CNT_TABLE_ALL), strict=True
         ):
-            _dat_array_type_subdict = _invdata_array_dict[_data_period][_table_type]
+            _invdata_sub_tabletype = _invdata[_data_period][_table_type]
 
             _aggr_tables_list = [
                 _t
-                for _t in _invdata_array_dict["1996-2003"][_table_type]
-                if re.sub(
-                    r"\W", "", _invdata_array_dict["1996-2003"][_table_type][_t].ind_grp
-                )
+                for _t in _invdata["1996-2003"][_table_type]
+                if re.sub(r"\W", "", _invdata["1996-2003"][_table_type][_t].ind_grp)
                 not in _industry_exclusion_list
             ]
 
-            _dat_array_type_subdict |= {
+            _invdata_sub_tabletype |= {
                 _table_no.replace(".1", ".X"): _invdata_build_aggregate_table(
-                    _dat_array_type_subdict, _aggr_tables_list
+                    _invdata_sub_tabletype, _aggr_tables_list
                 )
             }
 
-    _ = invdata_dump_path.write_bytes(msgpack.packb(_invdata_array_dict))
+    _ = INVDATA_ARCHIVE_PATH.write_bytes(msgpack.packb(_invdata))
 
-    return MappingProxyType(_invdata_array_dict)
+    return MappingProxyType(_invdata)
 
 
-def _construct_no_entry_evidence_data(
-    _invdata_array_dict: Mapping[str, dict[str, dict[str, TableData]]],
-    _data_period: str,
-    /,
-) -> None:
+def _construct_no_entry_evidence_data(_invdata: INVData, _data_period: str, /) -> None:
     _invdata_ind_grp = "All Markets"
     _invdata_evid_cond = "No Entry Evidence"
 
-    _invdata_evid_cond_sub_conc = _invdata_array_dict[_data_period]["ByHHIandDelta"]
-    _invdata_evid_cond_sub_conc["Table 9.X"] = TableData(
+    _invdata_sub_evid_cond_conc = _invdata[_data_period]["ByHHIandDelta"]
+    _invdata_sub_evid_cond_conc["Table 9.X"] = TableData(
         _invdata_ind_grp,
         _invdata_evid_cond,
         np.column_stack((
-            _invdata_evid_cond_sub_conc["Table 3.1"].data_array[:, :2],
+            _invdata_sub_evid_cond_conc["Table 3.1"].data_array[:, :2],
             (
-                _invdata_evid_cond_sub_conc["Table 3.1"].data_array[:, 2:]
-                - _invdata_evid_cond_sub_conc["Table 9.1"].data_array[:, 2:]
-                - _invdata_evid_cond_sub_conc["Table 9.2"].data_array[:, 2:]
+                _invdata_sub_evid_cond_conc["Table 3.1"].data_array[:, 2:]
+                - _invdata_sub_evid_cond_conc["Table 9.1"].data_array[:, 2:]
+                - _invdata_sub_evid_cond_conc["Table 9.2"].data_array[:, 2:]
             ),
         )),
     )
 
-    _invdata_evid_cond_sub_fcount = _invdata_array_dict[_data_period]["ByFirmCount"]
-    _invdata_evid_cond_sub_fcount["Table 10.X"] = TableData(
+    _invdata_sub_evid_cond_fcount = _invdata[_data_period]["ByFirmCount"]
+    _invdata_sub_evid_cond_fcount["Table 10.X"] = TableData(
         _invdata_ind_grp,
         _invdata_evid_cond,
         np.column_stack((
-            _invdata_evid_cond_sub_fcount["Table 4.1"].data_array[:, :1],
+            _invdata_sub_evid_cond_fcount["Table 4.1"].data_array[:, :1],
             (
-                _invdata_evid_cond_sub_fcount["Table 4.1"].data_array[:, 1:]
-                - _invdata_evid_cond_sub_fcount["Table 10.1"].data_array[:, 1:]
-                - _invdata_evid_cond_sub_fcount["Table 10.2"].data_array[:, 1:]
+                _invdata_sub_evid_cond_fcount["Table 4.1"].data_array[:, 1:]
+                - _invdata_sub_evid_cond_fcount["Table 10.1"].data_array[:, 1:]
+                - _invdata_sub_evid_cond_fcount["Table 10.2"].data_array[:, 1:]
             ),
         )),
     )
 
 
 def _construct_new_period_data(
-    _invdata_array_dict: Mapping[str, dict[str, dict[str, TableData]]],
+    _invdata: INVData,
     _data_period: str,
     /,
     *,
@@ -240,31 +234,29 @@ def _construct_new_period_data(
     if _cuml_period != "1996-2011":
         raise ValueError('Expected cumulative period, "1996-2011"')
 
-    _invdata_array_dict_cuml = _invdata_array_dict[_cuml_period]
+    _invdata_cuml = _invdata[_cuml_period]
 
     _base_period = "1996-{}".format(int(_data_period.split("-")[0]) - 1)
-    _invdata_array_dict_base = _invdata_array_dict[_base_period]
+    _invdata_base = _invdata[_base_period]
 
-    if tuple(_invdata_array_dict_cuml.keys()) != table_types:
+    if tuple(_invdata_cuml.keys()) != TABLE_TYPES:
         raise ValueError("Source data does not include the expected groups of tables.")
 
-    _invdata_array_dict_bld = {}
-    for _table_type in table_types:
-        _invdata_typesubdict = {}
-        for _table_no in _invdata_array_dict_cuml[_table_type]:
-            _invdata_table_cuml = _invdata_array_dict_cuml[_table_type][_table_no]
-            _invdata_indugrp, _invdata_evid_cond, _invdata_array_cuml = (
-                _invdata_table_cuml.ind_grp,
-                _invdata_table_cuml.evid_cond,
-                _invdata_table_cuml.data_array,
+    _invdata_bld = {}
+    for _table_type in TABLE_TYPES:
+        _data_typesubdict = {}
+        for _table_no in _invdata_cuml[_table_type]:
+            _invdata_cuml_sub_table = _invdata_cuml[_table_type][_table_no]
+            _invdata_indugrp, _invdata_evid_cond, _invdata_cuml_array = (
+                _invdata_cuml_sub_table.ind_grp,
+                _invdata_cuml_sub_table.evid_cond,
+                _invdata_cuml_sub_table.data_array,
             )
 
-            _invdata_table_base = _invdata_array_dict_base[_table_type].get(
-                _table_no, None
-            )
+            _invdata_base_sub_table = _invdata_base[_table_type].get(_table_no, None)
 
-            (_invdata_indugrp_base, _invdata_evid_cond_base, _invdata_array_base) = (
-                _invdata_table_base or ("", "", None)
+            (_invdata_base_indugrp, _invdata_base_evid_cond, _invdata_base_array) = (
+                _invdata_base_sub_table or ("", "", None)
             )
 
             # Some tables can't be constructed due to inconsistencies in the data
@@ -272,7 +264,7 @@ def _construct_new_period_data(
             if (
                 (_data_period != "2004-2011" and _invdata_indugrp != "All Markets")
                 or (_invdata_indugrp in ('"Other" Markets', "Industries in Common"))
-                or (_invdata_indugrp_base in ('"Other" Markets', ""))
+                or (_invdata_base_indugrp in ('"Other" Markets', ""))
             ):
                 continue
 
@@ -288,31 +280,31 @@ def _construct_new_period_data(
                 # The number of "revisions" applied below, for enforcing consistency,
                 # is sufficiently small as to be unlikely to substantially impact
                 # results from analysis of the data.
-                _invdata_array_cuml_stack = []
-                _invdata_array_base_stack = []
+                _invdata_cuml_array_stack = []
+                _invdata_base_array_stack = []
 
-                for _data_period_detail in _invdata_array_dict:
+                for _data_period_detail in _invdata:
                     _pd_start, _pd_end = (
                         int(g) for g in _data_period_detail.split("-")
                     )
                     if _pd_start == 1996:
-                        _invdata_array_cuml_stack += [
-                            _invdata_array_dict[_data_period_detail][_table_type][
+                        _invdata_cuml_array_stack += [
+                            _invdata[_data_period_detail][_table_type][
                                 _table_no
                             ].data_array[:, -3:-1]
                         ]
                     if _pd_start == 1996 and _pd_end < int(_data_period.split("-")[0]):
-                        _invdata_array_base_stack += [
-                            _invdata_array_dict[_data_period_detail][_table_type][
+                        _invdata_base_array_stack += [
+                            _invdata[_data_period_detail][_table_type][
                                 _table_no
                             ].data_array[:, -3:-1]
                         ]
-                _invdata_array_cuml_enfcls, _invdata_array_base_enfcls = (
+                _invdata_cuml_array_enfcls, _invdata_base_array_enfcls = (
                     np.stack(_f).max(axis=0)
-                    for _f in (_invdata_array_cuml_stack, _invdata_array_base_stack)
+                    for _f in (_invdata_cuml_array_stack, _invdata_base_array_stack)
                 )
                 _invdata_array_bld_enfcls = (
-                    _invdata_array_cuml_enfcls - _invdata_array_base_enfcls
+                    _invdata_cuml_array_enfcls - _invdata_base_array_enfcls
                 )
             else:
                 # Consistency here means that the most recent data are considered
@@ -330,7 +322,7 @@ def _construct_new_period_data(
                 # for inclusion, as well as industry coding, undertaken to maintain
                 # transparency on the enforcement process.
                 _invdata_array_bld_enfcls = (
-                    _invdata_array_cuml[:, -3:-1] - _invdata_array_base[:, -3:-1]  # type: ignore
+                    _invdata_cuml_array[:, -3:-1] - _invdata_base_array[:, -3:-1]  # type: ignore
                 )
 
                 # To examine the number of corrected values per table,
@@ -351,23 +343,23 @@ def _construct_new_period_data(
                 )).max(axis=0)
 
             _invdata_array_bld = np.column_stack((
-                _invdata_array_cuml[:, :-3],
+                _invdata_cuml_array[:, :-3],
                 _invdata_array_bld_enfcls,
                 np.einsum("ij->i", _invdata_array_bld_enfcls),
             ))
 
-            _invdata_typesubdict[_table_no] = TableData(
+            _data_typesubdict[_table_no] = TableData(
                 _invdata_indugrp, _invdata_evid_cond, _invdata_array_bld
             )
-            del _invdata_indugrp, _invdata_evid_cond, _invdata_array_cuml
-            del _invdata_indugrp_base, _invdata_evid_cond_base, _invdata_array_base
+            del _invdata_indugrp, _invdata_evid_cond, _invdata_cuml_array
+            del _invdata_base_indugrp, _invdata_base_evid_cond, _invdata_base_array
             del _invdata_array_bld
-        _invdata_array_dict_bld[_table_type] = _invdata_typesubdict
-    return _invdata_array_dict_bld
+        _invdata_bld[_table_type] = _data_typesubdict
+    return _invdata_bld
 
 
 def _invdata_build_aggregate_table(
-    _invdata_array_dict_typesub: dict[str, TableData], _aggr_table_list: Sequence[str]
+    _data_typesub: dict[str, TableData], _aggr_table_list: Sequence[str]
 ) -> TableData:
     _hdr_table_no = _aggr_table_list[0]
 
@@ -375,12 +367,11 @@ def _invdata_build_aggregate_table(
         "Industries in Common",
         "Unrestricted on additional evidence",
         np.column_stack((
-            _invdata_array_dict_typesub[_hdr_table_no].data_array[:, :-3],
+            _data_typesub[_hdr_table_no].data_array[:, :-3],
             np.einsum(
                 "ijk->jk",
                 np.stack([
-                    (_invdata_array_dict_typesub[_t]).data_array[:, -3:]
-                    for _t in _aggr_table_list
+                    (_data_typesub[_t]).data_array[:, -3:] for _t in _aggr_table_list
                 ]),
             ),
         )),
@@ -410,12 +401,12 @@ def parse_invdata(
         by range of HHI and ∆HHI.
 
     """
-    _invdata_array_dict: dict[str, dict[str, dict[str, TableData]]] = {}
+    _invdata: dict[str, dict[str, dict[str, TableData]]] = {}
 
     for _invdata_docname in _invdata_docnames:
-        _invdata_pdf_path = data_dir.joinpath(_invdata_docname)
+        _invdata_pdf_path = FTCDATA_DIR.joinpath(_invdata_docname)
         if not _invdata_pdf_path.is_file():
-            _download_invdata(data_dir)
+            _download_invdata(FTCDATA_DIR)
 
         _invdata_fitz = fitz.open(_invdata_pdf_path)
         _invdata_meta = _invdata_fitz.metadata
@@ -430,7 +421,7 @@ def parse_invdata(
         _data_period = "".join(_data_period)
 
         # Initialize containers for parsed data
-        _invdata_array_dict[_data_period] = {k: {} for k in table_types}
+        _invdata[_data_period] = {k: {} for k in TABLE_TYPES}
 
         for _pdf_pg in _invdata_fitz.pages():
             _doc_pg_blocks = _pdf_pg.get_text("blocks", sort=False)
@@ -454,7 +445,7 @@ def parse_invdata(
             if len(_doc_pg_blocks) > 4:
                 _tnum: re.match = None
                 for _blk_idx, _pg_blk in enumerate(_doc_pg_blocks):
-                    if _tnum := table_no_re.fullmatch(_pg_blk[-3].strip()):
+                    if _tnum := TABLE_NO_RE.fullmatch(_pg_blk[-3].strip()):
                         _data_blocks = [
                             _b
                             for _b in _doc_pg_blocks
@@ -472,26 +463,23 @@ def parse_invdata(
             else:
                 continue
 
-            _parse_page_blocks(_invdata_array_dict, _data_period, _data_blocks)
+            _parse_page_blocks(_invdata, _data_period, _data_blocks)
 
         _invdata_fitz.close()
 
-    return MappingProxyType(_invdata_array_dict)
+    return MappingProxyType(_invdata)
 
 
 def _parse_page_blocks(
-    _invdata_array_dict: dict[str, dict[str, dict[str, TableData]]],
-    _data_period: str,
-    _doc_pg_blocks: Sequence[Sequence[Any]],
-    /,
+    _invdata: INVData, _data_period: str, _doc_pg_blocks: Sequence[Sequence[Any]], /
 ) -> None:
     if _data_period != "1996-2011":
-        _parse_table_blocks(_invdata_array_dict, _data_period, _doc_pg_blocks)
+        _parse_table_blocks(_invdata, _data_period, _doc_pg_blocks)
     else:
         _test_list = [
             (g, f[-3].strip())
             for g, f in enumerate(_doc_pg_blocks)
-            if table_no_re.fullmatch(f[-3].strip())
+            if TABLE_NO_RE.fullmatch(f[-3].strip())
         ]
         # In the 1996-2011 report, there are 2 tables per page
         if len(_test_list) == 1:
@@ -506,14 +494,11 @@ def _parse_page_blocks(
         for _table_i_blocks in _table_a_blocks, _table_b_blocks:
             if not _table_i_blocks:
                 continue
-            _parse_table_blocks(_invdata_array_dict, _data_period, _table_i_blocks)
+            _parse_table_blocks(_invdata, _data_period, _table_i_blocks)
 
 
 def _parse_table_blocks(
-    _invdata_array_dict: dict[str, dict[str, dict[str, TableData]]],
-    _data_period: str,
-    _table_blocks: Sequence[Sequence[str]],
-    /,
+    _invdata: INVData, _data_period: str, _table_blocks: Sequence[Sequence[str]], /
 ) -> None:
     _invdata_evid_cond = "Unrestricted on additional evidence"
     _table_num, _table_ser, _table_type = _identify_table_type(
@@ -566,41 +551,41 @@ def _parse_table_blocks(
 
     process_table_func = (
         _process_table_blks_conc_type
-        if _table_type == table_types[0]
+        if _table_type == TABLE_TYPES[0]
         else _process_table_blks_cnt_type
     )
 
     _table_array = process_table_func(_table_blocks)
-    if not isinstance(_table_array, np.ndarray) or _table_array.dtype != np.int_:
+    if not isinstance(_table_array, np.ndarray) or _table_array.dtype != np.int64:
         print(_table_num)
         print(_table_blocks)
         raise ValueError
 
     _table_data = TableData(_invdata_indugrp, _invdata_evid_cond, _table_array)
-    _invdata_array_dict[_data_period][_table_type] |= {_table_num: _table_data}
+    _invdata[_data_period][_table_type] |= {_table_num: _table_data}
 
 
-def _identify_table_type(_tnstr: str = conc_table_all, /) -> tuple[str, int, str]:
+def _identify_table_type(_tnstr: str = CONC_TABLE_ALL, /) -> tuple[str, int, str]:
     _tnum = _tnstr.split(" ")[1]
     _tsub = int(_tnum.split(".")[0])
-    return _tnstr, _tsub, table_types[(_tsub + 1) % 2]
+    return _tnstr, _tsub, TABLE_TYPES[(_tsub + 1) % 2]
 
 
 def _process_table_blks_conc_type(
     _table_blocks: Sequence[Sequence[str]], /
-) -> NDArray[np.int_]:
+) -> NDArray[np.int64]:
     _conc_row_pat = re.compile(r"((?:0|\d,\d{3}) (?:- \d+,\d{3}|\+)|TOTAL)")
 
-    _col_titles_array = tuple(concdelta_dict.values())
-    # _col_totals: NDArray[np.int_] | None = None
-    _invdata_array: NDArray[np.int_] = np.array(None)
+    _col_titles_array = tuple(CONC_DELTA_DICT.values())
+    # _col_totals: NDArray[np.int64] | None = None
+    _invdata_array: NDArray[np.int64] = np.array(None)
 
     for _tbl_blk in _table_blocks:
         if _conc_row_pat.match(_blk_str := _tbl_blk[-3]):
             _row_list: list[str] = _blk_str.strip().split("\n")
             _row_title: str = _row_list.pop(0)
-            _row_key: int = conchhi_dict[_row_title]
-            _row_total = np.array(_row_list.pop().replace(",", "").split("/"), np.int_)
+            _row_key: int = CONC_HHI_DICT[_row_title]
+            _row_total = np.array(_row_list.pop().replace(",", "").split("/"), np.int64)
             _row_array_list: list[list[int]] = []
             while _row_list:
                 _enfd_val, _clsd_val = _row_list.pop(0).split("/")
@@ -613,11 +598,11 @@ def _process_table_blks_conc_type(
                         int(_enfd_val) + int(_clsd_val),
                     ]
                 ]
-            _row_array = np.array(_row_array_list, np.int_)
+            _row_array = np.array(_row_array_list, np.int64)
             # Check row totals
             assert_array_equal(_row_total, np.einsum("ij->j", _row_array[:, 2:4]))
 
-            if _row_key == ttl_key:
+            if _row_key == TTL_KEY:
                 _col_totals = _row_array
             else:
                 _invdata_array = (
@@ -645,23 +630,23 @@ def _process_table_blks_conc_type(
 
 def _process_table_blks_cnt_type(
     _table_blocks: Sequence[Sequence[str]], /
-) -> NDArray[np.int_]:
+) -> NDArray[np.int64]:
     _cnt_row_pat = re.compile(r"(\d+ (?:to \d+|\+)|TOTAL)")
 
-    _invdata_array: NDArray[np.int_] = np.array(None)
+    _invdata_array: NDArray[np.int64] = np.array(None)
 
     for _tbl_blk in _table_blocks:
         if _cnt_row_pat.match(_blk_str := _tbl_blk[-3]):
             _row_list_s = _blk_str.strip().replace(",", "").split("\n")
             _row_list = np.array(
-                [frmcnt_dict[_row_list_s[0]], *_row_list_s[1:]], np.int_
+                [CNT_FCOUNT_DICT[_row_list_s[0]], *_row_list_s[1:]], np.int64
             )
             del _row_list_s
             if _row_list[3] != _row_list[1] + _row_list[2]:
                 raise ValueError(
                     "Total number of investigations does not equal #enforced plus #closed."
                 )
-            if ttl_key == _row_list[0]:
+            if _row_list[0] == TTL_KEY:
                 _col_totals = _row_list
             else:
                 _invdata_array = (
@@ -673,7 +658,7 @@ def _process_table_blks_cnt_type(
             continue
 
     if not np.array_equal(
-        np.array([int(f) for f in _col_totals[1:]], np.int_),
+        np.array([int(f) for f in _col_totals[1:]], np.int64),
         np.einsum("ij->j", _invdata_array[:, 1:]),
     ):
         raise ValueError("Column totals don't compute.")
@@ -710,46 +695,3 @@ def _download_invdata(_dl_path: Path) -> list[Any]:
                 )
 
     return _invdata_docnames
-
-
-if __name__ == "__main__":
-    invdata_array_dict = construct_invdata(
-        invdata_dump_path,
-        flag_backward_compatibility=True,
-        flag_pharma_for_exclusion=True,
-        rebuild_data=False,
-    )
-
-    for data_period in invdata_array_dict:
-        print(data_period, "-->")
-        for table_type in (isd1 := invdata_array_dict[data_period]):
-            leader_str = "\t"
-            print(leader_str, table_type, "-->")
-            leader_str += "\t"
-            for table_no in (isd11 := isd1[table_type]):
-                (invdata_indugrp, invdata_evid_cond, table_data_array) = isd11[table_no]
-                print(
-                    leader_str,
-                    table_no,
-                    " \u2014 ",
-                    invdata_indugrp,
-                    f", {invdata_evid_cond or 'N/A'}",
-                    ", ",
-                    sep="",
-                    end="",
-                )
-                print(
-                    "Odds ratio = {}/{}".format(
-                        *np.einsum("ij->j", table_data_array[:, -3:])
-                    )
-                )
-        print("\n")
-
-    inv_period, inv_type, inv_table = "2004-2011", "HHI and Delta", "Table 3.3"
-    #  inv_period, inv_type, inv_table = "2004-2011", "Firm Count", "Table 4.1"
-    print(f"Investigations data, {inv_period}, by {inv_type}, {inv_table}")
-    print(
-        "{}, {}\n{}".format(
-            *invdata_array_dict[inv_period][f"By{inv_type.replace(' ', '')}"][inv_table]
-        )
-    )

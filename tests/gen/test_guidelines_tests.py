@@ -2,15 +2,15 @@ import gc
 from datetime import datetime, timedelta
 
 import mergeron.core.guidelines_standards as gsf
-import mergeron.core.psuedorandom_numbers as rmp
+import mergeron.core.pseudorandom_numbers as rmp
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
-import mergeron.gen.investigations_stats as clstl
+import mergeron.gen.investigations_stats as isl
 import numpy as np
 import re2 as re  # type: ignore
 
 teststr_pat = re.compile(r"(?m)^ +")
-clrenf_rate_sim_byfirmcount_teststr = teststr_pat.sub(
+stats_sim_byfirmcount_teststr = teststr_pat.sub(
     "",
     R"""
     {2 to 1} & 23,581,830 & 132,308 &     0 & 1,321 \\
@@ -26,7 +26,7 @@ clrenf_rate_sim_byfirmcount_teststr = teststr_pat.sub(
     """,
 ).lstrip()
 
-clrenf_rate_sim_bydelta_teststr = teststr_pat.sub(
+stats_sim_bydelta_teststr = teststr_pat.sub(
     "",
     R"""
     {[2500, 5000]} & 27,899,813 & 210,013 &     0 & 5,948 \\
@@ -41,7 +41,7 @@ clrenf_rate_sim_bydelta_teststr = teststr_pat.sub(
     """,
 ).lstrip()
 
-clrenf_rate_sim_byconczone_teststr = teststr_pat.sub(
+stats_sim_byconczone_teststr = teststr_pat.sub(
     "",
     R"""
     \node[align = left, fill=VibrRed] {Red Zone (SLC Presumption)}; & 81,399,163 & 4,586,532 & 1,484,261 & 501,049 \\
@@ -56,7 +56,7 @@ clrenf_rate_sim_byconczone_teststr = teststr_pat.sub(
     """,
 ).lstrip()
 
-clrenf_rate_sim_bydelta_unrestricted_teststr = teststr_pat.sub(
+stats_sim_bydelta_unrestricted_teststr = teststr_pat.sub(
     "",  # Change 30.2 to 30.3 in 2d row
     R"""
     {[0, 100)} &    6.3\% &   46.6\% &   39.4\% \\
@@ -73,7 +73,11 @@ clrenf_rate_sim_bydelta_unrestricted_teststr = teststr_pat.sub(
 
 
 def test_clearance_rate_calcs() -> None:
-    _test_sel = (clstl.CLRENFSelector.CLRN, gtl.GUPPIWghtngSelector.MAX, None)
+    _test_sel: gtl.UPPTestSpec = (
+        isl.PolicySelector.CLRN,
+        gtl.GUPPIWghtngSelector.MAX,
+        None,
+    )
     _ind_sample_spec = dgl.MarketSampleSpec(
         10**8,
         0.80,
@@ -87,15 +91,15 @@ def test_clearance_rate_calcs() -> None:
 
     _start_time = datetime.now()
     (
-        _clrenf_rate_sim_byfirmcount_array,
-        _clrenf_rate_sim_bydelta_array,
-        _clrenf_rate_sim_byconczone_array,
-    ) = gtl.sim_clrenf_cnts_ll(
+        _stats_sim_byfirmcount_array,
+        _stats_sim_bydelta_array,
+        _stats_sim_byconczone_array,
+    ) = gtl.sim_inv_cnts_ll(
         gsf.GuidelinesStandards(2010).safeharbor[2:],
         _ind_sample_spec,
         {
             "seed_seq_list": rmp.gen_seed_seq_list_default(3),
-            "sim_clrenf_sel": _test_sel,
+            "sim_inv_sel": _test_sel,
             "nthreads": 16,
         },
     )
@@ -106,20 +110,20 @@ def test_clearance_rate_calcs() -> None:
         )
     )
 
-    _return_type_sel = clstl.StatsReturnSelector.CNT
+    _return_type_sel = isl.StatsReturnSelector.CNT
     print()
     print(
         "Simulated {} stats by number of significant competitors:".format(
             _test_sel[0].capitalize()
         )
     )
-    _stats_hdr_list, _stats_dat_list = clstl.latex_tbl_clrenf_stats_1dim(
-        _clrenf_rate_sim_byfirmcount_array[:, :-1], return_type_sel=_return_type_sel
+    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_inv_stats_1dim(
+        _stats_sim_byfirmcount_array[:, :-1], return_type_sel=_return_type_sel
     )
 
     _stats_byfirmcount_teststr_val = "".join([
         "{} & {} {}".format(
-            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), clstl.ltx_array_lineend
+            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), isl.LTX_ARRAY_LINEEND
         )
         for g in range(len(_stats_hdr_list))
     ])
@@ -128,15 +132,15 @@ def test_clearance_rate_calcs() -> None:
 
     print()
     print(f"Simulated {_test_sel[0].capitalize()} stats by range of ∆HHI")
-    _stats_hdr_list, _stats_dat_list = clstl.latex_tbl_clrenf_stats_1dim(
-        _clrenf_rate_sim_bydelta_array[:, :-1],
+    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_inv_stats_1dim(
+        _stats_sim_bydelta_array[:, :-1],
         return_type_sel=_return_type_sel,
-        sort_order=clstl.SortSelector.REV,
+        sort_order=isl.SortSelector.REV,
     )
 
     _stats_bydelta_teststr_val = "".join([
         "{} & {} {}".format(
-            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), clstl.ltx_array_lineend
+            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), isl.LTX_ARRAY_LINEEND
         )
         for g in range(len(_stats_hdr_list))
     ])
@@ -149,14 +153,14 @@ def test_clearance_rate_calcs() -> None:
             _test_sel[0].capitalize()
         )
     )
-    _stats_hdr_list, _stats_dat_list = clstl.latex_tbl_clrenf_stats_byzone(
-        _clrenf_rate_sim_byconczone_array[:, :-1],
+    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_inv_stats_byzone(
+        _stats_sim_byconczone_array[:, :-1],
         return_type_sel=_return_type_sel,
-        sort_order=clstl.SortSelector.REV,
+        sort_order=isl.SortSelector.REV,
     )
     _stats_byzone_teststr_val = "".join([
         "{} & {} {}".format(
-            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), clstl.ltx_array_lineend
+            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), isl.LTX_ARRAY_LINEEND
         )
         for g in range(len(_stats_hdr_list))
     ])
@@ -165,9 +169,9 @@ def test_clearance_rate_calcs() -> None:
 
     # Repeatability test:
     if all((
-        clrenf_rate_sim_byfirmcount_teststr == _stats_byfirmcount_teststr_val,
-        clrenf_rate_sim_bydelta_teststr == _stats_bydelta_teststr_val,
-        clrenf_rate_sim_byconczone_teststr == _stats_byzone_teststr_val,
+        stats_sim_byfirmcount_teststr == _stats_byfirmcount_teststr_val,
+        stats_sim_bydelta_teststr == _stats_bydelta_teststr_val,
+        stats_sim_byconczone_teststr == _stats_byzone_teststr_val,
     )):
         print("Tests passed for generation of firm-count-weighted market data.")
     else:

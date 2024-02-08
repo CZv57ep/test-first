@@ -13,13 +13,13 @@ from matplotlib.ticker import AutoMinorLocator, MultipleLocator, StrMethodFormat
 
 import mergeron.core.guidelines_standards as gsf
 
-prog_path = Path(__file__)
-data_path = Path.home() / prog_path.parents[1].stem
+PROG_PATH = Path(__file__)
+data_path = Path.home() / PROG_PATH.parents[1].stem
 if not data_path.is_dir():
     data_path.mkdir(parents=True)
 
 
-def main() -> None:
+def _main() -> None:
     plt, _, _, set_axis_def = gsf.boundary_plot()
     # plt.delaxes(ax1)
     # del my_fig1, ax1
@@ -39,7 +39,7 @@ def main() -> None:
         wspace=0.0,
     )
     ax1 = my_fig1.add_subplot(fig1_grid[0, 0])
-    ax1 = set_axis_def(ax1, share_axes_flag=False)
+    ax1 = set_axis_def(ax1, mktshares_plot_flag=False)
 
     print("Generate data for plots")
     # Mgn coords, and div-ratio coords
@@ -201,13 +201,13 @@ def main() -> None:
         format=StrMethodFormatter("{x:>3.0%}"),
         pad=0.0,
     )
-    cm_plot.set_label(label="Price-Cost Margin", fontsize=8, fontweight=300)
+    cm_plot.set_label(label="Price-Cost Margin", fontsize=8)
     cm_plot.ax.tick_params(length=5, width=0.5, labelsize=6)
     cm_plot.ax.set_ylim(0, 1.0)
     cm_plot.outline.set_visible(False)
 
-    plt.savefig(data_path.joinpath(f"{prog_path.stem}.pdf"))
+    plt.savefig(data_path.joinpath(f"{PROG_PATH.stem}.pdf"))
 
 
 if __name__ == "__main__":
-    main()
+    _main()
