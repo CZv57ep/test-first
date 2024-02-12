@@ -9,7 +9,6 @@ import sys
 import warnings
 from collections.abc import Mapping, Sequence
 from datetime import datetime, timedelta
-from importlib import metadata
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Any, Literal
@@ -26,8 +25,6 @@ import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
 from mergeron.core.guidelines_standards import GuidelinesStandards
 from mergeron.core.proportions_tests import propn_ci
-
-__version__ = metadata.version(Path(__file__).parents[1].stem)
 
 if not sys.warnoptions:
     warnings.simplefilter("ignore")  # , category="RuntimeWarning")
