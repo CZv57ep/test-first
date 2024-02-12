@@ -31,6 +31,7 @@ copyright = "2023, S. Murthy Kambhampaty"
 author = "S. Murthy Kambhampaty"
 version = "{major}.{minor}".format(**version_dict)
 release = "{major}.{minor}.{patch}".format(**version_dict)
+logo = "mergeron_logo.pdf"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -43,6 +44,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "enum_tools.autoenum",
     "sphinx_autodoc_typehints",
+    "sphinx_immaterial",
 ]
 
 autodoc_typehints = "description"
@@ -59,10 +61,10 @@ autoapi_options = [
 
 napoleon_include_init_with_doc = False
 napoleon_attr_annotations = True
-napoleon_use_rtype = False
+napoleon_use_rtype = True
 
 typehints_fully_qualified = False
-always_document_param_types = True
+always_document_param_types = False
 typehints_document_rtype = True
 typehints_use_rtype = False
 
@@ -72,12 +74,12 @@ autoapi_template_dir = "_autoapi_templates"
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "pydata_sphinx_theme"  # "alabaster" "furo" "pydata_sphinx_theme"
+html_theme = "sphinx_immaterial"  # "alabaster" "furo" "pydata_sphinx_theme"
 html_theme_options = {"navigation_with_keys": False}
 
-tml_static_path = ["_static"]
-html_title = f"{project} {release}"
-html_short_title = f"{project} {version}"
+html_static_path = ["_static"]
+html_title = f"{project} {version}"
+html_short_title = f"{project}"
 
 # -- Path setup --------------------------------------------------------------
 
