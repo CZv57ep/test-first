@@ -156,9 +156,7 @@ class MultithreadedRNG:
         if dist_type not in (_rdts := ("Beta", "Dirichlet", "Normal", "Uniform")):
             raise ValueError("Specified distribution must be one of {_rds!r}")
 
-        if not (
-            dist_parms is None or isinstance(dist_parms, Sequence | np.ndarray)
-        ):
+        if not (dist_parms is None or isinstance(dist_parms, Sequence | np.ndarray)):
             raise ValueError(
                 "When specified, distribution parameters must be a list, tuple or Numpy array"
             )
@@ -170,20 +168,20 @@ class MultithreadedRNG:
         self.dist_type = dist_type
 
         if np.array_equal(dist_parms, DIST_PARMS_DEFAULT):
-            if dist_type in ("Beta", "Dirichlet"):
-                raise ValueError(
-                    f"Specified distribution, '{dist_type}' requires "
-                    f"further parameter specification."
-                )
-            elif dist_type == "Uniform":
-                self.dist_type = "Random"
-            elif dist_type == "Normal":
-                self.dist_type = "Gaussian"
-            else:
-                raise ValueError(
-                    f"The given distribution parameters, {dist_parms!r} "
-                    f"are insufficient for the given distribution, {dist_type}"
-                )
+            match dist_type:
+                case "Uniform":
+                    self.dist_type = "Random"
+                case "Normal":
+                    self.dist_type = "Gaussian"
+                case "Beta" | "Dirichlet":
+                    raise ValueError(
+                        f"parameter specification, {f'"{dist_parms}"'} "
+                        f"is invalid for specified distribution, f{'"{dist_type}"'}."
+                    )
+                case _:
+                    raise ValueError(
+                        f"Invalid distributions specified, {f'"{dist_parms}"'}."
+                    )
 
         elif dist_type == "Dirichlet":
             if len(dist_parms) != _out_array.shape[1]:
@@ -193,7 +191,7 @@ class MultithreadedRNG:
                 )
 
         elif (_lrdp := len(dist_parms)) != 2:
-            raise ValueError(f"Expected 2 parameters, got {_lrdp}")
+            raise ValueError(f"Expected 2 parameters, got, {_lrdp}")
 
         self.dist_parms = dist_parms
 

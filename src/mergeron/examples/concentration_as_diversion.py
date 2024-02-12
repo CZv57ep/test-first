@@ -227,29 +227,31 @@ def _bdry_stats_col(
     _cs_prob = 2 * _dhhi_val
     _hhi_m_pre_prob = pi * _dhhi_val / 2
 
-    if _bdry_spec == "ΔHHI":
-        return _bdry_spec, f"{_dhhi_prob:6.5f}"
-    elif _bdry_spec == "SAG Combined Share":
-        return _bdry_spec, f"{_cs_prob:6.5f}"
-    elif _bdry_spec == "CPSWAG Premerger HHI-contribution":
-        return _bdry_spec, f"{_hhi_m_pre_prob:6.5f}"
-    elif "Div Ratio" in _bdry_spec:
-        _gbd_func = bdry_specs_dict[_bdry_spec]["func"]
-        _, _within_bdry_area = _gbd_func(
-            _delta_val, _r_val, **bdry_specs_dict[_bdry_spec].get("func_kwargs", {})
-        )
-        _within_bdry_prob = 2 * _within_bdry_area
-        _within_conc_bdry_prob = (
-            _hhi_m_pre_prob
-            if _bdry_spec.startswith("CPSWAG")
-            else (_cs_prob if _bdry_spec.startswith("SAG") else _dhhi_prob)
-        )
+    match _bdry_spec:
+        case "ΔHHI":
+            return _bdry_spec, f"{_dhhi_prob:6.5f}"
+        case "SAG Combined Share":
+            return _bdry_spec, f"{_cs_prob:6.5f}"
+        case "CPSWAG Premerger HHI-contribution":
+            return _bdry_spec, f"{_hhi_m_pre_prob:6.5f}"
+        case _ if "Div Ratio" in _bdry_spec:
+            _gbd_func = bdry_specs_dict[_bdry_spec]["func"]
+            _, _within_bdry_area = _gbd_func(
+                _delta_val, _r_val, **bdry_specs_dict[_bdry_spec].get("func_kwargs", {})
+            )
+            _within_bdry_prob = 2 * _within_bdry_area
+            _within_conc_bdry_prob = (
+                _hhi_m_pre_prob
+                if _bdry_spec.startswith("CPSWAG")
+                else (_cs_prob if _bdry_spec.startswith("SAG") else _dhhi_prob)
+            )
 
-        return _bdry_spec, R"{{ {:6.5f} \\ {:.2f}\% }}".format(
-            _within_bdry_prob, 100 * (1 - (_within_conc_bdry_prob / _within_bdry_prob))
-        )
-    else:
-        raise ValueError(f'What is, "{_bdry_spec}"?')
+            return _bdry_spec, R"{{ {:6.5f} \\ {:.2f}\% }}".format(
+                _within_bdry_prob,
+                100 * (1 - (_within_conc_bdry_prob / _within_bdry_prob)),
+            )
+        case _:
+            raise ValueError(f'Unexpected specification, "{_bdry_spec}"?')
 
 
 def plot_and_save_boundary_coords(
@@ -415,16 +417,17 @@ def gen_plot_boundary(
     _zrdr = 5
 
     if not _bdry_spec_str.startswith("ΔHHI"):
-        if re.match(r"(SAG Combined|CPSWAG Premerger)", _bdry_spec_str):
-            _zrdr = 2
-        elif _bdry_spec_str.find("Distance") > 0:
-            _plot_line_color = _pt_mdco.light_blue
-            _zrdr = 3
-        elif _bdry_spec_str.find("shr-wtd") > 0 or _bdry_spec_str.find("Mean") > 0:
-            _plot_line_color = _pt_mdco.light_yellow
-            _zrdr = 3
-        else:
-            _plot_line_color = _pt_mdco.dark_red
+        match _bdry_spec_str:
+            case _ if _bdry_spec_str.startswith(("SAG Combined", "CPSWAG Premerger")):
+                _zrdr = 2
+            case _ if "Distance" in _bdry_spec_str:
+                _plot_line_color = _pt_mdco.light_blue
+                _zrdr = 3
+            case _ if "shr-wtd" in _bdry_spec_str or "Mean" in _bdry_spec_str:
+                _plot_line_color = _pt_mdco.light_yellow
+                _zrdr = 3
+            case _:
+                _plot_line_color = _pt_mdco.dark_red
 
     _dh_bar = _gso.safeharbor[0]
     _g_val = _gso.safeharbor[3]
@@ -471,21 +474,26 @@ def gen_plot_boundary(
     )
 
     print("\t", _bdry_spec_str, f"{_bdry_s2[0]:.1%}")
-    if _bdry_spec_str.startswith("SAG") or _bdry_spec_str in (
-        "CPSWAG Premerger HHI-contribution",
-        "CPSWAG Max Div Ratio",
-    ):
-        _plot_annotator(
-            _ax1, f"{_bdry_s2[0]:.1%}", (_bdry_s1[0], _bdry_s2[0]), (-0.005, 0), "right"
-        )
-    elif _bdry_spec_str == "ΔHHI":
-        _plot_annotator(
-            _ax1,
-            f"({_bdry_s1[0]:.1%}, {_bdry_s2[0]:.1%})",
-            (_bdry_s1[0], _bdry_s2[0]),
-            (0.005, 0),
-            "left",
-        )
+    match _bdry_spec_str:
+        case "ΔHHI":
+            _plot_annotator(
+                _ax1,
+                f"({_bdry_s1[0]:.1%}, {_bdry_s2[0]:.1%})",
+                (_bdry_s1[0], _bdry_s2[0]),
+                (0.005, 0),
+                "left",
+            )
+        case _ if _bdry_spec_str.startswith("SAG") or _bdry_spec_str in (
+            "CPSWAG Premerger HHI-contribution",
+            "CPSWAG Max Div Ratio",
+        ):
+            _plot_annotator(
+                _ax1,
+                f"{_bdry_s2[0]:.1%}",
+                (_bdry_s1[0], _bdry_s2[0]),
+                (-0.005, 0),
+                "right",
+            )
 
     return _bdry_s1, _bdry_s2
 

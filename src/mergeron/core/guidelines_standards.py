@@ -5,10 +5,8 @@ with a canvas on which to draw boundaries for Guidelines standards.
 """
 
 import decimal
-from collections.abc import Mapping
 from dataclasses import dataclass
 from importlib import metadata
-from types import MappingProxyType
 from typing import Any, Final, Literal, TypeAlias
 
 import numpy as np
@@ -23,17 +21,6 @@ mp.prec = 80
 mp.trap_complex = True
 
 HMGPubYear: TypeAlias = Literal[1992, 2010, 2023]
-# In the 2023 Guidlines, the agencies do not specify a safeharbor
-#   Practically speaking, given resource constraints and loss aversion,
-#   it is likely that staff only investigates mergers that meet the presumption
-#   as evidenced by the data for 2003--2011
-GUIDELINES_BOUNDS_DICT: Mapping[HMGPubYear, tuple[float, float, float]] = (
-    MappingProxyType({
-        1992: (0.18, 0.005, 0.01),
-        2010: (0.25, 0.01, 0.02),
-        2023: (0.18, 0.01, 0.01),
-    })
-)  #: maps _pub_year to (post-merger HHI threshold, delta HHI bound)
 
 
 @dataclass
@@ -64,9 +51,18 @@ class GuidelinesStandards:
     def __init__(self, _pub_year: HMGPubYear = 1992, /):
         if _pub_year not in (1992, 2010, 2023):
             raise ValueError("Argument must be 1992, 2010 or 2023")
-        self.pub_year: Literal[1992, 2010, 2023] = _pub_year
+        self.pub_year: HMGPubYear = _pub_year
 
-        _hhi_p, _dh_s, _dh_p = GUIDELINES_BOUNDS_DICT[_pub_year]
+        # In the 2023 Guidlines, the agencies do not specify a safeharbor
+        #   Practically speaking, given resource constraints and loss aversion,
+        #   it is likely that staff only investigates mergers that meet the presumption
+        #   as evidenced by the data for 2003--2011
+        _hhi_p, _dh_s, _dh_p = {
+            1992: (0.18, 0.005, 0.01),
+            2010: (0.25, 0.01, 0.02),
+            2023: (0.18, 0.01, 0.01),
+        }[_pub_year]
+
         self.safeharbor: Final = (
             _dh_s,
             _fc := np.ceil(1 / _hhi_p),
@@ -76,6 +72,8 @@ class GuidelinesStandards:
             _cmcr := 0.03,  #: Not strictly a Guidelines standard
             _ipr := _g_s,  #: Not strictly a Guidelines standard
         )
+
+        # inferred_presumption is relevant for 2010 Guidelines
         self.inferred_presumption: Final = (
             (
                 _dh_i := 2 * (_s := 1 / (_fc + 1)) * _s,
@@ -97,6 +95,7 @@ class GuidelinesStandards:
                 _ipr := _g_i,
             )
         )
+
         self.presumption: Final = (
             _dh_p,
             _fc,
@@ -811,8 +810,6 @@ def shrratio_mgnsym_boundary_wtd_avg(
         GUPPI bound
     _r_val
         Recapture ratio.
-    gbd_dps
-        Number of decimal places for rounding returned shares.
     avg_method
         Whether "arithmetic", "geometric", or "distance".
     wgtng_policy
@@ -821,7 +818,7 @@ def shrratio_mgnsym_boundary_wtd_avg(
         Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
         value for both merging firms ("proportional").
     gbd_dps
-        Number of decimal places for rounding returned shares.
+        Number of decimal places for rounding returned shares and area.
 
     Returns
     -------
@@ -1131,18 +1128,14 @@ def shrratio_mgnsym_boundary_avg(
 
     if avg_method not in (_avgmthds := ("arithmetic", "geometric", "root-mean-square")):
         raise ValueError(
-            "{} {}".format(
-                f"Averarging method, {avg_method!r} is invalid.",
-                f"Must be one of {_avgmthds!r}.",
-            )
+            f"Averarging method, {f'"{avg_method}"'} is invalid. "
+            f"Must be one of, {_avgmthds!r}."
         )
 
     if recapture_spec not in (_recspecs := ("inside-out", "proportional")):
         raise ValueError(
-            "{} {}".format(
-                f"Recapture spec, {recapture_spec!r} is invalid.",
-                f"Must be one of {_recspecs!r}.",
-            )
+            f"Recapture spec, {f'"{recapture_spec}"'} is invalid. "
+            f"Must be one of {_recspecs!r}."
         )
 
     _delta_star = mpf(f"{_delta_star}")

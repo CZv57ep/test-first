@@ -17,10 +17,11 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-import mergeron.gen.data_generation as dgl
-import mergeron.gen.investigations_stats as isl
+from .. import _PKG_NAME  # noqa: TID252
+from . import data_generation as dgl
+from . import investigations_stats as isl
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+__version__ = metadata.version(_PKG_NAME)
 
 mod_path = Path(__file__)
 data_path = Path.home() / mod_path.parent.stem

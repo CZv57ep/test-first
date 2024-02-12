@@ -5,7 +5,6 @@ Functions to generate data for simulating antitrust and merger analysis.
 
 import enum
 from importlib import metadata
-from pathlib import Path
 from typing import Literal, NamedTuple, TypeAlias
 
 import attrs
@@ -13,14 +12,15 @@ import numpy as np
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from mergeron.core.damodaran_margin_data import resample_mgn_data
-from mergeron.core.pseudorandom_numbers import (
+from .. import _PKG_NAME  # noqa: TID252
+from ..core.damodaran_margin_data import resample_mgn_data  # noqa: TID252
+from ..core.pseudorandom_numbers import (  # noqa: TID252
     DIST_PARMS_DEFAULT,
     MultithreadedRNG,
     prng,
 )
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+__version__ = metadata.version(_PKG_NAME)
 
 EMPTY_ARRAY_DEFAULT = np.zeros(2)
 FCOUNT_WTS_DEFAULT = (_nr := np.arange(1, 6)[::-1]) / _nr.sum()
@@ -46,8 +46,9 @@ class PRIConstants(tuple[bool, str | None], enum.ReprEnum):
 
     SYM = (True, None)
     ZERO = (False, None)
-    NEG = (False, "negative")
-    POS = (False, "positive")
+    NEG = (False, "negative share-correlation")
+    POS = (False, "positive share-correlation")
+    CST = (False, "market-wide cost-symmetry")
 
 
 @enum.unique
@@ -57,7 +58,7 @@ class PCMConstants(enum.StrEnum):
     UNI = "Uniform"
     BETA = "Beta"
     BETA_BND = "Bounded Beta"
-    EMPR = "AD, NYU (N-F)"
+    EMPR = "Damodaran margin data"
 
 
 @enum.unique
@@ -129,9 +130,9 @@ PCMSpec: TypeAlias = tuple[PCMConstants, FM2Constants, NDArray[np.float64]]
 class MarketSampleSpec:
     """Parameter specification for market data generation."""
 
-    sample_size: int = 10**6  # attrs.field(default=)
-    recapture_rate: float = 0.80  # attrs.field(default=)
-    pr_sym_spec: PRIConstants = PRIConstants.SYM  # attrs.field(default=)
+    sample_size: int = 10**6
+    recapture_rate: float = 0.80
+    pr_sym_spec: PRIConstants = PRIConstants.SYM
     share_spec: ShareSpec = attrs.field(
         kw_only=True, default=(SHRConstants.UNI, RECConstants.INOUT, None)
     )
@@ -378,7 +379,7 @@ def parse_seed_seq_list(
     _fcount_rng_seed_seq: SeedSequence | None = None
     _pr_rng_seed_seq: SeedSequence | None = None
 
-    if not _pr_sym_spec or _pr_sym_spec == PRIConstants.SYM:
+    if not _pr_sym_spec or _pr_sym_spec in (PRIConstants.SYM, PRIConstants.CST):
         _pr_rng_seed_seq = None
     elif not _sseq_list:
         _pr_rng_seed_seq = SeedSequence(pool_size=8)
@@ -444,45 +445,47 @@ def _gen_share_data(
     _ssz = _mkt_sample_spec.sample_size
 
     # If recapture_spec == "inside-out", further calculations downstream
-    if _dist_type_mktshr == SHRConstants.UNI:
-        if _recapture_spec == RECConstants.OUTIN:
-            raise ValueError(
-                "{} {} {}".format(
-                    'When, mktshr_dist_type is "Uniform",',
-                    'recapture_spec must not be "outside-in".',
-                    "Correct the function call and re-run your code.",
+    match _dist_type_mktshr:
+        case SHRConstants.UNI:
+            if _recapture_spec == RECConstants.OUTIN:
+                raise ValueError(
+                    "{} {} {}".format(
+                        'When, mktshr_dist_type is "Uniform",',
+                        'recapture_spec must not be "outside-in".',
+                        "Correct the function call and re-run your code.",
+                    )
                 )
+            _mkt_share_sample = gen_market_shares_uniform(
+                _ssz, _mktshr_rng_seed_seq, _nthreads
             )
-        _mkt_share_sample = gen_market_shares_uniform(
-            _ssz, _mktshr_rng_seed_seq, _nthreads
-        )
 
-    elif _dist_type_mktshr.name.startswith("DIR_"):
-        _firm_count_prob_wts = (
-            None
-            if _firm_count_prob_wts_raw is None
-            else np.array(_firm_count_prob_wts_raw, dtype=np.float64)
-        )
-        _mkt_share_sample = gen_market_shares_dirichlet_multisample(
-            _ssz,
-            _dist_type_mktshr,
-            _recapture_spec,
-            _firm_count_prob_wts,
-            _fcount_rng_seed_seq,
-            _mktshr_rng_seed_seq,
-            _nthreads,
-        )
+        case _ if _dist_type_mktshr.name.startswith("DIR_"):
+            _firm_count_prob_wts = (
+                None
+                if _firm_count_prob_wts_raw is None
+                else np.array(_firm_count_prob_wts_raw, dtype=np.float64)
+            )
+            _mkt_share_sample = gen_market_shares_dirichlet_multisample(
+                _ssz,
+                _dist_type_mktshr,
+                _recapture_spec,
+                _firm_count_prob_wts,
+                _fcount_rng_seed_seq,
+                _mktshr_rng_seed_seq,
+                _nthreads,
+            )
 
-    else:
-        raise ValueError(
-            f'Unexpected type, "{_dist_type_mktshr}" for share distribution.'
-        )
+        case _:
+            raise ValueError(
+                f'Unexpected type, "{_dist_type_mktshr}" for share distribution.'
+            )
 
     return _mkt_share_sample
 
 
 def gen_market_shares_uniform(
     _s_size: int = 10**6,
+    _r_bar: float = 0.80,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
     /,
@@ -493,6 +496,8 @@ def gen_market_shares_uniform(
     ----------
     _s_size
         size of sample to be drawn
+    _r_bar
+        market recapture rate
     _mktshr_rng_seed_seq
         seed for rng, so results can be made replicable
     _nthreads
@@ -753,28 +758,30 @@ def _gen_pr_ratio(
     )
 
     _pr_max_ratio = 5.0
-    if _mkt_sample_spec.pr_sym_spec == PRIConstants.SYM:
-        _nth_firm_price = np.ones((_ssz, 1))
-    elif _mkt_sample_spec.pr_sym_spec == PRIConstants.POS:
-        _price_array, _nth_firm_price = (
-            np.ceil(_p * _pr_max_ratio) for _p in (_frmshr_array, _nth_firm_share)
-        )
-    elif _mkt_sample_spec.pr_sym_spec == PRIConstants.NEG:
-        _price_array, _nth_firm_price = (
-            np.ceil((1 - _p) * _pr_max_ratio) for _p in (_frmshr_array, _nth_firm_share)
-        )
-    elif _mkt_sample_spec.pr_sym_spec == PRIConstants.ZERO:
-        _price_array_gen = prng(_seed_seq).choice(
-            1 + np.arange(_pr_max_ratio), size=(len(_frmshr_array), 3)
-        )
-        _price_array = _price_array_gen[:, :2]
-        _nth_firm_price = _price_array_gen[:, [2]]
-        # del _price_array_gen
-    else:
-        raise ValueError(
-            f"Condition regarding price symmetry"
-            f' "{_mkt_sample_spec.pr_sym_spec.value}" is invalid.'
-        )
+    match _mkt_sample_spec.pr_sym_spec:
+        case PRIConstants.SYM:
+            _nth_firm_price = np.ones((_ssz, 1))
+        case PRIConstants.POS:
+            _price_array, _nth_firm_price = (
+                np.ceil(_p * _pr_max_ratio) for _p in (_frmshr_array, _nth_firm_share)
+            )
+        case PRIConstants.NEG:
+            _price_array, _nth_firm_price = (
+                np.ceil((1 - _p) * _pr_max_ratio)
+                for _p in (_frmshr_array, _nth_firm_share)
+            )
+        case PRIConstants.ZERO:
+            _price_array_gen = prng(_seed_seq).choice(
+                1 + np.arange(_pr_max_ratio), size=(len(_frmshr_array), 3)
+            )
+            _price_array = _price_array_gen[:, :2]
+            _nth_firm_price = _price_array_gen[:, [2]]
+            # del _price_array_gen
+        case _:
+            raise ValueError(
+                f"Condition regarding price symmetry"
+                f' "{_mkt_sample_spec.pr_sym_spec.value}" is invalid.'
+            )
     # del _pr_max_ratio
 
     _price_ratio_array = _price_array / _price_array[:, ::-1]
@@ -786,36 +793,39 @@ def _gen_pr_ratio(
     # so we treat it as a constant of merger policy.
     _test_rev_ratio, _test_rev_ratio_inv = 10, 1 / 10
 
-    if _hsr_filing_test_type == SSZConstants.HSR_TEN:
-        # See, https://www.ftc.gov/enforcement/premerger-notification-program/
-        #   -> Procedures For Submitting Post-Consummation Filings
-        #    -> Key Elements to Determine Whether a Post Consummation Filing is Required
-        #           under heading, "Historical Thresholds"
-        # Revenue ratio has been 10-to-1 since inception
-        # Thus, a simple form of the HSR filing test would impose a 10-to-1
-        # ratio restriction on the merging firms' revenues
-        _rev_ratio = (_rev_array.min(axis=1) / _rev_array.max(axis=1)).round(4)
-        _hsr_filing_test = _rev_ratio >= _test_rev_ratio_inv
-        # del _rev_array, _rev_ratio
-    elif _hsr_filing_test_type == SSZConstants.HSR_NTH:
-        # To get around the 10-to-1 ratio restriction, specify that the nth firm
-        # matches the smaller firm in the size test; then if the smaller merging firm
-        # matches the n-th firm in size, and the larger merging firm has at least
-        # 10 times the size of the nth firm, the size test is considered met.
-        # Alternatively, if the smaller merging firm has 10% or greater share,
-        # the value of transaction test is considered met.
-        _rev_ratio_to_nth = np.round(np.sort(_rev_array, axis=1) / _nth_firm_rev, 4)
-        _hsr_filing_test = (
-            np.einsum(
-                "ij->i", 1 * (_rev_ratio_to_nth > [1, _test_rev_ratio]), dtype=np.int64
-            )
-            == _rev_ratio_to_nth.shape[1]
-        ) | (_frmshr_array.min(axis=1) >= _test_rev_ratio_inv)
+    match _hsr_filing_test_type:
+        case SSZConstants.HSR_TEN:
+            # See, https://www.ftc.gov/enforcement/premerger-notification-program/
+            #   -> Procedures For Submitting Post-Consummation Filings
+            #    -> Key Elements to Determine Whether a Post Consummation Filing is Required
+            #           under heading, "Historical Thresholds"
+            # Revenue ratio has been 10-to-1 since inception
+            # Thus, a simple form of the HSR filing test would impose a 10-to-1
+            # ratio restriction on the merging firms' revenues
+            _rev_ratio = (_rev_array.min(axis=1) / _rev_array.max(axis=1)).round(4)
+            _hsr_filing_test = _rev_ratio >= _test_rev_ratio_inv
+            # del _rev_array, _rev_ratio
+        case SSZConstants.HSR_NTH:
+            # To get around the 10-to-1 ratio restriction, specify that the nth firm
+            # matches the smaller firm in the size test; then if the smaller merging firm
+            # matches the n-th firm in size, and the larger merging firm has at least
+            # 10 times the size of the nth firm, the size test is considered met.
+            # Alternatively, if the smaller merging firm has 10% or greater share,
+            # the value of transaction test is considered met.
+            _rev_ratio_to_nth = np.round(np.sort(_rev_array, axis=1) / _nth_firm_rev, 4)
+            _hsr_filing_test = (
+                np.einsum(
+                    "ij->i",
+                    1 * (_rev_ratio_to_nth > [1, _test_rev_ratio]),
+                    dtype=np.int64,
+                )
+                == _rev_ratio_to_nth.shape[1]
+            ) | (_frmshr_array.min(axis=1) >= _test_rev_ratio_inv)
 
-        # del _nth_firm_rev, _rev_ratio_to_nth
-    else:
-        # Otherwise, all draws meet the filing test
-        _hsr_filing_test = np.ones(_ssz, dtype=bool)
+            # del _nth_firm_rev, _rev_ratio_to_nth
+        case _:
+            # Otherwise, all draws meet the filing test
+            _hsr_filing_test = np.ones(_ssz, dtype=bool)
 
     return PriceDataSample(_price_array, _hsr_filing_test)
 
@@ -929,7 +939,7 @@ def _gen_pcm_data(
                     f'for PCM with distribution, "{_dist_type_pcm}" is incorrect.'
                 )
             if _dist_type_pcm == PCMConstants.BETA_BND:  # Bounded beta
-                _dist_parms = _beta_located_bound(_dist_parms_pcm)
+                _dist_parms = beta_located_bound(_dist_parms_pcm)
                 _dist_type = "Beta"
 
         _pcm_rng = MultithreadedRNG(
@@ -940,12 +950,12 @@ def _gen_pcm_data(
             nthreads=_nthreads,
         )
         _pcm_rng.fill()
-        # del _pcm_rng
+        del _pcm_rng
 
     if _mkt_sample_spec.pcm_spec[0] == PCMConstants.BETA_BND:
         _beta_min, _beta_max = _mkt_sample_spec.pcm_spec[2][2:]
         _pcm_array = (_beta_max - _beta_min) * _pcm_array + _beta_min
-        # del _beta_min, _beta_max
+        del _beta_min, _beta_max
 
     if _dist_firm2_pcm == FM2Constants.MNL and _recapture_spec != RECConstants.FIXED:
         # Impose FOCs from profit-maximization with MNL demand
@@ -1008,7 +1018,7 @@ def beta_located_bound(_dist_parms: NDArray[np.floating], /) -> NDArray[np.float
 
     Parameters
     ----------
-    _dist_parms_pcm
+    _dist_parms
         vector of :math:`\mu`, :math:`\sigma`, :math:`\mathtt{\min}`, and :math:`\mathtt{\max}` values
 
     Returns

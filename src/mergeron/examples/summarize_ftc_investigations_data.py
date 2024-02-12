@@ -20,7 +20,7 @@ for data_period in invdata:
             print(
                 leader_str,
                 table_no,
-                " \u2014 ",
+                " \N{EM DASH} ",
                 invdata_indugrp,
                 f", {invdata_evid_cond or 'N/A'}",
                 ", ",

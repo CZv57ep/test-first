@@ -19,13 +19,13 @@ from jinja2 import Environment, FileSystemLoader, Template, select_autoescape
 from numpy.typing import NBitBase, NDArray
 from scipy.interpolate import interp1d
 
-import mergeron.core.ftc_merger_investigations_data as fid
-from mergeron import DATA_DIR  # type: ignore
-from mergeron.core.proportions_tests import propn_ci
+from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
+from ..core import ftc_merger_investigations_data as fid  # noqa: TID252
+from ..core.proportions_tests import propn_ci  # noqa: TID252
 
 m.patch()
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+__version__ = metadata.version(_PKG_NAME)
 
 B = TypeVar("B", bound=NBitBase)
 
@@ -511,14 +511,21 @@ def latex_tbl_inv_stats_1dim(
         if _k != "TOTAL"
     }
 
+    if _totals_row:
+        _in_totals_row = _inparr[_totals_row, :]
+        _inparr_mask = np.ones(len(_inparr), dtype=bool)
+        _inparr_mask[_in_totals_row] = False
+        _inparr = _inparr[_inparr_mask]
+    else:
+        _in_totals_row = np.concatenate((
+            [fid.TTL_KEY],
+            np.einsum("ij->j", _inparr[:, _ndim_in:]),
+        ))
+
     if sort_order == SortSelector.REV:
         _inparr = _inparr[::-1]
 
-    if _totals_row is None:
-        _inparr = np.row_stack((
-            _inparr,
-            np.concatenate(([fid.TTL_KEY], np.einsum("ij->j", _inparr[:, _ndim_in:]))),
-        ))
+    _inparr = np.row_stack((_inparr, _in_totals_row))
 
     _stats_hdr_list, _stats_dat_list = [], []
     for _stats_row in _inparr:
@@ -609,33 +616,37 @@ def _stats_formatted_row(
 ) -> list[list[str]]:
     _stats_row_pct = _stats_row_cnt / _stats_row_tot
 
-    if _return_type_sel == StatsReturnSelector.RIN:
-        _stats_row_ci = np.array([
-            propn_ci(*g, method="Wilson")
-            for g in zip(_stats_row_cnt[1:], _stats_row_tot[1:], strict=True)
-        ])
-        return [
-            [
-                pct_format_str.format(100 * _stats_row_pct[0]),
-                *[
-                    ci_format_str.format(*100 * np.array(f)).replace(
-                        R"  nan [ nan,  nan] \%", "---"
-                    )
-                    for f in _stats_row_ci
-                ],
+    match _return_type_sel:
+        case StatsReturnSelector.RIN:
+            _stats_row_ci = np.array([
+                propn_ci(*g, method="Wilson")
+                for g in zip(_stats_row_cnt[1:], _stats_row_tot[1:], strict=True)
+            ])
+            return [
+                [
+                    pct_format_str.format(100 * _stats_row_pct[0]),
+                    *[
+                        ci_format_str.format(*100 * np.array(f)).replace(
+                            R"  nan [ nan,  nan] \%", "---"
+                        )
+                        for f in _stats_row_ci
+                    ],
+                ]
             ]
-        ]
-    elif _return_type_sel == StatsReturnSelector.RPT:
-        return [
-            [
-                pct_format_str.format(f).replace(R"nan\%", "---")
-                for f in 100 * _stats_row_pct
+        case StatsReturnSelector.RPT:
+            return [
+                [
+                    pct_format_str.format(f).replace(R"nan\%", "---")
+                    for f in 100 * _stats_row_pct
+                ]
             ]
-        ]
-    else:
-        return [
-            [cnt_format_str.format(f).replace(R"nan", "---") for f in _stats_row_cnt]
-        ]
+        case _:
+            return [
+                [
+                    cnt_format_str.format(f).replace(R"nan", "---")
+                    for f in _stats_row_cnt
+                ]
+            ]
 
 
 def stats_print_rows(

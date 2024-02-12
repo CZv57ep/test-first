@@ -9,24 +9,26 @@ https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datahistory.html
 
 Important caveats:
 
-Prof. Damodaran clarifies that the data construction may not be
+Prof. Damodaran notes that the data construction may not be
 consistent from iteration to iteration. He also notes that,
 "the best use for my data is in real time corporate financial analysis
 and valuation." Here, gross margin data compiled by Prof. Damodaran are
-used to model the distribution of price-cost margin across firms that
-antitrust enforcement agencies are likely to review in
-merger enforcement investigations over a span of time. The
-implicit assumption is that refinements in data construction from
+optionally used to model the distribution of price-cost margin
+across firms that antitrust enforcement agencies are likely to review in
+merger enforcement investigations over a multi-year span. The
+implicit assumption is that refinements in source-data construction from
 iteration to iteration do not result in inconsistent estimates of
-the empirical distribution of margins.
+the empirical distribution of margins estimated using
+a Gaussian kernel density estimator (KDE).
 
 Second, other procedures included in this package allow the researcher to
 generate margins for a single firm and impute margins of other firms in
-a given industry/market based on FOCs for profit maximization by
+a model relevant antitrust market based on FOCs for profit maximization by
 firms facing MNL demand. In that exercise, the distribution of
 inferred margins does not follow the empirical distribution estimated
-from the source data, but is further constrained by the distribution of
-market shares across firms.
+from the source data, due to restrictions resulting from the distribution of
+generated market shares across firms and the feasibility condition that
+price-cost margins fall in the interval :math:`[0, 1]`.
 
 """
 

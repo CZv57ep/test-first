@@ -439,16 +439,21 @@ def grad_est(_ax: matplotlib.axis.Axis, _pt_xs: tuple, _pt_ys: tuple) -> float:
 
 
 def get_hmg_standards_plus(_guppi_bench_key: str, /) -> tuple:
-    if _guppi_bench_key == "DOJATR":
-        return *(_tmp := gsf.GuidelinesStandards(2010).safeharbor[:3]), _tmp[-1], 0.05
-    elif _guppi_bench_key == "DH100":
-        return gsf.GuidelinesStandards(2010).safeharbor[:-2]
-    elif _guppi_bench_key == "DH50":
-        return gsf.GuidelinesStandards(1992).safeharbor[:-2]
-    else:
-        raise ValueError(
-            f"GUPPI benchmark key must be one of, {guppi_benchmark_keys!r}"
-        )
+    match _guppi_bench_key:
+        case "DOJATR":
+            return (
+                *(_tmp := gsf.GuidelinesStandards(2010).safeharbor[:3]),
+                _tmp[-1],
+                0.05,
+            )
+        case "DH100":
+            return gsf.GuidelinesStandards(2010).safeharbor[:-2]
+        case "DH50":
+            return gsf.GuidelinesStandards(1992).safeharbor[:-2]
+        case _:
+            raise ValueError(
+                f"GUPPI benchmark key must be one of, {guppi_benchmark_keys!r}"
+            )
 
 
 if __name__ == "__main__":
