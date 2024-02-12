@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
+from attrs import evolve
 
 tvals_dict = {
     # Test with uniform distribution (unrestricted shares), proportional recapture spec
@@ -130,10 +131,10 @@ tvals_dict = {
 @pytest.mark.parametrize("_test_parms, _test_array", tuple(tvals_dict.items()))
 def test_gen_market_sample(
     _test_parms: tuple[dgl.SHRConstants, dgl.RECConstants, dgl.FM2Constants],
-    _test_array: NDArray[np.float_],
+    _test_array: NDArray[np.float64],
     _tcount: int = 10**7,
     _nthreads: int = 16,
-) -> None:
+    ) -> None:
     (_mktshr_dist_type_test, _recapture_spec_test, _pcm_dist_firm2_test) = _test_parms
     # Reinitialize the seed sequence for each test run
     #   (this makes the tests invariant to the order in which run)
@@ -141,11 +142,13 @@ def test_gen_market_sample(
         2 if _mktshr_dist_type_test == dgl.SHRConstants.UNI else 3
     )
 
-    _mkt_sample_spec = dgl.MarketSampleSpec(_tcount)
-    _mkt_sample_spec.pcm_spec = (
-        dgl.PCMConstants.UNI,
-        _pcm_dist_firm2_test,
-        np.array([0.0, 1.0]),
+    _mkt_sample_spec = dgl.MarketSampleSpec(
+        _tcount,
+        pcm_spec = (
+            dgl.PCMConstants.UNI,
+            _pcm_dist_firm2_test,
+            np.array([0.0, 1.0]),
+        )
     )
     if _mktshr_dist_type_test == dgl.SHRConstants.UNI:
         _fcount_weights = dgl.EMPTY_ARRAY_DEFAULT
@@ -154,11 +157,11 @@ def test_gen_market_sample(
         _fcount_weights = np.arange(1, 6)[::-1] / np.arange(1, 6).sum()
         _test_func = _tfunc_sample_with_dirichlet_shares
 
-    _mkt_sample_spec.share_spec = (
+    _mkt_sample_spec = evolve(_mkt_sample_spec, share_spec = (
         _mktshr_dist_type_test,
         _recapture_spec_test,
         _fcount_weights,  # type: ignore
-    )
+    ))
 
     _array_to_test = _test_func(_mkt_sample_spec, _rng_seed_seq_tup, _nthreads)
 
@@ -180,7 +183,7 @@ def _tfunc_sample_with_unrestricted_shares(
     _rng_seed_seq_tup: list[np.random.SeedSequence],
     _nthreads: int,
     /,
-) -> NDArray[np.float_ | np.float_]:
+    ) -> NDArray[np.float64 | np.float64]:
     _mkt_sample = dgl.gen_market_sample(
         _mkt_sample_spec, seed_seq_list=_rng_seed_seq_tup, nthreads=_nthreads
     )
@@ -196,7 +199,7 @@ def _tfunc_sample_with_dirichlet_shares(
     _rng_seed_seq_tup: list[np.random.SeedSequence],
     _nthreads: int,
     /,
-) -> NDArray[np.float_ | np.float_]:
+    ) -> NDArray[np.float64 | np.float64]:
     _mkt_sample = dgl.gen_market_sample(
         _mkt_sample_spec, seed_seq_list=_rng_seed_seq_tup, nthreads=_nthreads
     )

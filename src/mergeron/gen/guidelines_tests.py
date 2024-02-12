@@ -447,7 +447,9 @@ def save_to_hdf(
         if saved_array_name_suffix
         else _array_name
     )
-    print(f"PyTables: Now saving array, {_h5_array_name!r}, in subpath, {_h5_hier!r}")
+    print(
+        f"PyTables: Now saving array, {_h5_array_name!r}, at node, {f'"{_h5_hier}"'}."
+    )
     _h5_array = _h5_datafile.create_carray(
         _h5_hier,
         _h5_array_name,

@@ -149,7 +149,7 @@ def round_cust(
         decimal.ROUND_HALF_EVEN,
         decimal.ROUND_UP,
     ):
-        raise ValueError(f"Value, {mode!r} of mode is invalid.")
+        raise ValueError(f"Value, {f'"{mode}"'} of rounding mode is invalid.")
 
     _num, _frac = (decimal.Decimal(f"{_g}") for _g in (_num, frac))
 
@@ -698,7 +698,7 @@ def shrratio_mgnsym_boundary_min(
 
     if recapture_spec not in (_recspecs := ("inside-out", "proportional")):
         raise ValueError(
-            f"Recapture_spec value, {recapture_spec!r} not in {_recspecs!r}"
+            f"Recapture_spec value, {f'"{recapture_spec}"'} not in {_recspecs!r}"
         )
 
     _delta_star = mpf(f"{_delta_star}")
@@ -1037,7 +1037,7 @@ def shrratio_mgnsym_boundary_xact_avg(
         ):
             raise RuntimeError(
                 "Calculation of sq. root term in exact average GUPPI"
-                f"with recapture spec, {recapture_spec!r} is incorrect."
+                f"with recapture spec, {f'"{recapture_spec}"'} is incorrect."
             )
 
         _s_2 = (_nr_t1 - np.sqrt(_nr_t2_s1)) / (2 * _r_val)

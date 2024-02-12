@@ -220,7 +220,7 @@ def inv_stats_output(
 ) -> tuple[list[str], list[list[str]]]:
     if _data_period not in _data_array_dict:
         raise ValueError(
-            f"Value of _data_period, {_data_period!r} is invalid.",
+            f"Value of _data_period, {f'"{_data_period}"'} is invalid.",
             f"Must be in, {list(_data_array_dict.keys())!r}",
         )
 
@@ -308,7 +308,7 @@ def inv_cnts_listing_byfirmcount(
 ) -> NDArray[np.int64]:
     if _data_period not in _data_array_dict:
         raise ValueError(
-            f"Invalid value of data period, {_data_period!r}."
+            f"Invalid value of data period, {f'"{_data_period}"'}."
             f"Must be one of, {tuple(_data_array_dict.keys())!r}."
         )
 
@@ -344,7 +344,7 @@ def inv_cnts_listing_byhhianddelta(
 ) -> NDArray[np.int64]:
     if _data_period not in _data_array_dict:
         raise ValueError(
-            f"Invalid value of data period, {_data_period!r}."
+            f"Invalid value of data period, {f'"{_data_period}"'}."
             f"Must be one of, {tuple(_data_array_dict.keys())!r}."
         )
 
@@ -380,7 +380,7 @@ def table_no_lku(
         _igl := [_data_array_dict_sub[_v].ind_grp for _v in _data_array_dict_sub]
     ):
         raise ValueError(
-            f"Invalid value for industry group, {_table_ind_group!r}."
+            f"Invalid value for industry group, {f'"{_table_ind_group}"'}."
             f"Must be one of {_igl!r}"
         )
 

@@ -86,7 +86,7 @@ def test_mrng_beta(_tcount: int = 10**8, _fcount: int = 5) -> None:
     _beta_mu, _beta_sigma = [0.5, 0.28867513459481287]
     _mul = np.divide(_beta_mu - _beta_mu**2 - _beta_sigma**2, _beta_sigma**2)
     _dist_parms_beta = np.array(
-        [_beta_mu * _mul, (1 - _beta_mu) * _mul], dtype=np.float_
+        [_beta_mu * _mul, (1 - _beta_mu) * _mul], dtype=np.float64
     )
     _mrng = MultithreadedRNG(
         _test_out,

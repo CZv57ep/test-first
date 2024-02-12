@@ -456,7 +456,7 @@ def _gen_share_data(
                     )
                 )
             _mkt_share_sample = gen_market_shares_uniform(
-                _ssz, _mktshr_rng_seed_seq, _nthreads
+                _ssz, _mkt_sample_spec.recapture_rate, _mktshr_rng_seed_seq, _nthreads
             )
 
         case _ if _dist_type_mktshr.name.startswith("DIR_"):

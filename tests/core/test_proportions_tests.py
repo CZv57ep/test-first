@@ -150,7 +150,7 @@ def test_propn_diff_ci(
         raise ValueError(_err_str) from _err
 
 
-def ques_data() -> Mapping[str, NDArray[np.int_]]:
+def ques_data() -> Mapping[str, NDArray[np.int64]]:
     """
     Data from Quisenberry and Hurst, published in Goodman, 1965
 
@@ -166,7 +166,7 @@ def ques_data() -> Mapping[str, NDArray[np.int_]]:
             """
     _t1_dat = [f.split(",") for f in _table_1_str.split("\n")[1:-1]]
     return {
-        f[0].strip(): np.array([int(g) for g in f[1:]], dtype=np.int_) for f in _t1_dat
+        f[0].strip(): np.array([int(g) for g in f[1:]], dtype=np.int64) for f in _t1_dat
     }
 
 
@@ -231,7 +231,7 @@ def ques_data() -> Mapping[str, NDArray[np.int_]]:
 def test_propn_ci_multinomial(
     _g_method: Literal["goodman", "quesenberry-hurst"],
     _g_alt: Literal["default", "simplified"],
-    _t_val: NDArray[np.float_],
+    _t_val: NDArray[np.float64],
 ) -> None:
     assert_array_almost_equal(
         pci.propn_ci_multinomial(

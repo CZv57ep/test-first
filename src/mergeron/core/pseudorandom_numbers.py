@@ -154,7 +154,7 @@ class MultithreadedRNG:
         self.sample_sz = len(_out_array)
 
         if dist_type not in (_rdts := ("Beta", "Dirichlet", "Normal", "Uniform")):
-            raise ValueError("Specified distribution must be one of {_rds!r}")
+            raise ValueError("Specified distribution must be one of {_rdts}")
 
         if not (dist_parms is None or isinstance(dist_parms, Sequence | np.ndarray)):
             raise ValueError(
@@ -187,7 +187,7 @@ class MultithreadedRNG:
             if len(dist_parms) != _out_array.shape[1]:
                 raise ValueError(
                     f"Insufficient shape parameters for requested Dirichlet sample "
-                    f"of size, {_out_array.shape!r}"
+                    f"of size, {_out_array.shape}"
                 )
 
         elif (_lrdp := len(dist_parms)) != 2:

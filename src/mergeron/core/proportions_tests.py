@@ -73,17 +73,10 @@ def propn_ci(
     """
 
     for _f in _npos, _nobs:
-        _test_val = False
-
-        if (np.issubdtype(type(_f), np.floating)) or (
-            np.issubdtype(type(_f), np.integer)
-        ):
-            _test_val = True
-        else:
-            _test_val = False
-
-        if not _test_val:
-            raise ValueError(f"Count, {_f!r} must be of float of np.integer type.")
+        if not isinstance(_f, float | int | np.floating | np.integer):
+            raise ValueError(
+                f"Count, {_f!r} must have type that is a subtype of np.floating or np.integer."
+            )
 
     if not _nobs:
         return (np.nan,) * 4
@@ -131,7 +124,7 @@ def propn_ci(
             )
 
         case _:
-            raise ValueError(f"Method, {method!r} not yet implemented.")
+            raise ValueError(f"Method, {f'"{method}"'} not yet implemented.")
 
     return _raw_phat, _est_phat, _est_ci_l, _est_ci_u
 
@@ -165,7 +158,7 @@ def propn_ci_multinomial(
     """
     if method not in (_mli := ("goodman", "quesenberry-hurst")):
         raise ValueError(
-            f'Invalid value {method!r} for "method". Must be one of {_mli!r}.'
+            f'Invalid value {f'"{method}"'} for "method". Must be one of {_mli}.'
         )
 
     _n = np.einsum("j->", _counts).astype(np.int64)
@@ -189,8 +182,8 @@ def propn_ci_multinomial(
 
     else:
         raise ValueError(
-            f'Invalid value {alternative!r} for "alternative". '
-            f'Must be one of ("default", "simplified").'
+            f"Invalid value, {f'"{alternative}"'} for, \"alternative\". "
+            f"Must be one of '{'("default", "simplified")'}'."
         )
 
 
@@ -246,13 +239,9 @@ def propn_diff_ci(
 
     """
     for _f in _npos1, _nobs1, _npos1, _nobs2:
-        _test_val = False
-        if isinstance(_f, int | np.integer):
-            _test_val = True
-
-        if not _test_val:
+        if not isinstance(_f, int | np.integer):
             raise ValueError(
-                f"Count, {_test_val!r} must be of float of np.integer type."
+                f"Count, {_f!r} must be of int type or be a subtype of np.integer."
             )
 
     if not min(_nobs1, _nobs2):
@@ -275,7 +264,7 @@ def propn_diff_ci(
             )
 
         case _:
-            raise ValueError(f"Method, {method!r} not implemented.")
+            raise ValueError(f"Method, {f'"{method}"'} not implemented.")
 
     return _res
 
@@ -359,17 +348,9 @@ def _propn_diff_ci_mn(
 
     """
     for _f in _npos1, _nobs1, _npos1, _nobs2:
-        _testval = False
-        if (np.issubdtype(type(_f), np.floating)) or (
-            np.issubdtype(type(_f), np.integer)
-        ):
-            _testval = True
-        else:
-            _testval = False
-
-        if not _testval:
+        if not isinstance(_f, float | int | np.floating | np.integer):
             raise ValueError(
-                f"Count, {_testval!r} must be of float of np.integer type."
+                f"Count, {_f!r} must have type that is a subtype of np.floating or np.integer."
             )
 
     _chi_sq_cr = chi2.ppf(1 - alpha, 1)

@@ -21,7 +21,7 @@ invdata_array_dict = fid.construct_data(
     ),
 )
 def test_inv_stats(
-    _stats_group: isl.StatsGrpSelector, _test_val: NDArray[np.int_]
+    _stats_group: isl.StatsGrpSelector, _test_val: NDArray[np.int64]
 ) -> None:
     _inv_sel = isl.PolicySelector.CLRN
     _inv_stats_cnts = isl.inv_stats_cnts_by_group(
