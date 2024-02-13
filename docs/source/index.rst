@@ -1,4 +1,4 @@
-.. include:: ./index_text.rst
+.. include:: ../../README.rst
 
 .. toctree::
    :caption: Contents
