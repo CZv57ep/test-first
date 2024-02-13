@@ -117,12 +117,12 @@ def analyze_inv_data(
             _sample_size,
             _inv_parm_vec[0],
             dgl.PRIConstants.SYM,
-            share_spec=dgl.ShareSpec(
-                dgl.SHRConstants.UNI, _recapture_spec_test, dgl.EMPTY_ARRAY_DEFAULT
+            share_spec=(
+                dgl.SHRConstants.UNI,
+                _recapture_spec_test,
+                dgl.EMPTY_ARRAY_DEFAULT,
             ),
-            pcm_spec=dgl.PCMSpec(
-                _pcm_dist_type_test, _pcm_dist_firm2_test, _pcm_dist_parms_test
-            ),
+            pcm_spec=(_pcm_dist_type_test, _pcm_dist_firm2_test, _pcm_dist_parms_test),
         )
 
         _inv_cnts_kwargs = {
