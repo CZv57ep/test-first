@@ -180,7 +180,7 @@ class MultithreadedRNG:
                     )
                 case _:
                     raise ValueError(
-                        f"Invalid distributions specified, {f'"{dist_parms}"'}."
+                        f"Invalid distributions specified, {f'"{dist_type}"'}."
                     )
 
         elif dist_type == "Dirichlet":

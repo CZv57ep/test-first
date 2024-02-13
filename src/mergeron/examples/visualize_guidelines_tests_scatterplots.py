@@ -243,7 +243,7 @@ def _main(
     _cm_plot.outline.set_visible(False)
 
     _base_name = DATA_DIR.joinpath(
-        f"{PROG_PATH.stem}_{_hmg_pub_year}gbar{f"{_g_bar * 100:02.0f}"}PCT_{market_sample_spec.share_spec[1]}Recapture_{_inv_sel}"
+        f"{PROG_PATH.stem}_{_hmg_pub_year}gbar{f"{_g_bar * 100:02.0f}"}PCT_{market_sample_spec.share_spec[0]}Recapture_{_inv_sel}"
     )
     _my_fig_2dsg_savepath = DATA_DIR / f"{_base_name}_2DScatterGrid.pdf"
     print(f"Save 2D plot to, {_my_fig_2dsg_savepath!r}")
@@ -268,7 +268,12 @@ if __name__ == "__main__":
     market_sample_spec = dgl.MarketSampleSpec(
         sample_sz,
         r_bar,
-        share_spec=(dgl.SHRConstants.UNI, dgl.RECConstants.INOUT, DIST_PARMS_DEFAULT),
+        share_spec=dgl.ShareSpec(
+            dgl.RECConstants.INOUT,
+            dgl.SHRConstants.UNI,
+            DIST_PARMS_DEFAULT,
+            dgl.FCOUNT_WTS_DEFAULT,
+        ),
     )
 
     save_data_to_file_flag = False
