@@ -280,7 +280,7 @@ def sim_inv_cnts(
 
 def gen_guppi_arrays(
     _guppi_test_parms: Sequence[float],
-    _market_data: dgl.MarketSample,
+    _market_data: dgl.MarketsSample,
     _sim_inv_sel: tuple[
         isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
     ],

@@ -1,5 +1,5 @@
 """
-Functions to generate data for simulating antitrust and merger analysis.
+Routines to generate data for analyzing merger enforcement policy.
 
 """
 
@@ -27,17 +27,6 @@ FCOUNT_WTS_DEFAULT = (_nr := np.arange(1, 6)[::-1]) / _nr.sum()
 
 
 @enum.unique
-class SHRConstants(enum.StrEnum):
-    """Market share distributions."""
-
-    UNI = "Uniform"
-    DIR_FLAT = "Flat Dirichlet"
-    DIR_FLAT_CONSTR = "Flat Dirichlet - Constrained"
-    DIR_ASYM = "Asymmetric Dirichlet"
-    DIR_COND = "Conditional Dirichlet"
-
-
-@enum.unique
 class PRIConstants(tuple[bool, str | None], enum.ReprEnum):
     """Price specification.
 
@@ -49,6 +38,65 @@ class PRIConstants(tuple[bool, str | None], enum.ReprEnum):
     NEG = (False, "negative share-correlation")
     POS = (False, "positive share-correlation")
     CST = (False, "market-wide cost-symmetry")
+
+
+@enum.unique
+class SHRConstants(enum.StrEnum):
+    """Market share distributions."""
+
+    UNI = "Uniform"
+    DIR_FLAT = "Flat Dirichlet"
+    DIR_FLAT_CONSTR = "Flat Dirichlet - Constrained"
+    DIR_ASYM = "Asymmetric Dirichlet"
+    DIR_COND = "Conditional Dirichlet"
+
+
+@enum.unique
+class RECConstants(enum.StrEnum):
+    """Recapture rate - derivation methods."""
+
+    INOUT = "inside-out"
+    OUTIN = "outside-in"
+    FIXED = "proportional"
+
+
+class ShareSpec(NamedTuple):
+    """Market share specification
+
+    Notes
+    -----
+    If recapture is determined "outside-in", market shares cannot have
+    Uniform distribution.
+
+    If sample with varying firm counts is required, market shares must
+    be specified as having a supported Dirichlet distribution.
+
+    """
+
+    recapture_spec: RECConstants
+    """see RECConstants"""
+
+    dist_type: SHRConstants
+    """see SHRConstants"""
+
+    dist_parms: NDArray[np.float64] | None
+    """Parameters for tailoring market-share distribution
+
+    For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
+    for Beta distribution, shape parameters, defaults to `(1, 1)`;
+    for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;
+    for Dirichlet-type distributions, a vector of shape parameters of length
+    no less than the length of firm-count weights below; defaults depend on
+    type of Dirichlet-distribution specified.
+
+    """
+    firm_counts_prob_weights: NDArray[np.float64 | np.int64] | None
+    """relative or absolute frequencies of firm counts
+
+
+    Given frequencies are exogenous to generated market data sample;
+    defaults to FCOUNT_WTS_DEFAULT, which specifies firm-counts of 2 to 6
+    with weights in descending order from 5 to 1."""
 
 
 @enum.unique
@@ -70,13 +118,35 @@ class FM2Constants(enum.StrEnum):
     SYM = "symmetric"
 
 
-@enum.unique
-class RECConstants(enum.StrEnum):
-    """Recapture rate - derivation methods."""
+class PCMSpec(NamedTuple):
+    """Price-cost margin (PCM) specification
 
-    INOUT = "inside-out"
-    OUTIN = "outside-in"
-    FIXED = "proportional"
+    If price-cost margins are specified as having Beta distribution,
+    `dist_parms` is specified as a pair of positive, non-zero shape parameters of
+    the standard Beta distribution. Specifying shape parameters :code:`np.array([1, 1])`
+    is known equivalent to specifying uniform distribution over
+    the interval :math:`[0, 1]`. If price-cost margins are specified as having
+    Bounded-Beta distribution, `dist_parms` is specified as
+    the tuple, (`mean`, `std deviation`, `min`, `max`), where `min` and `max`
+    are lower- and upper-bounds respectively within the interval :math:`[0, 1]`.
+
+
+    """
+
+    dist_type: PCMConstants
+    """See PCMConstants"""
+
+    firm2_margin_restrictions: FM2Constants
+    """See FM2Constants"""
+
+    dist_parms: NDArray[np.float64] | None
+    """Parameter specification for tailoring PCM distribution
+
+    For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
+    for Beta distribution, shape parameters, defaults to `(1, 1)`;
+    for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;
+    for empirical distribution based on Damodaran margin data, optional, ignored
+    """
 
 
 @enum.unique
@@ -119,83 +189,15 @@ class SSZConstants(float, enum.ReprEnum):
     """When initial set of draws is not restricted in any way."""
 
 
-class ShareSpec(NamedTuple):
-    """Market share specification
-
-    Notes
-    -----
-    If recapture is determined "outside-in", market shares cannot have
-    Uniform distribution.
-
-    If sample with varying firm counts is required, market shares must
-    be specified as having a supported Dirichlet distribution.
-
-    """
-
-    recapture_spec: RECConstants
-    """see RECConstants"""
-
-    dist_type: SHRConstants
-    """see SHRConstants"""
-
-    dist_parms: NDArray[np.float64] | None
-    """Parameters for tailoring market-share distribution
-
-    For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
-    for Beta distribution, shape parameters, defaults to `(1, 1)`;
-    for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;
-    for Dirichlet-type distributions, a vector of shape parameters of length
-    no less than the length of firm-count weights below; defaults depend on
-    type of Dirichlet-distribution specified.
-
-    """
-    firm_counts_prob_weights: NDArray[np.float64 | np.int64] | None
-    """relative or absolute frequencies of firm counts
-
-
-    Given frequencies are exogenous to generated market data sample;
-    defaults to FCOUNT_WTS_DEFAULT, which specifies firm-counts of 2 to 6
-    with weights in descending order from 5 to 1."""
-
-
-class PCMSpec(NamedTuple):
-    """Price-cost margin (PCM) specification
-
-    If price-cost margins are specified as having Beta distribution,
-    `dist_parms` is specified as a pair of positive, non-zero shape parameters of
-    the standard Beta distribution. Specifying shape parameters :code:`np.array([1, 1])`
-    is known equivalent to specifying uniform distribution over
-    the interval :math:`[0, 1]`. If price-cost margins are specified as having
-    Bounded-Beta distribution, `dist_parms` is specified as
-    the tuple, (`mean`, `std deviation`, `min`, `max`), where `min` and `max`
-    are lower- and upper-bounds respectively within the interval :math:`[0, 1]`.
-
-
-    """
-
-    dist_type: PCMConstants = PCMConstants.UNI
-    """see PCMConstants"""
-
-    firm2_margin_restrictions: FM2Constants = FM2Constants.IID
-    """see FM2Constants"""
-
-    dist_parms: NDArray[np.float64] = DIST_PARMS_DEFAULT
-    """Parameter specification for tailoring PCM distribution
-    for Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
-    for Beta distribution, shape parameters, defaults to `(1, 1)`;
-    for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;
-    for empirical distribution based on Damodaran margin data, optional, ignored
-    """
-
-
 # share_spec dist_type validator:
 def _share_spec_validator(
     _instance: object, _attribute: attrs.Attribute, _value: NamedTuple, /
 ):
+    _r_bar = _instance.recapture_rate
     if _value.dist_type == SHRConstants.UNI:
         if _value.recapture_spec == RECConstants.OUTIN:
             raise ValueError(
-                f"Invalid recapture specification, {_value.recapture_spec} "
+                f"Invalid recapture specification, {_value.recapture_spec!r} "
                 "for market share specification with Uniform distribution. "
                 "Redefine the market-sample specification, modifying the ."
                 "market-share specification or the recapture specification."
@@ -209,6 +211,46 @@ def _share_spec_validator(
                 "uniformly distributed draws on the :math:`n+1` simplex "
                 "for firm-count, :math:`n`."
             )
+        #   Outside-in calibration only valid for Dir-distributed shares
+    elif _value.recapture_spec != RECConstants.OUTIN and (
+        _r_bar is None or not isinstance(_r_bar, float)
+    ):
+        raise ValueError(
+            f"Recapture specification, {_value.recapture_spec!r} requires that "
+            "the market sample specification inclues a recapture rate."
+        )
+
+
+def _pcm_spec_validator(
+    _instance: object, _attribute: attrs.Attribute, _value: NamedTuple, /
+) -> None:
+    if (
+        _instance.share_spec.recapture_spec == RECConstants.FIXED
+        and _value.firm2_margin_restrictions == FM2Constants.MNL
+    ):
+        raise ValueError(
+            "{} {} {}".format(
+                f'Specification of "recapture_spec", "{_value.recapture_spec}"',
+                "requires Firm 2 margin must have property, ",
+                f'"{FM2Constants.IID}" or "{FM2Constants.SYM}".',
+            )
+        )
+    elif np.array_equal(_value.dist_parms, DIST_PARMS_DEFAULT):
+        raise ValueError(
+            f"The distribution parameters, {DIST_PARMS_DEFAULT!r} "
+            "are not valid with margin distribution, {_dist_type_pcm!r}"
+        )
+    elif (
+        _value.dist_type == PCMConstants.BETA
+        and len(_value.dist_parms) != len(("max", "min"))
+    ) or (
+        _value.dist_type == PCMConstants.BETA_BND
+        and len(_value.dist_parms) != len(("mu", "sigma", "max", "min"))
+    ):
+        raise ValueError(
+            f"Given number, {len(_value.dist_parms)} of parameters "
+            f'for PCM with distribution, "{_value.dist_type}" is incorrect.'
+        )
 
 
 @attrs.define(slots=True, frozen=True)
@@ -222,29 +264,33 @@ class MarketSampleSpec:
     """market recapture rate
 
     Is None if market share specification includes
-    generation of outside good choice probabilities (OUTIN).
+    generation of outside good choice probabilities (RECConstants.OUTIN).
     """
     pr_sym_spec: PRIConstants = PRIConstants.SYM
-    """price specification"""
+    """Price specification, see PRIConstants"""
 
     share_spec: ShareSpec = attrs.field(
         kw_only=True,
         default=ShareSpec(SHRConstants.UNI, RECConstants.INOUT, None, None),
         validator=_share_spec_validator,
     )
-    """see definition of ShareSpec"""
+    """See definition of ShareSpec"""
 
     pcm_spec: PCMSpec = attrs.field(
         kw_only=True,
         default=PCMSpec(PCMConstants.UNI, FM2Constants.IID, DIST_PARMS_DEFAULT),
+        validator=_pcm_spec_validator,
     )
+    """See definition of PCMSpec"""
+
     hsr_filing_test_type: SSZConstants = attrs.field(
         kw_only=True, default=SSZConstants.ONE
     )
+    """Method for modeling HSR filing threholds, see SSZConstants"""
 
 
-class MarketSample(NamedTuple):
-    """Container for generated market data sample."""
+class MarketsSample(NamedTuple):
+    """Container for generated markets data sample."""
 
     frmshr_array: NDArray[np.float64]
     """Merging-firm shares (with two merging firms)"""
@@ -253,20 +299,24 @@ class MarketSample(NamedTuple):
     """Merging-firms' prices (normalized to 1, in default specification)"""
 
     price_array: NDArray[np.float64]
-    """Number of firms in market"""
+    """Merging-firms' price-cost margins (PCM)"""
 
     fcounts: NDArray[np.int64]
+    """Number of firms in market"""
+
+    ratio_choice_prob_to_mktshr: NDArray[np.float64]
     """
     One (1) minus probability that the outside good is chosen
 
     Converts market shares to choice probabilities by multiplication.
     """
 
-    ratio_choice_prob_to_mktshr: NDArray[np.float64]
-    """"""
-
     nth_firm_share: NDArray[np.float64]
-    """"""
+    """Market-share of n-th firm
+
+    Relevant for testing for draws the do or
+    do not meet HSR filing thresholds.
+    """
 
     divr_array: NDArray[np.float64]
     """Diversion ratio between the merging firms"""
@@ -279,42 +329,52 @@ class MarketSample(NamedTuple):
 
 
 class ShareDataSample(NamedTuple):
-    """Container forestimated market shares, and related."""
+    """Container for generated market shares.
+
+    Includes related measures of market structure
+    and aggregate purchase probability.
+    """
 
     mktshr_array: NDArray[np.float64]
+    """All-firm shares (with two merging firms)"""
+
     fcounts: NDArray[np.int64]
+    """All-firm-count for each draw"""
+
     nth_firm_share: NDArray[np.float64]
-    ratio_choice_prob_to_mktshr: NDArray[np.float64]
+    """Market-share of n-th firm"""
+
+    aggregate_purchase_prob: NDArray[np.float64]
+    """Converts market shares to choice probabilities by multiplication."""
 
 
 class PriceDataSample(NamedTuple):
     """Container for generated price array, and related."""
 
     price_array: NDArray[np.float64]
+    """Merging-firms' prices"""
+
     hsr_filing_test: NDArray[np.bool_]
-
-
-class DivrDataSample(NamedTuple):
-    """Container for estimated diversion ratio array, and related."""
-
-    divr_array: NDArray[np.float64]
-    ratio_choice_prob_to_mktshr: NDArray[np.float64]
+    """Flags draws as meeting HSR filing thresholds or not"""
 
 
 class MarginDataSample(NamedTuple):
     """Container for generated margin array and related MNL test array."""
 
     pcm_array: NDArray[np.float64]
+    """Merging-firms' PCMs"""
+
     mnl_test_array: NDArray[np.bool_]
-    """In-feasible observations as False
+    """Flags infeasible observations as False and rest as True
 
     Applying restrictions from Bertrand-Nash oligopoly
-    with MNL demand results in draws of Firm 2
-    price-cost margin lying outside the feabile interval,
-    :math:`[0, 1]`. These draws are flagged as False
-    in :code:`mnl_test_array` while draws with PCM values
-    within the feasible range are flagged as True. Used
-    from filtering-out draws with infeasible PCM.
+    with MNL demand results in draws of Firm 2 PCM falling
+    outside the feabile interval,:math:`[0, 1]`, depending
+    on the configuration of merging firm shares. Such draws
+    are are flagged as infeasible (False)in :code:`mnl_test_array` while
+    draws with PCM values within the feasible range are
+    flagged as True. Used from filtering-out draws with
+    infeasible PCM.
     """
 
 
@@ -324,7 +384,7 @@ def gen_market_sample(
     *,
     seed_seq_list: list[SeedSequence] | None = None,
     nthreads: int = 16,
-) -> MarketSample:
+) -> MarketsSample:
     """
     Generate share, diversion ratio, price, and margin data based on supplied parameters
 
@@ -361,15 +421,6 @@ def gen_market_sample(
     _recapture_spec, _dist_type_mktshr, _, _ = _mkt_sample_spec.share_spec
     _, _dist_firm2_pcm, _ = _mkt_sample_spec.pcm_spec
     _hsr_filing_test_type = _mkt_sample_spec.hsr_filing_test_type
-
-    if _recapture_spec == RECConstants.FIXED and _dist_firm2_pcm == FM2Constants.MNL:
-        raise ValueError(
-            "{} {} {}".format(
-                f'Specification of "recapture_spec", "{_recapture_spec}"',
-                "requires Firm 2 margin be distributed, ",
-                f'"{FM2Constants.IID}" or "{FM2Constants.SYM}".',
-            )
-        )
 
     (
         _mktshr_rng_seed_seq,
@@ -416,7 +467,7 @@ def gen_market_sample(
         for _f in (
             _mktshr_data.mktshr_array,
             _mktshr_data.fcounts,
-            _mktshr_data.ratio_choice_prob_to_mktshr,
+            _mktshr_data.aggregate_purchase_prob,
             _mktshr_data.nth_firm_share,
             _price_data.price_array,
         )
@@ -424,16 +475,6 @@ def gen_market_sample(
     del _mktshr_data, _price_data
 
     # Calculate diversion ratios
-    if _recapture_spec == RECConstants.OUTIN:
-        #   Outside-in calibration only valid for Dir-distributed shares
-        if not _dist_type_mktshr.name.startswith("DIR_"):
-            raise ValueError(
-                "{} {} {}".format(
-                    f"Value of _recapture_spec, {_recapture_spec}",
-                    " is invalid. Must be a Dirichlet-type ",
-                    f"distribution among, {SHRConstants.__dict__['_members_']!r}",
-                )
-            )
     _divr_array = gen_divr_array(
         _mktshr_array[:, :2],
         _mkt_sample_spec_here.recapture_rate,
@@ -483,7 +524,7 @@ def gen_market_sample(
         _hhi_delta + np.einsum("ij,ij->i", _mktshr_array, _mktshr_array)[:, None]
     )
 
-    return MarketSample(
+    return MarketsSample(
         _frmshr_array,
         _pcm_array,
         _price_array,
@@ -576,22 +617,9 @@ def _gen_share_data(
     _ssz = _mkt_sample_spec.sample_size
 
     _r_bar = _mkt_sample_spec.recapture_rate
-    if _recapture_spec != RECConstants.OUTIN and (
-        _r_bar is None or not isinstance(_r_bar, float)
-    ):
-        raise ValueError(
-            "The market sample specification must inclued a recapture rate."
-        )
 
     match _dist_type_mktshr:
         case SHRConstants.UNI:
-            if _recapture_spec == RECConstants.OUTIN:
-                raise ValueError(
-                    f"Invalid recapture specification, {_recapture_spec} "
-                    "for market share specification with Uniform distribution. "
-                    "Redefine the market-sample specification, modifying the ."
-                    "market-share specification or the recapture specification."
-                )
             _mkt_share_sample = _gen_market_shares_uniform(
                 _ssz, _dist_parms_mktshr, _mktshr_rng_seed_seq, _nthreads
             )
@@ -805,7 +833,7 @@ def _gen_market_shares_dirichlet_multisample(
             "constant",
         )
         _ratio_choice_prob_to_mktshr[_fcounts_match_rows] = (
-            _mktshr_sample_f.ratio_choice_prob_to_mktshr
+            _mktshr_sample_f.aggregate_purchase_prob
         )
         _nth_firm_share[_fcounts_match_rows] = _mktshr_sample_f.nth_firm_share
 
@@ -1086,22 +1114,7 @@ def _gen_pcm_data(
             # Error-checking (could move to validators in definition of MarketSampleSpec)
             if _dist_parms is None:
                 _dist_parms = np.ones(2, np.float64)
-            elif np.array_equal(_dist_parms, DIST_PARMS_DEFAULT):
-                raise ValueError(
-                    f"The distribution parameters, {DIST_PARMS_DEFAULT!r} "
-                    "are not valid with margin distribution, {_dist_type_pcm!r}"
-                )
-            elif (
-                _dist_type_pcm == PCMConstants.BETA
-                and len(_dist_parms_pcm) != len(("max", "min"))
-            ) or (
-                _dist_type_pcm == PCMConstants.BETA_BND
-                and len(_dist_parms_pcm) != len(("mu", "sigma", "max", "min"))
-            ):
-                raise ValueError(
-                    f"Given number, {len(_dist_parms_pcm)} of parameters "
-                    f'for PCM with distribution, "{_dist_type_pcm}" is incorrect.'
-                )
+
             # PRNG setup
             if _dist_type_pcm == PCMConstants.BETA_BND:  # Bounded beta
                 _dist_parms = beta_located_bound(_dist_parms_pcm)
@@ -1122,7 +1135,7 @@ def _gen_pcm_data(
         _pcm_array = (_beta_max - _beta_min) * _pcm_array + _beta_min
         del _beta_min, _beta_max
 
-    if _dist_firm2_pcm == FM2Constants.MNL and _recapture_spec != RECConstants.FIXED:
+    if _dist_firm2_pcm == FM2Constants.MNL:
         # Impose FOCs from profit-maximization with MNL demand
         _purchprob_array = _ratio_choice_prob_to_mktshr * _frmshr_array
 
@@ -1179,7 +1192,7 @@ def beta_located_bound(_dist_parms: NDArray[np.floating], /) -> NDArray[np.float
 
 
     Recover the r.v.s as
-    :math:`\min + (\max - \min) \cdot \symup{\N{GREEK CAPITAL LETTER BETA}}(a, b)`,
+    :math:`\min + (\max - \min) \cdot \symup{Β}(a, b)`,
     with `a` and `b` calculated from the specified mean (:math:`\mu`) and
     variance (:math:`\sigma`). [7]_
 
@@ -1199,7 +1212,7 @@ def beta_located_bound(_dist_parms: NDArray[np.floating], /) -> NDArray[np.float
     References
     ----------
     .. [7] NIST. https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm
-    """
+    """  # noqa: RUF002
 
     _bmu, _bsigma, _bmin, _bmax = _dist_parms
     return _beta_located((_bmu - _bmin) / (_bmax - _bmin), _bsigma / (_bmax - _bmin))

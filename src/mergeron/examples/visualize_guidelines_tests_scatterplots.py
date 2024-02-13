@@ -38,7 +38,7 @@ blosc_filters = ptb.Filters(
 
 
 def gen_plot_data(
-    _market_data: dgl.MarketSample,
+    _market_data: dgl.MarketsSample,
     _g_bar: float,
     _pcm_firm2_star: float = 0.30,
     _inv_sel: gtl.UPPTestSpec = (
