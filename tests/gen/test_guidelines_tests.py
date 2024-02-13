@@ -82,9 +82,10 @@ def test_clearance_rate_calcs() -> None:
         10**8,
         0.80,
         dgl.PRIConstants.SYM,
-        share_spec=(
-            dgl.SHRConstants.DIR_FLAT,
+        share_spec=dgl.ShareSpec(
             dgl.RECConstants.FIXED,
+            dgl.SHRConstants.DIR_FLAT,
+            None,
             np.array((133, 184, 134, 52, 32, 10, 12, 4, 3)),
         ),
     )
