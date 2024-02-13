@@ -78,10 +78,9 @@ def inv_stats_sim_setup(
 
     _sample_spec_here = evolve(
         _sample_spec,
-        share_spec=dgl.ShareSpec(
-            dgl.RECConstants.INOUT,
+        share_spec=(
             dgl.SHRConstants.DIR_FLAT,
-            None,
+            dgl.RECConstants.INOUT,
             _inv_cnts_obs_byfirmcount_array[:-1, 1],
         ),
     )
@@ -388,13 +387,11 @@ if __name__ == "__main__":
                 else GuidelinesStandards(1992).presumption[2:]
             )
 
-            mkt_sample_spec = dgl.MarketSampleSpec(
+            ind_sample_spec = dgl.MarketSampleSpec(
                 sample_sz_base,
                 clrenf_parm_vec[0],
                 pr_sym_spec,
-                pcm_spec=dgl.PCMSpec(
-                    pcm_dist_type, dgl.FM2Constants.MNL, pcm_dist_parms
-                ),
+                pcm_spec=(pcm_dist_type, dgl.FM2Constants.MNL, pcm_dist_parms),
                 hsr_filing_test_type=dgl.SSZConstants.HSR_NTH,
             )
 
@@ -409,7 +406,7 @@ if __name__ == "__main__":
                 study_period,
                 merger_class,
                 clrenf_parm_vec,
-                mkt_sample_spec,
+                ind_sample_spec,
                 inv_stats_kwargs,
             )
 
