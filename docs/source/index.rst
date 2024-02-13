@@ -2,7 +2,6 @@
 
 .. toctree::
    :caption: Contents
-   :maxdepth: 4
 
 .. toctree::
    :caption: API Reference
@@ -11,7 +10,6 @@
 
 .. toctree::
    :caption: License
-   :maxdepth: 1
 
    license
 

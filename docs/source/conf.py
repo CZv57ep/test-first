@@ -27,23 +27,23 @@ version_dict = semver.parse(mergeron.__version__)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "mergeron"
-copyright = "2023, S. Murthy Kambhampaty"
+copyright = "2023--2024, S. Murthy Kambhampaty"
 author = "S. Murthy Kambhampaty"
 version = "{major}.{minor}".format(**version_dict)
 release = "{major}.{minor}.{patch}".format(**version_dict)
-logo = "mergeron_logo.pdf"
+html_logo = "mergeron-logo.svg"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
     "sphinx.ext.autodoc",
-    "autoapi.extension",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
     "enum_tools.autoenum",
     "sphinx_autodoc_typehints",
+    "autoapi.extension",
     "sphinx_immaterial",
 ]
 
@@ -68,14 +68,36 @@ always_document_param_types = False
 typehints_document_rtype = True
 typehints_use_rtype = False
 
-templates_path = ["_templates"]
+# templates_path = ["_templates"]
 autoapi_template_dir = "_autoapi_templates"
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
+# https://jbms.github.io/sphinx-immaterial/customization.html
+# https://github.com/jbms/sphinx-immaterial/issues/25
 html_theme = "sphinx_immaterial"  # "alabaster" "furo" "pydata_sphinx_theme"
-html_theme_options = {"navigation_with_keys": False}
+html_theme_options = {
+    "navigation_with_keys": False,
+    "features": ["navigation.top", "navigation.tracking", "toc.follow"],
+    "palette": [
+        {
+            "media": "(prefers-color-scheme: light)",
+            "scheme": "default",
+            "toggle": {
+                "icon": "material/toggle-switch-off-outline",
+                "name": "Switch to dark mode",
+            },
+        },
+        {
+            "media": "(prefers-color-scheme: dark)",
+            "scheme": "slate",
+            "toggle": {
+                "icon": "material/toggle-switch",
+                "name": "Switch to light mode",
+            },
+        },
+    ],
+}
 
 html_static_path = ["_static"]
 html_title = f"{project} {version}"
