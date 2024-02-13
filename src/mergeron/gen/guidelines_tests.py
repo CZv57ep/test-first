@@ -165,7 +165,7 @@ def sim_inv_cnts(
 
     _invalid_array_names = (
         ("fcounts", "choice_prob_outgd", "nth_firm_share", "hhi_post")
-        if _mkt_sample_spec.share_spec[0] == "Uniform"
+        if _mkt_sample_spec.share_spec.dist_type == "Uniform"
         else ()
     )
 
@@ -192,7 +192,7 @@ def sim_inv_cnts(
     # Clearance/enforcement counts --- by firm count
     # Accumulate firm_count, numobs, num_gmbound, num_gsf, num_cbound, num_ibound
     _stats_rowlen = 6
-    _firm_counts_prob_weights = _mkt_sample_spec.share_spec[-1]
+    _firm_counts_prob_weights = _mkt_sample_spec.share_spec.firm_counts_prob_weights
     _max_firm_count = (
         len(_firm_counts_prob_weights)
         if hasattr(_firm_counts_prob_weights, "__len__")
