@@ -1,33 +1,31 @@
 """
-Functions to format summary data on merger enforcement patterns.
+Routines to format and print summary data on merger enforcement patterns.
 
 """
 
-from __future__ import annotations
+from importlib.metadata import version
+
+from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 
 import enum
 from collections.abc import Mapping
-from importlib import metadata
 from pathlib import Path
 from types import SimpleNamespace
 from typing import TypeVar
 
-import msgpack_numpy as m  # type: ignore
 import numpy as np
-import re2 as re
+import re2 as re  # type: ignore
 from jinja2 import Environment, FileSystemLoader, Template, select_autoescape
 from numpy.typing import NBitBase, NDArray
-from scipy.interpolate import interp1d
+from scipy.interpolate import interp1d  # type: ignore
 
-from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
 from ..core import ftc_merger_investigations_data as fid  # noqa: TID252
 from ..core.proportions_tests import propn_ci  # noqa: TID252
 
-m.patch()
-
-__version__ = metadata.version(_PKG_NAME)
-
-B = TypeVar("B", bound=NBitBase)
+T = TypeVar("T", bound=NBitBase)
 
 
 @enum.unique
@@ -396,7 +394,7 @@ def table_no_lku(
     return _tno
 
 
-def inv_cnts_byfirmcount(_cnts_array: NDArray[np.integer[B]], /) -> NDArray[np.int64]:
+def inv_cnts_byfirmcount(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
     _ndim_in = 1
     return np.row_stack([
         np.concatenate([
@@ -407,7 +405,7 @@ def inv_cnts_byfirmcount(_cnts_array: NDArray[np.integer[B]], /) -> NDArray[np.i
     ])
 
 
-def inv_cnts_bydelta(_cnts_array: NDArray[np.integer[B]], /) -> NDArray[np.int64]:
+def inv_cnts_bydelta(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
     _ndim_in = 2
     return np.row_stack([
         np.concatenate([
@@ -418,7 +416,7 @@ def inv_cnts_bydelta(_cnts_array: NDArray[np.integer[B]], /) -> NDArray[np.int64
     ])
 
 
-def inv_cnts_byconczone(_cnts_array: NDArray[np.integer[B]], /) -> NDArray[np.int64]:
+def inv_cnts_byconczone(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
     # Prepare to tag clearance stats by presumption zone
     _hhi_zone_post_ranged = hhi_zone_post_ranger(_cnts_array[:, 0] / 1e4)
     _hhi_delta_ranged = hhi_delta_ranger(_cnts_array[:, 1] / 1e4)
@@ -490,7 +488,7 @@ def inv_cnts_byconczone(_cnts_array: NDArray[np.integer[B]], /) -> NDArray[np.in
 
 
 def latex_tbl_inv_stats_1dim(
-    _inparr: NDArray[np.integer[B]] | NDArray[np.floating[B]],
+    _inparr: NDArray[np.integer[T]] | NDArray[np.floating[T]],
     _totals_row: int | None = None,
     /,
     *,
@@ -542,7 +540,7 @@ def latex_tbl_inv_stats_1dim(
 
 
 def latex_tbl_inv_stats_byzone(
-    _inparr: NDArray[np.integer[B]] | NDArray[np.floating[B]],
+    _inparr: NDArray[np.integer[T]] | NDArray[np.floating[T]],
     _totals_row: int | None = None,
     /,
     *,
@@ -609,8 +607,8 @@ def latex_tbl_inv_stats_byzone(
 
 
 def _stats_formatted_row(
-    _stats_row_cnt: NDArray[np.integer[B]],
-    _stats_row_tot: NDArray[np.integer[B]],
+    _stats_row_cnt: NDArray[np.integer[T]],
+    _stats_row_tot: NDArray[np.integer[T]],
     _return_type_sel: StatsReturnSelector,
     /,
 ) -> list[list[str]]:

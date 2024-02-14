@@ -1,12 +1,18 @@
 """
-Functions to generate a sample of mergers and to estimate
-intrinsic clearnace rates and intrinsic enforcement rates.
+Routines to estimateintrinsic clearnace rates and intrinsic enforcement rates
+from generated market data.
 
 """
 
+from importlib.metadata import version
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
+
 import enum
 from collections.abc import Mapping, Sequence
-from importlib import metadata
 from pathlib import Path
 from typing import Any, Literal, NamedTuple, TypeAlias
 
@@ -17,11 +23,8 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from .. import _PKG_NAME  # noqa: TID252
 from . import data_generation as dgl
 from . import investigations_stats as isl
-
-__version__ = metadata.version(_PKG_NAME)
 
 mod_path = Path(__file__)
 data_path = Path.home() / mod_path.parent.stem
@@ -87,18 +90,15 @@ def sim_inv_cnts_ll(
     # Crate a copy, to avoid side effects in the outer scope
     _mkt_sample_spec_here = evolve(_mkt_sample_spec, sample_size=_subsample_sz)
 
+    _rng_seed_seq_list = [None] * _iter_count
     if _sim_inv_cnts_kwargs:
-        if (_sseql := _sim_inv_cnts_kwargs.get("seed_seq_list", None)) is None:
-            _rng_seed_seq_list = [None] * _iter_count
-        else:
+        if _sseql := _sim_inv_cnts_kwargs.get("seed_seq_list", None):
             _rng_seed_seq_list = list(
                 zip(*[g.spawn(_iter_count) for g in _sseql], strict=True)  # type: ignore
             )
 
         _sim_inv_cnts_ll_kwargs = {
-            _k: _sim_inv_cnts_kwargs[_k]
-            for _k in _sim_inv_cnts_kwargs
-            if _k != "seed_seq_list"
+            _k: _v for _k, _v in _sim_inv_cnts_kwargs.items() if _k != "seed_seq_list"
         }
     else:
         _sim_inv_cnts_ll_kwargs = {}
@@ -192,12 +192,13 @@ def sim_inv_cnts(
     # Clearance/enforcement counts --- by firm count
     # Accumulate firm_count, numobs, num_gmbound, num_gsf, num_cbound, num_ibound
     _stats_rowlen = 6
-    _firm_counts_prob_weights = _mkt_sample_spec.share_spec.firm_counts_prob_weights
-    _max_firm_count = (
-        len(_firm_counts_prob_weights)
-        if hasattr(_firm_counts_prob_weights, "__len__")
-        else 9
+    _firm_counts_prob_weights: NDArray[np.float64 | np.int64] = (
+        dgl.FCOUNT_WTS_DEFAULT
+        if _mkt_sample_spec.share_spec.firm_counts_prob_weights is None
+        else _mkt_sample_spec.share_spec.firm_counts_prob_weights
     )
+    _max_firm_count = len(_firm_counts_prob_weights)
+
     _inv_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
     for _firm_cnt in 2 + np.arange(_max_firm_count):
         _firm_count_test = _fcounts == _firm_cnt

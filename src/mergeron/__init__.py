@@ -1,9 +1,9 @@
-from importlib import metadata
+from importlib.metadata import version
 from pathlib import Path
 
 _PKG_NAME: str = Path(__file__).parent.stem
 
-__version__ = metadata.version(_PKG_NAME)
+__version__ = version(_PKG_NAME)
 
 DATA_DIR: Path = Path.home() / _PKG_NAME
 """

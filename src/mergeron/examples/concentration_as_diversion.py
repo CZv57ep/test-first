@@ -20,7 +20,6 @@ systems.
 
 from __future__ import annotations
 
-import re
 from collections import OrderedDict
 from collections.abc import Mapping, Sequence
 from datetime import datetime
@@ -29,13 +28,13 @@ from pathlib import Path
 from typing import Any, Literal
 
 import matplotlib.axis
-from joblib import Parallel, cpu_count, delayed  # type: ignore
+from joblib import Parallel, cpu_count, delayed
 from numpy import pi
-from xlsxwriter import Workbook  # type: ignore
+from xlsxwriter import Workbook
 
 import mergeron.core.excel_helper as xlh
 import mergeron.core.guidelines_standards as gsf
-import mergeron.ext.tol_colors as ptcolor  # type: ignore
+import mergeron.ext.tol_colors as ptcolor
 
 mod_path = Path(__file__)
 data_path = Path.home() / mod_path.parents[1].stem
@@ -263,11 +262,8 @@ def plot_and_save_boundary_coords(
     gso = gsf.GuidelinesStandards(_gpubyr)
 
     _hmg_standards_strings = {
-        "distributed": ("presumption", "inferred_presumption"),  # "safeharbor",
-        "collected": (
-            "inferred_presumption",
-            "inferred_presumption",
-        ),  # , "presumption"
+        "distributed": ("presumption", "inferred presumption", "safeharbor"),
+        "collected": ("safeharbor", "inferred_presumption", "presumption"),
     }.get(layout, ())
     if not _hmg_standards_strings:
         raise ValueError(
@@ -278,7 +274,7 @@ def plot_and_save_boundary_coords(
     # Initialize plot area
     _plt, _my_fig1, _ax1, _set_axis_def = gsf.boundary_plot()
 
-    _divr_agg_methods = ("OSWAG", "SAG")  # , "CPSWAG")
+    _divr_agg_methods = ("OSWAG", "SAG", "CPSWAG")
 
     for _divr_agg_method, _hmg_standards_str in zip(
         _divr_agg_methods, _hmg_standards_strings, strict=True
@@ -350,7 +346,7 @@ def plot_and_save_boundary_coords(
         _fig_leg.set_in_layout(False)
 
         for _bndry_name in _bndry_data_dict:
-            if _divr_agg_method != "OSWAG" and _bndry_name == "ΔHHI":
+            if _bndry_name == "ΔHHI":  # _divr_agg_method != "OSWAG" and
                 continue
 
             boundary_data_to_worksheet(
@@ -620,5 +616,5 @@ if __name__ == "__main__":
             data_path.joinpath(rf"{mod_path.stem}_{gpubyr}_BoundaryCoordinates.xlsx")
         ) as xl_book:
             # tabulate_boundary_stats(gpubyr)
-            plot_and_save_boundary_coords(gpubyr, xl_book, layout="distributed")  # type: ignore
+            plot_and_save_boundary_coords(gpubyr, xl_book, layout="collected")  # type: ignore
             xl_book.worksheets()[0].activate()

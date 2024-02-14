@@ -3,8 +3,15 @@ Routines to generate data for analyzing merger enforcement policy.
 
 """
 
+from __future__ import annotations
+
+from importlib.metadata import version
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 import enum
-from importlib import metadata
 from typing import Literal, NamedTuple
 
 import attrs
@@ -12,15 +19,12 @@ import numpy as np
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from .. import _PKG_NAME  # noqa: TID252
 from ..core.damodaran_margin_data import resample_mgn_data  # noqa: TID252
 from ..core.pseudorandom_numbers import (  # noqa: TID252
     DIST_PARMS_DEFAULT,
     MultithreadedRNG,
     prng,
 )
-
-__version__ = metadata.version(_PKG_NAME)
 
 EMPTY_ARRAY_DEFAULT = np.zeros(2)
 FCOUNT_WTS_DEFAULT = (_nr := np.arange(1, 6)[::-1]) / _nr.sum()
@@ -37,7 +41,7 @@ class PRIConstants(tuple[bool, str | None], enum.ReprEnum):
     ZERO = (False, None)
     NEG = (False, "negative share-correlation")
     POS = (False, "positive share-correlation")
-    CST = (False, "market-wide cost-symmetry")
+    CSY = (False, "market-wide cost-symmetry")
 
 
 @enum.unique
@@ -191,8 +195,8 @@ class SSZConstants(float, enum.ReprEnum):
 
 # share_spec dist_type validator:
 def _share_spec_validator(
-    _instance: object, _attribute: attrs.Attribute, _value: NamedTuple, /
-):
+    _instance: MarketSampleSpec, _attribute: attrs.Attribute, _value: ShareSpec, /
+) -> None:
     _r_bar = _instance.recapture_rate
     if _value.dist_type == SHRConstants.UNI:
         if _value.recapture_spec == RECConstants.OUTIN:
@@ -222,7 +226,7 @@ def _share_spec_validator(
 
 
 def _pcm_spec_validator(
-    _instance: object, _attribute: attrs.Attribute, _value: NamedTuple, /
+    _instance: MarketSampleSpec, _attribute: attrs.Attribute, _value: PCMSpec, /
 ) -> None:
     if (
         _instance.share_spec.recapture_spec == RECConstants.FIXED
@@ -230,27 +234,30 @@ def _pcm_spec_validator(
     ):
         raise ValueError(
             "{} {} {}".format(
-                f'Specification of "recapture_spec", "{_value.recapture_spec}"',
+                f'Specification of "recapture_spec", "{_instance.share_spec.recapture_spec}"',
                 "requires Firm 2 margin must have property, ",
                 f'"{FM2Constants.IID}" or "{FM2Constants.SYM}".',
             )
         )
-    elif np.array_equal(_value.dist_parms, DIST_PARMS_DEFAULT):
-        raise ValueError(
-            f"The distribution parameters, {DIST_PARMS_DEFAULT!r} "
-            "are not valid with margin distribution, {_dist_type_pcm!r}"
-        )
-    elif (
-        _value.dist_type == PCMConstants.BETA
-        and len(_value.dist_parms) != len(("max", "min"))
-    ) or (
-        _value.dist_type == PCMConstants.BETA_BND
-        and len(_value.dist_parms) != len(("mu", "sigma", "max", "min"))
-    ):
-        raise ValueError(
-            f"Given number, {len(_value.dist_parms)} of parameters "
-            f'for PCM with distribution, "{_value.dist_type}" is incorrect.'
-        )
+    elif _value.dist_type.name.startswith("BETA"):
+        if _value.dist_parms is None:
+            pass
+        elif np.array_equal(_value.dist_parms, DIST_PARMS_DEFAULT):
+            raise ValueError(
+                f"The distribution parameters, {DIST_PARMS_DEFAULT!r} "
+                "are not valid with margin distribution, {_dist_type_pcm!r}"
+            )
+        elif (
+            _value.dist_type == PCMConstants.BETA
+            and len(_value.dist_parms) != len(("max", "min"))
+        ) or (
+            _value.dist_type == PCMConstants.BETA_BND
+            and len(_value.dist_parms) != len(("mu", "sigma", "max", "min"))
+        ):
+            raise ValueError(
+                f"Given number, {len(_value.dist_parms)} of parameters "
+                f'for PCM with distribution, "{_value.dist_type}" is incorrect.'
+            )
 
 
 @attrs.define(slots=True, frozen=True)
@@ -271,14 +278,14 @@ class MarketSampleSpec:
 
     share_spec: ShareSpec = attrs.field(
         kw_only=True,
-        default=ShareSpec(SHRConstants.UNI, RECConstants.INOUT, None, None),
+        default=ShareSpec(RECConstants.INOUT, SHRConstants.UNI, None, None),
         validator=_share_spec_validator,
     )
     """See definition of ShareSpec"""
 
     pcm_spec: PCMSpec = attrs.field(
         kw_only=True,
-        default=PCMSpec(PCMConstants.UNI, FM2Constants.IID, DIST_PARMS_DEFAULT),
+        default=PCMSpec(PCMConstants.UNI, FM2Constants.IID, None),
         validator=_pcm_spec_validator,
     )
     """See definition of PCMSpec"""
@@ -396,8 +403,9 @@ def gen_market_sample(
     for generating the relevant random variates:
     1.) quantity shares
     2.) price-cost margins
-    3.) firm-counts, from [2, 2 + len(firm_counts_prob_weights)] where relevant
-    4.) prices, if pr_sym_spec[1] and not pr_sym_spec[2]
+    3.) firm-counts, from :code:`[2, 2 + len(firm_counts_prob_weights)]`,
+    weighted by :code:`firm_counts_prob_weights`, where relevant
+    4.) prices, if :code:`pr_sym_spec == PRIConstants.ZERO`.
 
     Parameters
     ----------
@@ -543,37 +551,27 @@ def parse_seed_seq_list(
     _pr_sym_spec: PRIConstants,
     /,
 ) -> tuple[SeedSequence, SeedSequence, SeedSequence | None, SeedSequence | None]:
-    """Set up RNG seed sequences, to ensure independence of random streams.
-
-    We go through this step to ensure that seeded random generation of
-    market data is consistent with provided parameters
-    """
+    """Initialize RNG seed sequences to ensure independence of distinct random streams."""
     _fcount_rng_seed_seq: SeedSequence | None = None
     _pr_rng_seed_seq: SeedSequence | None = None
 
-    if not _pr_sym_spec or _pr_sym_spec in (PRIConstants.SYM, PRIConstants.CST):
-        _pr_rng_seed_seq = None
-    elif not _sseq_list:
-        _pr_rng_seed_seq = SeedSequence(pool_size=8)
-    else:
-        _pr_rng_seed_seq = _sseq_list.pop()
+    if _pr_sym_spec == PRIConstants.ZERO:
+        _pr_rng_seed_seq = _sseq_list.pop() if _sseq_list else SeedSequence(pool_size=8)
 
-    if _sseq_list:
-        if _dist_type_mktshr == SHRConstants.UNI:
-            _fcount_rng_seed_seq = None
-            _mktshr_rng_seed_seq, _pcm_rng_seed_seq = _sseq_list[:2]
-        else:
-            (_mktshr_rng_seed_seq, _pcm_rng_seed_seq, _fcount_rng_seed_seq) = (
-                _sseq_list[:3]
-            )
-    elif _dist_type_mktshr == SHRConstants.UNI:
+    if _dist_type_mktshr == SHRConstants.UNI:
         _fcount_rng_seed_seq = None
+        _seed_count = 2
         _mktshr_rng_seed_seq, _pcm_rng_seed_seq = (
-            SeedSequence(pool_size=8) for _ in range(2)
+            _sseq_list[:_seed_count]
+            if _sseq_list
+            else (SeedSequence(pool_size=8) for _ in range(_seed_count))
         )
     else:
-        _mktshr_rng_seed_seq, _pcm_rng_seed_seq, _fcount_rng_seed_seq = (
-            SeedSequence(pool_size=8) for _ in range(3)
+        _seed_count = 3
+        (_mktshr_rng_seed_seq, _pcm_rng_seed_seq, _fcount_rng_seed_seq) = (
+            _sseq_list[:_seed_count]
+            if _sseq_list
+            else (SeedSequence(pool_size=8) for _ in range(_seed_count))
         )
 
     return (
@@ -1100,9 +1098,11 @@ def _gen_pcm_data(
     _mnl_test_array = np.empty((len(_frmshr_array), 2), dtype=int)
 
     _beta_min, _beta_max = [None] * 2  # placeholder
+    _dist_parms = np.ones(2, np.float64)
     if _dist_type_pcm == PCMConstants.EMPR:
         _pcm_array = resample_mgn_data(
-            _pcm_array.shape, seed_sequence=_pcm_rng_seed_seq
+            _pcm_array.shape,  # type: ignore
+            seed_sequence=_pcm_rng_seed_seq,
         )
     else:
         _dist_type: Literal["Beta", "Uniform"] = _dist_type_pcm.value  # type: ignore
@@ -1112,8 +1112,8 @@ def _gen_pcm_data(
             )
         elif _dist_type_pcm.name.startswith("BETA"):
             # Error-checking (could move to validators in definition of MarketSampleSpec)
-            if _dist_parms is None:
-                _dist_parms = np.ones(2, np.float64)
+
+            _dist_parms = _dist_parms if _dist_parms_pcm is None else _dist_parms_pcm
 
             # PRNG setup
             if _dist_type_pcm == PCMConstants.BETA_BND:  # Bounded beta

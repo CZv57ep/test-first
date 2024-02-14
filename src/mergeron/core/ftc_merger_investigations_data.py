@@ -1,14 +1,20 @@
 """
-Functions to parse FTC Merger Investigations Data, downloading source documents
-as necessary.
+Routines to parse FTC Merger Investigations Data, downloading source documents
+as necessary
 
-NOTE: We avoid use of reported totals by range of HHI and delta from
-source data, to avoid potential minor inconsistencies.
+NOTES
+-----
+We drop reported row and column totals from source data for reducing stored data.
 
 """
 
+from importlib.metadata import version
+
+from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 from collections.abc import Mapping, Sequence
-from importlib import metadata
 from operator import itemgetter
 from pathlib import Path
 from types import MappingProxyType
@@ -24,11 +30,7 @@ from bs4 import BeautifulSoup
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
 
-from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
-
 m.patch()
-
-__version__ = metadata.version(_PKG_NAME)
 
 FTCDATA_DIR = DATA_DIR / "FTCData"
 if not FTCDATA_DIR.is_dir():

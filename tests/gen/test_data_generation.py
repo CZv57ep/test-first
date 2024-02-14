@@ -152,9 +152,8 @@ def test_gen_market_sample(
         _fcount_weights = None
         _test_func = _tfunc_sample_with_unrestricted_shares
     else:
-        _fcount_weights = (
-            dgl.FCOUNT_WTS_DEFAULT
-        )  # np.arange(1, 6)[::-1] / np.arange(1, 6).sum()
+        # np.arange(1, 6)[::-1] / np.arange(1, 6).sum()
+        _fcount_weights = dgl.FCOUNT_WTS_DEFAULT
         _shr_dist_parms = None
         _test_func = _tfunc_sample_with_dirichlet_shares
 
@@ -180,6 +179,7 @@ def test_gen_market_sample(
     # assert_array_equal((0, 0), (0, 0))
     # if _pcm_dist_firm2_test != dgl.FM2Constants.MNL:
     assert_array_equal(_array_to_test, _test_array)
+    del _mkt_sample_spec
     gc.collect()
 
 

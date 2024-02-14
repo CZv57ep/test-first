@@ -6,18 +6,22 @@ https://github.com/numpy/numpy/issues/16313.
 
 """
 
+from importlib.metadata import version
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 import concurrent.futures
 from collections.abc import Sequence
-from importlib import metadata
 from multiprocessing import cpu_count
-from pathlib import Path
-from typing import Literal
+from typing import Literal, TypeVar
 
 import numpy as np
 from numpy.random import PCG64DXSM, Generator, SeedSequence
-from numpy.typing import NDArray
+from numpy.typing import NBitBase, NDArray
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+T = TypeVar("T", bound=NBitBase)
 
 NTHREADS = 2 * cpu_count()
 DIST_PARMS_DEFAULT = np.array([0.0, 1.0])
@@ -117,7 +121,7 @@ class MultithreadedRNG:
         dist_type: Literal[
             "Beta", "Dirichlet", "Gaussian", "Normal", "Random", "Uniform"
         ] = "Uniform",
-        dist_parms: NDArray[np.floating] = DIST_PARMS_DEFAULT,
+        dist_parms: NDArray[np.floating[T]] = DIST_PARMS_DEFAULT,
         seed_sequence: SeedSequence | None = None,
         nthreads: int = NTHREADS,
     ):
@@ -206,7 +210,7 @@ class MultithreadedRNG:
         def _fill(
             _rng: np.random.Generator,
             _dist_type: str,
-            _dist_parms: NDArray[np.floating],
+            _dist_parms: NDArray[np.floating[T]],
             _out: NDArray[np.float64],
             _first: int,
             _last: int,

@@ -7,8 +7,13 @@ Functions to estimate confidence intervals for
 
 from __future__ import annotations
 
+from importlib.metadata import version
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 from collections.abc import Sequence
-from importlib import metadata
 from typing import Literal, NamedTuple, TypeVar
 
 import numpy as np
@@ -16,16 +21,12 @@ from numpy.typing import NBitBase, NDArray
 from scipy.optimize import OptimizeResult, root  # type: ignore
 from scipy.stats import beta, chi2, norm  # type: ignore
 
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = metadata.version(_PKG_NAME)
-
-B = TypeVar("B", bound=NBitBase)
+T = TypeVar("T", bound=NBitBase)
 
 
 def propn_ci(
-    _npos: NDArray[np.integer[B]] | int = 4,
-    _nobs: NDArray[np.integer[B]] | int = 10,
+    _npos: NDArray[np.integer[T]] | int = 4,
+    _nobs: NDArray[np.integer[T]] | int = 10,
     /,
     *,
     alpha: float = 0.05,
@@ -79,7 +80,7 @@ def propn_ci(
             )
 
     if not _nobs:
-        return (np.nan,) * 4
+        return (np.nan, np.nan, np.nan, np.nan)
 
     _raw_phat: NDArray[np.float64] | float = _npos / _nobs
     _est_phat: NDArray[np.float64] | float
@@ -130,7 +131,7 @@ def propn_ci(
 
 
 def propn_ci_multinomial(
-    _counts: NDArray[np.integer[B]],
+    _counts: NDArray[np.integer[T]],
     /,
     *,
     alpha: float = 0.05,
@@ -221,7 +222,7 @@ def propn_diff_ci(
     References
     ----------
 
-    .. [3] Agresti, A., & Caffo, B. (2000). Simple and Effective
+    .. [3] Agresti, A., & Caffo, T. (2000). Simple and Effective
        Confidence Intervals for Proportions and Differences of Proportions
        Result from Adding Two Successes and Two Failures.
        The American Statistician, 54(4), 280--288. https://doi.org/10.2307/2685779
@@ -245,7 +246,7 @@ def propn_diff_ci(
             )
 
     if not min(_nobs1, _nobs2):
-        return (np.nan,) * 4
+        return (np.nan, np.nan, np.nan, np.nan)
 
     match method:
         case "Agresti-Caffo":
@@ -410,7 +411,7 @@ def _propn_diff_chisq_mn(
 
     """
     if _counts is None:
-        _counts = np.ones(4)
+        _counts = [1] * 4
 
     _np1, _no1, _np2, _no2 = _counts
     _p1h, _p2h = _np1 / _no1, _np2 / _no2
@@ -441,7 +442,7 @@ def _propn_diff_chisq_mn(
 
 
 def propn_ci_diff_multinomial(
-    _counts: NDArray[np.integer[B]], /, *, alpha: float = 0.05
+    _counts: NDArray[np.integer[T]], /, *, alpha: float = 0.05
 ) -> NDArray[np.float64]:
     """Estimate confidence intervals of pair-wise differences in multinomial proportions
 
@@ -482,7 +483,7 @@ class MultinomialDiffTest(NamedTuple):
 
 
 def propn_diff_multinomial_chisq(
-    _counts: NDArray[np.integer[B]], /, *, alpha: float = 0.05
+    _counts: NDArray[np.integer[T]], /, *, alpha: float = 0.05
 ) -> MultinomialDiffTest:
     """Chi-square test for homogeneity of differences in multinomial proportions.
 

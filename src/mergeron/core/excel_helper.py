@@ -1,11 +1,18 @@
 """
-Defines helper functions for creating Excel workbooks using
+Routines for writing data from Python to fresh Excel workbooks using
 the third-party package, `xlsxwriter`.
+
+Includes a flexible system of defining cell formats.
 
 """
 
+from importlib.metadata import version
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 from collections.abc import Sequence
-from importlib import metadata
 from typing import Any, ClassVar
 
 import aenum  # type: ignore
@@ -13,14 +20,15 @@ import numpy as np
 import numpy.typing as npt
 import xlsxwriter  # type: ignore
 
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = metadata.version(_PKG_NAME)
-
 
 class CFmt(aenum.UniqueEnum):  # type: ignore
     """
-    Add formats for xlsxwriter.
+    Initialize cell formats for xlsxwriter.
+
+    The mappings included here, and unions, etc. of them
+    and any others added at runtime, will be rendered
+    as xlsxWriter.Workbook.Format objects for writing
+    cell values to formatted cells in a spreadsheet.
 
     See, https://xlsxwriter.readthedocs.io/format.html
     """
@@ -49,7 +57,7 @@ class CFmt(aenum.UniqueEnum):  # type: ignore
     BAR_FILL: ClassVar = {"pattern": 1, "bg_color": "dfeadf"}
     BOT_BORDER: ClassVar = {"bottom": 1, "bottom_color": "000000"}
     TOP_BORDER: ClassVar = {"top": 1, "top_color": "000000"}
-    HDR_BORDER = TOP_BORDER | BOT_BORDER
+    HDR_BORDER: ClassVar = TOP_BORDER | BOT_BORDER
 
 
 def matrix_to_sheet(

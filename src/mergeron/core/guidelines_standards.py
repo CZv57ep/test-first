@@ -1,21 +1,22 @@
 """
-Functions for defining and analyzing boundaries for Guidelines standards,
+Routines for defining and analyzing boundaries for Guidelines standards,
 with a canvas on which to draw boundaries for Guidelines standards.
 
 """
 
+from importlib.metadata import version
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 import decimal
 from dataclasses import dataclass
-from importlib import metadata
 from typing import Any, Final, Literal, TypeAlias
 
 import numpy as np
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
-
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = metadata.version(_PKG_NAME)
 
 mp.prec = 80
 mp.trap_complex = True
@@ -31,17 +32,17 @@ class GuidelinesStandards:
 
     Attributes
     ----------
-    pub_year: HMGPubYear
+    pub_year  # : HMGPubYear
         Year of publication of the U.S. Horizontal Merger Guidelines (HMG);
         1992, 2010, or 2023
-    safeharbor: tuple
+    safeharbor  # : tuple[float, ...]
         ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
         diversion ratio limit at ΔHHI safeharbor
-    inferred_presumption: tuple
+    inferred_presumption  # : tuple
         ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
         diversion ratio limit at enforcement margin for Guidelines
         presumption of harm, interpreted strictly
-    presumption: tuple
+    presumption  # : tuple
         ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
         diversion ratio limit at enforcement margin for Guidelines
         presumption of harm, as typically interpreted in the literature

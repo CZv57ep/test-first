@@ -9,14 +9,14 @@ All rights reserved.
 License:  Standard 3-clause BSD
 """
 
+__version__ = "2022.10"
+
 from collections import namedtuple
 from collections.abc import Callable, Sequence
 from typing import Literal
 
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap, to_rgba_array
-
-__version__ = "2024.003.00"  # datetime.now().strftime("%Y.%j.00")
 
 
 def discretemap(colormap: str, hexclrs: Sequence[str]) -> LinearSegmentedColormap:
@@ -57,7 +57,7 @@ class TOLcmaps:
         """ """
         # self.cmap: LinearSegmentedColormap | None = None
         self.cname: str = ""
-        self.namelist = (
+        self.namelist: Sequence[str] = (
             "sunset_discrete",
             "sunset",
             "nightfall_discrete",
@@ -653,7 +653,7 @@ class TOLcmaps:
 
 def tol_cmap(
     colormap: str | None = None, lut: int | None = None
-) -> tuple[str, ...] | LinearSegmentedColormap:
+) -> Sequence[str] | LinearSegmentedColormap:
     """
     Continuous and discrete color sets for ordered data.
 
@@ -690,7 +690,7 @@ Lcset = namedtuple(
 
 def tol_cset(  # noqa: PLR0911
     colorset: str | None = None,
-) -> tuple[str, ...] | Bcset | Hcset | Vcset | Muset | Mcset | Lcset:
+) -> Sequence[str] | Bcset | Hcset | Vcset | Muset | Mcset | Lcset:
     """
     Discrete color sets for qualitative data.
 
@@ -793,7 +793,7 @@ def main() -> None:
     #    plt.cm.register_cmap('rainbow_PuRd', tol_cmap('rainbow_PuRd'))
     #    plt.rc('image', cmap='rainbow_PuRd')
     # Show colorsets tol_cset(<scheme>).
-    schemes = tol_cset()
+    schemes: Sequence[str] = tol_cset()
     fig, axes = plt.subplots(ncols=len(schemes), figsize=(9, 3))
     fig.subplots_adjust(top=0.9, bottom=0.02, left=0.02, right=0.92)
     for ax, scheme in zip(axes, schemes):
@@ -808,10 +808,10 @@ def main() -> None:
     plt.show()
 
     # Show colormaps tol_cmap(<scheme>).
-    schemes = tol_cmap()
+    schemes: Sequence[str] = tol_cmap()  # type: ignore
     gradient = np.linspace(0, 1, 256)
     gradient = np.vstack((gradient, gradient))
-    fig, axes = plt.subplots(nrows=len(schemes))  # type: ignore
+    fig, axes = plt.subplots(nrows=len(schemes))
     fig.subplots_adjust(top=0.98, bottom=0.02, left=0.2, right=0.99)
     for ax, scheme in zip(axes, schemes):
         pos = list(ax.get_position().bounds)

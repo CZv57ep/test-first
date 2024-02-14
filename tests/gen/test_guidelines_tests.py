@@ -78,6 +78,7 @@ def test_clearance_rate_calcs() -> None:
         gtl.GUPPIWghtngSelector.MAX,
         None,
     )
+
     _ind_sample_spec = dgl.MarketSampleSpec(
         10**8,
         0.80,
@@ -85,7 +86,7 @@ def test_clearance_rate_calcs() -> None:
         share_spec=dgl.ShareSpec(
             dgl.RECConstants.FIXED,
             dgl.SHRConstants.DIR_FLAT,
-            None,
+            None,  # TODO: type-fix this, with None as default
             np.array((133, 184, 134, 52, 32, 10, 12, 4, 3)),
         ),
     )

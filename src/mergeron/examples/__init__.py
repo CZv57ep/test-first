@@ -1,4 +1,5 @@
-from importlib import metadata
-from pathlib import Path
+from importlib.metadata import version
 
-__version__ = metadata.version(Path(__file__).parents[1].stem)
+from .. import _PKG_NAME
+
+__version__ = version(_PKG_NAME)

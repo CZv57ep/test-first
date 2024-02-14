@@ -116,8 +116,8 @@ def plot_delta_boundaries(
 
         if _dh_bound == 100:
             _ax1.fill_between(
-                (0,) + _dh_dat_x + (100,),
-                (100,) + _dh_dat_y + (0,),
+                (0, *_dh_dat_x, 100),
+                (100, *_dh_dat_y, 0),
                 0,
                 edgecolor=None,
                 facecolor="#64bb64",
@@ -169,8 +169,8 @@ def plot_guppi_boundaries(  # noqa PLR0915
 
     _ax1.plot(_dh_dat_x, _dh_dat_y, linewidth=0.75, color="black", zorder=3)
     _ax1.fill_between(
-        (0,) + _dh_dat_x + (100,),
-        (100,) + _dh_dat_y + (0,),
+        (0, *_dh_dat_x, 100),
+        (100, *_dh_dat_y, 0),
         0,
         edgecolor=None,
         facecolor="#64bb64",
