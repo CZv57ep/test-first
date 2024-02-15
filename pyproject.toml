@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mergeron"
 # See ./get_version_str.py
-version = "2024.738929.1"
+version = "2024.738929.2"
 description = "Analysis of standards defined in Horizontal Merger Guidelines"
 keywords = [
     "merger policy analysis",
@@ -63,17 +63,14 @@ importlib-metadata = ">=7.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
-semver = ">=3.0.2"
-pytest = ">=8.0.0"
-mypy = ">=1.8.0"
-ruff = ">=0.2.1"
-sphinx = ">=7.2.6"
-sphinx-autodoc-typehints = ">=1.25.3"
-sphinx-toolbox = ">=3.5.0"
-numpy = ">=1.26.3"
-enum-tools = { extras = ["sphinx"], version = ">=0.11.0" }
-sphinx-autoapi = ">=3.0.0"
-sphinx-immaterial = ">=0.11.10"
+semver = ">=3.0"
+pytest = ">=8.0"
+mypy = ">=1.8"
+ruff = ">=0.2"
+sphinx = ">=7.2"
+sphinx-autodoc-typehints = ">=2.0.0"
+sphinx-autoapi = ">=3.0"
+sphinx-immaterial = ">=0.11"
 
 [build-system]
 requires = ["poetry-core"]
@@ -163,7 +160,10 @@ ignore = [
     "TCH001", # move application import into a type-checking block
     "TCH002", # move third-party import into a type-checking block
     "TCH003", # move third-party import into a type-checking block
-    "UP040",  # Use typing.TypeAlias till mypy implements PEP 695 type aliases
+    # Use typing.TypeAlias for now:
+    # mypy yet to implements PEP 695 type aliases;
+    # sphinx (as setup here) gives different results with TypeAlias and typing statement
+    "UP040",
 ]
 isort.split-on-trailing-comma = false
 
