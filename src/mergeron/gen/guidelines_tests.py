@@ -23,6 +23,7 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
+from ..core import guidelines_standards as gsf  # noqa: TID252
 from . import data_generation as dgl
 from . import investigations_stats as isl
 
@@ -32,7 +33,7 @@ data_path = Path.home() / mod_path.parent.stem
 ptb.parameters.MAX_NUMEXPR_THREADS = 8
 ptb.parameters.MAX_BLOSC_THREADS = 4
 
-SaveDataSpec: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, str]
+SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, str]
 
 
 @enum.unique
@@ -65,7 +66,7 @@ class UPPTests(NamedTuple):
 
 
 def sim_inv_cnts_ll(
-    _inv_parm_vec: Sequence[float],
+    _inv_parm_vec: gsf.GuidelinesSTD,
     _mkt_sample_spec: dgl.MarketSampleSpec,
     _sim_inv_cnts_kwargs: Mapping[str, Any],
     /,
@@ -136,7 +137,7 @@ def sim_inv_cnts_ll(
 
 
 def sim_inv_cnts(
-    _guppi_test_parms: Sequence[float],
+    _guppi_test_parms: gsf.GuidelinesSTD,
     _mkt_sample_spec: dgl.MarketSampleSpec,
     /,
     *,
@@ -144,16 +145,16 @@ def sim_inv_cnts(
         isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
     ],
     saved_array_name_suffix: str = "",
-    save_data_to_file: SaveDataSpec = False,
+    save_data_to_file: SaveData = False,
     seed_seq_list: list[SeedSequence] | None = None,
     nthreads: int = 16,
 ) -> tuple[NDArray[np.int64], NDArray[np.int64], NDArray[np.int64]]:
-    if _mkt_sample_spec.recapture_rate != _guppi_test_parms[0]:
+    if _mkt_sample_spec.recapture_rate != _guppi_test_parms.rec:
         raise ValueError(
             "{} {} {} {}".format(
                 f"Value, {_mkt_sample_spec.recapture_rate}",
                 "of recapture rate in the second positional argument",
-                f"must equal its value, {_guppi_test_parms[0]}",
+                f"must equal its value, {_guppi_test_parms.rec}",
                 "in the first positional argument.",
             )
         )
@@ -288,9 +289,11 @@ def gen_guppi_arrays(
     /,
     *,
     saved_array_name_suffix: str = "",
-    save_data_to_file: SaveDataSpec = False,
+    save_data_to_file: SaveData = False,
 ) -> UPPTests:
-    _r_bar, _g_bar, _divr_bar, _cmcr_bar, _ipr_bar = _guppi_test_parms
+    _r_bar, _g_bar, _divr_bar, _cmcr_bar, _ipr_bar = (
+        getattr(_guppi_test_parms, _f) for _f in ("rec", "guppi", "divr", "cmcr", "ipr")
+    )
 
     _inv_sel, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_inv_sel
 
@@ -416,7 +419,7 @@ def save_namedtuple_to_hdf5(
     _excl_attrs: Sequence[str] = (),
     /,
     *,
-    save_data_to_file: SaveDataSpec = False,
+    save_data_to_file: SaveData = False,
 ) -> None:
     if save_data_to_file:
         _, _h5_datafile, _h5_hier = save_data_to_file

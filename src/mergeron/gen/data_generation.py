@@ -27,7 +27,7 @@ from ..core.pseudorandom_numbers import (  # noqa: TID252
 )
 
 EMPTY_ARRAY_DEFAULT = np.zeros(2)
-FCOUNT_WTS_DEFAULT = (_nr := np.arange(1, 6)[::-1]) / _nr.sum()
+FCOUNT_WTS_DEFAULT = ((_nr := np.arange(1, 6)[::-1]) / _nr.sum()).astype(np.float64)
 
 
 @enum.unique
@@ -49,10 +49,30 @@ class SHRConstants(enum.StrEnum):
     """Market share distributions."""
 
     UNI = "Uniform"
+    """Uniform distribution over the 3-simplex"""
+
     DIR_FLAT = "Flat Dirichlet"
+    """Shape parameter for all merging-firm-shares is unity (1)"""
+
     DIR_FLAT_CONSTR = "Flat Dirichlet - Constrained"
+    """Impose minimum probablility weight on each firm-count
+
+    Only firm-counts with probability weight of no less than 3%
+    are included for data generation.
+    """
+
     DIR_ASYM = "Asymmetric Dirichlet"
+    """Share distribution for merging-firm shares has a higher peak share
+
+    Shape parameter for merging-firm-share is 2.5, and 1.0 for all others.
+    """
+
     DIR_COND = "Conditional Dirichlet"
+    """Shape parameters for non-merging firms is proportional
+
+    Shape parameters for merging-firm-share are 2.0 each; and
+    are equiproportional and add to 2.0 for all non-merging-firm-shares.
+    """
 
 
 @enum.unique
@@ -299,39 +319,39 @@ class MarketSampleSpec:
 class MarketsSample(NamedTuple):
     """Container for generated markets data sample."""
 
-    frmshr_array: NDArray[np.float64]
+    frmshr_array: NDArray[np.floating]
     """Merging-firm shares (with two merging firms)"""
 
-    pcm_array: NDArray[np.float64]
+    pcm_array: NDArray[np.floating]
     """Merging-firms' prices (normalized to 1, in default specification)"""
 
-    price_array: NDArray[np.float64]
+    price_array: NDArray[np.floating]
     """Merging-firms' price-cost margins (PCM)"""
 
-    fcounts: NDArray[np.int64]
+    fcounts: NDArray[np.integer]
     """Number of firms in market"""
 
-    ratio_choice_prob_to_mktshr: NDArray[np.float64]
+    ratio_choice_prob_to_mktshr: NDArray[np.floating]
     """
     One (1) minus probability that the outside good is chosen
 
     Converts market shares to choice probabilities by multiplication.
     """
 
-    nth_firm_share: NDArray[np.float64]
+    nth_firm_share: NDArray[np.floating]
     """Market-share of n-th firm
 
     Relevant for testing for draws the do or
     do not meet HSR filing thresholds.
     """
 
-    divr_array: NDArray[np.float64]
+    divr_array: NDArray[np.floating]
     """Diversion ratio between the merging firms"""
 
-    hhi_post: NDArray[np.float64]
+    hhi_post: NDArray[np.floating]
     """Post-merger change in Herfindahl-Hirschmann Index (HHI)"""
 
-    hhi_delta: NDArray[np.float64]
+    hhi_delta: NDArray[np.floating]
     """Change in HHI from combination of merging firms"""
 
 
@@ -462,32 +482,26 @@ def gen_market_sample(
         _pr_rng_seed_seq,
     )
 
-    (
-        _mktshr_array,
-        _fcounts,
-        _ratio_choice_prob_to_mktshr,
-        _nth_firm_share,
-        _price_array,
-    ) = (
-        _f[_price_data.hsr_filing_test]  # type: ignore
-        if _hsr_filing_test_type != SSZConstants.ONE
-        else _f
-        for _f in (
-            _mktshr_data.mktshr_array,
-            _mktshr_data.fcounts,
-            _mktshr_data.aggregate_purchase_prob,
-            _mktshr_data.nth_firm_share,
-            _price_data.price_array,
-        )
-    )
+    _mktshr_array = _mktshr_data.mktshr_array
+    _fcounts = _mktshr_data.fcounts
+    _aggregate_purchase_prob = _mktshr_data.aggregate_purchase_prob
+    _nth_firm_share = _mktshr_data.nth_firm_share
+    _price_array = _price_data.price_array
+    _hsr_filing_test = _price_data.hsr_filing_test
     del _mktshr_data, _price_data
+    if _hsr_filing_test_type != SSZConstants.ONE:
+        _mktshr_array = _mktshr_array[_hsr_filing_test]
+        _fcounts = _fcounts[_hsr_filing_test]
+        _aggregate_purchase_prob = _aggregate_purchase_prob[_hsr_filing_test]
+        _nth_firm_share = _nth_firm_share[_hsr_filing_test]
+        _price_array = _price_array[_hsr_filing_test]
 
     # Calculate diversion ratios
     _divr_array = gen_divr_array(
         _mktshr_array[:, :2],
-        _mkt_sample_spec_here.recapture_rate,
+        _mkt_sample_spec_here.recapture_rate or 0.8,
         _recapture_spec,
-        _ratio_choice_prob_to_mktshr,
+        _aggregate_purchase_prob,
     )
 
     # Generate margin data
@@ -495,34 +509,21 @@ def gen_market_sample(
         _mktshr_array[:, :2],
         _mkt_sample_spec_here,
         _price_array,
-        _ratio_choice_prob_to_mktshr,
+        _aggregate_purchase_prob,
         _pcm_rng_seed_seq,
         nthreads,
     )
 
     _s_size = _mkt_sample_spec.sample_size  # originally-specified sample size
-    (
-        _mktshr_array,
-        _pcm_array,
-        _price_array,
-        _fcounts,
-        _ratio_choice_prob_to_mktshr,
-        _nth_firm_share,
-        _divr_array,
-    ) = (
-        _f[_mnl_test_rows][:_s_size]
-        if _dist_firm2_pcm == FM2Constants.MNL
-        else _f[:_s_size]
-        for _f in (
-            _mktshr_array,
-            _pcm_array,
-            _price_array,
-            _fcounts,
-            _ratio_choice_prob_to_mktshr,
-            _nth_firm_share,
-            _divr_array,
-        )
-    )
+    if _dist_firm2_pcm == FM2Constants.MNL:
+        _mktshr_array = _mktshr_array[_mnl_test_rows][:_s_size]
+        _pcm_array = _pcm_array[_mnl_test_rows][:_s_size]
+        _price_array = _price_array[_mnl_test_rows][:_s_size]
+        _fcounts = _fcounts[_mnl_test_rows][:_s_size]
+        _aggregate_purchase_prob = _aggregate_purchase_prob[_mnl_test_rows][:_s_size]
+        _nth_firm_share = _nth_firm_share[_mnl_test_rows][:_s_size]
+        _divr_array = _divr_array[_mnl_test_rows][:_s_size]
+
     del _mnl_test_rows, _s_size
 
     _frmshr_array = _mktshr_array[:, :2]
@@ -537,7 +538,7 @@ def gen_market_sample(
         _pcm_array,
         _price_array,
         _fcounts,
-        _ratio_choice_prob_to_mktshr,
+        _aggregate_purchase_prob,
         _nth_firm_share,
         _divr_array,
         _hhi_post,
@@ -614,7 +615,7 @@ def _gen_share_data(
 
     _ssz = _mkt_sample_spec.sample_size
 
-    _r_bar = _mkt_sample_spec.recapture_rate
+    _r_bar = _mkt_sample_spec.recapture_rate or 0.80
 
     match _dist_type_mktshr:
         case SHRConstants.UNI:
@@ -644,7 +645,7 @@ def _gen_share_data(
                 f'Unexpected type, "{_dist_type_mktshr}" for share distribution.'
             )
 
-    # If recapture_spec == "inside-out", recalculate _ratio_choice_prob_to_mktshr
+    # If recapture_spec == "inside-out", recalculate _aggregate_purchase_prob
     _frmshr_array = _mkt_share_sample.mktshr_array[:, :2]
     if _recapture_spec == RECConstants.INOUT:
         _mkt_share_sample = ShareDataSample(
@@ -708,12 +709,13 @@ def _gen_market_shares_uniform(
         _frmshr_array, ((0, 0), (0, 1)), "constant", constant_values=np.nan
     )
 
-    _fcounts, _nth_firm_share, _ratio_choice_prob_to_mktshr = np.split(
-        np.nan * np.empty((_s_size, 3)), 3, axis=1
+    _fcounts: NDArray[np.int64] = np.ones((_s_size, 1), np.int64) * np.nan  # type: ignore
+    _nth_firm_share, _aggregate_purchase_prob = (
+        np.nan * np.ones((_s_size, 1), np.float64) for _ in range(2)
     )
 
     return ShareDataSample(
-        _mktshr_array, _fcounts, _nth_firm_share, _ratio_choice_prob_to_mktshr
+        _mktshr_array, _fcounts, _nth_firm_share, _aggregate_purchase_prob
     )
 
 
@@ -721,8 +723,8 @@ def _gen_market_shares_dirichlet_multisample(
     _s_size: int = 10**6,
     _recapture_spec: RECConstants = RECConstants.INOUT,
     _dist_type_dir: SHRConstants = SHRConstants.DIR_FLAT,
-    _dist_parms_dir: NDArray[np.floating] = DIST_PARMS_DEFAULT,
-    _firm_count_wts: NDArray[np.floating] = FCOUNT_WTS_DEFAULT,
+    _dist_parms_dir: NDArray[np.floating] | None = None,
+    _firm_count_wts: NDArray[np.floating] | None = None,  # type: ignore
     _fcount_rng_seed_seq: SeedSequence | None = None,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
@@ -760,12 +762,16 @@ def _gen_market_shares_dirichlet_multisample(
 
     """
 
+    _firm_count_wts: np.float64 = (
+        FCOUNT_WTS_DEFAULT if _firm_count_wts is None else _firm_count_wts
+    )  # type: ignore
+
     _min_choice_wt = 0.03 if _dist_type_dir == SHRConstants.DIR_FLAT_CONSTR else 0.00
     _fcount_keys, _choice_wts = zip(
         *(
             _f
             for _f in zip(
-                2 + np.arange(len(_firm_count_wts)),
+                2 + np.arange(len(_firm_count_wts)),  # type: ignore
                 _firm_count_wts / _firm_count_wts.sum(),
                 strict=True,
             )
@@ -804,7 +810,7 @@ def _gen_market_shares_dirichlet_multisample(
         else SeedSequence(pool_size=8).spawn(len(_fcounts))
     )
 
-    _ratio_choice_prob_to_mktshr, _nth_firm_share = (
+    _aggregate_purchase_prob, _nth_firm_share = (
         np.empty((_s_size, 1)) for _ in range(2)
     )
     _mktshr_array = np.empty((_s_size, _fc_max), dtype=np.float64)
@@ -830,7 +836,7 @@ def _gen_market_shares_dirichlet_multisample(
             ((0, 0), (0, _fc_max - _mktshr_sample_f.mktshr_array.shape[1])),
             "constant",
         )
-        _ratio_choice_prob_to_mktshr[_fcounts_match_rows] = (
+        _aggregate_purchase_prob[_fcounts_match_rows] = (
             _mktshr_sample_f.aggregate_purchase_prob
         )
         _nth_firm_share[_fcounts_match_rows] = _mktshr_sample_f.nth_firm_share
@@ -847,7 +853,7 @@ def _gen_market_shares_dirichlet_multisample(
         )
 
     return ShareDataSample(
-        _mktshr_array, _fcounts, _nth_firm_share, _ratio_choice_prob_to_mktshr
+        _mktshr_array, _fcounts, _nth_firm_share, _aggregate_purchase_prob
     )
 
 
@@ -920,16 +926,16 @@ def _gen_market_shares_dirichlet(
         )
 
     # If recapture_spec == 'inside_out', further calculations downstream
-    _ratio_choice_prob_to_mktshr = np.nan * np.empty((_s_size, 1))
+    _aggregate_purchase_prob = np.nan * np.empty((_s_size, 1))
     if _recapture_spec == RECConstants.OUTIN:
-        _ratio_choice_prob_to_mktshr = 1 - _mktshr_array[:, [-1]]
-        _mktshr_array = _mktshr_array[:, :-1] / _ratio_choice_prob_to_mktshr
+        _aggregate_purchase_prob = 1 - _mktshr_array[:, [-1]]
+        _mktshr_array = _mktshr_array[:, :-1] / _aggregate_purchase_prob
 
     return ShareDataSample(
         _mktshr_array,
         (_mktshr_array.shape[-1] * np.ones((_s_size, 1))).astype(np.int64),
         _mktshr_array[:, [-1]],
-        _ratio_choice_prob_to_mktshr,
+        _aggregate_purchase_prob,
     )
 
 
@@ -1027,7 +1033,7 @@ def gen_divr_array(
     _frmshr_array: NDArray[np.floating],
     _r_bar: float,
     _recapture_spec: RECConstants = RECConstants.INOUT,
-    _ratio_choice_prob_to_mktshr: NDArray[np.floating] = EMPTY_ARRAY_DEFAULT,
+    _aggregate_purchase_prob: NDArray[np.floating] = EMPTY_ARRAY_DEFAULT,
     /,
 ) -> NDArray[np.float64]:
     """
@@ -1045,7 +1051,7 @@ def gen_divr_array(
         If recapture is proportional or inside-out, the recapture rate
         for the firm with the smaller share.
 
-    _ratio_choice_prob_to_mktshr
+    _aggregate_purchase_prob
         1 minus probability that the outside good is chosen; converts
         market shares to choice probabilities by multiplication.
 
@@ -1058,11 +1064,12 @@ def gen_divr_array(
 
     """
 
+    _divr_array: NDArray[np.float64]
     if _recapture_spec == RECConstants.FIXED:
         _divr_array = _r_bar * _frmshr_array[:, ::-1] / (1 - _frmshr_array)
 
     else:
-        _purchprob_array = _ratio_choice_prob_to_mktshr * _frmshr_array
+        _purchprob_array = _aggregate_purchase_prob * _frmshr_array
         _divr_array = _purchprob_array[:, ::-1] / (1 - _purchprob_array)
 
     _divr_assert_test = (
@@ -1086,13 +1093,16 @@ def _gen_pcm_data(
     _frmshr_array: NDArray[np.floating],
     _mkt_sample_spec: MarketSampleSpec,
     _price_array: NDArray[np.floating],
-    _ratio_choice_prob_to_mktshr: NDArray[np.floating],
+    _aggregate_purchase_prob: NDArray[np.floating],
     _pcm_rng_seed_seq: SeedSequence,
     _nthreads: int = 16,
     /,
 ) -> MarginDataSample:
     _recapture_spec, _, _, _ = _mkt_sample_spec.share_spec
     _dist_type_pcm, _dist_firm2_pcm, _dist_parms_pcm = _mkt_sample_spec.pcm_spec
+    _dist_type: Literal["Beta", "Uniform"] = (
+        "Uniform" if _dist_type_pcm == PCMConstants.UNI else "Beta"
+    )
 
     _pcm_array = np.empty((len(_frmshr_array), 2), dtype=np.float64)
     _mnl_test_array = np.empty((len(_frmshr_array), 2), dtype=int)
@@ -1105,20 +1115,20 @@ def _gen_pcm_data(
             seed_sequence=_pcm_rng_seed_seq,
         )
     else:
-        _dist_type: Literal["Beta", "Uniform"] = _dist_type_pcm.value  # type: ignore
         if _dist_type_pcm == PCMConstants.UNI:
             _dist_parms = (
                 DIST_PARMS_DEFAULT if _dist_parms_pcm is None else _dist_parms_pcm
             )
-        elif _dist_type_pcm.name.startswith("BETA"):
+        elif _dist_type_pcm == PCMConstants.BETA:
             # Error-checking (could move to validators in definition of MarketSampleSpec)
 
-            _dist_parms = _dist_parms if _dist_parms_pcm is None else _dist_parms_pcm
+            if _dist_parms_pcm is None:
+                _dist_parms_pcm = _dist_parms
 
-            # PRNG setup
-            if _dist_type_pcm == PCMConstants.BETA_BND:  # Bounded beta
+        elif _dist_type_pcm == PCMConstants.BETA_BND:  # Bounded beta
+            if _dist_parms_pcm is None:
+                _dist_parms_pcm = np.array([0, 1, 0, 1], np.float64)
                 _dist_parms = beta_located_bound(_dist_parms_pcm)
-                _dist_type: Literal["Beta"] = "Beta"
 
         _pcm_rng = MultithreadedRNG(
             _pcm_array,
@@ -1130,14 +1140,14 @@ def _gen_pcm_data(
         _pcm_rng.fill()
         del _pcm_rng
 
-    if _mkt_sample_spec.pcm_spec[0] == PCMConstants.BETA_BND:
-        _beta_min, _beta_max = _mkt_sample_spec.pcm_spec[2][2:]
+    if _dist_type_pcm == PCMConstants.BETA_BND:
+        _beta_min, _beta_max = _dist_parms_pcm[2:]  # type: ignore
         _pcm_array = (_beta_max - _beta_min) * _pcm_array + _beta_min
         del _beta_min, _beta_max
 
     if _dist_firm2_pcm == FM2Constants.MNL:
         # Impose FOCs from profit-maximization with MNL demand
-        _purchprob_array = _ratio_choice_prob_to_mktshr * _frmshr_array
+        _purchprob_array = _aggregate_purchase_prob * _frmshr_array
 
         _pcm_array[:, [1]] = np.divide(
             np.einsum(

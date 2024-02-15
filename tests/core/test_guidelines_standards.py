@@ -18,13 +18,13 @@ gval_print_format_str = "g_val = {}; m_val = {}; {} =? {}"
     ),
 )
 def test_round_cust(_num: float, _frac: float, _mode: str, _test_val: float) -> None:
-    assert_equal(gsf.round_cust(_num, frac=_frac, mode=_mode), _test_val)
+    assert_equal(gsf.round_cust(_num, frac=_frac, rounding_mode=_mode), _test_val)
 
 
 def test_round_cust_to_fp_aproximation_error() -> None:
     # Difference below is due to floating-point approx. error
     assert_almost_equal(
-        gsf.round_cust(12.35, frac=0.05, mode="ROUND_DOWN"), 12.35, decimal=12
+        gsf.round_cust(12.35, frac=0.05, rounding_mode="ROUND_DOWN"), 12.35, decimal=12
     )
 
 

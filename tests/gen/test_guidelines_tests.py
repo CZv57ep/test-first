@@ -97,7 +97,7 @@ def test_clearance_rate_calcs() -> None:
         _stats_sim_bydelta_array,
         _stats_sim_byconczone_array,
     ) = gtl.sim_inv_cnts_ll(
-        gsf.GuidelinesStandards(2010).safeharbor[2:],
+        gsf.GuidelinesStandards(2010).safeharbor,
         _ind_sample_spec,
         {
             "seed_seq_list": rmp.gen_seed_seq_list_default(3),

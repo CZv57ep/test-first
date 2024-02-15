@@ -4,6 +4,7 @@ with a canvas on which to draw boundaries for Guidelines standards.
 
 """
 
+from collections import namedtuple
 from importlib.metadata import version
 
 from .. import _PKG_NAME  # noqa: TID252
@@ -12,7 +13,7 @@ __version__ = version(_PKG_NAME)
 
 import decimal
 from dataclasses import dataclass
-from typing import Any, Final, Literal, TypeAlias
+from typing import Any, Literal, TypeAlias
 
 import numpy as np
 from mpmath import mp, mpf  # type: ignore
@@ -22,27 +23,30 @@ mp.prec = 80
 mp.trap_complex = True
 
 HMGPubYear: TypeAlias = Literal[1992, 2010, 2023]
+GuidelinesSTD = namedtuple("GuidelinesSTD", "delta rec guppi divr cmcr ipr")
 
 
 @dataclass
 class GuidelinesStandards:
     """
-    Defines Guidelines standards by Guidelines publication year based on
-    concentration standards in U.S. Horizontal Merger Guidelines.
+    Guidelines standards by Guidelines publication year
+
+    Diversion ratio, GUPPI, CMCR, and IPR standards are constructed from
+    concentration standards.
 
     Attributes
     ----------
-    pub_year  # : HMGPubYear
+    pub_year: HMGPubYear
         Year of publication of the U.S. Horizontal Merger Guidelines (HMG);
         1992, 2010, or 2023
-    safeharbor  # : tuple[float, ...]
+    safeharbor: GuidelinesSTD
         ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
         diversion ratio limit at ΔHHI safeharbor
-    inferred_presumption  # : tuple
+    inferred_presumption: GuidelinesSTD
         ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
         diversion ratio limit at enforcement margin for Guidelines
         presumption of harm, interpreted strictly
-    presumption  # : tuple
+    presumption: GuidelinesSTD
         ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
         diversion ratio limit at enforcement margin for Guidelines
         presumption of harm, as typically interpreted in the literature
@@ -50,56 +54,51 @@ class GuidelinesStandards:
     """
 
     def __init__(self, _pub_year: HMGPubYear = 1992, /):
-        if _pub_year not in (1992, 2010, 2023):
-            raise ValueError("Argument must be 1992, 2010 or 2023")
         self.pub_year: HMGPubYear = _pub_year
 
         # In the 2023 Guidlines, the agencies do not specify a safeharbor
-        #   Practically speaking, given resource constraints and loss aversion,
-        #   it is likely that staff only investigates mergers that meet the presumption
-        #   as evidenced by the data for 2003--2011
+        # Practically speaking, given resource constraints and loss aversion,
+        # it is likely that staff only investigates mergers that
+        # meet the presumption; nonetheless, the "safeharbor" is set here at
+        # the 1992 level
         _hhi_p, _dh_s, _dh_p = {
             1992: (0.18, 0.005, 0.01),
             2010: (0.25, 0.01, 0.02),
             2023: (0.18, 0.01, 0.01),
         }[_pub_year]
 
-        self.safeharbor: Final = (
+        self.safeharbor = GuidelinesSTD(
             _dh_s,
-            _fc := np.ceil(1 / _hhi_p),
-            _r := round_cust(_fc / (_fc + 1)),
+            _r := round_cust((_fc := int(np.ceil(1 / _hhi_p))) / (_fc + 1)),
             _g_s := gbd_from_dsf(_dh_s, m_star=1.0, r_bar=_r),
             _dr := round_cust(1 / (_fc + 1)),
-            _cmcr := 0.03,  #: Not strictly a Guidelines standard
-            _ipr := _g_s,  #: Not strictly a Guidelines standard
+            _cmcr := 0.03,  # Not strictly a Guidelines standard
+            _ipr := _g_s,  # Not strictly a Guidelines standard
         )
 
         # inferred_presumption is relevant for 2010 Guidelines
-        self.inferred_presumption: Final = (
-            (
+        self.inferred_presumption = (
+            GuidelinesSTD(
                 _dh_i := 2 * (_s := 1 / (_fc + 1)) * _s,
-                _fc,
                 _r,
                 _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r),
                 _dr,
                 _cmcr,
-                _ipr := _g_i,
+                _g_i,
             )
             if _pub_year in (1992, 2023)
-            else (
+            else GuidelinesSTD(
                 _dh_i := 2 * (_s := 0.5 / _fc) * _s,
-                _fc,
-                _r,  # _rs := round_cust((_fc - 1 / 2) / (_fc + 1 / 2)),
-                _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r),
+                _r_i := round_cust((_fc - 1 / 2) / (_fc + 1 / 2)),
+                _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r_i),
                 round_cust((1 / 2) / (_fc - 1 / 2)),
                 _cmcr,
-                _ipr := _g_i,
+                _g_i,
             )
         )
 
-        self.presumption: Final = (
+        self.presumption = GuidelinesSTD(
             _dh_p,
-            _fc,
             _r,
             _g_p := gbd_from_dsf(_dh_p, m_star=1.0, r_bar=_r),
             _dr,
@@ -109,7 +108,11 @@ class GuidelinesStandards:
 
 
 def round_cust(
-    _num: float = 0.060215, /, *, frac: float = 0.005, mode: str = "ROUND_HALF_UP"
+    _num: float = 0.060215,
+    /,
+    *,
+    frac: float = 0.005,
+    rounding_mode: str = "ROUND_HALF_UP",
 ) -> float:
     """
     Custom rounding, to the nearest 0.5% by default.
@@ -120,7 +123,7 @@ def round_cust(
         Number to be rounded.
     frac
         Fraction to be rounded to.
-    mode
+    rounding_mode
         Rounding mode, as defined in the :code:`decimal` package.
 
     Returns
@@ -134,27 +137,30 @@ def round_cust(
 
     Notes
     -----
-    Round a decimal fraction down or up to specified precision, based on
-    halving the remainder after division of the given decimal fraction
-    by the specified precision expressed as another decimal fraction.
+    Integer-round the quotient, :code:`(_num / frac)` using the specified
+    rounding mode. Return the product of the rounded quotient times
+    the specified precision, :code:`frac`.
 
     """
 
-    if mode not in (
-        decimal.ROUND_HALF_UP,
-        decimal.ROUND_DOWN,
+    if rounding_mode not in (
         decimal.ROUND_05UP,
         decimal.ROUND_CEILING,
+        decimal.ROUND_DOWN,
         decimal.ROUND_FLOOR,
         decimal.ROUND_HALF_DOWN,
         decimal.ROUND_HALF_EVEN,
+        decimal.ROUND_HALF_UP,
         decimal.ROUND_UP,
     ):
-        raise ValueError(f"Value, {f'"{mode}"'} of rounding mode is invalid.")
+        raise ValueError(
+            f"Value, {f'"{rounding_mode}"'} is invalid for rounding_mode."
+            "Documentation for the, \"decimal\" built-in lists valid rounding modes."
+        )
 
-    _num, _frac = (decimal.Decimal(f"{_g}") for _g in (_num, frac))
+    _n, _f, _e = (decimal.Decimal(f"{_g}") for _g in [_num, frac, 1])
 
-    return float(_frac * (_num / _frac).quantize(0, rounding=mode))
+    return float(_f * (_n / _f).quantize(_e, rounding=rounding_mode))
 
 
 def lerp(
@@ -202,9 +208,9 @@ def gbd_from_dsf(
     _deltasf
         Specified ∆HHI bound.
     m_star
-        Margin level.
+        Parametric price-cost margin.
     r_bar
-        Default (fixed) recapture rate.
+        Default recapture rate.
 
     Returns
     -------
@@ -214,12 +220,12 @@ def gbd_from_dsf(
     return round_cust(
         m_star * r_bar * (_s_m := np.sqrt(_deltasf / 2)) / (1 - _s_m),
         frac=0.005,
-        mode="ROUND_HALF_DOWN",
+        rounding_mode="ROUND_HALF_DOWN",
     )
 
 
 def critical_shrratio(
-    _gbd: float = 0.06, _m_val: float = 1.00, _r_val: float = 0.80, /
+    _gbd: float = 0.06, /, *, m_star: float = 1.00, r_bar: float = 0.80
 ) -> mpf:
     """
     Corollary to GUPPI bound.
@@ -228,10 +234,10 @@ def critical_shrratio(
     ----------
     _gbd
         Specified GUPPI bound.
-    _m_val
-        Margin level.
-    _r_val
-        Default (fixed) recapture rate.
+    m_star
+        Parametric price-cost margin.
+    r_bar
+        Default recapture rate.
 
     Returns
     -------
@@ -239,7 +245,7 @@ def critical_shrratio(
         for given margin and recapture rate.
 
     """
-    return mpf(f"{_gbd}") / mp.fmul(f"{_m_val}", f"{_r_val}")
+    return mpf(f"{_gbd}") / mp.fmul(f"{m_star}", f"{r_bar}")
 
 
 def shr_from_gbd(
@@ -253,18 +259,21 @@ def shr_from_gbd(
     _gbd
         GUPPI bound.
     m_star
-        Margin level.
+        Parametric price-cost margin.
     r_bar
-        Default (fixed) recapture rate.
+        Default recapture rate.
 
     Returns
     -------
+    float
         Symmetric firm market share on GUPPI boundary, for given margin and
         recapture rate.
 
     """
 
-    return round_cust((_d0 := critical_shrratio(_gbd, m_star, r_bar)) / (1 + _d0))
+    return round_cust(
+        (_d0 := critical_shrratio(_gbd, m_star=m_star, r_bar=r_bar)) / (1 + _d0)
+    )
 
 
 def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
@@ -274,6 +283,9 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
     """
 
     import matplotlib as mpl
+    import matplotlib.axes as mpa
+    import matplotlib.patches as mpp
+    import matplotlib.ticker as mpt
 
     mpl.use("pgf")
     import matplotlib.pyplot as plt
@@ -326,8 +338,8 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
     _ax_out = _fig.add_subplot()
 
     def _set_axis_def(
-        _ax1: mpl.axes._axes.Axes, /, mktshares_plot_flag: bool = False
-    ) -> mpl.axes.Axes:
+        _ax1: mpa._axes.Axes, /, mktshares_plot_flag: bool = False
+    ) -> mpa.Axes:
         # Set the width of axis gridlines, and tick marks:
         # both axes, both major and minor ticks
         # Frame, grid, and facecolor
@@ -338,7 +350,6 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
             _ax1.spines[_spos1].set_linewidth(0.0)
             _ax1.spines[_spos1].set_zorder(0)
             _ax1.spines[_spos1].set_visible(False)
-        del _spos0, _spos1
         _ax1.set_facecolor("#F6F6F6")
 
         _ax1.grid(linewidth=0.5, linestyle=":", color="grey", zorder=1)
@@ -379,7 +390,7 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
 
             # Truncate the axis frame to a triangle:
             _ax1.add_patch(
-                mpl.patches.Rectangle(
+                mpp.Rectangle(
                     xy=(1.0025, 0.00),
                     width=1.1 * mp.sqrt(2),
                     height=1.1 * mp.sqrt(2),
@@ -397,12 +408,12 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
             )
 
             # Axis Tick-mark locations
-            # One can supply an argument to mpl.ticker.AutoMinorLocator to
+            # One can supply an argument to mpt.AutoMinorLocator to
             # specify a fixed number of minor intervals per major interval, e.g.:
-            # minorLocator = mpl.ticker.AutoMinorLocator(2)
+            # minorLocator = mpt.AutoMinorLocator(2)
             # would lead to a single minor tick between major ticks.
-            _minorLocator = mpl.ticker.AutoMinorLocator(5)
-            _majorLocator = mpl.ticker.MultipleLocator(0.05)
+            _minorLocator = mpt.AutoMinorLocator(5)
+            _majorLocator = mpt.MultipleLocator(0.05)
             for _axs in _ax1.xaxis, _ax1.yaxis:
                 if _axs == _ax1.xaxis:
                     _majorticklabels_rot = 45
@@ -412,7 +423,7 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
                 _axs.set_major_locator(_majorLocator)
                 _axs.set_minor_locator(_minorLocator)
                 # It"s always x when specifying the format
-                _axs.set_major_formatter(mpl.ticker.StrMethodFormatter("{x:>3.0%}"))
+                _axs.set_major_formatter(mpt.StrMethodFormatter("{x:>3.0%}"))
 
             # Hide every other tick-label
             for _axl in _ax1.get_xticklabels(), _ax1.get_yticklabels():

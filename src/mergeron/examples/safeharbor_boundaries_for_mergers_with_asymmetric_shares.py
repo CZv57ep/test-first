@@ -312,10 +312,14 @@ def plot_guppi_boundaries(  # noqa PLR0915
     #  print("Diversion ratio bound")
     if _divr_bench < _r_bar:
         _m_star_bench = _guppi_bench / _divr_bench
-        _delta_star_bench = _guppi_bench / (_r_bar * _m_star_bench)
-        _s_mid_bench = _delta_star_bench / (1 + _delta_star_bench)
+        _s_mid_bench = gsf.shr_from_gbd(
+            _guppi_bench, m_star=_m_star_bench, r_bar=_r_bar
+        )
+        _delta_star = gsf.critical_shrratio(
+            _guppi_bench, m_star=_m_star_bench, r_bar=_r_bar
+        )
         (guppi_boundary_data, guppi_boundary_area) = gsf.shrratio_mgnsym_boundary_max(
-            gsf.critical_shrratio(_guppi_bench, _m_star_bench)
+            _delta_star
         )
         _x_drt, _y_drt = zip(*guppi_boundary_data, strict=True)
 

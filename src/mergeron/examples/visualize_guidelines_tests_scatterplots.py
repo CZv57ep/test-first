@@ -131,7 +131,7 @@ def _main(
     _hmg_pub_year: gsf.HMGPubYear,
     _market_sample_spec: dgl.MarketSampleSpec,
     _inv_sel: gtl.UPPTestSpec,
-    _save_data_to_file: gtl.SaveDataSpec,
+    _save_data_to_file: gtl.SaveData,
 ) -> None:
     _r_bar, _g_bar, _divr_bar, *_ = getattr(
         gsf.GuidelinesStandards(_hmg_pub_year),
@@ -285,7 +285,7 @@ if __name__ == "__main__":
             title="Datasets, Sound GUPPI Safeharbor, Envelopes of GUPPI Boundaries",
             filters=blosc_filters,
         )
-        save_data_to_file: gtl.SaveDataSpec = (
+        save_data_to_file: gtl.SaveData = (
             True,
             h5datafile,
             "Intrinsic clearance stats",

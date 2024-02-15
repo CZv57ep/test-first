@@ -24,7 +24,7 @@ from numpy.typing import NBitBase, NDArray
 T = TypeVar("T", bound=NBitBase)
 
 NTHREADS = 2 * cpu_count()
-DIST_PARMS_DEFAULT = np.array([0.0, 1.0])
+DIST_PARMS_DEFAULT = np.array([0.0, 1.0], np.float64)
 
 
 def prng(_s: SeedSequence | None = None, /) -> np.random.Generator:

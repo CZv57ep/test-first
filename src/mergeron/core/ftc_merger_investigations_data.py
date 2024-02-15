@@ -96,7 +96,7 @@ def construct_data(
     flag_backward_compatibility: bool = True,
     flag_pharma_for_exclusion: bool = True,
     rebuild_data: bool = False,
-) -> MappingProxyType[str, dict[str, dict[str, TableData]]]:
+) -> INVData:
     """Construct FTC merger investigations data for non-overlapping periods,
     from reported data on cumulative periods.
 
@@ -387,7 +387,7 @@ def parse_invdata(
         "081201hsrmergerdata.pdf",
         "130104horizontalmergerreport.pdf",
     ),
-) -> MappingProxyType[str, dict[str, dict[str, TableData]]]:
+) -> INVData:
     """Parse FTC merger investigations data reports to structured data.
 
     Parameters
