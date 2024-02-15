@@ -43,9 +43,11 @@ A recent version of Paul Tol's python module, :code:`tol_colors.py` is redistrib
     :code:`import mergeron.ext.tol_colors`
 
 Documentation for this package is in the form of the API Reference. For individual functions and classes, this same documentation is accessible within a python shell. For example, the below snippet produces the API reference for the given function in a python::
+:code:
 
-        import mergeron.core.data_generation as dgl
-        help(dgl.gen_market_sample)
+    import mergeron.core.data_generation as dgl
+
+    help(dgl.gen_market_sample)
 
 
 
