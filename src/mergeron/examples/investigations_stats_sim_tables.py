@@ -36,13 +36,13 @@ stats_table_design = isl.latex_jinja_env.get_template(
 )
 
 
-def inv_stats_sim_setup(
+def invres_stats_sim_setup(
     _invdata: fid.INVData,
     _data_period: str,
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
-    _inv_parm_vec: Sequence[float],
+    _invres_parm_vec: Sequence[float],
     _sample_spec: dgl.MarketSampleSpec,
-    _inv_stats_kwargs: Mapping[str, Any] | None = None,
+    _invres_stats_kwargs: Mapping[str, Any] | None = None,
     /,
 ) -> None:
     _table_ind_group = (
@@ -56,18 +56,25 @@ def inv_stats_sim_setup(
         else isl.EVIDENConstants.UR
     )
 
-    _inv_stats_kwargs = _inv_stats_kwargs or {"sim_inv_sel": isl.PolicySelector.ENFT}
-    _sim_inv_sel = _inv_stats_kwargs["sim_inv_sel"]
-    _inv_sel, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_inv_sel
+    _invres_stats_kwargs = _invres_stats_kwargs or {
+        "sim_test_regime": isl.PolicySelector.ENFT
+    }
+    _sim_test_regime = _invres_stats_kwargs["sim_test_regime"]
+    _test_regime, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_test_regime
 
     # Get observed rates
     (
-        _inv_cnts_obs_byfirmcount_array,
-        _inv_cnts_obs_bydelta_array,
-        _inv_cnts_obs_byconczone_array,
+        _invres_cnts_obs_byfirmcount_array,
+        _invres_cnts_obs_bydelta_array,
+        _invres_cnts_obs_byconczone_array,
     ) = (
-        isl.inv_stats_cnts_by_group(
-            _invdata, _data_period, _table_ind_group, _table_evid_cond, _grp, _inv_sel
+        isl.invres_stats_cnts_by_group(
+            _invdata,
+            _data_period,
+            _table_ind_group,
+            _table_evid_cond,
+            _grp,
+            _test_regime,
         )
         for _grp in (
             isl.StatsGrpSelector.FC,
@@ -82,17 +89,17 @@ def inv_stats_sim_setup(
             dgl.RECConstants.INOUT,
             dgl.SHRConstants.DIR_FLAT,
             None,
-            _inv_cnts_obs_byfirmcount_array[:-1, 1],
+            _invres_cnts_obs_byfirmcount_array[:-1, 1],
         ),
     )
 
     # Generate simulated rates
     _start_time = datetime.now()
     (
-        _inv_cnts_sim_byfirmcount_array,
-        _inv_cnts_sim_bydelta_array,
-        _inv_cnts_sim_byconczone_array,
-    ) = gtl.sim_inv_cnts_ll(_inv_parm_vec, _sample_spec_here, _inv_stats_kwargs)
+        _invres_cnts_sim_byfirmcount_array,
+        _invres_cnts_sim_bydelta_array,
+        _invres_cnts_sim_byconczone_array,
+    ) = gtl.sim_invres_cnts_ll(_invres_parm_vec, _sample_spec_here, _invres_stats_kwargs)
     _total_duration = datetime.now() - _start_time
 
     print(
@@ -102,16 +109,16 @@ def inv_stats_sim_setup(
     # Prepare and write/print output tables
     _stats_group_dict = {
         isl.StatsGrpSelector.FC: {
-            "desc": f"{_inv_sel.capitalize()} rates by firm count",
+            "desc": f"{_test_regime.capitalize()} rates by firm count",
             "title_str": "By Number of Significant Competitors",
             "hval": "Firm Count",
             "hcol_width": 54,
             "notewidth": 0.63,
-            "obs_array": _inv_cnts_obs_byfirmcount_array,
-            "sim_array": _inv_cnts_sim_byfirmcount_array,
+            "obs_array": _invres_cnts_obs_byfirmcount_array,
+            "sim_array": _invres_cnts_sim_byfirmcount_array,
         },
         isl.StatsGrpSelector.DL: {
-            "desc": Rf"{_inv_sel.capitalize()} rates by range of $\Delta HHI$",
+            "desc": Rf"{_test_regime.capitalize()} rates by range of $\Delta HHI$",
             "title_str": R"By Change in Concentration (\Deltah{})",
             "hval": R"$\Delta HHI$",
             "hval_plus": R"{ $[\Delta_L, \Delta_H)$ }",
@@ -126,11 +133,11 @@ def inv_stats_sim_setup(
                 isl.LTX_ARRAY_LINEEND,
                 isl.LTX_ARRAY_LINEEND,
             )),
-            "obs_array": _inv_cnts_obs_bydelta_array,
-            "sim_array": _inv_cnts_sim_bydelta_array,
+            "obs_array": _invres_cnts_obs_bydelta_array,
+            "sim_array": _invres_cnts_sim_bydelta_array,
         },
         isl.StatsGrpSelector.ZN: {
-            "desc": f"{_inv_sel.capitalize()} rates by Approximate Presumption Zone",
+            "desc": f"{_test_regime.capitalize()} rates by Approximate Presumption Zone",
             "title_str": "{} {}".format(
                 R"By Approximate \textit{2010 Guidelines}",
                 "Concentration-Based Standards",
@@ -138,38 +145,38 @@ def inv_stats_sim_setup(
             "hval": "Approximate Standard",
             "hcol_width": 190,
             "notewidth": 0.96,
-            "obs_array": _inv_cnts_obs_byconczone_array,
-            "sim_array": _inv_cnts_sim_byconczone_array,
+            "obs_array": _invres_cnts_obs_byconczone_array,
+            "sim_array": _invres_cnts_sim_byconczone_array,
         },
     }
 
     with (
         DATA_DIR
         / dottex_format_str.format(
-            _inv_sel.capitalize(),
+            _test_regime.capitalize(),
             _merger_class.replace(" ", ""),
             _data_period.split("-")[1],
         )
     ).open("w", encoding="UTF-8") as _stats_table_dottex:
         for _stats_group_key in _stats_group_dict:
-            inv_stats_sim_render(
+            invres_stats_sim_render(
                 _data_period,
                 _merger_class,
                 _stats_group_key,
                 _stats_group_dict[_stats_group_key],
-                _inv_parm_vec,
-                _inv_stats_kwargs["sim_inv_sel"],
+                _invres_parm_vec,
+                _invres_stats_kwargs["sim_test_regime"],
                 _stats_table_dottex,
             )
 
 
-def inv_stats_sim_render(
+def invres_stats_sim_render(
     _data_period: str,
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
     _stats_group: isl.StatsGrpSelector,
     _stats_group_dict_sub: Mapping[str, Any],
-    _inv_parm_vec: Sequence[float],
-    _sim_inv_sel: gtl.UPPTestSpec,
+    _invres_parm_vec: Sequence[float],
+    _sim_test_regime: gtl.UPPTestRegime,
     _stats_table_dottex: TextIOWrapper,
     /,
 ) -> None:
@@ -180,21 +187,21 @@ def inv_stats_sim_render(
         for _g, _h in (("obs_array", -2), ("sim_array", -5))
     )
 
-    _inv_sel, _, _ = _sim_inv_sel
+    _test_regime, _, _ = _sim_test_regime
     (
-        _stats_table_content.clrenf_sel,
+        _stats_table_content.test_regime,
         _stats_table_content.obs_merger_class,
         _stats_table_content.obs_period,
-    ) = (_inv_sel.capitalize(), _merger_class, _data_period.split("-"))
+    ) = (_test_regime.capitalize(), _merger_class, _data_period.split("-"))
 
-    _r_bar, _d_bar, _g_bar, _cmcr_bar, _ipr_bar = _inv_parm_vec
+    _r_bar, _d_bar, _g_bar, _cmcr_bar, _ipr_bar = _invres_parm_vec
     (
         _stats_table_content.rbar,
         _stats_table_content.dbar,
         _stats_table_content.guppi_bound,
         _stats_table_content.ipr_bound,
         _stats_table_content.cmcr_bound,
-    ) = (rf"{_s * 100:.1f}\%" for _s in _inv_parm_vec)
+    ) = (rf"{_s * 100:.1f}\%" for _s in _invres_parm_vec)
 
     # Prepare and write/print output tables
     _stats_cis_wilson_notestr = " ".join((
@@ -202,7 +209,7 @@ def inv_stats_sim_render(
         R"estimated by the Wilson method, given the",
         "reported numbers of investigated mergers and cleared mergers",
         _stats_group_dict_sub["desc"].replace(
-            f"{_stats_table_content.clrenf_sel} rates ", ""
+            f"{_stats_table_content.test_regime} rates ", ""
         ),
         isl.LTX_ARRAY_LINEEND,
     ))
@@ -212,7 +219,7 @@ def inv_stats_sim_render(
         propn_ci(0.50 * _eg_count, _eg_count, method="Exact")
     )
     _stats_sim_notestr = " ".join((
-        Rf"\(\cdot\) Simulated {_stats_table_content.clrenf_sel} rates are estimated by",
+        Rf"\(\cdot\) Simulated {_stats_table_content.test_regime} rates are estimated by",
         "Monte Carlo integration over generated data representing",
         Rf"{_sim_sample_sz:,d} hypothetical mergers. Thus,",
         R"for a subset of simulations with a relative frequency",
@@ -231,8 +238,8 @@ def inv_stats_sim_render(
     del _relfreq_eg, _eg_count, _stats_sim_ci_eg
 
     print(
-        f"Observed {_inv_sel} proportion [95% CI]",
-        _stats_group_dict_sub["desc"].replace(f"{_inv_sel} rates ", ""),
+        f"Observed {_test_regime} proportion [95% CI]",
+        _stats_group_dict_sub["desc"].replace(f"{_test_regime} rates ", ""),
     )
     print(f"\t with sample size (observed): {_obs_sample_sz:,d};")
 
@@ -241,7 +248,7 @@ def inv_stats_sim_render(
     _stats_table_content.stats_cis_notewidth = _stats_group_dict_sub["notewidth"]
     _stats_cis_numobs_notestr = " ".join((
         R"\(\cdot\) Estimates for Proportion {} are based on".format(
-            "Enforced" if _inv_sel == isl.PolicySelector.ENFT else "Cleared"
+            "Enforced" if _test_regime == isl.PolicySelector.ENFT else "Cleared"
         ),
         f"{_obs_sample_sz:,d} total observations (investigated mergers).",
     ))
@@ -260,10 +267,10 @@ def inv_stats_sim_render(
         _stats_table_content.stats_cis_notestr += "".join((isl.LTX_ARRAY_LINEEND, _nsp))
     del _nsp
 
-    _inv_stats_report_func = (
-        isl.latex_tbl_inv_stats_byzone
+    _invres_stats_report_func = (
+        isl.latex_tbl_invres_stats_byzone
         if _stats_group == isl.StatsGrpSelector.ZN
-        else isl.latex_tbl_inv_stats_1dim
+        else isl.latex_tbl_invres_stats_1dim
     )
     _sort_order = (
         isl.SortSelector.UCH
@@ -271,15 +278,15 @@ def inv_stats_sim_render(
         else isl.SortSelector.REV
     )
 
-    _inv_stats_hdr_list, _inv_stats_dat_list = _inv_stats_report_func(
+    _invres_stats_hdr_list, _invres_stats_dat_list = _invres_stats_report_func(
         _stats_group_dict_sub["obs_array"],
         return_type_sel=isl.StatsReturnSelector.RIN,
         sort_order=_sort_order,
     )
     if _stats_group == isl.StatsGrpSelector.FC:
-        del _inv_stats_hdr_list[-2], _inv_stats_dat_list[-2]
+        del _invres_stats_hdr_list[-2], _invres_stats_dat_list[-2]
 
-    _stats_table_content.stats_numrows = len(_inv_stats_hdr_list)
+    _stats_table_content.stats_numrows = len(_invres_stats_hdr_list)
     _stats_table_content.hdrcol_cis_width = f'{_stats_group_dict_sub["hcol_width"]}pt'
 
     _hs1 = _stats_group_dict_sub["hval"]
@@ -299,19 +306,19 @@ def inv_stats_sim_render(
     del _hs1, _hs2
 
     _stats_table_content.stats_hdrstr = "".join([
-        f"{g} {isl.LTX_ARRAY_LINEEND}" for g in _inv_stats_hdr_list
+        f"{g} {isl.LTX_ARRAY_LINEEND}" for g in _invres_stats_hdr_list
     ])
     _stats_table_content.stats_cis = "".join([
-        f"{' & '.join(g)} {isl.LTX_ARRAY_LINEEND}" for g in _inv_stats_dat_list
+        f"{' & '.join(g)} {isl.LTX_ARRAY_LINEEND}" for g in _invres_stats_dat_list
     ])
     # Print to console
-    isl.stats_print_rows(_inv_stats_hdr_list, _inv_stats_dat_list)
-    del _inv_stats_hdr_list, _inv_stats_dat_list
+    isl.stats_print_rows(_invres_stats_hdr_list, _invres_stats_dat_list)
+    del _invres_stats_hdr_list, _invres_stats_dat_list
 
-    print(f"Simulated {_inv_sel} rates {_stats_group}:")
+    print(f"Simulated {_test_regime} rates {_stats_group}:")
     print(f"\t with generated data size = {_sim_sample_sz:,d}:")
 
-    _stats_sim_hdr_list, _stats_sim_dat_list = _inv_stats_report_func(
+    _stats_sim_hdr_list, _stats_sim_dat_list = _invres_stats_report_func(
         _stats_group_dict_sub["sim_array"],
         return_type_sel=isl.StatsReturnSelector.RPT,
         sort_order=_sort_order,
@@ -364,11 +371,11 @@ if __name__ == "__main__":
         )
         save_data_to_file = (True, h5datafile, "/")
 
-    sim_inv_sel = (
+    sim_test_regime = (
         (isl.PolicySelector.CLRN, gtl.GUPPIWghtngSelector.MAX, None),
         (isl.PolicySelector.ENFT, gtl.GUPPIWghtngSelector.OSD, None),
     )[1]
-    inv_stats_kwargs = {"sim_inv_sel": sim_inv_sel}
+    invres_stats_kwargs = {"sim_test_regime": sim_test_regime}
 
     for merger_class in merger_classes:
         for study_period in data_periods:
@@ -376,7 +383,7 @@ if __name__ == "__main__":
                 continue
 
             print(
-                f"{sim_inv_sel[0].capitalize()} rates and c.i.s",
+                f"{sim_test_regime[0].capitalize()} rates and c.i.s",
                 f"for the class of mergers, '{merger_class}',",
                 f"for study period, {study_period}:",
             )
@@ -404,13 +411,13 @@ if __name__ == "__main__":
                 h5hier = f"/{h5hier_pat.sub('_', f'{merger_class} {study_period}')}"
                 save_data_to_file = save_data_to_file[:-1] + (h5hier,)
 
-            inv_stats_sim_setup(
+            invres_stats_sim_setup(
                 invdata_array_dict,
                 study_period,
                 merger_class,
                 clrenf_parm_vec,
                 mkt_sample_spec,
-                inv_stats_kwargs,
+                invres_stats_kwargs,
             )
 
     if save_data_to_file:

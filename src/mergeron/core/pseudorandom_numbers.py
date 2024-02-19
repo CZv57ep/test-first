@@ -113,6 +113,30 @@ def gen_seed_seq_list_default(
 
 
 class MultithreadedRNG:
+    """Fill given array on demand with pseudo-random numbers as specified.
+
+    Random number generation is multithreaded, using twice
+    the number of threads as available CPU cores by default.
+    If a seed sequence is provided, it is used in a thread-safe way
+    to generate repeatable i.i.d. draws. All arguments are validated
+    before commencing multithreaded random number generation.
+
+    Parameters
+    ----------
+    _out_array
+        The output array to which generated data are written.
+        Its dimensions define the size of the sample.
+    dist_type
+        Distribution for the generated random numbers
+    dist_parms
+        Parameters, if any, for tailoring random number generation
+    seed_sequence
+        SeedSequence object for generating repeatable draws.
+    nthreads
+        Number of threads to spawn for random number generation.
+
+    """
+
     def __init__(
         self,
         _out_array: NDArray[np.float64],
@@ -125,29 +149,6 @@ class MultithreadedRNG:
         seed_sequence: SeedSequence | None = None,
         nthreads: int = NTHREADS,
     ):
-        """Fill given array on demand with pseudo-random numbers as specified.
-
-        Random number generation is multithreaded, using twice
-        the number of threads as available CPU cores by default.
-        If a seed sequence is provided, it is used in a thread-safe way
-        to generate repeatable i.i.d. draws. All arguments are validated
-        before commencing multithreaded random number generation.
-
-        Parameters
-        ----------
-        _out_array
-            The output array to which generated data are written.
-            Its dimensions define the size of the sample.
-        dist_type
-            Distribution for the generated random numbers
-        dist_parms
-            Parameters, if any, for tailoring random number generation
-        seed_sequence
-            SeedSequence object for generating repeatable draws.
-        nthreads
-            Number of threads to spawn for random number generation.
-
-        """
         self.thread_count = nthreads
 
         _seed_sequence = seed_sequence or SeedSequence(pool_size=8)

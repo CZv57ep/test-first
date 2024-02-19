@@ -6,6 +6,7 @@ This boundary is limited to share-margin space, given restrictions from symmetry
 
 from pathlib import Path
 
+import matplotlib as mpl
 import numpy as np
 from matplotlib import cm as colormgr
 from matplotlib import colors as mcolors
@@ -43,14 +44,11 @@ def _main() -> None:
 
     print("Generate data for plots")
     # Mgn coords, and div-ratio coords
-    dh_bar, g_bar, r_bar, dr_bar = 0.01, 0.06, 0.80, 0.20
+    g_bar, r_bar, dr_bar = 0.06, 0.80, 0.20
 
     step_size = 10**-5
     sym_shr_vec = np.arange(gsf.shr_from_gbd(g_bar), 0.5 + step_size, step_size)
     mst_vec = (g_bar / r_bar) * (1 - sym_shr_vec) / sym_shr_vec
-    mst_vec_gsf = np.where(
-        sym_shr_vec > gsf.shr_from_gbd(dr_bar, m_star=1.00), np.nan, mst_vec
-    )
 
     print("Setup basic figure and axes for plots of safe harbor boundaries.")
 
@@ -120,7 +118,7 @@ def _main() -> None:
         linestyle="-",
         linewidth=0.75,
         alpha=1,
-        color=colormgr.cividis(dr_bar_mgn[0]),
+        color=mpl.colormaps["cividis"](dr_bar_mgn[0]),
         zorder=5.5,
     )
 
@@ -173,10 +171,7 @@ def _main() -> None:
     _minorLocator = AutoMinorLocator(5)
     _majorLocator = MultipleLocator(0.05)
     for _axs in ax1.xaxis, ax1.yaxis:
-        if _axs == ax1.xaxis:
-            _majorticklabels_rot = 45
-        elif _axs == ax1.yaxis:
-            _majorticklabels_rot = 0
+        _majorticklabels_rot = 45 if _axs == ax1.xaxis else 0
         # x-axis
         _axs.set_major_locator(_majorLocator)
         _axs.set_minor_locator(_minorLocator)

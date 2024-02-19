@@ -20,23 +20,23 @@ invdata_array_dict = fid.construct_data(
         strict=True,
     ),
 )
-def test_inv_stats(
+def test_invres_stats(
     _stats_group: isl.StatsGrpSelector, _test_val: NDArray[np.int64]
 ) -> None:
-    _inv_sel = isl.PolicySelector.CLRN
-    _inv_stats_cnts = isl.inv_stats_cnts_by_group(
+    _test_regime = isl.PolicySelector.CLRN
+    _invres_stats_cnts = isl.invres_stats_cnts_by_group(
         invdata_array_dict,
         "1996-2003",
         isl.INDGRPConstants.ALL,
         isl.EVIDENConstants.UR,
         _stats_group,
-        _inv_sel,
+        _test_regime,
     )[:, -2:]
-    _inv_stats_totals = np.einsum("ij->j", _inv_stats_cnts)
-    assert_array_equal(_inv_stats_totals, _test_val)
+    _invres_stats_totals = np.einsum("ij->j", _invres_stats_cnts)
+    assert_array_equal(_invres_stats_totals, _test_val)
 
 
-inv_sel = isl.PolicySelector.CLRN
+test_regime = isl.PolicySelector.CLRN
 # Test print functionality:
 for data_period in "1996-2003", "2004-2011":
     for evid_class in isl.EVIDENConstants.UR, isl.EVIDENConstants.ED:
@@ -45,13 +45,13 @@ for data_period in "1996-2003", "2004-2011":
                 continue
 
             for return_type in isl.StatsReturnSelector:
-                (inv_stats_hdr_list, inv_stats_dat_list) = isl.inv_stats_output(
+                (invres_stats_hdr_list, invres_stats_dat_list) = isl.invres_stats_output(
                     invdata_array_dict,
                     data_period,
                     isl.INDGRPConstants.ALL,
                     evid_class,
                     stats_group,
-                    inv_sel,
+                    test_regime,
                     return_type_sel=return_type,
                     sort_order=(
                         isl.SortSelector.UCH

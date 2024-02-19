@@ -1,11 +1,11 @@
 """
 
-    Estimation of intrinsic clearance rates for ΔHHI safeharbor and GUPPI safeharbor
-    Demonstrates MC integration with closed-form integrand and indicator-function
-    integrand (Tested with Python 3.8 and 3.9; NumPy module is required.)
+Estimation of intrinsic clearance rates for ΔHHI safeharbor and GUPPI safeharbor
+Demonstrates MC integration with closed-form integrand and indicator-function
+integrand (Tested with Python 3.8 and 3.9; NumPy module is required.)
 
-    S. Murthy Kambhampaty, © 2019. This work is licensed under a CC BY-NC-SA 4.0 License
-    https://creativecommons.org/licenses/by-nc-sa/4.0/
+S. Murthy Kambhampaty, © 2019. This work is licensed under a CC BY-NC-SA 4.0 License
+https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 """
 

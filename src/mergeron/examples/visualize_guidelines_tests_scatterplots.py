@@ -41,7 +41,7 @@ def gen_plot_data(
     _market_data: dgl.MarketsSample,
     _g_bar: float,
     _pcm_firm2_star: float = 0.30,
-    _inv_sel: gtl.UPPTestSpec = (
+    _test_regime: gtl.UPPTestRegime = (
         isl.PolicySelector.CLRN,
         gtl.GUPPIWghtngSelector.MAX,
         None,
@@ -64,13 +64,13 @@ def gen_plot_data(
 
     _guppi_est = (
         _guppi_array.max(axis=1, keepdims=True)
-        if _inv_sel[1] == gtl.GUPPIWghtngSelector.MAX
+        if _test_regime[1] == gtl.GUPPIWghtngSelector.MAX
         else _guppi_array.min(axis=1, keepdims=True)
     )
 
     _gbd_test = (
         (_guppi_est < _g_bar)
-        if _inv_sel[0] == isl.PolicySelector.CLRN
+        if _test_regime[0] == isl.PolicySelector.CLRN
         else (_guppi_est >= _g_bar)
     )
 
@@ -109,7 +109,7 @@ def gen_plot_data(
             )
 
     _pcm_sorter = argsort(_pcm_plotter, axis=0)
-    if _inv_sel[0] != isl.PolicySelector.CLRN:
+    if _test_regime[0] != isl.PolicySelector.CLRN:
         _pcm_sorter = _pcm_sorter[::-1, :]
     _qtyshr_firm1_plotter = _qtyshr_firm1_inv[_pcm_sorter]
     _qtyshr_firm2_plotter = _qtyshr_firm2_inv[_pcm_sorter]
@@ -130,12 +130,12 @@ def gen_plot_data(
 def _main(
     _hmg_pub_year: gsf.HMGPubYear,
     _market_sample_spec: dgl.MarketSampleSpec,
-    _inv_sel: gtl.UPPTestSpec,
+    _test_regime: gtl.UPPTestRegime,
     _save_data_to_file: gtl.SaveData,
 ) -> None:
     _r_bar, _g_bar, _divr_bar, *_ = getattr(
         gsf.GuidelinesStandards(_hmg_pub_year),
-        "safeharbor" if _inv_sel[0] == isl.PolicySelector.ENFT else "presumption",
+        "safeharbor" if _test_regime[0] == isl.PolicySelector.ENFT else "presumption",
     )[2:]
     market_data = dgl.gen_market_sample(_market_sample_spec, seed_seq_list=None)
 
@@ -205,7 +205,7 @@ def _main(
             market_data,
             _g_bar,
             _pcm_firm2_star,
-            _inv_sel,
+            _test_regime,
             h5handle=_save_data_to_file[1] if _save_data_to_file else None,
         )
 
@@ -243,7 +243,7 @@ def _main(
     _cm_plot.outline.set_visible(False)
 
     _base_name = DATA_DIR.joinpath(
-        f"{PROG_PATH.stem}_{_hmg_pub_year}gbar{f"{_g_bar * 100:02.0f}"}PCT_{market_sample_spec.share_spec[0]}Recapture_{_inv_sel}"
+        f"{PROG_PATH.stem}_{_hmg_pub_year}gbar{f"{_g_bar * 100:02.0f}"}PCT_{market_sample_spec.share_spec[0]}Recapture_{_test_regime}"
     )
     _my_fig_2dsg_savepath = DATA_DIR / f"{_base_name}_2DScatterGrid.pdf"
     print(f"Save 2D plot to, {_my_fig_2dsg_savepath!r}")
@@ -253,14 +253,14 @@ def _main(
 if __name__ == "__main__":
     # Get Guidelines parameter values
     hmg_pub_year: Final = 2023
-    inv_sel: gtl.UPPTestSpec = (
+    test_regime: gtl.UPPTestRegime = (
         isl.PolicySelector.ENFT,
         gtl.GUPPIWghtngSelector.MIN,
         gtl.GUPPIWghtngSelector.MIN,
     )
     r_bar, g_bar, divr_bar, *_ = getattr(
         gsf.GuidelinesStandards(hmg_pub_year),
-        "safeharbor" if inv_sel[0] == isl.PolicySelector.ENFT else "presumption",
+        "safeharbor" if test_regime[0] == isl.PolicySelector.ENFT else "presumption",
     )[2:]
 
     sample_sz = 10**7
@@ -293,7 +293,7 @@ if __name__ == "__main__":
     else:
         save_data_to_file = False
 
-    _main(hmg_pub_year, market_sample_spec, inv_sel, save_data_to_file)
+    _main(hmg_pub_year, market_sample_spec, test_regime, save_data_to_file)
 
     if save_data_to_file_flag:
         h5datafile.close()

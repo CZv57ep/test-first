@@ -57,8 +57,14 @@ def test_shr_from_gbd(_gv: float, _mv: float, _rv: float, _test_val: float) -> N
     zip(((), (0.045, 1.00, 6 / 7)), (0.075, 5 / 95), strict=True),
 )
 def test_benchmark_shrratio(_test_parms: Sequence[float], _test_val: float) -> None:
+    if _test_parms:
+        _gv, _mv, _rv = _test_parms
+        _ts = gsf.critical_shrratio(_gv, m_star=_mv, r_bar=_rv)
+    else:
+        _ts = gsf.critical_shrratio()
     assert_equal(
-        gsf.round_cust(gsf.critical_shrratio(*_test_parms)), gsf.round_cust(_test_val)
+        gsf.round_cust(_ts),
+        gsf.round_cust(_test_val),
     )
 
 
@@ -125,7 +131,10 @@ def test_hhi_pre_contrib_boundary(_dhv: float) -> None:
     ),
 )
 def test_shrratio_mgnsym_boundary_max(_dhv: tuple[float, float], _tv: float) -> None:
-    assert_equal(gsf.shrratio_mgnsym_boundary_max(gsf.critical_shrratio(*_dhv))[1], _tv)
+    _test_area = gsf.shrratio_mgnsym_boundary_max(
+        gsf.critical_shrratio(_dhv[0], m_star=_dhv[1])
+    )[1]
+    assert_equal(_test_area, _tv)
 
 
 @pytest.mark.parametrize(
@@ -145,7 +154,7 @@ def test_shrratio_mgnsym_boundary_min(
     assert_equal(
         gsf.round_cust(
             gsf.shrratio_mgnsym_boundary_min(
-                gsf.critical_shrratio(_gv, _mv, _rv),
+                gsf.critical_shrratio(_gv, m_star=_mv, r_bar=_rv),
                 _rv,
                 recapture_spec=_recapture_spec,
             )[1]
@@ -176,7 +185,7 @@ def test_shrratio_mgnsym_boundary_wtd_avg(
     _tvl: tuple[float, float, str, str, float],
 ) -> None:
     _ts = gsf.shrratio_mgnsym_boundary_wtd_avg(
-        gsf.critical_shrratio(_tvl[0], _tvl[1]),
+        gsf.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         wgtng_policy=_tvl[2],  # type: ignore
         avg_method=_tvl[3],  # type: ignore
         recapture_spec="proportional",
@@ -210,7 +219,7 @@ def test_shrratio_mgnsym_boundary_xact_avg(
     _tvl: tuple[float, float, str, float],
 ) -> None:
     _ts = gsf.shrratio_mgnsym_boundary_xact_avg(
-        gsf.critical_shrratio(_tvl[0], _tvl[1]),
+        gsf.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         recapture_spec=_tvl[2],  # type: ignore
     )[1]
     print("Test gsf.gen_xact_avg_shrratio_mgnsym_boundary(): ", end="")
@@ -235,7 +244,7 @@ def test_shrratio_mgnsym_boundary_xact_avg(
 )
 def test_shrratio_mgnsym_boundary_avg(_tvl: tuple[float, float, str, float]) -> None:
     _ts = gsf.shrratio_mgnsym_boundary_avg(
-        gsf.critical_shrratio(_tvl[0], _tvl[1]),
+        gsf.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         recapture_spec=_tvl[2],  # type: ignore
     )[1]
     print("Test gsf.shrratio_mgnsym_boundary_avg(): ", end="")

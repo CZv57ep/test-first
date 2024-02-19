@@ -1,6 +1,6 @@
 """
 
-Draw boundaries for various standards from 1992 and 2010 Guidelines.
+Draw boundaries for various standards from U.S. Horizontal Merger Guidelines.
 """
 
 from itertools import product as iterprod
@@ -9,6 +9,7 @@ from typing import Literal
 
 import matplotlib.axis
 from matplotlib import cm as colormgr
+from matplotlib import colormaps
 from matplotlib import colors as mcolors
 from matplotlib.ticker import StrMethodFormatter
 from numpy import (
@@ -39,9 +40,9 @@ def plot_delta_boundaries(
         raise ValueError(f"Recapture specification must be one of, {_recspecs!r}")
 
     print("ΔHHI safeharbor boundary")
-    _plt, _my_fig1, _ax1, _set_axis_def = gsf.boundary_plot()
+    _plt, _my_fig1, _ax1, _ = gsf.boundary_plot()
 
-    _dh_bar, _f_count_post, _r_bar, _guppi_bench, _divr_bench = get_hmg_standards_plus(
+    _dh_bar, _r_bar, _guppi_bench, _divr_bench, _, _ = get_hmg_standards_by_key(
         _guppi_bench_key
     )
 
@@ -97,7 +98,7 @@ def plot_delta_boundaries(
                 _guppi_bdry_env_xs[::-1],
                 linewidth=0.5,
                 linestyle="--",
-                color=colormgr.cividis(_m_star),
+                color=colormaps["cividis"](_m_star),
                 zorder=3,
             )
             del _symshr, _dstar, _m_star, _guppi_bdry_env_xs
@@ -124,12 +125,18 @@ def plot_delta_boundaries(
                 alpha=0.7,
                 rasterized=True,
             )
+        del (
+            _dh_safeharb,
+            _dh_prob,
+            _dh_dat_x,
+            _dh_dat_y,
+        )  # , _dh_dat_x_pla, _dh_dat_y_pla
 
     _my_fig1.savefig(
         data_path.joinpath(f"{mod_path.stem}_DH100_deltaHHI_only.pdf"), dpi=600
     )
-    del _plt, _my_fig1, _ax1, _set_axis_def, _dh_safeharb, _dh_prob
-    del _dh_dat_x, _dh_dat_y  # , _dh_dat_x_pla, _dh_dat_y_pla
+
+    del _plt, _my_fig1, _ax1
 
 
 def plot_guppi_boundaries(  # noqa PLR0915
@@ -140,7 +147,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
     if recapture_spec not in (_recspecs := ("inside-out", "proportional")):
         raise ValueError(f"Recapture specification must be one of, {_recspecs!r}")
 
-    _dh_bar, _f_count_post, _r_bar, _guppi_bench, _divr_bench = get_hmg_standards_plus(
+    _dh_bar, _r_bar, _guppi_bench, _divr_bench, _, _ = get_hmg_standards_by_key(
         _guppi_bench_key
     )
 
@@ -163,7 +170,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
         wspace=0.0,
     )
     _ax1 = _my_fig1.add_subplot(_fig1_grid[0, 0])
-    _ax1 = _set_axis_def(_plt, _ax1)
+    _ax1 = _set_axis_def(_ax1)
     _ax1.set_aspect(1.0)
     _ax1.set_facecolor("#F6F6F6")
 
@@ -211,7 +218,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
                 _s2_vals,
                 linestyle="--",
                 linewidth=0.75,
-                color=colormgr.cividis(_m_star),
+                color=colormaps["cividis"](_m_star),
                 zorder=3,
             )
         else:
@@ -232,7 +239,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
                 _s2_vals,
                 linestyle="--",
                 linewidth=0.5,
-                color=colormgr.cividis(_m_star),
+                color=colormaps["cividis"](_m_star),
                 zorder=3,
             )
             # Print inner boundary, color-coded m_1
@@ -241,7 +248,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
                 _s1_vals[::-1],
                 linestyle="--",
                 linewidth=0.5,
-                color=colormgr.cividis(_m_star),
+                color=colormaps["cividis"](_m_star),
                 zorder=3,
             )
 
@@ -286,7 +293,6 @@ def plot_guppi_boundaries(  # noqa PLR0915
             fontsize=4,
             zorder=5.1,
         )
-    del _m_star
 
     # Examples of hypothetical combinations
     if not _pcm_same_flag:
@@ -328,7 +334,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
             _y_drt,
             linestyle="-",
             linewidth=0.75,
-            color=colormgr.cividis(_m_star_bench),
+            color=colormaps["cividis"](_m_star_bench),
             zorder=4,
         )
 
@@ -377,7 +383,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
         xerr=_ebar_array,
         yerr=_ebar_array,
         fmt=".",
-        mfc=colormgr.cividis(_guppi_bench / _r_bar),
+        mfc=colormaps["cividis"](_guppi_bench / _r_bar),
         mec="None",
         alpha=0.9,
         zorder=5,
@@ -386,7 +392,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
     # https://stackoverflow.com/questions/22995797/
     for _ix in range(2):
         _ebar_plot[-1][_ix].set(
-            color=colormgr.cividis(_guppi_bench / _r_bar),
+            color=colormaps["cividis"](_guppi_bench / _r_bar),
             linestyle="--",
             linewidth=0.5,
             alpha=0.9,
@@ -437,23 +443,26 @@ def grad_est(_ax: matplotlib.axis.Axis, _pt_xs: tuple, _pt_ys: tuple) -> float:
             "Expecting only 2 points for calculation of line-gradient; got {_pt_len}."
         )
     _pt1, _pt2 = (
-        _ax.transData.transform_point((_pt_xs[_i], _pt_ys[_i])) for _i in range(2)
+        _ax.transData.transform_point((_pt_xs[_i], _pt_ys[_i]))  # type: ignore
+        for _i in range(2)
     )
     return (_pt2[1] - _pt1[1]) / (_pt2[0] - _pt1[0])
 
 
-def get_hmg_standards_plus(_guppi_bench_key: str, /) -> tuple:
+def get_hmg_standards_by_key(_guppi_bench_key: str, /) -> tuple:
     match _guppi_bench_key:
         case "DOJATR":
             return (
-                *(_tmp := gsf.GuidelinesStandards(2010).safeharbor[:3]),
-                _tmp[-1],
+                *(_tmp := gsf.GuidelinesStandards(2010).safeharbor[:2]),
                 0.05,
+                _tmp[-1],
+                None,
+                None,
             )
         case "DH100":
-            return gsf.GuidelinesStandards(2010).safeharbor[:-2]
+            return gsf.GuidelinesStandards(2010).safeharbor
         case "DH50":
-            return gsf.GuidelinesStandards(1992).safeharbor[:-2]
+            return gsf.GuidelinesStandards(1992).safeharbor
         case _:
             raise ValueError(
                 f"GUPPI benchmark key must be one of, {guppi_benchmark_keys!r}"

@@ -73,7 +73,7 @@ stats_sim_bydelta_unrestricted_teststr = teststr_pat.sub(
 
 
 def test_clearance_rate_calcs() -> None:
-    _test_sel: gtl.UPPTestSpec = (
+    _test_sel: gtl.UPPTestRegime = (
         isl.PolicySelector.CLRN,
         gtl.GUPPIWghtngSelector.MAX,
         None,
@@ -96,12 +96,12 @@ def test_clearance_rate_calcs() -> None:
         _stats_sim_byfirmcount_array,
         _stats_sim_bydelta_array,
         _stats_sim_byconczone_array,
-    ) = gtl.sim_inv_cnts_ll(
+    ) = gtl.sim_invres_cnts_ll(
         gsf.GuidelinesStandards(2010).safeharbor,
         _ind_sample_spec,
         {
             "seed_seq_list": rmp.gen_seed_seq_list_default(3),
-            "sim_inv_sel": _test_sel,
+            "sim_test_regime": _test_sel,
             "nthreads": 16,
         },
     )
@@ -119,7 +119,7 @@ def test_clearance_rate_calcs() -> None:
             _test_sel[0].capitalize()
         )
     )
-    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_inv_stats_1dim(
+    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_1dim(
         _stats_sim_byfirmcount_array[:, :-1], return_type_sel=_return_type_sel
     )
 
@@ -134,7 +134,7 @@ def test_clearance_rate_calcs() -> None:
 
     print()
     print(f"Simulated {_test_sel[0].capitalize()} stats by range of ∆HHI")
-    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_inv_stats_1dim(
+    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_1dim(
         _stats_sim_bydelta_array[:, :-1],
         return_type_sel=_return_type_sel,
         sort_order=isl.SortSelector.REV,
@@ -155,7 +155,7 @@ def test_clearance_rate_calcs() -> None:
             _test_sel[0].capitalize()
         )
     )
-    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_inv_stats_byzone(
+    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_byzone(
         _stats_sim_byconczone_array[:, :-1],
         return_type_sel=_return_type_sel,
         sort_order=isl.SortSelector.REV,

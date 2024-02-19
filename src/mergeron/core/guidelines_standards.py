@@ -12,7 +12,6 @@ from .. import _PKG_NAME  # noqa: TID252
 __version__ = version(_PKG_NAME)
 
 import decimal
-from dataclasses import dataclass
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
@@ -26,7 +25,6 @@ HMGPubYear: TypeAlias = Literal[1992, 2010, 2023]
 GuidelinesSTD = namedtuple("GuidelinesSTD", "delta rec guppi divr cmcr ipr")
 
 
-@dataclass
 class GuidelinesStandards:
     """
     Guidelines standards by Guidelines publication year
@@ -337,9 +335,7 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
     _fig = plt.figure(figsize=(5, 5), dpi=600)
     _ax_out = _fig.add_subplot()
 
-    def _set_axis_def(
-        _ax1: mpa._axes.Axes, /, mktshares_plot_flag: bool = False
-    ) -> mpa.Axes:
+    def _set_axis_def(_ax1: mpa.Axes, /, mktshares_plot_flag: bool = False) -> mpa.Axes:
         # Set the width of axis gridlines, and tick marks:
         # both axes, both major and minor ticks
         # Frame, grid, and facecolor

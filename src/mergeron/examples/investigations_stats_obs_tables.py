@@ -18,8 +18,8 @@ from mergeron import DATA_DIR
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
 
-clrenf_ratio_format_str = "{: >3.0f}/{:<3.0f}"
-format_str_invdata_dottex_name = "{}.tex".format(
+INVRES_RATIO_FORMAT_STR = "{: >3.0f}/{:<3.0f}"
+INVDATA_DOTTEX_FORMAT_STR = "{}.tex".format(
     "_".join((
         "BenchmarkingGUPPISafeharbor",
         "DRAFT",
@@ -30,7 +30,7 @@ format_str_invdata_dottex_name = "{}.tex".format(
 )
 
 
-def clrenf_stats_odds_ratio_byhhianddelta(
+def invres_stats_odds_ratio_byhhianddelta(
     _data_array_dict: Mapping,
     _data_periods: tuple[str, str],
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
@@ -49,11 +49,11 @@ def clrenf_stats_odds_ratio_byhhianddelta(
 
     print("Odds ratios by HHI and Delta:")
     _stats_group = isl.StatsGrpSelector.HD
-    _inv_rate_table_content = isl.StatsContainer()
-    _inv_rate_table_design = isl.latex_jinja_env.get_template(
+    _invres_rate_table_content = isl.StatsContainer()
+    _invres_rate_table_design = isl.latex_jinja_env.get_template(
         "ftcinvdata_byhhianddelta_table_template.tex.jinja2"
     )
-    _inv_rate_table_content.obs_summary_type = f"{_stats_group}"
+    _invres_rate_table_content.obs_summary_type = f"{_stats_group}"
 
     for _merger_class in _merger_classes:
         _table_ind_group = (
@@ -66,7 +66,7 @@ def clrenf_stats_odds_ratio_byhhianddelta(
             if isinstance(_merger_class, isl.EVIDENConstants)
             else isl.EVIDENConstants.UR
         )
-        _inv_rate_table_content.obs_merger_class = f"{_merger_class}"
+        _invres_rate_table_content.obs_merger_class = f"{_merger_class}"
 
         for _data_period in _data_periods:
             _data_array_dict_sub = _data_array_dict[_data_period][f"{_stats_group}"]
@@ -74,11 +74,11 @@ def clrenf_stats_odds_ratio_byhhianddelta(
                 _data_array_dict_sub, _table_ind_group, _table_evid_cond
             )
 
-            _inv_rate_table_content.table_ref = _table_no
+            _invres_rate_table_content.table_ref = _table_no
 
             _data_period_0, _data_period_1 = (int(f) for f in _data_period.split("-"))
             if _data_period_0 != 1996:
-                _inv_rate_table_content.invdata_notestr = " ".join((
+                _invres_rate_table_content.invdata_notestr = " ".join((
                     "NOTES:",
                     isl.LTX_ARRAY_LINEEND,
                     R"\(\cdot\) Data for period, {}".format(
@@ -90,71 +90,71 @@ def clrenf_stats_odds_ratio_byhhianddelta(
                     isl.LTX_ARRAY_LINEEND,
                 ))
 
-                _inv_rate_table_content.invdata_sourcestr = " ".join((
+                _invres_rate_table_content.invdata_sourcestr = " ".join((
                     "\\(\\cdot\\) Fed. Trade Comm'n ({}), at~\\cref{{fn:{}}},".format(
                         _data_period_0, f"FTCInvData1996to{_data_period_0}"
                     ),
                     isl.LTX_ARRAY_LINEEND,
                 ))
-                _inv_rate_table_content.invdata_sourcestr += " ".join((
+                _invres_rate_table_content.invdata_sourcestr += " ".join((
                     "\\(\\cdot\\) Fed. Trade Comm'n ({}), at~\\cref{{fn:{}}},".format(
                         _data_period_1, f"FTCInvData1996to{_data_period_1}"
                     ),
                     isl.LTX_ARRAY_LINEEND,
                 ))
             else:
-                _inv_rate_table_content.invdata_sourcestr = " ".join((
+                _invres_rate_table_content.invdata_sourcestr = " ".join((
                     "\\(\\cdot\\) Fed. Trade Comm'n ({}), at~\\cref{{fn:{}}},".format(
                         _data_period_1, f"FTCInvData1996to{_data_period_1}"
                     ),
                     isl.LTX_ARRAY_LINEEND,
                 ))
 
-            _inv_rate_table_content.obs_merger_class = f"{_merger_class}"
-            _inv_rate_table_content.obs_period = _data_period.split("-")
+            _invres_rate_table_content.obs_merger_class = f"{_merger_class}"
+            _invres_rate_table_content.obs_period = _data_period.split("-")
 
-            _inv_cnts_array = _data_array_dict_sub[_table_no][-1]
+            _invres_cnts_array = _data_array_dict_sub[_table_no][-1]
             _odds_ratio_data_str = ""
-            for _hhi_range_it in unique(_inv_cnts_array[:, 0]):
-                _inv_cnts_row_for_hhi_range = _inv_cnts_array[
-                    _inv_cnts_array[:, 0] == _hhi_range_it
+            for _hhi_range_it in unique(_invres_cnts_array[:, 0]):
+                _invres_cnts_row_for_hhi_range = _invres_cnts_array[
+                    _invres_cnts_array[:, 0] == _hhi_range_it
                 ][:, 2:]
                 _odds_ratio_data_str += " & ".join([
-                    clrenf_ratio_format_str.format(*g)
-                    for g in _inv_cnts_row_for_hhi_range
+                    INVRES_RATIO_FORMAT_STR.format(*g)
+                    for g in _invres_cnts_row_for_hhi_range
                 ])
                 _odds_ratio_data_str += " & {}".format(
-                    clrenf_ratio_format_str.format(
-                        *einsum("ij->j", _inv_cnts_row_for_hhi_range)
+                    INVRES_RATIO_FORMAT_STR.format(
+                        *einsum("ij->j", _invres_cnts_row_for_hhi_range)
                     )
                 )
                 _odds_ratio_data_str += isl.LTX_ARRAY_LINEEND
 
-            _inv_cnts_row_for_hhi_tots = row_stack([
-                einsum("ij->j", _inv_cnts_array[_inv_cnts_array[:, 1] == f][:, 2:])
-                for f in unique(_inv_cnts_array[:, 1])
+            _invres_cnts_row_for_hhi_tots = row_stack([
+                einsum("ij->j", _invres_cnts_array[_invres_cnts_array[:, 1] == f][:, 2:])
+                for f in unique(_invres_cnts_array[:, 1])
             ])
             _odds_ratio_data_str += " & ".join([
-                clrenf_ratio_format_str.format(*f) for f in _inv_cnts_row_for_hhi_tots
+                INVRES_RATIO_FORMAT_STR.format(*f) for f in _invres_cnts_row_for_hhi_tots
             ])
             _odds_ratio_data_str += " & {}".format(
-                clrenf_ratio_format_str.format(
-                    *einsum("ij->j", _inv_cnts_row_for_hhi_tots)
+                INVRES_RATIO_FORMAT_STR.format(
+                    *einsum("ij->j", _invres_cnts_row_for_hhi_tots)
                 )
             )
             _odds_ratio_data_str += isl.LTX_ARRAY_LINEEND
-            _inv_rate_table_content.invdata_byhhianddelta = _odds_ratio_data_str
+            _invres_rate_table_content.invdata_byhhianddelta = _odds_ratio_data_str
 
             with (
                 DATA_DIR
-                / format_str_invdata_dottex_name.format(
+                / INVDATA_DOTTEX_FORMAT_STR.format(
                     f"{_stats_group}_{_data_period_1}_{_merger_class.replace(' ', '')}"
                 )
-            ).open("w", encoding="utf8") as _inv_rate_table_dottex:
-                _inv_rate_table_dottex.write(
-                    _inv_rate_table_design.render(tmpl_data=_inv_rate_table_content)
+            ).open("w", encoding="utf8") as _invres_rate_table_dottex:
+                _invres_rate_table_dottex.write(
+                    _invres_rate_table_design.render(tmpl_data=_invres_rate_table_content)
                 )
-                print("\n", file=_inv_rate_table_dottex)
+                print("\n", file=_invres_rate_table_dottex)
 
             print(_odds_ratio_data_str)
             print()
@@ -165,7 +165,7 @@ def clrenf_stats_obs_setup(
     _data_array_dict: Mapping,
     _data_periods: tuple[str, str],
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
-    _inv_sel: isl.PolicySelector = isl.PolicySelector.CLRN,
+    _test_regime: isl.PolicySelector = isl.PolicySelector.CLRN,
     /,
 ) -> None:
     _notes_str_base = " ".join((
@@ -179,7 +179,7 @@ def clrenf_stats_obs_setup(
     ))
     _stats_group_dict = {
         isl.StatsGrpSelector.FC: {
-            "desc": f"{_inv_sel.capitalize()} rates by Firm Count",
+            "desc": f"{_test_regime.capitalize()} rates by Firm Count",
             "title_str": "By Number of Significant Competitors",
             "hval": "Firm Count",
             "hcol_width": 54,
@@ -192,7 +192,7 @@ def clrenf_stats_obs_setup(
             )),
         },
         isl.StatsGrpSelector.DL: {
-            "desc": Rf"{_inv_sel.capitalize()} rates by range of \(\Delta HHI\)",
+            "desc": Rf"{_test_regime.capitalize()} rates by range of \(\Delta HHI\)",
             "title_str": R"By Change in Concentration (\Deltah{})",
             "hval": R"$\Delta HHI$",
             "hval_plus": R"{ $[\Delta_L, \Delta_H)$ pts.}",
@@ -214,7 +214,7 @@ def clrenf_stats_obs_setup(
             )),
         },
         isl.StatsGrpSelector.ZN: {
-            "desc": f"{_inv_sel.capitalize()} rates by Approximate Presumption Zone",
+            "desc": f"{_test_regime.capitalize()} rates by Approximate Presumption Zone",
             "title_str": R"By Approximate \textit{2010 Guidelines} Concentration-Based Standards",
             "hval": "Approximate Standard",
             "hcol_width": 190,
@@ -228,41 +228,41 @@ def clrenf_stats_obs_setup(
     }
 
     for _stats_group_key in _stats_group_dict:
-        _inv_stats_obs_render(
+        _invres_stats_obs_render(
             _data_array_dict,
             _data_periods,
             _merger_classes,
             _stats_group_key,
             _stats_group_dict[_stats_group_key],
-            _inv_sel,
+            _test_regime,
         )
 
 
-def _inv_stats_obs_render(
+def _invres_stats_obs_render(
     _data_array_dict: Mapping,
     _data_periods: tuple[str, str],
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
     _stats_group: isl.StatsGrpSelector,
     _stats_group_dict: Mapping,
-    _inv_sel: isl.PolicySelector = isl.PolicySelector.CLRN,
+    _test_regime: isl.PolicySelector = isl.PolicySelector.CLRN,
     /,
 ) -> None:
-    _inv_rate_table_content = isl.StatsContainer()
-    _inv_rate_table_design = isl.latex_jinja_env.get_template(
+    _invres_rate_table_content = isl.StatsContainer()
+    _invres_rate_table_design = isl.latex_jinja_env.get_template(
         "ftcinvdata_summarypaired_table_template.tex.jinja2"
     )
 
     print(
         f'{_stats_group_dict["desc"]}:', ", ".join([f'"{g}"' for g in _merger_classes])
     )
-    _inv_rate_table_content.clrenf_sel = _inv_sel.capitalize()
-    _inv_rate_table_content.obs_summary_type = f"{_stats_group}"
-    _inv_rate_table_content.obs_summary_type_title = _stats_group_dict.get("title_str")
-    _inv_rate_table_content.hdrcol_raw_width = f'{_stats_group_dict["hcol_width"]}pt'
+    _invres_rate_table_content.test_regime = _test_regime.capitalize()
+    _invres_rate_table_content.obs_summary_type = f"{_stats_group}"
+    _invres_rate_table_content.obs_summary_type_title = _stats_group_dict.get("title_str")
+    _invres_rate_table_content.hdrcol_raw_width = f'{_stats_group_dict["hcol_width"]}pt'
 
     _hs1 = _stats_group_dict["hval"]
     _hs2 = _h if (_h := _stats_group_dict.get("hval_plus", "")) else _hs1
-    _inv_rate_table_content.invdata_hdrcoldescstr = (
+    _invres_rate_table_content.invdata_hdrcoldescstr = (
         isl.latex_hrdcoldesc_format_str.format(
             "hdrcol_raw",
             f'{_stats_group_dict["hcol_width"]}pt',
@@ -278,16 +278,16 @@ def _inv_stats_obs_render(
     )
     del _hs1, _hs2
 
-    _inv_rate_table_content.obs_merger_class_0 = f"{_merger_classes[0]}"
-    _inv_rate_table_content.obs_merger_class_1 = f"{_merger_classes[1]}"
-    _inv_rate_table_content.obs_periods_str = (
+    _invres_rate_table_content.obs_merger_class_0 = f"{_merger_classes[0]}"
+    _invres_rate_table_content.obs_merger_class_1 = f"{_merger_classes[1]}"
+    _invres_rate_table_content.obs_periods_str = (
         Rf"{' & '.join(_data_periods)} \\".replace("-", "--")
     )
 
-    _inv_rate_table_content.invdata_notewidth = _stats_group_dict["notewidth"]
-    _inv_rate_table_content.invdata_notestr = _stats_group_dict["notestr"]
+    _invres_rate_table_content.invdata_notewidth = _stats_group_dict["notewidth"]
+    _invres_rate_table_content.invdata_notestr = _stats_group_dict["notestr"]
     if _n2 := _stats_group_dict.get("notestr_plus", ""):
-        _inv_rate_table_content.invdata_notestr += _n2
+        _invres_rate_table_content.invdata_notestr += _n2
     del _n2
 
     _invdata_sourcestr_format_str = "{} {}".format(
@@ -305,16 +305,16 @@ def _inv_stats_obs_render(
             *(4, 10) if _stats_group == "ByFirmCount" else (3, 9)
         )
     )
-    _inv_rate_table_content.invdata_sourcestr = _invdata_sourcestr_format_str.format(
+    _invres_rate_table_content.invdata_sourcestr = _invdata_sourcestr_format_str.format(
         "2003", "FTCInvData1996to2003"
     )
-    _inv_rate_table_content.invdata_sourcestr += _invdata_sourcestr_format_str.format(
+    _invres_rate_table_content.invdata_sourcestr += _invdata_sourcestr_format_str.format(
         "2011", "FTCInvData1996to2011"
     )
 
     _invdata_hdr_list: list[str] = []
     _invdata_dat_list: list[list[str]] = []
-    _inv_cnt_totals: list[str] = []
+    _invres_cnt_totals: list[str] = []
     _sort_order = (
         isl.SortSelector.UCH
         if _stats_group == isl.StatsGrpSelector.FC
@@ -333,26 +333,26 @@ def _inv_stats_obs_render(
             else isl.EVIDENConstants.UR
         )
         for _data_period in _data_periods:
-            _inv_cnt_totals += [
-                isl.inv_stats_output(
+            _invres_cnt_totals += [
+                isl.invres_stats_output(
                     _data_array_dict,
                     _data_period,
                     _table_ind_group,
                     _table_evid_cond,
                     _stats_group,
-                    _inv_sel,
+                    _test_regime,
                     return_type_sel=isl.StatsReturnSelector.CNT,
                     print_to_screen=False,
                 )[1][-1][0]
             ]
 
-            _invdata_hdr_list_it, _invdata_dat_list_it = isl.inv_stats_output(
+            _invdata_hdr_list_it, _invdata_dat_list_it = isl.invres_stats_output(
                 _data_array_dict,
                 _data_period,
                 _table_ind_group,
                 _table_evid_cond,
                 _stats_group,
-                _inv_sel,
+                _test_regime,
                 return_type_sel=isl.StatsReturnSelector.RPT,
                 sort_order=_sort_order,
                 print_to_screen=False,
@@ -380,27 +380,27 @@ def _inv_stats_obs_render(
     ])
 
     (
-        _inv_rate_table_content.mkt_counts_str_class_0,
-        _inv_rate_table_content.mkt_counts_str_class_1,
+        _invres_rate_table_content.mkt_counts_str_class_0,
+        _invres_rate_table_content.mkt_counts_str_class_1,
     ) = (
         R"{} \\".format(" & ".join([f"Obs. = {f}" for f in g]))
         for g in [
-            _inv_cnt_totals[: len(_data_periods)],
-            _inv_cnt_totals[len(_data_periods) :],
+            _invres_cnt_totals[: len(_data_periods)],
+            _invres_cnt_totals[len(_data_periods) :],
         ]
     )
 
-    _inv_rate_table_content.invdata_numrows = len(_invdata_hdr_list)
-    _inv_rate_table_content.invdata_hdrstr = _invdata_hdrstr
-    _inv_rate_table_content.invdata_datstr = _invdata_datstr
+    _invres_rate_table_content.invdata_numrows = len(_invdata_hdr_list)
+    _invres_rate_table_content.invdata_hdrstr = _invdata_hdrstr
+    _invres_rate_table_content.invdata_datstr = _invdata_datstr
 
-    with (DATA_DIR / format_str_invdata_dottex_name.format(_stats_group)).open(
+    with (DATA_DIR / INVDATA_DOTTEX_FORMAT_STR.format(_stats_group)).open(
         "w", encoding="UTF-8"
-    ) as _inv_rate_table_dottex:
-        _inv_rate_table_dottex.write(
-            _inv_rate_table_design.render(tmpl_data=_inv_rate_table_content)
+    ) as _invres_rate_table_dottex:
+        _invres_rate_table_dottex.write(
+            _invres_rate_table_design.render(tmpl_data=_invres_rate_table_content)
         )
-        print("\n", file=_inv_rate_table_dottex)
+        print("\n", file=_invres_rate_table_dottex)
     del _invdata_hdrstr, _invdata_datstr
 
 
@@ -449,14 +449,14 @@ if __name__ == "__main__":
         isl.EVIDENConstants.ED,
     )  # clstl.INDGRPConstants.IID)
     data_periods = ("1996-2003", "2004-2011")
-    clrenf_sel = isl.PolicySelector.ENFT
+    test_regime = isl.PolicySelector.ENFT
 
     # Write the TiKZ setup file to destination first, for rendering the
     # .tex files of tables as PDF:
     with (
         DATA_DIR
         / "{}_{}_{}.tex".format(
-            *format_str_invdata_dottex_name.split("_")[:2], "TikZTableSettings"
+            *INVDATA_DOTTEX_FORMAT_STR.split("_")[:2], "TikZTableSettings"
         )
     ).open("w", encoding="utf8") as _table_settings_dottex:
         _table_settings_dottex.write(
@@ -464,7 +464,9 @@ if __name__ == "__main__":
         )
         print("\n", file=_table_settings_dottex)
     # Now generate the various tables summarizing merger investigations data
-    clrenf_stats_odds_ratio_byhhianddelta(
+    invres_stats_odds_ratio_byhhianddelta(
         invdata_array_dict, data_periods, merger_classes
     )
-    clrenf_stats_obs_setup(invdata_array_dict, data_periods, merger_classes, clrenf_sel)
+    clrenf_stats_obs_setup(
+        invdata_array_dict, data_periods, merger_classes, test_regime
+    )

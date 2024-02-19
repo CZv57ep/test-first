@@ -13,7 +13,7 @@ import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
 
-tests_of_interest: tuple[gtl.UPPTestSpec, ...] = (
+tests_of_interest: tuple[gtl.UPPTestRegime, ...] = (
     (isl.PolicySelector.CLRN, gtl.GUPPIWghtngSelector.MAX, gtl.GUPPIWghtngSelector.MAX),
     (isl.PolicySelector.ENFT, gtl.GUPPIWghtngSelector.MIN, gtl.GUPPIWghtngSelector.MIN),
 )
@@ -21,7 +21,7 @@ tests_of_interest: tuple[gtl.UPPTestSpec, ...] = (
 mod_path = Path(__file__)
 
 
-def analyze_inv_data(
+def analyze_invres_data(
     _sample_size: int = 10**6,
     _hmg_std_pub_year: Literal[1992, 2010, 2023] = 1992,
     _test_sel: tuple[
@@ -50,7 +50,7 @@ def analyze_inv_data(
         If True, simulated data are save to file (hdf5 format)
 
     """
-    _inv_parm_vec = gsf.GuidelinesStandards(_hmg_std_pub_year).presumption[2:]
+    _invres_parm_vec = gsf.GuidelinesStandards(_hmg_std_pub_year).presumption[2:]
 
     _save_data_to_file: Literal[False] | tuple[Literal[True], ptb.File, str] = False
     if save_data_to_file_flag:
@@ -115,7 +115,7 @@ def analyze_inv_data(
 
         _ind_sample_spec = dgl.MarketSampleSpec(
             _sample_size,
-            _inv_parm_vec[0],
+            _invres_parm_vec[0],
             dgl.PRIConstants.SYM,
             share_spec=dgl.ShareSpec(
                 dgl.SHRConstants.UNI, _recapture_spec_test, dgl.EMPTY_ARRAY_DEFAULT
@@ -125,17 +125,17 @@ def analyze_inv_data(
             ),
         )
 
-        _inv_cnts_kwargs = {
-            "sim_inv_sel": _test_sel,
+        _invres_cnts_kwargs = {
+            "sim_test_regime": _test_sel,
             "save_data_to_file": _save_data_to_file,
         }
 
         _start_time = datetime.now()
         (
-            _inv_rate_sim_byfirmcount_array,
-            _inv_rate_sim_bydelta_array,
-            _inv_rate_sim_byconczone_array,
-        ) = gtl.sim_inv_cnts_ll(_inv_parm_vec, _ind_sample_spec, _inv_cnts_kwargs)
+            _invres_rate_sim_byfirmcount_array,
+            _invres_rate_sim_bydelta_array,
+            _invres_rate_sim_byconczone_array,
+        ) = gtl.sim_invres_cnts_ll(_invres_parm_vec, _ind_sample_spec, _invres_cnts_kwargs)
         _run_duration = datetime.now() - _start_time
         print(
             f"Simulation completed in {_run_duration / timedelta(seconds=1):.6f} secs.",
@@ -143,8 +143,8 @@ def analyze_inv_data(
             sep=", ",
         )
 
-        _stats_hdr_list, _stats_dat_list = isl.latex_tbl_inv_stats_1dim(
-            _inv_rate_sim_bydelta_array,
+        _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_1dim(
+            _invres_rate_sim_bydelta_array,
             return_type_sel=isl.StatsReturnSelector.RPT,
             sort_order=isl.SortSelector.REV,
         )
@@ -166,4 +166,4 @@ def analyze_inv_data(
 
 
 if __name__ == "__main__":
-    analyze_inv_data(10**7, 2023, tests_of_interest[1], save_data_to_file_flag=False)
+    analyze_invres_data(10**7, 2023, tests_of_interest[1], save_data_to_file_flag=False)

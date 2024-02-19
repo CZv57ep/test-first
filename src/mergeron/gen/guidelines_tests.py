@@ -53,7 +53,7 @@ class GUPPIWghtngSelector(enum.StrEnum):
     OSD = "own-share-weighted distance"
 
 
-UPPTestSpec: TypeAlias = tuple[
+UPPTestRegime: TypeAlias = tuple[
     isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
 ]
 
@@ -65,17 +65,17 @@ class UPPTests(NamedTuple):
     ipr_test: NDArray[np.bool_]
 
 
-def sim_inv_cnts_ll(
-    _inv_parm_vec: gsf.GuidelinesSTD,
+def sim_invres_cnts_ll(
+    _invres_parm_vec: gsf.GuidelinesSTD,
     _mkt_sample_spec: dgl.MarketSampleSpec,
-    _sim_inv_cnts_kwargs: Mapping[str, Any],
+    _sim_invres_cnts_kwargs: Mapping[str, Any],
     /,
 ) -> tuple[NDArray[np.int64], NDArray[np.int64], NDArray[np.int64]]:
     """
     A function to parallelize simulations
 
-    The parameters _sim_inv_cnts_kwargs is passed unaltered to
-    the parent function, sim_inv_cnts(), except that, if provided,
+    The parameters _sim_invres_cnts_kwargs is passed unaltered to
+    the parent function, sim_invres_cnts(), except that, if provided,
     "seed_seq_list" is used to spawn a seed sequence for each thread,
     to assure independent samples in each thread. The number of draws
     in each thread may be tuned, by trial and error, to the amount of
@@ -92,23 +92,23 @@ def sim_inv_cnts_ll(
     _mkt_sample_spec_here = evolve(_mkt_sample_spec, sample_size=_subsample_sz)
 
     _rng_seed_seq_list = [None] * _iter_count
-    if _sim_inv_cnts_kwargs:
-        if _sseql := _sim_inv_cnts_kwargs.get("seed_seq_list", None):
+    if _sim_invres_cnts_kwargs:
+        if _sseql := _sim_invres_cnts_kwargs.get("seed_seq_list", None):
             _rng_seed_seq_list = list(
                 zip(*[g.spawn(_iter_count) for g in _sseql], strict=True)  # type: ignore
             )
 
-        _sim_inv_cnts_ll_kwargs = {
-            _k: _v for _k, _v in _sim_inv_cnts_kwargs.items() if _k != "seed_seq_list"
+        _sim_invres_cnts_ll_kwargs = {
+            _k: _v for _k, _v in _sim_invres_cnts_kwargs.items() if _k != "seed_seq_list"
         }
     else:
-        _sim_inv_cnts_ll_kwargs = {}
+        _sim_invres_cnts_ll_kwargs = {}
 
     _res_list = Parallel(n_jobs=_thread_count, prefer="threads")(
-        delayed(sim_inv_cnts)(
-            _inv_parm_vec,
+        delayed(sim_invres_cnts)(
+            _invres_parm_vec,
             _mkt_sample_spec_here,
-            **_sim_inv_cnts_ll_kwargs,
+            **_sim_invres_cnts_ll_kwargs,
             saved_array_name_suffix=f"{_thread_id:0{int(np.ceil(np.log10(_thread_count)))}d}",
             seed_seq_list=_rng_seed_seq_list_ch,
         )
@@ -117,9 +117,9 @@ def sim_inv_cnts_ll(
 
     _res_list_stacks = [np.stack([_j[_k] for _j in _res_list]) for _k in range(3)]
     (
-        _inv_cnts_sim_byfirmcount_array,
-        _inv_cnts_sim_bydelta_array,
-        _inv_cnts_sim_byconczone_array,
+        _invres_cnts_sim_byfirmcount_array,
+        _invres_cnts_sim_bydelta_array,
+        _invres_cnts_sim_byconczone_array,
     ) = (
         np.column_stack((
             _g[0, :, :_h],
@@ -130,18 +130,18 @@ def sim_inv_cnts_ll(
     del _res_list, _res_list_stacks
 
     return (
-        _inv_cnts_sim_byfirmcount_array,
-        _inv_cnts_sim_bydelta_array,
-        _inv_cnts_sim_byconczone_array,
+        _invres_cnts_sim_byfirmcount_array,
+        _invres_cnts_sim_bydelta_array,
+        _invres_cnts_sim_byconczone_array,
     )
 
 
-def sim_inv_cnts(
+def sim_invres_cnts(
     _guppi_test_parms: gsf.GuidelinesSTD,
     _mkt_sample_spec: dgl.MarketSampleSpec,
     /,
     *,
-    sim_inv_sel: tuple[
+    sim_test_regime: tuple[
         isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
     ],
     saved_array_name_suffix: str = "",
@@ -180,7 +180,7 @@ def sim_inv_cnts(
     _upp_tests_data = gen_guppi_arrays(
         _guppi_test_parms,
         _market_data,
-        sim_inv_sel,
+        sim_test_regime,
         saved_array_name_suffix=saved_array_name_suffix,
         save_data_to_file=save_data_to_file,
     )
@@ -200,12 +200,12 @@ def sim_inv_cnts(
     )
     _max_firm_count = len(_firm_counts_prob_weights)
 
-    _inv_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
+    _invres_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
     for _firm_cnt in 2 + np.arange(_max_firm_count):
         _firm_count_test = _fcounts == _firm_cnt
 
-        _inv_cnts_sim_byfirmcount_array = np.row_stack((
-            _inv_cnts_sim_byfirmcount_array,
+        _invres_cnts_sim_byfirmcount_array = np.row_stack((
+            _invres_cnts_sim_byfirmcount_array,
             np.array([
                 _firm_cnt,
                 np.einsum("ij->", 1 * _firm_count_test),
@@ -215,15 +215,15 @@ def sim_inv_cnts(
                 ],
             ]),
         ))
-    _inv_cnts_sim_byfirmcount_array = _inv_cnts_sim_byfirmcount_array[1:]
+    _invres_cnts_sim_byfirmcount_array = _invres_cnts_sim_byfirmcount_array[1:]
 
     _hhi_delta_ranged = isl.hhi_delta_ranger(_hhi_delta)
-    _inv_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int64)
+    _invres_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int64)
     for _hhi_delta_lim in isl.HHI_DELTA_KNOTS[:-1]:
         _hhi_delta_test = _hhi_delta_ranged == _hhi_delta_lim
 
-        _inv_cnts_sim_bydelta_array = np.row_stack((
-            _inv_cnts_sim_bydelta_array,
+        _invres_cnts_sim_bydelta_array = np.row_stack((
+            _invres_cnts_sim_bydelta_array,
             np.array([
                 _hhi_delta_lim,
                 np.einsum("ij->", 1 * _hhi_delta_test),
@@ -234,7 +234,7 @@ def sim_inv_cnts(
             ]),
         ))
 
-    _inv_cnts_sim_bydelta_array = _inv_cnts_sim_bydelta_array[1:]
+    _invres_cnts_sim_bydelta_array = _invres_cnts_sim_bydelta_array[1:]
 
     # Clearance/enfrocement counts --- by zone, coded
     try:
@@ -269,21 +269,21 @@ def sim_inv_cnts(
                 ]),
             ))
 
-    _inv_cnts_sim_byconczone_array = isl.inv_cnts_byconczone(_stats_byconczone_sim[1:])
+    _invres_cnts_sim_byconczone_array = isl.invres_cnts_byconczone(_stats_byconczone_sim[1:])
     del _stats_byconczone_sim
     del _hhi_delta, _hhi_post, _fcounts
 
     return (
-        _inv_cnts_sim_byfirmcount_array,
-        _inv_cnts_sim_bydelta_array,
-        _inv_cnts_sim_byconczone_array,
+        _invres_cnts_sim_byfirmcount_array,
+        _invres_cnts_sim_bydelta_array,
+        _invres_cnts_sim_byconczone_array,
     )
 
 
 def gen_guppi_arrays(
     _guppi_test_parms: Sequence[float],
     _market_data: dgl.MarketsSample,
-    _sim_inv_sel: tuple[
+    _sim_test_regime: tuple[
         isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
     ],
     /,
@@ -295,7 +295,7 @@ def gen_guppi_arrays(
         getattr(_guppi_test_parms, _f) for _f in ("rec", "guppi", "divr", "cmcr", "ipr")
     )
 
-    _inv_sel, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_inv_sel
+    _test_regime, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_test_regime
 
     _guppi_array = np.empty_like(_market_data.divr_array)
     np.einsum(
@@ -387,7 +387,7 @@ def gen_guppi_arrays(
     if _divr_wgtng_policy == GUPPIWghtngSelector.MAX:
         _divr_test_vector = _market_data.divr_array.max(axis=1, keepdims=True)
 
-    if _inv_sel == isl.PolicySelector.ENFT:
+    if _test_regime == isl.PolicySelector.ENFT:
         _upp_tests_data = UPPTests(
             _guppi_test_vector >= _g_bar,
             (_guppi_test_vector >= _g_bar) | (_divr_test_vector >= _divr_bar),

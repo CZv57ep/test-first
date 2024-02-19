@@ -25,6 +25,15 @@ from scipy.interpolate import interp1d  # type: ignore
 from ..core import ftc_merger_investigations_data as fid  # noqa: TID252
 from ..core.proportions_tests import propn_ci  # noqa: TID252
 
+if not (_out_path := DATA_DIR.joinpath("mergeron.cls")).is_file():
+    _out_path.write_text(
+        Path(__file__)
+        .parents[1]
+        .joinpath("jinja_LaTex_templates", "mergeron.cls")
+        .read_text()
+    )
+
+
 T = TypeVar("T", bound=NBitBase)
 
 
@@ -131,15 +140,16 @@ latex_jinja_env = Environment(
     autoescape=select_autoescape(disabled_extensions=("tex.jinja2",)),
     loader=FileSystemLoader(Path(__file__).parents[1] / "jinja_LaTex_templates"),
 )
-TABLE_HELPER_DOTTEX = DATA_DIR / R"TikZTableSettings.tex"
-table_helper_design = latex_jinja_env.get_template("setup_tikz_tables.tex.jinja2")
-if not TABLE_HELPER_DOTTEX.is_file():
+
+_TABLE_HELPER_DOTTEX = DATA_DIR / R"TikZTableSettings.tex"
+_TABLE_HELPER_DESIGN = latex_jinja_env.get_template("setup_tikz_tables.tex.jinja2")
+if not _TABLE_HELPER_DOTTEX.is_file():
     # Write to dottex
-    with TABLE_HELPER_DOTTEX.open("w", encoding="UTF-8") as table_helper_dottex:
-        table_helper_dottex.write(
-            table_helper_design.render(tmpl_data=StatsContainer())
+    with _TABLE_HELPER_DOTTEX.open("w", encoding="UTF-8") as _table_helper_dottex:
+        _table_helper_dottex.write(
+            _TABLE_HELPER_DESIGN.render(tmpl_data=StatsContainer())
         )
-        print("\n", file=table_helper_dottex)
+        print("\n", file=_table_helper_dottex)
 
 
 # Parameters and functions to interpolate selected HHI and ΔHHI values
@@ -203,13 +213,13 @@ ZONE_DETAIL_STRINGS_DELTA = {
 }
 
 
-def inv_stats_output(
+def invres_stats_output(
     _data_array_dict: fid.INVData,
     _data_period: str = "1996-2003",
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
     _stats_group: StatsGrpSelector = StatsGrpSelector.FC,
-    _inv_sel: PolicySelector = PolicySelector.CLRN,
+    _test_regime: PolicySelector = PolicySelector.CLRN,
     /,
     *,
     return_type_sel: StatsReturnSelector = StatsReturnSelector.RPT,
@@ -224,49 +234,49 @@ def inv_stats_output(
 
     match _stats_group:
         case StatsGrpSelector.ZN:
-            _latex_tbl_inv_stats_func = latex_tbl_inv_stats_byzone
+            _latex_tbl_invres_stats_func = latex_tbl_invres_stats_byzone
         case StatsGrpSelector.FC:
-            _latex_tbl_inv_stats_func = latex_tbl_inv_stats_1dim
+            _latex_tbl_invres_stats_func = latex_tbl_invres_stats_1dim
         case StatsGrpSelector.DL:
-            _latex_tbl_inv_stats_func = latex_tbl_inv_stats_1dim
+            _latex_tbl_invres_stats_func = latex_tbl_invres_stats_1dim
         case _:
             raise ValueError(
                 'Statistics formatted, "{_stats_group}" not available here.'
             )
 
-    _inv_stats_cnts = inv_stats_cnts_by_group(
+    _invres_stats_cnts = invres_stats_cnts_by_group(
         _data_array_dict,
         _data_period,
         _table_ind_group,
         _table_evid_cond,
         _stats_group,
-        _inv_sel,
+        _test_regime,
     )
 
-    _inv_stats_hdr_list, _inv_stats_dat_list = _latex_tbl_inv_stats_func(
-        _inv_stats_cnts, None, return_type_sel=return_type_sel, sort_order=sort_order
+    _invres_stats_hdr_list, _invres_stats_dat_list = _latex_tbl_invres_stats_func(
+        _invres_stats_cnts, None, return_type_sel=return_type_sel, sort_order=sort_order
     )
 
     if print_to_screen:
         print(
-            f"{_inv_sel.capitalize()} stats ({return_type_sel})",
+            f"{_test_regime.capitalize()} stats ({return_type_sel})",
             f"for Period: {_data_period}",
             "\u2014",
             f"{_table_ind_group};",
             _table_evid_cond,
         )
-        stats_print_rows(_inv_stats_hdr_list, _inv_stats_dat_list)
+        stats_print_rows(_invres_stats_hdr_list, _invres_stats_dat_list)
 
-    return _inv_stats_hdr_list, _inv_stats_dat_list
+    return _invres_stats_hdr_list, _invres_stats_dat_list
 
 
-def inv_stats_cnts_by_group(
+def invres_stats_cnts_by_group(
     _invdata_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.TableData]]],
     _study_period: str,
     _table_ind_grp: INDGRPConstants,
     _table_evid_cond: EVIDENConstants,
     _stats_group: StatsGrpSelector,
-    _inv_sel: PolicySelector,
+    _test_regime: PolicySelector,
     /,
 ) -> NDArray[np.int64]:
     if _stats_group == StatsGrpSelector.HD:
@@ -276,14 +286,14 @@ def inv_stats_cnts_by_group(
 
     match _stats_group:
         case StatsGrpSelector.FC:
-            _cnts_func = inv_cnts_byfirmcount
-            _cnts_listing_func = inv_cnts_listing_byfirmcount
+            _cnts_func = invres_cnts_byfirmcount
+            _cnts_listing_func = invres_cnts_listing_byfirmcount
         case StatsGrpSelector.DL:
-            _cnts_func = inv_cnts_bydelta
-            _cnts_listing_func = inv_cnts_listing_byhhianddelta
+            _cnts_func = invres_cnts_bydelta
+            _cnts_listing_func = invres_cnts_listing_byhhianddelta
         case StatsGrpSelector.ZN:
-            _cnts_func = inv_cnts_byconczone
-            _cnts_listing_func = inv_cnts_listing_byhhianddelta
+            _cnts_func = invres_cnts_byconczone
+            _cnts_listing_func = invres_cnts_listing_byhhianddelta
 
     return _cnts_func(
         _cnts_listing_func(
@@ -291,17 +301,17 @@ def inv_stats_cnts_by_group(
             _study_period,
             _table_ind_grp,
             _table_evid_cond,
-            _inv_sel,
+            _test_regime,
         )
     )
 
 
-def inv_cnts_listing_byfirmcount(
+def invres_cnts_listing_byfirmcount(
     _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.TableData]]],
     _data_period: str = "1996-2003",
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
-    _inv_sel: PolicySelector = PolicySelector.CLRN,
+    _test_regime: PolicySelector = PolicySelector.CLRN,
     /,
 ) -> NDArray[np.int64]:
     if _data_period not in _data_array_dict:
@@ -318,7 +328,7 @@ def inv_cnts_listing_byfirmcount(
 
     _ndim_in = 1
     _stats_kept_indxs = []
-    match _inv_sel:
+    match _test_regime:
         case PolicySelector.CLRN:
             _stats_kept_indxs = [-1, -2]
         case PolicySelector.ENFT:
@@ -332,12 +342,12 @@ def inv_cnts_listing_byfirmcount(
     ])
 
 
-def inv_cnts_listing_byhhianddelta(
+def invres_cnts_listing_byhhianddelta(
     _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.TableData]]],
     _data_period: str = "1996-2003",
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
-    _inv_sel: PolicySelector = PolicySelector.CLRN,
+    _test_regime: PolicySelector = PolicySelector.CLRN,
     /,
 ) -> NDArray[np.int64]:
     if _data_period not in _data_array_dict:
@@ -354,7 +364,7 @@ def inv_cnts_listing_byhhianddelta(
 
     _ndim_in = 2
     _stats_kept_indxs = []
-    match _inv_sel:
+    match _test_regime:
         case PolicySelector.CLRN:
             _stats_kept_indxs = [-1, -2]
         case PolicySelector.ENFT:
@@ -394,7 +404,7 @@ def table_no_lku(
     return _tno
 
 
-def inv_cnts_byfirmcount(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
+def invres_cnts_byfirmcount(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
     _ndim_in = 1
     return np.row_stack([
         np.concatenate([
@@ -405,7 +415,7 @@ def inv_cnts_byfirmcount(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.i
     ])
 
 
-def inv_cnts_bydelta(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
+def invres_cnts_bydelta(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
     _ndim_in = 2
     return np.row_stack([
         np.concatenate([
@@ -416,7 +426,7 @@ def inv_cnts_bydelta(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64
     ])
 
 
-def inv_cnts_byconczone(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
+def invres_cnts_byconczone(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
     # Prepare to tag clearance stats by presumption zone
     _hhi_zone_post_ranged = hhi_zone_post_ranger(_cnts_array[:, 0] / 1e4)
     _hhi_delta_ranged = hhi_delta_ranger(_cnts_array[:, 1] / 1e4)
@@ -487,8 +497,8 @@ def inv_cnts_byconczone(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.in
     return _cnts_byconczone[1:]
 
 
-def latex_tbl_inv_stats_1dim(
-    _inparr: NDArray[np.integer[T]] | NDArray[np.floating[T]],
+def latex_tbl_invres_stats_1dim(
+    _inparr: NDArray[np.floating[T]] | NDArray[np.integer[T]],
     _totals_row: int | None = None,
     /,
     *,
@@ -523,7 +533,7 @@ def latex_tbl_inv_stats_1dim(
     if sort_order == SortSelector.REV:
         _inparr = _inparr[::-1]
 
-    _inparr = np.row_stack((_inparr, _in_totals_row))
+    _inparr = np.row_stack((_inparr, _in_totals_row))  # type: ignore
 
     _stats_hdr_list, _stats_dat_list = [], []
     for _stats_row in _inparr:
@@ -539,7 +549,7 @@ def latex_tbl_inv_stats_1dim(
     return _stats_hdr_list, _stats_dat_list
 
 
-def latex_tbl_inv_stats_byzone(
+def latex_tbl_invres_stats_byzone(
     _inparr: NDArray[np.integer[T]] | NDArray[np.floating[T]],
     _totals_row: int | None = None,
     /,
@@ -555,7 +565,7 @@ def latex_tbl_inv_stats_byzone(
         _zone_str_keys = _zone_str_keys[:-1][::-1] + [_zone_str_keys[-1]]
 
     if _totals_row is None:
-        _inparr = np.row_stack((
+        _inparr = np.row_stack((  # type: ignore
             _inparr,
             np.concatenate((
                 [fid.TTL_KEY, -1, -1],
@@ -648,9 +658,9 @@ def _stats_formatted_row(
 
 
 def stats_print_rows(
-    _inv_stats_hdr_list: list[str], _inv_stats_dat_list: list[list[str]]
+    _invres_stats_hdr_list: list[str], _invres_stats_dat_list: list[list[str]]
 ) -> None:
-    for _idx, _hdr in enumerate(_inv_stats_hdr_list):
+    for _idx, _hdr in enumerate(_invres_stats_hdr_list):
         # _hv = (
         #     re.match(r"^\\node.*?(\{.*\});?", _hdr)[1]
         #     if _hdr.startswith(R"\node")
@@ -662,7 +672,7 @@ def stats_print_rows(
         print(
             _hdr_str,
             "&",
-            " & ".join(_inv_stats_dat_list[_idx]),
+            " & ".join(_invres_stats_dat_list[_idx]),
             LTX_ARRAY_LINEEND,
             end="",
         )
