@@ -62,10 +62,7 @@ def test_benchmark_shrratio(_test_parms: Sequence[float], _test_val: float) -> N
         _ts = gsf.critical_shrratio(_gv, m_star=_mv, r_bar=_rv)
     else:
         _ts = gsf.critical_shrratio()
-    assert_equal(
-        gsf.round_cust(_ts),
-        gsf.round_cust(_test_val),
-    )
+    assert_equal(gsf.round_cust(_ts), gsf.round_cust(_test_val))
 
 
 def print_done() -> None:
@@ -179,6 +176,41 @@ def test_shrratio_mgnsym_boundary_min(
         (0.06, 1.0, "cross-product-share", "geometric", 0.00661),
         (0.06, 0.67, "cross-product-share", "geometric", 0.01417),
         (0.06, 0.3, "cross-product-share", "geometric", 0.06121),
+        # below are different from ~_avg() in 4th decimal
+        (0.06, 1.0, None, "arithmetic", 0.0102),
+        (0.06, 0.67, None, "arithmetic", 0.02169),
+        (0.06, 0.3, None, "arithmetic", 0.09123),
+    ),
+)
+def test_shrratio_mgnsym_boundary_wtd_avg_proportional(
+    _tvl: tuple[float, float, str, str, float],
+) -> None:
+    _ts = gsf.shrratio_mgnsym_boundary_wtd_avg(
+        gsf.critical_shrratio(_tvl[0], m_star=_tvl[1]),
+        wgtng_policy=_tvl[2],  # type: ignore
+        avg_method=_tvl[3],  # type: ignore
+        recapture_spec="proportional",
+    )[1]
+    print("Test gsf.shrratio_mgnsym_boundary_wtd_avg(): ", end="")
+    try:
+        assert_equal(_ts, _tvl[-1])
+    except AssertionError as _err:
+        print(
+            "g_val = {}; m_val = {}; wgtng = {}; meanf = {}; {}".format(*_tvl),
+            "=?",
+            _ts,
+            end="",
+        )
+        raise _err
+    print_done()
+
+
+@pytest.mark.parametrize(
+    "_tvl",
+    (
+        (0.06, 1.0, None, "arithmetic", "inside-out", 0.01026),
+        (0.06, 0.67, None, "arithmetic", "inside-out", 0.02187),
+        (0.06, 0.3, None, "arithmetic", "inside-out", 0.09323),
     ),
 )
 def test_shrratio_mgnsym_boundary_wtd_avg(
@@ -188,7 +220,7 @@ def test_shrratio_mgnsym_boundary_wtd_avg(
         gsf.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         wgtng_policy=_tvl[2],  # type: ignore
         avg_method=_tvl[3],  # type: ignore
-        recapture_spec="proportional",
+        recapture_spec=_tvl[4],
     )[1]
     print("Test gsf.shrratio_mgnsym_boundary_wtd_avg(): ", end="")
     try:
