@@ -8,6 +8,7 @@ from FTC merger investigations data
 import sys
 import warnings
 from collections.abc import Mapping, Sequence
+from pathlib import Path
 
 from numpy import einsum, row_stack, unique
 
@@ -20,13 +21,7 @@ if not sys.warnoptions:
 
 INVRES_RATIO_FORMAT_STR = "{: >3.0f}/{:<3.0f}"
 INVDATA_DOTTEX_FORMAT_STR = "{}.tex".format(
-    "_".join((
-        "BenchmarkingGUPPISafeharbor",
-        "DRAFT",
-        "FTCMergerInvestigationsDataTables",
-        "{}",
-        "OBS",
-    ))
+    "_".join(("FTCMergerInvestigationsDataTables", "{}", "OBS"))
 )
 
 
@@ -35,7 +30,7 @@ def invres_stats_odds_ratio_byhhianddelta(
     _data_periods: tuple[str, str],
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
     /,
-) -> None:
+) -> tuple[str, ...]:
     """
     Reconstruct tables by HHI and Delta.
 
@@ -55,10 +50,11 @@ def invres_stats_odds_ratio_byhhianddelta(
     )
     _invres_rate_table_content.obs_summary_type = f"{_stats_group}"
 
+    _output_dottex_pathlist: tuple[str, ...] = ()
     for _merger_class in _merger_classes:
         _table_ind_group = (
             _merger_class
-            if _merger_class == isl.INDGRPConstants.IIC
+            if isinstance(_merger_class, isl.INDGRPConstants)
             else isl.INDGRPConstants.ALL
         )
         _table_evid_cond = (
@@ -131,11 +127,14 @@ def invres_stats_odds_ratio_byhhianddelta(
                 _odds_ratio_data_str += isl.LTX_ARRAY_LINEEND
 
             _invres_cnts_row_for_hhi_tots = row_stack([
-                einsum("ij->j", _invres_cnts_array[_invres_cnts_array[:, 1] == f][:, 2:])
+                einsum(
+                    "ij->j", _invres_cnts_array[_invres_cnts_array[:, 1] == f][:, 2:]
+                )
                 for f in unique(_invres_cnts_array[:, 1])
             ])
             _odds_ratio_data_str += " & ".join([
-                INVRES_RATIO_FORMAT_STR.format(*f) for f in _invres_cnts_row_for_hhi_tots
+                INVRES_RATIO_FORMAT_STR.format(*f)
+                for f in _invres_cnts_row_for_hhi_tots
             ])
             _odds_ratio_data_str += " & {}".format(
                 INVRES_RATIO_FORMAT_STR.format(
@@ -145,29 +144,34 @@ def invres_stats_odds_ratio_byhhianddelta(
             _odds_ratio_data_str += isl.LTX_ARRAY_LINEEND
             _invres_rate_table_content.invdata_byhhianddelta = _odds_ratio_data_str
 
-            with (
-                DATA_DIR
-                / INVDATA_DOTTEX_FORMAT_STR.format(
-                    f"{_stats_group}_{_data_period_1}_{_merger_class.replace(' ', '')}"
-                )
-            ).open("w", encoding="utf8") as _invres_rate_table_dottex:
+            _output_dottex_path = DATA_DIR / INVDATA_DOTTEX_FORMAT_STR.format(
+                f"{_stats_group}_{_data_period_1}_{_merger_class.replace(' ', '')}"
+            )
+            with _output_dottex_path.open(
+                "w", encoding="utf8"
+            ) as _invres_rate_table_dottex:
                 _invres_rate_table_dottex.write(
-                    _invres_rate_table_design.render(tmpl_data=_invres_rate_table_content)
+                    _invres_rate_table_design.render(
+                        tmpl_data=_invres_rate_table_content
+                    )
                 )
                 print("\n", file=_invres_rate_table_dottex)
 
+            _output_dottex_pathlist += (_output_dottex_path.stem,)
             print(_odds_ratio_data_str)
             print()
             del _odds_ratio_data_str
 
+    return _output_dottex_pathlist
 
-def clrenf_stats_obs_setup(
+
+def invres_stats_obs_setup(
     _data_array_dict: Mapping,
     _data_periods: tuple[str, str],
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
     _test_regime: isl.PolicySelector = isl.PolicySelector.CLRN,
     /,
-) -> None:
+) -> tuple[str, ...]:
     _notes_str_base = " ".join((
         "NOTES:",
         isl.LTX_ARRAY_LINEEND,
@@ -227,8 +231,9 @@ def clrenf_stats_obs_setup(
         },
     }
 
+    _output_dottex_pathlist = ()
     for _stats_group_key in _stats_group_dict:
-        _invres_stats_obs_render(
+        _output_dottex_path = _invres_stats_obs_render(
             _data_array_dict,
             _data_periods,
             _merger_classes,
@@ -236,6 +241,9 @@ def clrenf_stats_obs_setup(
             _stats_group_dict[_stats_group_key],
             _test_regime,
         )
+        _output_dottex_pathlist += (_output_dottex_path,)
+
+    return _output_dottex_pathlist
 
 
 def _invres_stats_obs_render(
@@ -246,7 +254,7 @@ def _invres_stats_obs_render(
     _stats_group_dict: Mapping,
     _test_regime: isl.PolicySelector = isl.PolicySelector.CLRN,
     /,
-) -> None:
+) -> str:
     _invres_rate_table_content = isl.StatsContainer()
     _invres_rate_table_design = isl.latex_jinja_env.get_template(
         "ftcinvdata_summarypaired_table_template.tex.jinja2"
@@ -257,7 +265,9 @@ def _invres_stats_obs_render(
     )
     _invres_rate_table_content.test_regime = _test_regime.capitalize()
     _invres_rate_table_content.obs_summary_type = f"{_stats_group}"
-    _invres_rate_table_content.obs_summary_type_title = _stats_group_dict.get("title_str")
+    _invres_rate_table_content.obs_summary_type_title = _stats_group_dict.get(
+        "title_str"
+    )
     _invres_rate_table_content.hdrcol_raw_width = f'{_stats_group_dict["hcol_width"]}pt'
 
     _hs1 = _stats_group_dict["hval"]
@@ -308,8 +318,8 @@ def _invres_stats_obs_render(
     _invres_rate_table_content.invdata_sourcestr = _invdata_sourcestr_format_str.format(
         "2003", "FTCInvData1996to2003"
     )
-    _invres_rate_table_content.invdata_sourcestr += _invdata_sourcestr_format_str.format(
-        "2011", "FTCInvData1996to2011"
+    _invres_rate_table_content.invdata_sourcestr += (
+        _invdata_sourcestr_format_str.format("2011", "FTCInvData1996to2011")
     )
 
     _invdata_hdr_list: list[str] = []
@@ -324,7 +334,7 @@ def _invres_stats_obs_render(
     for _merger_class in _merger_classes:
         _table_ind_group = (
             _merger_class
-            if _merger_class == isl.INDGRPConstants.IIC
+            if isinstance(_merger_class, isl.INDGRPConstants)
             else isl.INDGRPConstants.ALL
         )
         _table_evid_cond = (
@@ -394,14 +404,15 @@ def _invres_stats_obs_render(
     _invres_rate_table_content.invdata_hdrstr = _invdata_hdrstr
     _invres_rate_table_content.invdata_datstr = _invdata_datstr
 
-    with (DATA_DIR / INVDATA_DOTTEX_FORMAT_STR.format(_stats_group)).open(
-        "w", encoding="UTF-8"
-    ) as _invres_rate_table_dottex:
-        _invres_rate_table_dottex.write(
+    _output_dottex_path = DATA_DIR / INVDATA_DOTTEX_FORMAT_STR.format(_stats_group)
+    with _output_dottex_path.open("w", encoding="UTF-8") as _output_dottex_file:
+        _output_dottex_file.write(
             _invres_rate_table_design.render(tmpl_data=_invres_rate_table_content)
         )
-        print("\n", file=_invres_rate_table_dottex)
+        print("\n", file=_output_dottex_file)
     del _invdata_hdrstr, _invdata_datstr
+
+    return _output_dottex_path.stem
 
 
 def get_table_nos(
@@ -416,7 +427,7 @@ def get_table_nos(
     )
 
     _table_ind_groups = tuple(
-        (_m if _m == isl.INDGRPConstants.IIC else isl.INDGRPConstants.ALL)
+        (_m if isinstance(_m, isl.INDGRPConstants) else isl.INDGRPConstants.ALL)
         for _m in _merger_classes
     )
     _table_evid_conds = tuple(
@@ -451,22 +462,18 @@ if __name__ == "__main__":
     data_periods = ("1996-2003", "2004-2011")
     test_regime = isl.PolicySelector.ENFT
 
-    # Write the TiKZ setup file to destination first, for rendering the
-    # .tex files of tables as PDF:
-    with (
-        DATA_DIR
-        / "{}_{}_{}.tex".format(
-            *INVDATA_DOTTEX_FORMAT_STR.split("_")[:2], "TikZTableSettings"
-        )
-    ).open("w", encoding="utf8") as _table_settings_dottex:
-        _table_settings_dottex.write(
-            isl.latex_jinja_env.get_template("setup_tikz_tables.tex.jinja2").render()
-        )
-        print("\n", file=_table_settings_dottex)
     # Now generate the various tables summarizing merger investigations data
-    invres_stats_odds_ratio_byhhianddelta(
+    invres_stats_byhhianddelta_pathlist = invres_stats_odds_ratio_byhhianddelta(
         invdata_array_dict, data_periods, merger_classes
     )
-    clrenf_stats_obs_setup(
+    print(invres_stats_byhhianddelta_pathlist)
+    invres_stats_allothers_pathlist = invres_stats_obs_setup(
         invdata_array_dict, data_periods, merger_classes, test_regime
+    )
+    isl.render_table_pdf(
+        invres_stats_byhhianddelta_pathlist,
+        INVDATA_DOTTEX_FORMAT_STR.format("ByHHIandDelta"),
+    )
+    isl.render_table_pdf(
+        invres_stats_allothers_pathlist, INVDATA_DOTTEX_FORMAT_STR.format("AllOthers")
     )

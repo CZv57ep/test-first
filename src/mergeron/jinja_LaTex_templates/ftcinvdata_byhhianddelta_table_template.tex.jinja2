@@ -14,11 +14,11 @@
 	((* set data_pub_year = "" *))
 ((* endif *))
 
-	\begin{center}
+	\centering
 	\caption{FTC Merger Investigations Data, Fiscal Years \JINVAR{ tmpl_data.obs_period|join('--') }}\label{tbl:FTCInvData_ByConc_\JINVAR{ tmpl_data.obs_merger_class|replace(" ", "") -}_\JINVAR{ obs_period_last -}}
 
 	{\footnotesize
-		Odds ratio --- Enforced to Closed, by Post-Merger HHI and Change in Concentration \\ 
+		Odds ratio --- Enforced to Closed, by Post-Merger HHI and Change in Concentration \\
 		\JINVAR{ obs_merger_class_desc } \\[0.5\baselineskip]
 		}
 	\begin{tikzpicture}[font = \sffamily]
@@ -79,5 +79,4 @@
 		% Fill top left corner, with more or fewer header/descriptor rows, only the top-left coordinates change
 		\draw[hdrtext, draw = OBSHDRFill] (hdrcoldescNW |- hdrrowdescNW) rectangle (datamtrx.north west); % (x1, y2); -| gives (x2, y1)
 	\end{tikzpicture}
-	\end{center}
 \end{table}

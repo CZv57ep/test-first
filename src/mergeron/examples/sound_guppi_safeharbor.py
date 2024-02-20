@@ -18,7 +18,7 @@ tests_of_interest: tuple[gtl.UPPTestRegime, ...] = (
     (isl.PolicySelector.ENFT, gtl.GUPPIWghtngSelector.MIN, gtl.GUPPIWghtngSelector.MIN),
 )
 
-mod_path = Path(__file__)
+PROG_PATH = Path(__file__)
 
 
 def analyze_invres_data(
@@ -59,7 +59,7 @@ def analyze_invres_data(
             complevel=3, complib="blosc:lz4hc", fletcher32=True
         )
         _h5_datafile = ptb.open_file(
-            str(DATA_DIR / f"{mod_path.stem}_sound.h5"),
+            PROG_PATH.with_suffix(".h5"),
             mode="w",
             title=f"GUPPI Safeharbor {_test_sel[0].capitalize()} Rate Module",
             filters=_blosc_filters,
@@ -135,7 +135,9 @@ def analyze_invres_data(
             _invres_rate_sim_byfirmcount_array,
             _invres_rate_sim_bydelta_array,
             _invres_rate_sim_byconczone_array,
-        ) = gtl.sim_invres_cnts_ll(_invres_parm_vec, _ind_sample_spec, _invres_cnts_kwargs)
+        ) = gtl.sim_invres_cnts_ll(
+            _invres_parm_vec, _ind_sample_spec, _invres_cnts_kwargs
+        )
         _run_duration = datetime.now() - _start_time
         print(
             f"Simulation completed in {_run_duration / timedelta(seconds=1):.6f} secs.",

@@ -35,9 +35,9 @@ from xlsxwriter import Workbook
 import mergeron.core.excel_helper as xlh
 import mergeron.core.guidelines_standards as gsf
 import mergeron.ext.tol_colors as ptcolor
+from mergeron import DATA_DIR
 
-mod_path = Path(__file__)
-data_path = Path.home() / mod_path.parents[1].stem
+PROG_PATH = Path(__file__)
 
 recapture_spec = "inside-out"
 # Map boundary forms to titles and generating-function names, with
@@ -358,7 +358,7 @@ def plot_and_save_boundary_coords(
                 _xl_book,
             )
 
-    _fig_savepath = data_path / rf"{mod_path.stem}_{_gpubyr}.pdf"
+    _fig_savepath = DATA_DIR / rf"{PROG_PATH.stem}_{_gpubyr}.pdf"
     _my_fig1.savefig(_fig_savepath)
     print()
     del _divr_agg_method
@@ -613,7 +613,7 @@ if __name__ == "__main__":
 
         # Initiliaze workbook for saving boundary coordinates
         with Workbook(
-            data_path.joinpath(rf"{mod_path.stem}_{gpubyr}_BoundaryCoordinates.xlsx")
+            DATA_DIR / rf"{PROG_PATH.stem}_{gpubyr}_BoundaryCoordinates.xlsx"
         ) as xl_book:
             # tabulate_boundary_stats(gpubyr)
             plot_and_save_boundary_coords(gpubyr, xl_book, layout="collected")  # type: ignore

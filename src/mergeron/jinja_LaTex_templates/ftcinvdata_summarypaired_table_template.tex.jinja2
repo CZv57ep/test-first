@@ -13,25 +13,25 @@
 
 ((* set obs_merger_class_1 = "Markets with, ``" + tmpl_data.obs_merger_class_1 + "''" *))
 
-	\begin{center}
+	\centering
 	\caption{FTC Merger Investigations Data}\label{tbl:FTCInvData_\JINVAR{ tmpl_data.obs_summary_type|replace(" ", "") -}}
 	{\footnotesize \JINVAR{ tmpl_data.obs_summary_type_title } \\
 		Grouped by Entry Conditions and Reporting Period \\[0.5\baselineskip]}
 	\begin{tikzpicture}[auto, font = \sffamily]
 		\begin{pgfonlayer}{background}
-			\matrix[datatable, nodes = {text width = 27pt,},] (clrenf_rate_raw) {
+			\matrix[datatable, nodes = {text width = 27pt,},] (invres_rate_raw) {
 				\JINVAR{ tmpl_data.invdata_datstr -}
 				};
 			% Horizontal scoring for totals
-			\draw[color = OBSHDRFill, line width = 1pt] (clrenf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-1.north west) -- (clrenf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-8.north east);
+			\draw[color = OBSHDRFill, line width = 1pt] (invres_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-1.north west) -- (invres_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-8.north east);
 			% Vertical scoring for column groups
-			\draw[color = OBSHDRFill, line width = 1pt] (clrenf_rate_raw-1-2.north east) -- (clrenf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-2.south east);
-			\draw[color = OBSHDRFill, line width = 1pt] (clrenf_rate_raw-1-4.north east) -- (clrenf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-4.south east);
-			\draw[color = OBSHDRFill, line width = 1pt] (clrenf_rate_raw-1-6.north east) -- (clrenf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-6.south east);
+			\draw[color = OBSHDRFill, line width = 1pt] (invres_rate_raw-1-2.north east) -- (invres_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-2.south east);
+			\draw[color = OBSHDRFill, line width = 1pt] (invres_rate_raw-1-4.north east) -- (invres_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-4.south east);
+			\draw[color = OBSHDRFill, line width = 1pt] (invres_rate_raw-1-6.north east) -- (invres_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-6.south east);
 		\end{pgfonlayer}
 
 		\matrix[hrow,
-			above = 0 pt of clrenf_rate_raw,
+			above = 0 pt of invres_rate_raw,
 			nodes = {minimum height = 33pt, text depth = 10pt, text width = 60pt, align = left, inner sep = 3pt,},
 			] (hdrrow_raw) {
 			\node[rotate = 90] {Relative \\ Frequency \\}; &
@@ -64,12 +64,12 @@
 			Observed Data \\
 			};
 		% Vertical scoring for column groups
-		\draw[color = white, line width = 1pt] (descrow_raw_pds1-1-1.north east) -- (clrenf_rate_raw-1-2.north east);
-		\draw[color = white, line width = 1pt] (descrow_raw_mkt1-1-1.north east) -- (clrenf_rate_raw-1-4.north east);
-		\draw[color = white, line width = 1pt] (descrow_raw_pds2-1-1.north east) -- (clrenf_rate_raw-1-6.north east);
+		\draw[color = white, line width = 1pt] (descrow_raw_pds1-1-1.north east) -- (invres_rate_raw-1-2.north east);
+		\draw[color = white, line width = 1pt] (descrow_raw_mkt1-1-1.north east) -- (invres_rate_raw-1-4.north east);
+		\draw[color = white, line width = 1pt] (descrow_raw_pds2-1-1.north east) -- (invres_rate_raw-1-6.north east);
 
 		% Header column - row heads
-		\matrix[hcol, left = 0pt of clrenf_rate_raw, nodes = {
+		\matrix[hcol, left = 0pt of invres_rate_raw, nodes = {
 				text width = \JINVAR{ tmpl_data.hdrcol_raw_width -},
 				inner xsep = 3 pt,
 				},] (hdrcol_raw) {
@@ -85,7 +85,7 @@
 		(hdrcoldesc_raw.north east)
 		;
 		((# % Separator for header column
-		\draw[color = white, line width = 1pt] (descrow_raw_mkt1-1-1.north west) -- (clrenf_rate_raw-1-1.north west); #))
+		\draw[color = white, line width = 1pt] (descrow_raw_mkt1-1-1.north west) -- (invres_rate_raw-1-1.north west); #))
 
 		% Notes below table
 		\matrix[anytable,
@@ -100,6 +100,5 @@
 				% \(\cdot\) \fullcite{FTCInvData2011}, Table~4.1 and Table~10.2 \\
 			};
 	\end{tikzpicture}
-	\end{center}
 \end{table}
 

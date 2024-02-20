@@ -13,11 +13,9 @@ from matplotlib import colors as mcolors
 from matplotlib.ticker import AutoMinorLocator, MultipleLocator, StrMethodFormatter
 
 import mergeron.core.guidelines_standards as gsf
+from mergeron import DATA_DIR
 
 PROG_PATH = Path(__file__)
-data_path = Path.home() / PROG_PATH.parents[1].stem
-if not data_path.is_dir():
-    data_path.mkdir(parents=True)
 
 
 def _main() -> None:
@@ -201,7 +199,7 @@ def _main() -> None:
     cm_plot.ax.set_ylim(0, 1.0)
     cm_plot.outline.set_visible(False)
 
-    plt.savefig(data_path.joinpath(f"{PROG_PATH.stem}.pdf"))
+    plt.savefig(DATA_DIR.joinpath(f"{PROG_PATH.stem}.pdf"))
 
 
 if __name__ == "__main__":

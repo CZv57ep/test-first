@@ -3,6 +3,7 @@ Routines to format and print summary data on merger enforcement patterns.
 
 """
 
+import subprocess
 from importlib.metadata import version
 
 from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
@@ -11,7 +12,7 @@ __version__ = version(_PKG_NAME)
 
 
 import enum
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from types import SimpleNamespace
 from typing import TypeVar
@@ -24,15 +25,6 @@ from scipy.interpolate import interp1d  # type: ignore
 
 from ..core import ftc_merger_investigations_data as fid  # noqa: TID252
 from ..core.proportions_tests import propn_ci  # noqa: TID252
-
-if not (_out_path := DATA_DIR.joinpath("mergeron.cls")).is_file():
-    _out_path.write_text(
-        Path(__file__)
-        .parents[1]
-        .joinpath("jinja_LaTex_templates", "mergeron.cls")
-        .read_text()
-    )
-
 
 T = TypeVar("T", bound=NBitBase)
 
@@ -133,7 +125,7 @@ latex_jinja_env = Environment(
     variable_end_string="}",
     comment_start_string=R"((#",  # r'#{',
     comment_end_string=R"#))",  # '}',
-    line_statement_prefix="%%",
+    line_statement_prefix="##",
     line_comment_prefix="%#",
     trim_blocks=True,
     lstrip_blocks=True,
@@ -141,13 +133,23 @@ latex_jinja_env = Environment(
     loader=FileSystemLoader(Path(__file__).parents[1] / "jinja_LaTex_templates"),
 )
 
-_TABLE_HELPER_DOTTEX = DATA_DIR / R"TikZTableSettings.tex"
-_TABLE_HELPER_DESIGN = latex_jinja_env.get_template("setup_tikz_tables.tex.jinja2")
-if not _TABLE_HELPER_DOTTEX.is_file():
+# Place files related to rendering latex in outpu data directory
+if not (_out_path := DATA_DIR.joinpath(f"{_PKG_NAME}.cls")).is_file():
+    _out_path.write_text(
+        Path(__file__)
+        .parents[1]
+        .joinpath("jinja_LaTex_templates", "mergeron.cls")
+        .read_text()
+    )
+
+
+if not (_DOTTEX := DATA_DIR / Rf"{_PKG_NAME}_TikZTableSettings.tex").is_file():
     # Write to dottex
-    with _TABLE_HELPER_DOTTEX.open("w", encoding="UTF-8") as _table_helper_dottex:
+    with _DOTTEX.open("w", encoding="UTF-8") as _table_helper_dottex:
         _table_helper_dottex.write(
-            _TABLE_HELPER_DESIGN.render(tmpl_data=StatsContainer())
+            latex_jinja_env.get_template("setup_tikz_tables.tex.jinja2").render(
+                tmpl_data=StatsContainer()
+            )
         )
         print("\n", file=_table_helper_dottex)
 
@@ -404,7 +406,9 @@ def table_no_lku(
     return _tno
 
 
-def invres_cnts_byfirmcount(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np.int64]:
+def invres_cnts_byfirmcount(
+    _cnts_array: NDArray[np.integer[T]], /
+) -> NDArray[np.int64]:
     _ndim_in = 1
     return np.row_stack([
         np.concatenate([
@@ -677,3 +681,39 @@ def stats_print_rows(
             end="",
         )
     print()
+
+
+def render_table_pdf(
+    _table_dottex_pathlist: Sequence[str], _table_coll_path: str, /
+) -> None:
+    _table_collection_design = latex_jinja_env.get_template(
+        "mergeron_table_collection_template.tex.jinja2"
+    )
+    _table_collection_content = StatsContainer()
+
+    _table_collection_content.path_list = _table_dottex_pathlist
+
+    with Path(DATA_DIR / _table_coll_path).open(
+        "w", encoding="utf8"
+    ) as _table_coll_file:
+        _table_coll_file.write(
+            _table_collection_design.render(tmpl_data=_table_collection_content)
+        )
+        print("\n", file=_table_coll_file)
+
+    _run_rc = subprocess.run(
+        f"latexmk -f -quiet -synctex=0 -interaction=nonstopmode -file-line-error -pdflua {_table_coll_path}".split(),  # noqa: S603
+        check=True,
+        cwd=DATA_DIR,
+    )
+    if _run_rc:
+        subprocess.run(
+            "latexmk -quiet -c".split(),  # noqa: S603
+            check=True,
+            cwd=DATA_DIR,
+        )
+    del _run_rc
+
+    print(
+        f"Tables rendered to path, {f"{Path(DATA_DIR / _table_coll_path).with_suffix(".pdf")}"}"
+    )

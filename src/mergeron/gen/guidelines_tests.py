@@ -27,9 +27,6 @@ from ..core import guidelines_standards as gsf  # noqa: TID252
 from . import data_generation as dgl
 from . import investigations_stats as isl
 
-mod_path = Path(__file__)
-data_path = Path.home() / mod_path.parent.stem
-
 ptb.parameters.MAX_NUMEXPR_THREADS = 8
 ptb.parameters.MAX_BLOSC_THREADS = 4
 
@@ -99,7 +96,9 @@ def sim_invres_cnts_ll(
             )
 
         _sim_invres_cnts_ll_kwargs = {
-            _k: _v for _k, _v in _sim_invres_cnts_kwargs.items() if _k != "seed_seq_list"
+            _k: _v
+            for _k, _v in _sim_invres_cnts_kwargs.items()
+            if _k != "seed_seq_list"
         }
     else:
         _sim_invres_cnts_ll_kwargs = {}
@@ -269,7 +268,9 @@ def sim_invres_cnts(
                 ]),
             ))
 
-    _invres_cnts_sim_byconczone_array = isl.invres_cnts_byconczone(_stats_byconczone_sim[1:])
+    _invres_cnts_sim_byconczone_array = isl.invres_cnts_byconczone(
+        _stats_byconczone_sim[1:]
+    )
     del _stats_byconczone_sim
     del _hhi_delta, _hhi_post, _fcounts
 
