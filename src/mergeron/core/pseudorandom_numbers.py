@@ -146,7 +146,7 @@ class MultithreadedRNG:
         dist_type: Literal[
             "Beta", "Dirichlet", "Gaussian", "Normal", "Random", "Uniform"
         ] = "Uniform",
-        dist_parms: NDArray[np.floating[TF]] = DIST_PARMS_DEFAULT,
+        dist_parms: NDArray[np.floating[TF]] | None = DIST_PARMS_DEFAULT,
         seed_sequence: SeedSequence | None = None,
         nthreads: int = NTHREADS,
     ):
@@ -173,7 +173,7 @@ class MultithreadedRNG:
 
         self.dist_type = dist_type
 
-        if np.array_equal(dist_parms, DIST_PARMS_DEFAULT):
+        if dist_parms is None or np.array_equal(dist_parms, DIST_PARMS_DEFAULT):
             match dist_type:
                 case "Uniform":
                     self.dist_type = "Random"

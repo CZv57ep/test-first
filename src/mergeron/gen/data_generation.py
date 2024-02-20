@@ -12,12 +12,12 @@ from .. import _PKG_NAME  # noqa: TID252
 __version__ = version(_PKG_NAME)
 
 import enum
-from typing import Literal, NamedTuple
+from typing import Literal, NamedTuple, TypeVar
 
 import attrs
 import numpy as np
 from numpy.random import SeedSequence
-from numpy.typing import NDArray
+from numpy.typing import NBitBase, NDArray
 
 from ..core.damodaran_margin_data import resample_mgn_data  # noqa: TID252
 from ..core.pseudorandom_numbers import (  # noqa: TID252
@@ -28,6 +28,8 @@ from ..core.pseudorandom_numbers import (  # noqa: TID252
 
 EMPTY_ARRAY_DEFAULT = np.zeros(2)
 FCOUNT_WTS_DEFAULT = ((_nr := np.arange(1, 6)[::-1]) / _nr.sum()).astype(np.float64)
+
+TF = TypeVar("TF", bound=NBitBase)
 
 
 @enum.unique
@@ -378,7 +380,7 @@ class ShareDataSample(NamedTuple):
 class PriceDataSample(NamedTuple):
     """Container for generated price array, and related."""
 
-    price_array: NDArray[np.float64]
+    price_array: NDArray[np.floating]
     """Merging-firms' prices"""
 
     hsr_filing_test: NDArray[np.bool_]
@@ -660,7 +662,7 @@ def _gen_share_data(
 
 def _gen_market_shares_uniform(
     _s_size: int = 10**6,
-    _dist_parms_mktshr: NDArray[np.floating] | None = DIST_PARMS_DEFAULT,
+    _dist_parms_mktshr: NDArray[np.floating[TF]] | None = DIST_PARMS_DEFAULT,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
     /,
@@ -686,7 +688,7 @@ def _gen_market_shares_uniform(
 
     _frmshr_array = np.empty((_s_size, 2), dtype=np.float64)
     _dist_parms_mktshr = (
-        DIST_PARMS_DEFAULT if _dist_parms_mktshr is None else _dist_parms_mktshr
+        DIST_PARMS_DEFAULT if _dist_parms_mktshr is None else _dist_parms_mktshr  # type: ignore
     )
     _mrng = MultithreadedRNG(
         _frmshr_array,
@@ -725,8 +727,8 @@ def _gen_market_shares_dirichlet_multisample(
     _s_size: int = 10**6,
     _recapture_spec: RECConstants = RECConstants.INOUT,
     _dist_type_dir: SHRConstants = SHRConstants.DIR_FLAT,
-    _dist_parms_dir: NDArray[np.floating] | None = None,
-    _firm_count_wts: NDArray[np.floating] | None = None,  # type: ignore
+    _dist_parms_dir: NDArray[np.floating[TF]] | None = None,
+    _firm_count_wts: NDArray[np.floating[TF]] | None = None,  # type: ignore
     _fcount_rng_seed_seq: SeedSequence | None = None,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
@@ -860,7 +862,7 @@ def _gen_market_shares_dirichlet_multisample(
 
 
 def _gen_market_shares_dirichlet(
-    _dir_alphas: NDArray[np.floating],
+    _dir_alphas: NDArray[np.floating[TF]],
     _s_size: int = 10**6,
     _recapture_spec: RECConstants = RECConstants.INOUT,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
@@ -942,8 +944,8 @@ def _gen_market_shares_dirichlet(
 
 
 def _gen_pr_ratio(
-    _frmshr_array: NDArray[np.floating],
-    _nth_firm_share: NDArray[np.floating],
+    _frmshr_array: NDArray[np.floating[TF]],
+    _nth_firm_share: NDArray[np.floating[TF]],
     _mkt_sample_spec: MarketSampleSpec,
     _seed_seq: SeedSequence | None = None,
     /,
@@ -1032,10 +1034,10 @@ def _gen_pr_ratio(
 
 
 def gen_divr_array(
-    _frmshr_array: NDArray[np.floating],
+    _frmshr_array: NDArray[np.floating[TF]],
     _r_bar: float,
     _recapture_spec: RECConstants = RECConstants.INOUT,
-    _aggregate_purchase_prob: NDArray[np.floating] = EMPTY_ARRAY_DEFAULT,
+    _aggregate_purchase_prob: NDArray[np.floating[TF]] = EMPTY_ARRAY_DEFAULT,
     /,
 ) -> NDArray[np.float64]:
     """
@@ -1092,10 +1094,10 @@ def gen_divr_array(
 
 
 def _gen_pcm_data(
-    _frmshr_array: NDArray[np.floating],
+    _frmshr_array: NDArray[np.floating[TF]],
     _mkt_sample_spec: MarketSampleSpec,
-    _price_array: NDArray[np.floating],
-    _aggregate_purchase_prob: NDArray[np.floating],
+    _price_array: NDArray[np.floating[TF]],
+    _aggregate_purchase_prob: NDArray[np.floating[TF]],
     _pcm_rng_seed_seq: SeedSequence,
     _nthreads: int = 16,
     /,
@@ -1198,7 +1200,7 @@ def _beta_located(
     return np.array([_mu * _mul, (1 - _mu) * _mul], dtype=np.float64)
 
 
-def beta_located_bound(_dist_parms: NDArray[np.floating], /) -> NDArray[np.float64]:
+def beta_located_bound(_dist_parms: NDArray[np.floating[TF]], /) -> NDArray[np.float64]:
     R"""
     Return shape parameters for a non-standard beta, given the mean, stddev, range
 

@@ -743,7 +743,7 @@ def shrratio_mgnsym_boundary_wtd_avg(
     /,
     *,
     avg_method: Literal["arithmetic", "geometric", "distance"] = "arithmetic",
-    wgtng_policy: Literal["own-share", "cross-product-share"] = "own-share",
+    wgtng_policy: Literal["own-share", "cross-product-share"] | None = "own-share",
     recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
     gbd_dps: int = 5,
 ) -> tuple[NDArray[np.float64], float]:
@@ -815,9 +815,9 @@ def shrratio_mgnsym_boundary_wtd_avg(
     Parameters
     ----------
     _delta_star
-        GUPPI bound
+        corollary to GUPPI bound (:math:`\\overline{g} / (m^* \\cdot \\overline{r})`)
     _r_val
-        Recapture ratio.
+        recapture ratio
     avg_method
         Whether "arithmetic", "geometric", or "distance".
     wgtng_policy
@@ -836,8 +836,7 @@ def shrratio_mgnsym_boundary_wtd_avg(
 
     if _delta_star > 1:
         raise ValueError(
-            "Invalid combination specified; "
-            "Margin-adjusted benchmark share ratio cannot exceed 1."
+            "Margin-adjusted benchmark share ratio, `_delta_star` cannot exceed 1."
         )
 
     _delta_star = mpf(f"{_delta_star}")
@@ -867,8 +866,12 @@ def shrratio_mgnsym_boundary_wtd_avg(
                 else _s_1 / (1 - _s_2)
             )
 
-            _r = mp.fdiv(
-                _s_1 if wgtng_policy == "cross-product-share" else _s_2, _s_1 + _s_2
+            _r = (
+                mp.fdiv(
+                    _s_1 if wgtng_policy == "cross-product-share" else _s_2, _s_1 + _s_2
+                )
+                if wgtng_policy
+                else 0.5
             )
 
             match avg_method:

@@ -59,31 +59,14 @@ def gen_plot_data(
     ))
     del _m1
 
-    # _guppi_array = np.einsum("ij,ij->ij", _market_data.divr_array, _pcm_array[:, ::-1])
-
-    # _guppi_est = (
-    #     _guppi_array.max(axis=1, keepdims=True)
-    #     if _test_regime[1] == gtl.GUPPIWghtngSelector.MAX
-    #     else _guppi_array.min(axis=1, keepdims=True)
-    # )
-
-    # _gbd_test = (
-    #     (_guppi_est < _g_bar)
-    #     if _test_regime[0] == isl.PolicySelector.CLRN
-    #     else (_guppi_est >= _g_bar)
-    # )
-
-    # del _guppi_est
-
-    _market_data_rev = dgl.MarketsSample(
-        _market_data.frmshr_array, _pcm_array, *_market_data[2:]
+    _upp_tests = gtl.gen_upp_arrays(
+        _std_vec,
+        dgl.MarketsSample(_market_data.frmshr_array, _pcm_array, *_market_data[2:]),
+        _test_regime,
     )
 
-    _g_bar = _std_vec.guppi
-
-    _upp_tests = gtl.gen_upp_arrays(_std_vec, _market_data_rev, _test_regime)
-
     _gbd_test_rows = np.where(_upp_tests.guppi_test_simple)[0]
+    del _upp_tests
 
     _qtyshr_firm1_inv, _qtyshr_firm2_inv = (
         _market_data.frmshr_array[_gbd_test_rows][:, [0]],
@@ -93,7 +76,7 @@ def gen_plot_data(
         _pcm_array[_gbd_test_rows][:, [0]],
         _pcm_array[_gbd_test_rows][:, [1]],
     )
-    del _upp_tests, _gbd_test_rows
+    del _gbd_test_rows
 
     _pcm_plotter = _pcm_firm1_inv
 

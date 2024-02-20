@@ -539,7 +539,7 @@ def latex_tbl_invres_stats_1dim(
     if sort_order == SortSelector.REV:
         _inparr = _inparr[::-1]
 
-    _inparr = np.row_stack((_inparr, _in_totals_row))  # type: ignore
+    _inparr = np.row_stack((_inparr, _in_totals_row))
 
     _stats_hdr_list, _stats_dat_list = [], []
     for _stats_row in _inparr:
@@ -571,7 +571,7 @@ def latex_tbl_invres_stats_byzone(
         _zone_str_keys = _zone_str_keys[:-1][::-1] + [_zone_str_keys[-1]]
 
     if _totals_row is None:
-        _inparr = np.row_stack((  # type: ignore
+        _inparr = np.row_stack((
             _inparr,
             np.concatenate((
                 [fid.TTL_KEY, -1, -1],
