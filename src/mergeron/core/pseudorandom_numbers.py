@@ -18,7 +18,6 @@ from multiprocessing import cpu_count
 from typing import Literal, TypeVar
 
 import numpy as np
-import numpy.typing as npt
 from numpy.random import PCG64DXSM, Generator, SeedSequence
 from numpy.typing import NBitBase, NDArray
 

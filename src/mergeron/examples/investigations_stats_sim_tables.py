@@ -11,7 +11,7 @@ from collections.abc import Mapping, Sequence
 from datetime import datetime, timedelta
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
 import numpy as np
 import re2 as re  # type: ignore
@@ -48,7 +48,7 @@ def invres_stats_sim_setup(
 ) -> str:
     _table_ind_group = (
         _merger_class
-        if _merger_class == isl.INDGRPConstants.IIC
+        if isinstance(_merger_class, isl.INDGRPConstants)
         else isl.INDGRPConstants.ALL
     )
     _table_evid_cond = (

@@ -8,7 +8,6 @@ from FTC merger investigations data
 import sys
 import warnings
 from collections.abc import Mapping, Sequence
-from pathlib import Path
 
 from numpy import einsum, row_stack, unique
 

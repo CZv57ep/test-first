@@ -13,7 +13,6 @@ __version__ = version(_PKG_NAME)
 
 import enum
 from collections.abc import Mapping, Sequence
-from pathlib import Path
 from typing import Any, Literal, NamedTuple, TypeAlias
 
 import numpy as np
