@@ -19,7 +19,6 @@ import numpy as np
 import tables as ptb  # type: ignore
 from matplotlib import cm, colors
 from matplotlib.ticker import StrMethodFormatter
-from numpy import arange, argsort, column_stack, einsum, ones_like
 from numpy.typing import NDArray
 
 import mergeron.core.guidelines_standards as gsf
@@ -39,7 +38,7 @@ blosc_filters = ptb.Filters(
 
 def gen_plot_data(
     _market_data: dgl.MarketsSample,
-    _g_bar: float,
+    _std_vec: gsf.GuidelinesSTD,
     _pcm_firm2_star: float = 0.30,
     _test_regime: gtl.UPPTestRegime = (
         isl.PolicySelector.CLRN,
@@ -54,29 +53,37 @@ def gen_plot_data(
         f"{_pcm_firm2_star * 100:03.1f}".replace(".", "dot")
     )
 
-    _pcm_array = column_stack((
+    _pcm_array = np.column_stack((
         _m1 := _market_data.pcm_array[:, [0]],
-        _pcm_firm2_star * ones_like(_m1),
+        _pcm_firm2_star * np.ones_like(_m1),
     ))
     del _m1
 
-    _guppi_array = einsum("ij,ij->ij", _pcm_array[:, ::-1], _market_data.divr_array)
+    # _guppi_array = np.einsum("ij,ij->ij", _market_data.divr_array, _pcm_array[:, ::-1])
 
-    _guppi_est = (
-        _guppi_array.max(axis=1, keepdims=True)
-        if _test_regime[1] == gtl.GUPPIWghtngSelector.MAX
-        else _guppi_array.min(axis=1, keepdims=True)
+    # _guppi_est = (
+    #     _guppi_array.max(axis=1, keepdims=True)
+    #     if _test_regime[1] == gtl.GUPPIWghtngSelector.MAX
+    #     else _guppi_array.min(axis=1, keepdims=True)
+    # )
+
+    # _gbd_test = (
+    #     (_guppi_est < _g_bar)
+    #     if _test_regime[0] == isl.PolicySelector.CLRN
+    #     else (_guppi_est >= _g_bar)
+    # )
+
+    # del _guppi_est
+
+    _market_data_rev = dgl.MarketsSample(
+        _market_data.frmshr_array, _pcm_array, *_market_data[2:]
     )
 
-    _gbd_test = (
-        (_guppi_est < _g_bar)
-        if _test_regime[0] == isl.PolicySelector.CLRN
-        else (_guppi_est >= _g_bar)
-    )
+    _g_bar = _std_vec.guppi
 
-    del _guppi_est
+    _upp_tests = gtl.gen_upp_arrays(_std_vec, _market_data_rev, _test_regime)
 
-    _gbd_test_rows = np.where(_gbd_test)[0]
+    _gbd_test_rows = np.where(_upp_tests.guppi_test_simple)[0]
 
     _qtyshr_firm1_inv, _qtyshr_firm2_inv = (
         _market_data.frmshr_array[_gbd_test_rows][:, [0]],
@@ -86,7 +93,7 @@ def gen_plot_data(
         _pcm_array[_gbd_test_rows][:, [0]],
         _pcm_array[_gbd_test_rows][:, [1]],
     )
-    del _gbd_test, _gbd_test_rows
+    del _upp_tests, _gbd_test_rows
 
     _pcm_plotter = _pcm_firm1_inv
 
@@ -108,7 +115,7 @@ def gen_plot_data(
                 title=f"{_array_name}",
             )
 
-    _pcm_sorter = argsort(_pcm_plotter, axis=0)
+    _pcm_sorter = np.argsort(_pcm_plotter, axis=0)
     if _test_regime[0] != isl.PolicySelector.CLRN:
         _pcm_sorter = _pcm_sorter[::-1, :]
     _qtyshr_firm1_plotter = _qtyshr_firm1_inv[_pcm_sorter]
@@ -133,10 +140,13 @@ def _main(
     _test_regime: gtl.UPPTestRegime,
     _save_data_to_file: gtl.SaveData,
 ) -> None:
-    _r_bar, _g_bar, _divr_bar, *_ = getattr(
+    guidelins_std_vec = getattr(
         gsf.GuidelinesStandards(_hmg_pub_year),
         "safeharbor" if _test_regime[0] == isl.PolicySelector.ENFT else "presumption",
-    )[2:]
+    )
+
+    _, _r_bar, _g_bar, _divr_bar, *_ = guidelins_std_vec
+
     market_data = dgl.gen_market_sample(_market_sample_spec, seed_seq_list=None)
 
     # Set up a plot grid to fill in the various scatterplots
@@ -173,12 +183,12 @@ def _main(
         _ax_now.text(
             0.81,
             0.72,
-            "\n".join([
-                r"$m_2 = m^* = {0:.{1}f}\%$".format(
+            "\n".join((
+                R"$m_2 = m^* = {0:.{1}f}\%$".format(
                     (_pcmv := _pcm_firm2_star * 100), 1 * (_pcmv % 1 > 0)
                 ),
-                r"$m_1 \neq m_2$",
-            ]),
+                R"$m_1 \neq m_2$",
+            )),
             rotation=0,
             ha="right",
             va="top",
@@ -203,7 +213,7 @@ def _main(
 
         _qtyshr_firm1_plotter, _qtyshr_firm2_plotter, _pcm_plotter = gen_plot_data(
             market_data,
-            _g_bar,
+            guidelins_std_vec,
             _pcm_firm2_star,
             _test_regime,
             h5handle=_save_data_to_file[1] if _save_data_to_file else None,
@@ -231,7 +241,7 @@ def _main(
         ax=_ax_cm,
         orientation="vertical",
         fraction=3.0,
-        ticks=arange(0, 1.2, 0.2),
+        ticks=np.arange(0, 1.2, 0.2),
         format=StrMethodFormatter("{x:>3.0%}"),
     )
     _cm_plot.set_label(label="Firm 1 Price-Cost Margin, $m_1$", fontsize=10)
@@ -242,11 +252,15 @@ def _main(
 
     _cm_plot.outline.set_visible(False)
 
-    _base_name = DATA_DIR.joinpath(
-        f"{PROG_PATH.stem}_{_hmg_pub_year}gbar{f"{_g_bar * 100:02.0f}"}PCT_{market_sample_spec.share_spec[0]}Recapture_{_test_regime}"
+    _base_name = DATA_DIR / "{}_{}Rate_{}gbar{}PCT_{}Recapture".format(
+        PROG_PATH.stem,
+        f"{_test_regime[0]}".capitalize(),
+        _hmg_pub_year,
+        f"{_g_bar * 100:02.0f}",
+        market_sample_spec.share_spec[0],
     )
     _my_fig_2dsg_savepath = DATA_DIR / f"{_base_name}_2DScatterGrid.pdf"
-    print(f"Save 2D plot to, {_my_fig_2dsg_savepath!r}")
+    print(f"Save 2D plot to, {f'"{_my_fig_2dsg_savepath}"'}")
     _fig_2dsg.savefig(_my_fig_2dsg_savepath, dpi=600)
 
 
@@ -258,10 +272,10 @@ if __name__ == "__main__":
         gtl.GUPPIWghtngSelector.MIN,
         gtl.GUPPIWghtngSelector.MIN,
     )
-    r_bar, g_bar, divr_bar, *_ = getattr(
+    r_bar = getattr(
         gsf.GuidelinesStandards(hmg_pub_year),
-        "safeharbor" if test_regime[0] == isl.PolicySelector.ENFT else "presumption",
-    )[2:]
+        "presumption" if test_regime[0] == isl.PolicySelector.ENFT else "safeharbor",
+    ).rec
 
     sample_sz = 10**7
 
@@ -269,16 +283,13 @@ if __name__ == "__main__":
         sample_sz,
         r_bar,
         share_spec=dgl.ShareSpec(
-            dgl.RECConstants.INOUT,
-            dgl.SHRConstants.UNI,
-            DIST_PARMS_DEFAULT,
-            dgl.FCOUNT_WTS_DEFAULT,
+            dgl.RECConstants.INOUT, dgl.SHRConstants.UNI, DIST_PARMS_DEFAULT, None
         ),
     )
 
     save_data_to_file_flag = False
     if save_data_to_file_flag:
-        h5path = DATA_DIR / f"{PROG_PATH.stem}.h5"
+        h5path = DATA_DIR / PROG_PATH.with_suffix(".h5").name
         h5datafile = ptb.open_file(
             h5path,
             mode="w",
@@ -296,4 +307,4 @@ if __name__ == "__main__":
     _main(hmg_pub_year, market_sample_spec, test_regime, save_data_to_file)
 
     if save_data_to_file_flag:
-        h5datafile.close()
+        save_data_to_file[1].close()  # type: ignore

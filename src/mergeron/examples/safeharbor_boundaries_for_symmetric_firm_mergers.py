@@ -199,7 +199,7 @@ def _main() -> None:
     cm_plot.ax.set_ylim(0, 1.0)
     cm_plot.outline.set_visible(False)
 
-    plt.savefig(DATA_DIR.joinpath(f"{PROG_PATH.stem}.pdf"))
+    plt.savefig(DATA_DIR / PROG_PATH.with_suffix(".pdf").name)
 
 
 if __name__ == "__main__":

@@ -176,7 +176,7 @@ def sim_invres_cnts(
         save_data_to_file=save_data_to_file,
     )
 
-    _upp_tests_data = gen_guppi_arrays(
+    _upp_tests_data = gen_upp_arrays(
         _guppi_test_parms,
         _market_data,
         sim_test_regime,
@@ -281,8 +281,8 @@ def sim_invres_cnts(
     )
 
 
-def gen_guppi_arrays(
-    _guppi_test_parms: Sequence[float],
+def gen_upp_arrays(
+    _guppi_test_parms: gsf.GuidelinesSTD,
     _market_data: dgl.MarketsSample,
     _sim_test_regime: tuple[
         isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
@@ -292,11 +292,11 @@ def gen_guppi_arrays(
     saved_array_name_suffix: str = "",
     save_data_to_file: SaveData = False,
 ) -> UPPTests:
-    _r_bar, _g_bar, _divr_bar, _cmcr_bar, _ipr_bar = (
-        getattr(_guppi_test_parms, _f) for _f in ("rec", "guppi", "divr", "cmcr", "ipr")
+    _g_bar, _divr_bar, _cmcr_bar, _ipr_bar = (
+        getattr(_guppi_test_parms, _f) for _f in ("guppi", "divr", "cmcr", "ipr")
     )
 
-    _test_regime, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_test_regime
+    _invres_select, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_test_regime
 
     _guppi_array = np.empty_like(_market_data.divr_array)
     np.einsum(
@@ -388,7 +388,7 @@ def gen_guppi_arrays(
     if _divr_wgtng_policy == GUPPIWghtngSelector.MAX:
         _divr_test_vector = _market_data.divr_array.max(axis=1, keepdims=True)
 
-    if _test_regime == isl.PolicySelector.ENFT:
+    if _invres_select == isl.PolicySelector.ENFT:
         _upp_tests_data = UPPTests(
             _guppi_test_vector >= _g_bar,
             (_guppi_test_vector >= _g_bar) | (_divr_test_vector >= _divr_bar),

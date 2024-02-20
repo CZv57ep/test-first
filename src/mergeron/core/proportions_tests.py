@@ -21,12 +21,12 @@ from numpy.typing import NBitBase, NDArray
 from scipy.optimize import OptimizeResult, root  # type: ignore
 from scipy.stats import beta, chi2, norm  # type: ignore
 
-T = TypeVar("T", bound=NBitBase)
+TI = TypeVar("TI", bound=NBitBase)
 
 
 def propn_ci(
-    _npos: NDArray[np.integer[T]] | int = 4,
-    _nobs: NDArray[np.integer[T]] | int = 10,
+    _npos: NDArray[np.integer[TI]] | int = 4,
+    _nobs: NDArray[np.integer[TI]] | int = 10,
     /,
     *,
     alpha: float = 0.05,
@@ -74,9 +74,9 @@ def propn_ci(
     """
 
     for _f in _npos, _nobs:
-        if not isinstance(_f, float | int | np.floating | np.integer):
+        if not isinstance(_f, int | np.integer):
             raise ValueError(
-                f"Count, {_f!r} must have type that is a subtype of np.floating or np.integer."
+                f"Count, {_f!r} must have type that is a subtype of np.integer."
             )
 
     if not _nobs:
@@ -131,7 +131,7 @@ def propn_ci(
 
 
 def propn_ci_multinomial(
-    _counts: NDArray[np.integer[T]],
+    _counts: NDArray[np.integer[TI]],
     /,
     *,
     alpha: float = 0.05,
@@ -349,9 +349,9 @@ def _propn_diff_ci_mn(
 
     """
     for _f in _npos1, _nobs1, _npos1, _nobs2:
-        if not isinstance(_f, float | int | np.floating | np.integer):
+        if not isinstance(_f, int | np.integer):
             raise ValueError(
-                f"Count, {_f!r} must have type that is a subtype of np.floating or np.integer."
+                f"Count, {_f!r} must have type that is a subtype of np.integer."
             )
 
     _chi_sq_cr = chi2.ppf(1 - alpha, 1)
@@ -442,7 +442,7 @@ def _propn_diff_chisq_mn(
 
 
 def propn_ci_diff_multinomial(
-    _counts: NDArray[np.integer[T]], /, *, alpha: float = 0.05
+    _counts: NDArray[np.integer[TI]], /, *, alpha: float = 0.05
 ) -> NDArray[np.float64]:
     """Estimate confidence intervals of pair-wise differences in multinomial proportions
 
@@ -483,7 +483,7 @@ class MultinomialDiffTest(NamedTuple):
 
 
 def propn_diff_multinomial_chisq(
-    _counts: NDArray[np.integer[T]], /, *, alpha: float = 0.05
+    _counts: NDArray[np.integer[TI]], /, *, alpha: float = 0.05
 ) -> MultinomialDiffTest:
     """Chi-square test for homogeneity of differences in multinomial proportions.
 

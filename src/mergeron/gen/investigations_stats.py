@@ -27,6 +27,8 @@ from ..core import ftc_merger_investigations_data as fid  # noqa: TID252
 from ..core.proportions_tests import propn_ci  # noqa: TID252
 
 T = TypeVar("T", bound=NBitBase)
+TF = TypeVar("TF", bound=NBitBase)
+TI = TypeVar("TI", bound=NBitBase)
 
 
 @enum.unique
@@ -502,7 +504,7 @@ def invres_cnts_byconczone(_cnts_array: NDArray[np.integer[T]], /) -> NDArray[np
 
 
 def latex_tbl_invres_stats_1dim(
-    _inparr: NDArray[np.floating[T]] | NDArray[np.integer[T]],
+    _inparr: NDArray[np.floating[TF] | np.integer[TI]],
     _totals_row: int | None = None,
     /,
     *,
@@ -554,7 +556,7 @@ def latex_tbl_invres_stats_1dim(
 
 
 def latex_tbl_invres_stats_byzone(
-    _inparr: NDArray[np.integer[T]] | NDArray[np.floating[T]],
+    _inparr: NDArray[np.floating[TF] | np.integer[TI]],
     _totals_row: int | None = None,
     /,
     *,

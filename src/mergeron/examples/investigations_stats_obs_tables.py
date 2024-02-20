@@ -157,7 +157,7 @@ def invres_stats_odds_ratio_byhhianddelta(
                 )
                 print("\n", file=_invres_rate_table_dottex)
 
-            _output_dottex_pathlist += (_output_dottex_path.stem,)
+            _output_dottex_pathlist += (_output_dottex_path.name,)
             print(_odds_ratio_data_str)
             print()
             del _odds_ratio_data_str
@@ -412,7 +412,7 @@ def _invres_stats_obs_render(
         print("\n", file=_output_dottex_file)
     del _invdata_hdrstr, _invdata_datstr
 
-    return _output_dottex_path.stem
+    return _output_dottex_path.name
 
 
 def get_table_nos(

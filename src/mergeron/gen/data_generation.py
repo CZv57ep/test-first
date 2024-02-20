@@ -685,7 +685,9 @@ def _gen_market_shares_uniform(
     """
 
     _frmshr_array = np.empty((_s_size, 2), dtype=np.float64)
-    _dist_parms_mktshr = _dist_parms_mktshr or DIST_PARMS_DEFAULT
+    _dist_parms_mktshr = (
+        DIST_PARMS_DEFAULT if _dist_parms_mktshr is None else _dist_parms_mktshr
+    )
     _mrng = MultithreadedRNG(
         _frmshr_array,
         dist_type="Uniform",

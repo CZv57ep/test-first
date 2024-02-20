@@ -18,10 +18,12 @@ from multiprocessing import cpu_count
 from typing import Literal, TypeVar
 
 import numpy as np
+import numpy.typing as npt
 from numpy.random import PCG64DXSM, Generator, SeedSequence
 from numpy.typing import NBitBase, NDArray
 
-T = TypeVar("T", bound=NBitBase)
+TF = TypeVar("TF", bound=NBitBase)
+TI = TypeVar("TI", bound=NBitBase)
 
 NTHREADS = 2 * cpu_count()
 DIST_PARMS_DEFAULT = np.array([0.0, 1.0], np.float64)
@@ -145,7 +147,7 @@ class MultithreadedRNG:
         dist_type: Literal[
             "Beta", "Dirichlet", "Gaussian", "Normal", "Random", "Uniform"
         ] = "Uniform",
-        dist_parms: NDArray[np.floating[T]] = DIST_PARMS_DEFAULT,
+        dist_parms: NDArray[np.floating[TF]] = DIST_PARMS_DEFAULT,
         seed_sequence: SeedSequence | None = None,
         nthreads: int = NTHREADS,
     ):
@@ -211,7 +213,7 @@ class MultithreadedRNG:
         def _fill(
             _rng: np.random.Generator,
             _dist_type: str,
-            _dist_parms: NDArray[np.floating[T]],
+            _dist_parms: NDArray[np.floating[TF]],
             _out: NDArray[np.float64],
             _first: int,
             _last: int,

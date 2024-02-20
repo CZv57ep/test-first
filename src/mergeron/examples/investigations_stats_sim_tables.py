@@ -41,7 +41,7 @@ def invres_stats_sim_setup(
     _invdata: fid.INVData,
     _data_period: str,
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
-    _invres_parm_vec: Sequence[float],
+    _invres_parm_vec: gsf.GuidelinesSTD,
     _sample_spec: dgl.MarketSampleSpec,
     _invres_stats_kwargs: Mapping[str, Any] | None = None,
     /,
@@ -192,12 +192,12 @@ def invres_stats_sim_render(
         for _g, _h in (("obs_array", -2), ("sim_array", -5))
     )
 
-    _invres_sel, _, _ = _sim_test_regime
+    _invres_select, _, _ = _sim_test_regime
     (
         _stats_table_content.test_regime,
         _stats_table_content.obs_merger_class,
         _stats_table_content.obs_period,
-    ) = (_invres_sel.capitalize(), _merger_class, _data_period.split("-"))
+    ) = (_invres_select.capitalize(), _merger_class, _data_period.split("-"))
 
     _r_bar = _invres_parm_vec.rec
     (
@@ -243,8 +243,8 @@ def invres_stats_sim_render(
     del _relfreq_eg, _eg_count, _stats_sim_ci_eg
 
     print(
-        f"Observed {_invres_sel} proportion [95% CI]",
-        _stats_group_dict_sub["desc"].replace(f"{_invres_sel} rates ", ""),
+        f"Observed {_invres_select} proportion [95% CI]",
+        _stats_group_dict_sub["desc"].replace(f"{_invres_select} rates ", ""),
     )
     print(f"\t with sample size (observed): {_obs_sample_sz:,d};")
 
@@ -253,7 +253,7 @@ def invres_stats_sim_render(
     _stats_table_content.stats_cis_notewidth = _stats_group_dict_sub["notewidth"]
     _stats_cis_numobs_notestr = " ".join((
         R"\(\cdot\) Estimates for Proportion {} are based on".format(
-            "Enforced" if _invres_sel == isl.PolicySelector.ENFT else "Cleared"
+            "Enforced" if _invres_select == isl.PolicySelector.ENFT else "Cleared"
         ),
         f"{_obs_sample_sz:,d} total observations (investigated mergers).",
     ))
@@ -321,7 +321,7 @@ def invres_stats_sim_render(
     isl.stats_print_rows(_invres_stats_hdr_list, _invres_stats_dat_list)
     del _invres_stats_hdr_list, _invres_stats_dat_list
 
-    print(f"Simulated {_invres_sel} rates {_stats_group}:")
+    print(f"Simulated {_invres_select} rates {_stats_group}:")
     print(f"\t with generated data size = {_sim_sample_sz:,d}:")
 
     _stats_sim_hdr_list, _stats_sim_dat_list = _invres_stats_report_func(
@@ -368,7 +368,7 @@ if __name__ == "__main__":
     save_data_to_file_flag = False
     save_data_to_file: gtl.SaveData = False
     if save_data_to_file_flag:
-        h5path = DATA_DIR.joinpath(f"{Path(__file__).stem}.h5")
+        h5path = DATA_DIR / Path(__file__).with_suffix(".h5").name
         blosc_filters = ptb.Filters(complevel=3, complib="blosc:lz4", fletcher32=True)
         h5datafile = ptb.open_file(
             str(h5path),

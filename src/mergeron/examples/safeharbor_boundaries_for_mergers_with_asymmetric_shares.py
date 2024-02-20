@@ -27,7 +27,7 @@ from numpy import (
 import mergeron.core.guidelines_standards as gsf
 from mergeron import DATA_DIR
 
-PROG_PATH = Path(__file__)  
+PROG_PATH = Path(__file__)
 
 
 def plot_delta_boundaries(
@@ -132,9 +132,7 @@ def plot_delta_boundaries(
             _dh_dat_y,
         )  # , _dh_dat_x_pla, _dh_dat_y_pla
 
-    _my_fig1.savefig(
-        DATA_DIR.joinpath(f"{PROG_PATH.stem}_DH100_deltaHHI_only.pdf"), dpi=600
-    )
+    _my_fig1.savefig((DATA_DIR / f"{PROG_PATH.stem}_DH100_deltaHHI_only.pdf"), dpi=600)
 
     del _plt, _my_fig1, _ax1
 
@@ -432,7 +430,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
         f"{_guppi_bench_key}",
         f"rbar{_recapture_spec.upper()}",
     ))
-    _my_fig1.savefig(DATA_DIR.joinpath(f"{_fig1_savename}.pdf"), dpi=600)
+    _my_fig1.savefig((DATA_DIR / f"{_fig1_savename}.pdf"), dpi=600)
     del _my_fig1, _ax1, _ebar_plot, _fig1_savename
     del _dh_dat_x, _dh_dat_y
 

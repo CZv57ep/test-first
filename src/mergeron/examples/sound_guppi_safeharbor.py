@@ -50,16 +50,16 @@ def analyze_invres_data(
         If True, simulated data are save to file (hdf5 format)
 
     """
-    _invres_parm_vec = gsf.GuidelinesStandards(_hmg_std_pub_year).presumption[2:]
+    _invres_parm_vec = gsf.GuidelinesStandards(_hmg_std_pub_year).presumption
 
-    _save_data_to_file: Literal[False] | tuple[Literal[True], ptb.File, str] = False
+    _save_data_to_file: gtl.SaveData = False
     if save_data_to_file_flag:
         _h5_hier_pat = re.compile(r"\W")
         _blosc_filters = ptb.Filters(
             complevel=3, complib="blosc:lz4hc", fletcher32=True
         )
         _h5_datafile = ptb.open_file(
-            PROG_PATH.with_suffix(".h5"),
+            DATA_DIR / PROG_PATH.with_suffix(".h5").name,
             mode="w",
             title=f"GUPPI Safeharbor {_test_sel[0].capitalize()} Rate Module",
             filters=_blosc_filters,
@@ -115,10 +115,13 @@ def analyze_invres_data(
 
         _ind_sample_spec = dgl.MarketSampleSpec(
             _sample_size,
-            _invres_parm_vec[0],
+            _invres_parm_vec.rec,
             dgl.PRIConstants.SYM,
             share_spec=dgl.ShareSpec(
-                dgl.SHRConstants.UNI, _recapture_spec_test, dgl.EMPTY_ARRAY_DEFAULT
+                _recapture_spec_test,
+                dgl.SHRConstants.UNI,
+                dgl.EMPTY_ARRAY_DEFAULT,
+                dgl.FCOUNT_WTS_DEFAULT,
             ),
             pcm_spec=dgl.PCMSpec(
                 _pcm_dist_type_test, _pcm_dist_firm2_test, _pcm_dist_parms_test
@@ -164,7 +167,7 @@ def analyze_invres_data(
         del _pcm_dist_type_test, _pcm_dist_parms_test
 
     if save_data_to_file_flag:
-        _h5_datafile.close()
+        _save_data_to_file[1].close()  # type: ignore
 
 
 if __name__ == "__main__":
