@@ -1178,7 +1178,7 @@ def _beta_located(
     """
     Given mean and stddev, return shape parameters for corresponding Beta distribution
 
-    Solve the first two moments of the standard Beta to get the shape parameters. [1]_
+    Solve the first two moments of the standard Beta to get the shape parameters.
 
     Parameters
     ----------
@@ -1191,12 +1191,9 @@ def _beta_located(
     -------
         shape parameters for Beta distribution
 
-    References
-    ----------
-    .. [1] NIST. https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm
-
     """
-    _mul = (_mu - _mu**2 - _sigma**2) / _sigma**2
+
+    _mul = -1 + _mu * (1 - _mu) / _sigma**2
     return np.array([_mu * _mul, (1 - _mu) * _mul], dtype=np.float64)
 
 
@@ -1208,7 +1205,7 @@ def beta_located_bound(_dist_parms: NDArray[np.floating[TF]], /) -> NDArray[np.f
     Recover the r.v.s as
     :math:`\min + (\max - \min) \cdot \symup{Β}(a, b)`,
     with `a` and `b` calculated from the specified mean (:math:`\mu`) and
-    variance (:math:`\sigma`). [7]_
+    variance (:math:`\sigma`). [8]_
 
     Parameters
     ----------
@@ -1225,7 +1222,7 @@ def beta_located_bound(_dist_parms: NDArray[np.floating[TF]], /) -> NDArray[np.f
 
     References
     ----------
-    .. [7] NIST. https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm
+    .. [8] NIST, Beta Distribution. https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm
     """  # noqa: RUF002
 
     _bmu, _bsigma, _bmin, _bmax = _dist_parms

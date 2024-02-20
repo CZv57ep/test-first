@@ -41,7 +41,7 @@ def propn_ci(
 ]:
     """Returns point estimates and confidence interval for a proportion
 
-    Methods "Clopper-Pearson" and "Exact" are synoymous [2]_.  Similarly,
+    Methods "Clopper-Pearson" and "Exact" are synoymous [3]_.  Similarly,
     "Wilson" and "Score" are synonyms here.
 
     Parameters
@@ -66,7 +66,7 @@ def propn_ci(
     References
     ----------
 
-    .. [2] Alan Agresti & Brent A. Coull (1998) Approximate is Better
+    .. [3] Alan Agresti & Brent A. Coull (1998) Approximate is Better
        than “Exact” for Interval Estimation of Binomial Proportions,
        The American Statistician, 52:2, 119-126,
        https://doi.org/10.1080/00031305.1998.10480550
@@ -200,9 +200,9 @@ def propn_diff_ci(
 ) -> tuple[float, float, float, float]:
     R"""Confidence intervals for differences in binomial proportions.
 
-    Methods available are Agresti-Caffo [3]_, Mee [4]_, Meitinen-Nurminen [4]_ [5]_
-    and Newcombe (aka, Score method) [4]_. See also, source code for the
-    R-language function BinomDiffCI, in the module StatsAndCIs [6]_.
+    Methods available are Agresti-Caffo [4]_, Mee [5]_, Meitinen-Nurminen [5]_ [6]_
+    and Newcombe (aka, Score method) [5]_. See also, source code for the
+    R-language function BinomDiffCI, in the module StatsAndCIs [7]_.
 
     Parameters
     ----------
@@ -222,19 +222,19 @@ def propn_diff_ci(
     References
     ----------
 
-    .. [3] Agresti, A., & Caffo, T. (2000). Simple and Effective
+    .. [4] Agresti, A., & Caffo, T. (2000). Simple and Effective
        Confidence Intervals for Proportions and Differences of Proportions
        Result from Adding Two Successes and Two Failures.
        The American Statistician, 54(4), 280--288. https://doi.org/10.2307/2685779
 
-    .. [4] Newcombe, R.G. (1998). Two-sided confidence intervals for
+    .. [5] Newcombe, R.G. (1998). Two-sided confidence intervals for
        the single proportion: comparison of seven methods. Statist. Med., 17: 857-872.
        https://doi.org/10.1002/(SICI)1097-0258(19980430)17:8%3C857::AID-SIM777%3E3.0.CO;2-E
 
-    .. [5] Miettinen, O. and Nurminen, M. (1985). Comparative analysis of two rates.
+    .. [6] Miettinen, O. and Nurminen, M. (1985). Comparative analysis of two rates.
         Statist. Med., 4: 213-226. https://doi.org/10.1002/sim.4780040211; Appendix I
 
-    .. [6] StatsAndCIs.r, function BinomDiffCI, method, "mn"
+    .. [7] StatsAndCIs.r, function BinomDiffCI, method, "mn"
        https://github.com/cran/DescTools/blob/master/R/StatsAndCIs.r
        (R source code is distributed under the CC-BY license.)
 

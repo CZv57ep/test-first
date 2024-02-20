@@ -78,8 +78,7 @@ def gen_seed_seq_list_default(
 
     References
     ----------
-    *See*,
-    https://numpy.org/doc/stable/reference/random/parallel.html
+    *See*, https://numpy.org/doc/stable/reference/random/parallel.html
 
 
     """

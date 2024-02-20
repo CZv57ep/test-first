@@ -168,7 +168,7 @@ def lerp(
     /,
 ) -> float | mpf | NDArray[np.float64]:
     """
-    From the C++ standard function of the same name.
+    From the function of the same name in the C++ standard [2]_
 
     Constructs the weighted average, :math:`w_1 x_1 + w_2 x_2`, where
     :math:`w_1 = 1 - r` and :math:`w_2 = r`.
@@ -178,21 +178,35 @@ def lerp(
     _x1, _x2
         bounds :math:`x_1, x_2` to interpolate between.
     _r
-        interpolation weight :math:`r` assigned to :math:`x_2`.
+        interpolation weight :math:`r` assigned to :math:`x_2`
 
     Returns
     -------
-        The linear interpolation, or weighted average, :math:`x_1 (1 - r) + x_2 r`.
+        The linear interpolation, or weighted average,
+        :math:`x_1 + r \\cdot (x_1 - x_2) \\equiv (1 - r) \\cdot x_1 + r \\cdot x_2`.
 
     Raises
     ------
     ValueError
         If the interpolation weight is not in the interval, :math:`[0, 1]`.
 
+    References
+    ----------
+
+    .. [2] C++ Reference, https://en.cppreference.com/w/cpp/numeric/lerp
+
     """
+
     if not 0 <= _r <= 1:
         raise ValueError("Specified interpolation weight must lie in [0, 1].")
-    return _x2 * _r + _x1 * (1 - _r)
+    elif _r == 0:
+        return _x1
+    elif _r == 1:
+        return _x2
+    elif _r == 0.5:
+        return 1 / 2 * (_x1 + _x2)
+    else:
+        return _r * _x2 + (1 - _r) * _x1
 
 
 def gbd_from_dsf(
