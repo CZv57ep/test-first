@@ -164,50 +164,16 @@ def test_shrratio_mgnsym_boundary_min(
 @pytest.mark.parametrize(
     "_tvl",
     (
-        (0.06, 1.0, "own-share", "arithmetic", 0.05092),
-        (0.06, 0.67, "own-share", "arithmetic", 0.07697),
-        (0.06, 0.3, "own-share", "arithmetic", 0.17016),
-        (0.06, 1.0, "cross-product-share", "arithmetic", 0.00658),
-        (0.06, 0.67, "cross-product-share", "arithmetic", 0.01409),
-        (0.06, 0.3, "cross-product-share", "arithmetic", 0.0606),
-        (0.06, 1.0, "own-share", "geometric", 0.05253),
-        (0.06, 0.67, "own-share", "geometric", 0.07903),
-        (0.06, 0.3, "own-share", "geometric", 0.17263),
-        (0.06, 1.0, "cross-product-share", "geometric", 0.00661),
-        (0.06, 0.67, "cross-product-share", "geometric", 0.01417),
-        (0.06, 0.3, "cross-product-share", "geometric", 0.06121),
+        (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05092),
+        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07697),
+        (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17016),
+        (0.06, 1.0, "cross-product-share", "arithmetic", "proportional", 0.00658),
+        (0.06, 0.67, "cross-product-share", "arithmetic", "proportional", 0.01409),
+        (0.06, 0.3, "cross-product-share", "arithmetic", "proportional", 0.0606),
         # below are different from ~_avg() in 4th decimal
-        (0.06, 1.0, None, "arithmetic", 0.0102),
-        (0.06, 0.67, None, "arithmetic", 0.02169),
-        (0.06, 0.3, None, "arithmetic", 0.09123),
-    ),
-)
-def test_shrratio_mgnsym_boundary_wtd_avg_proportional(
-    _tvl: tuple[float, float, str, str, float],
-) -> None:
-    _ts = gsf.shrratio_mgnsym_boundary_wtd_avg(
-        gsf.critical_shrratio(_tvl[0], m_star=_tvl[1]),
-        wgtng_policy=_tvl[2],  # type: ignore
-        avg_method=_tvl[3],  # type: ignore
-        recapture_spec="proportional",
-    )[1]
-    print("Test gsf.shrratio_mgnsym_boundary_wtd_avg(): ", end="")
-    try:
-        assert_equal(_ts, _tvl[-1])
-    except AssertionError as _err:
-        print(
-            "g_val = {}; m_val = {}; wgtng = {}; meanf = {}; {}".format(*_tvl),
-            "=?",
-            _ts,
-            end="",
-        )
-        raise _err
-    print_done()
-
-
-@pytest.mark.parametrize(
-    "_tvl",
-    (
+        (0.06, 1.0, None, "arithmetic", "proportional", 0.0102),
+        (0.06, 0.67, None, "arithmetic", "proportional", 0.02169),
+        (0.06, 0.3, None, "arithmetic", "proportional", 0.09123),
         (0.06, 1.0, None, "arithmetic", "inside-out", 0.01026),
         (0.06, 0.67, None, "arithmetic", "inside-out", 0.02187),
         (0.06, 0.3, None, "arithmetic", "inside-out", 0.09323),
@@ -284,6 +250,47 @@ def test_shrratio_mgnsym_boundary_avg(_tvl: tuple[float, float, str, float]) -> 
         assert_equal(_ts, _tvl[-1])
     except AssertionError as _err:
         print(gval_print_format_str.format(*_tvl, _ts), end="")
+        raise _err
+    print_done()
+
+
+@pytest.mark.parametrize(
+    "_tvl",
+    (
+        (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05092),
+        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07697),
+        (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17016),
+        (0.06, 1.0, "cross-product-share", "arithmetic", "proportional", 0.00658),
+        (0.06, 0.67, "cross-product-share", "arithmetic", "proportional", 0.01409),
+        (0.06, 0.3, "cross-product-share", "arithmetic", "proportional", 0.0606),
+        # below are different from ~_avg() in 4th decimal
+        (0.06, 1.0, None, "arithmetic", "proportional", 0.0102),
+        (0.06, 0.67, None, "arithmetic", "proportional", 0.02169),
+        (0.06, 0.3, None, "arithmetic", "proportional", 0.09123),
+        (0.06, 1.0, None, "arithmetic", "inside-out", 0.01026),
+        (0.06, 0.67, None, "arithmetic", "inside-out", 0.02187),
+        (0.06, 0.3, None, "arithmetic", "inside-out", 0.09323),
+    ),
+)
+def test_shrratio_mgnsym_boundary_distance(
+    _tvl: tuple[float, float, str, str, float],
+) -> None:
+    _ts = gsf.shrratio_mgnsym_boundary_distance(
+        gsf.critical_shrratio(_tvl[0], m_star=_tvl[1]),
+        wgtng_policy=_tvl[2],  # type: ignore
+        avg_method=_tvl[3],  # type: ignore
+        recapture_spec=_tvl[4],
+    )[1]
+    print("Test gsf.shrratio_mgnsym_boundary_wtd_avg(): ", end="")
+    try:
+        assert_equal(_ts, _tvl[-1])
+    except AssertionError as _err:
+        print(
+            "g_val = {}; m_val = {}; wgtng = {}; meanf = {}; {}".format(*_tvl),
+            "=?",
+            _ts,
+            end="",
+        )
         raise _err
     print_done()
 

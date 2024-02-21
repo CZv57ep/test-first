@@ -17,6 +17,7 @@ from typing import Any, Literal, TypeAlias
 import numpy as np
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
+from scipy.spatial.distance import minkowski as distance_function
 
 mp.prec = 80
 mp.trap_complex = True
@@ -566,7 +567,7 @@ def delta_hhi_boundary(
 
 
 def combined_share_boundary(
-    _s_incpt: float = 0.0625, /, *, bdry_dps: int = 10
+    _s_intcpt: float = 0.0625, /, *, bdry_dps: int = 10
 ) -> tuple[NDArray[np.float64], float]:
     """
     Share combinations on the merging-firms' combined share boundary.
@@ -577,7 +578,7 @@ def combined_share_boundary(
 
     Parameters
     ----------
-    _s_incpt:
+    _s_intcpt:
         Merging-firms' combined share.
     bdry_dps
         Number of decimal places for rounding reported shares.
@@ -587,16 +588,16 @@ def combined_share_boundary(
         Array of share-pairs, area under boundary.
 
     """
-    _s_incpt = mpf(f"{_s_incpt}")
-    _s_mid = _s_incpt / 2
+    _s_intcpt = mpf(f"{_s_intcpt}")
+    _s_mid = _s_intcpt / 2
 
-    _s1_pts = (0, _s_mid, _s_incpt)
+    _s1_pts = (0, _s_mid, _s_intcpt)
     return (
         np.column_stack((
             np.array(_s1_pts, np.float64),
             np.array(_s1_pts[::-1], np.float64),
         )),
-        round(float(_s_incpt * _s_mid), bdry_dps),
+        round(float(_s_intcpt * _s_mid), bdry_dps),
     )
 
 
@@ -664,17 +665,17 @@ def shrratio_mgnsym_boundary_max(
     # of function call with other shrratio_mgnsym_boundary functions
     del _r_val
     _delta_star = mpf(f"{_delta_star}")
-    _s_incpt = _delta_star
+    _s_intcpt = _delta_star
     _s_mid = _delta_star / (1 + _delta_star)
 
-    _s1_pts = (0, _s_mid, _s_incpt)
+    _s1_pts = (0, _s_mid, _s_intcpt)
 
     return (
         np.column_stack((
             np.array(_s1_pts, np.float64),
             np.array(_s1_pts[::-1], np.float64),
         )),
-        round(float(_s_incpt * _s_mid), gbd_dps),  # simplified calculation
+        round(float(_s_intcpt * _s_mid), gbd_dps),  # simplified calculation
     )
 
 
@@ -724,7 +725,7 @@ def shrratio_mgnsym_boundary_min(
         )
 
     _delta_star = mpf(f"{_delta_star}")
-    _s_incpt = mpf("1.00")
+    _s_intcpt = mpf("1.00")
     _s_mid = _delta_star / (1 + _delta_star)
 
     if recapture_spec == "inside-out":
@@ -739,14 +740,14 @@ def shrratio_mgnsym_boundary_min(
                 _smin_nr / _guppi_bdry_env_dr,
                 _s_mid,
                 _smax_nr / _guppi_bdry_env_dr,
-                _s_incpt,
+                _s_intcpt,
             ),
             np.float64,
         )
 
         _gbd_area = (_smin_nr + (_smax_nr - _smin_nr) * _s_mid) / _guppi_bdry_env_dr
     else:
-        _s1_pts, _gbd_area = np.array((0, _s_mid, _s_incpt), np.float64), _s_mid
+        _s1_pts, _gbd_area = np.array((0, _s_mid, _s_intcpt), np.float64), _s_mid
 
     return np.column_stack((_s1_pts, _s1_pts[::-1])), round(float(_gbd_area), gbd_dps)
 
@@ -1031,7 +1032,7 @@ def shrratio_mgnsym_boundary_xact_avg(
     _gbdry_points_start = np.array([(_s_mid, _s_mid)])
     _s_1 = np.array(mp.arange(_s_mid - _gbd_step_sz, 0, -_gbd_step_sz), np.float64)
     if recapture_spec == "inside-out":
-        _s_incpt = mp.fdiv(
+        _s_intcpt = mp.fdiv(
             mp.fsub(
                 2 * _delta_star * _r_val + 1, mp.fabs(2 * _delta_star * _r_val - 1)
             ),
@@ -1076,7 +1077,7 @@ def shrratio_mgnsym_boundary_xact_avg(
         _s_2 = (_nr_t1 - np.sqrt(_nr_t2_s1)) / (2 * _r_val)
 
     else:
-        _s_incpt = mp.fsub(_delta_star + 1 / 2, mp.fabs(_delta_star - 1 / 2))
+        _s_intcpt = mp.fsub(_delta_star + 1 / 2, mp.fabs(_delta_star - 1 / 2))
         _s_2 = (
             (1 / 2)
             + _delta_star
@@ -1091,7 +1092,7 @@ def shrratio_mgnsym_boundary_xact_avg(
         )
 
     _gbdry_points_inner = np.column_stack((_s_1, _s_2))
-    _gbdry_points_end = np.array([(mpf("0.0"), _s_incpt)], np.float64)
+    _gbdry_points_end = np.array([(mpf("0.0"), _s_intcpt)], np.float64)
 
     _gbdry_points = np.row_stack((
         _gbdry_points_end,
@@ -1224,16 +1225,171 @@ def shrratio_mgnsym_boundary_avg(
 
     # Starting at _s_id - _gbd_step_sz means _s_1 is not always
     # an even multiple of _gbd_step_sz
-    _s_incpt = _s_2
+    _s_intcpt = _s_2
 
     _gbd_prtlarea = 2 * _gbd_step_sz * (
         mp.fmul(4 / 3, _s_2_oddsum)
         + mp.fmul(2 / 3, _s_2_evnsum)
-        + mp.fmul(1 / 3, _s_mid + _s_incpt)
+        + mp.fmul(1 / 3, _s_mid + _s_intcpt)
     ) - mp.power(_s_mid, 2)
 
     _gbdry_points = np.array(_gbdry_points, np.float64)
     return (
         np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbd_prtlarea), gbd_dps),
+    )
+
+
+def shrratio_mgnsym_boundary_distance(
+    _delta_star: float = 0.075,
+    _r_val: float = 0.80,
+    /,
+    *,
+    avg_method: Literal["arithmetic", "distance"] = "arithmetic",
+    wgtng_policy: Literal["own-share", "cross-product-share"] | None = "own-share",
+    recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
+    gbd_dps: int = 5,
+) -> tuple[NDArray[np.float64], float]:
+    """
+    Share combinations for the GUPPI boundaries using various aggregators with symmetric merging-firm margins.
+
+    Parameters
+    ----------
+    _delta_star
+        corollary to GUPPI bound (:math:`\\overline{g} / (m^* \\cdot \\overline{r})`)
+    _r_val
+        recapture ratio
+    avg_method
+        Whether "arithmetic", "geometric", or "distance".
+    wgtng_policy
+        Whether "own-share" or "cross-product-share".
+    recapture_spec
+        Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
+        value for both merging firms ("proportional").
+    gbd_dps
+        Number of decimal places for rounding returned shares and area.
+
+    Returns
+    -------
+        Array of share-pairs, area under boundary.
+
+    """
+
+    if _delta_star > 1:
+        raise ValueError(
+            "Margin-adjusted benchmark share ratio, `_delta_star` cannot exceed 1."
+        )
+
+    _delta_star = mpf(f"{_delta_star}")
+    _s_mid = _delta_star / (1 + _delta_star)
+
+    # initial conditions
+    _gbdry_points = [(_s_mid, _s_mid)]
+    _s_1_pre, _s_2_pre = _s_mid, _s_mid
+    _s_2_oddval, _s_2_oddsum, _s_2_evnsum = True, 0, 0
+
+    # parameters for iteration
+    _weights_base = (mpf("0.5"),) * 2
+    _gbd_step_sz = mp.power(10, -gbd_dps)
+    _theta = _gbd_step_sz * (10 if wgtng_policy == "cross-product-share" else 1)
+    for _s_1 in mp.arange(_s_mid - _gbd_step_sz, 0, -_gbd_step_sz):
+        # The wtd. avg. GUPPI is not always convex to the origin, so we
+        #   increment _s_2 after each iteration in which our algorithm
+        #   finds (s1, s2) on the boundary
+        _s_2 = _s_2_pre * (1 + _theta)
+
+        if (_s_1 + _s_2) > mpf("0.99875"):
+            # 1: # We lose accuracy at 3-9s and up
+            break
+
+        while True:
+            _de_1 = _s_2 / (1 - _s_1)
+            _de_2 = (
+                _s_1 / (1 - lerp(_s_1, _s_2, _r_val))
+                if recapture_spec == "inside-out"
+                else _s_1 / (1 - _s_2)
+            )
+
+            _weights_i = (
+                (
+                    _w1 := mp.fdiv(
+                        _s_2 if wgtng_policy == "cross-product-share" else _s_1,
+                        _s_1 + _s_2,
+                    ),
+                    1 - _w1,
+                )
+                if wgtng_policy
+                else _weights_base
+            )
+
+            match avg_method:
+                case "arithmetic":
+                    _delta_test = distance_function(
+                        (_de_1, _de_2), (0.0, 0.0), p=1, w=_weights_i
+                    )
+                case "distance":
+                    _delta_test = distance_function(
+                        (_de_1, _de_2), (0.0, 0.0), p=2, w=_weights_i
+                    )
+
+            if wgtng_policy == "cross-product-share":
+                _test_flag, _incr_decr = (_delta_test > _delta_star, -1)
+            else:
+                _test_flag, _incr_decr = (_delta_test < _delta_star, 1)
+
+            if _test_flag:
+                _s_2 += _incr_decr * _gbd_step_sz
+            else:
+                break
+
+        # Build-up boundary points
+        _gbdry_points.append((_s_1, _s_2))
+
+        # Build up area terms
+        _s_2_oddsum += _s_2 if _s_2_oddval else 0
+        _s_2_evnsum += _s_2 if not _s_2_oddval else 0
+        _s_2_oddval = not _s_2_oddval
+
+        # Hold share points
+        _s_2_pre = _s_2
+        _s_1_pre = _s_1
+
+    _gbd_prtlarea = _gbd_step_sz * (
+        (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _delta_star) / 3
+        if wgtng_policy == "cross-product-share"
+        else (
+            (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3
+            + _s_1_pre * (1 + _s_2_pre) / 2
+        )
+    )
+
+    # Area under boundary
+    _gbdry_area_total = 2 * _gbd_prtlarea - mp.power(_s_mid, 2)
+
+    match wgtng_policy:
+        case "cross-product-share":
+            _s_intcpt = _delta_star
+        case "own-product-share":
+            _s_intcpt = mpf("1.0")
+        case None if avg_method == "distance":
+            _s_intcpt = _delta_star * mp.sqrt("2")
+        case None if avg_method == "arithmetic" and recapture_spec == "inside-out":
+            _s_intcpt = mp.fdiv(
+                mp.fsub(
+                    2 * _delta_star * _r_val + 1, mp.fabs(2 * _delta_star * _r_val - 1)
+                ),
+                2 * mpf(f"{_r_val}"),
+            )
+        case None if avg_method == "arithmetic":
+            _s_intcpt = mp.fsub(_delta_star + 1 / 2, mp.fabs(_delta_star - 1 / 2))
+        case _:
+            _s_intcpt = _s_2_pre
+
+    _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
+        np.float64
+    )
+    # Points defining boundary to point-of-symmetry
+    return (
+        np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
+        round(float(_gbdry_area_total), gbd_dps),
     )
