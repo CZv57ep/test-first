@@ -856,10 +856,12 @@ def shrratio_mgnsym_boundary_wtd_avg(
     _delta_star = mpf(f"{_delta_star}")
     _s_mid = _delta_star / (1 + _delta_star)
 
+    # initial conditions
     _gbdry_points = [(_s_mid, _s_mid)]
     _s_1_pre, _s_2_pre = _s_mid, _s_mid
     _s_2_oddval, _s_2_oddsum, _s_2_evnsum = True, 0, 0
 
+    # parameters for iteration
     _gbd_step_sz = mp.power(10, -gbd_dps)
     _theta = _gbd_step_sz * (10 if wgtng_policy == "cross-product-share" else 1)
     for _s_1 in mp.arange(_s_mid - _gbd_step_sz, 0, -_gbd_step_sz):
@@ -897,12 +899,12 @@ def shrratio_mgnsym_boundary_wtd_avg(
                     _delta_test = lerp(_de_1, _de_2, _r)
 
             if wgtng_policy == "cross-product-share":
-                test_flag, incr_decr = (_delta_test > _delta_star, -1)
+                _test_flag, _incr_decr = (_delta_test > _delta_star, -1)
             else:
-                test_flag, incr_decr = (_delta_test < _delta_star, 1)
+                _test_flag, _incr_decr = (_delta_test < _delta_star, 1)
 
-            if test_flag:
-                _s_2 += incr_decr * _gbd_step_sz
+            if _test_flag:
+                _s_2 += _incr_decr * _gbd_step_sz
             else:
                 break
 
@@ -930,13 +932,19 @@ def shrratio_mgnsym_boundary_wtd_avg(
     # Area under boundary
     _gbdry_area_total = 2 * _gbd_prtlarea - mp.power(_s_mid, 2)
 
-    _gbdry_points = np.row_stack((
-        _gbdry_points,
-        (
-            mpf("0.0"),
-            _delta_star if wgtng_policy == "cross-product-share" else mpf("1.0"),
-        ),
-    )).astype(np.float64)
+    match wgtng_policy:
+        case "cross-product-share":
+            _s_intcpt = _delta_star
+        case "own-product-share":
+            _s_intcpt = mpf("1.0")
+        case None if avg_method == "distance":
+            _s_intcpt = _delta_star * mp.sqrt("2")
+        case _:
+            _s_intcpt = _s_2_pre
+
+    _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
+        np.float64
+    )
     # Points defining boundary to point-of-symmetry
     return (
         np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
@@ -1029,7 +1037,7 @@ def shrratio_mgnsym_boundary_xact_avg(
             ),
             2 * mpf(f"{_r_val}"),
         )
-        _nr_t1 = 1 + 2 * _delta_star * _r_val * (1 - _s_1) - _s_1 * (1 - _r_val)
+        _nr_t1 = 1 + 2 * _delta_star * _r_val * (1 - _s_1) - _s_1 * (1 - _r_val)  # type: ignore
 
         _nr_sqrt_mdr = 4 * _delta_star * _r_val
         _nr_sqrt_mdr2 = _nr_sqrt_mdr * _r_val
@@ -1054,9 +1062,9 @@ def shrratio_mgnsym_boundary_xact_avg(
 
         _nr_t2_s1 = _nr_sqrt_s1sq + _nr_sqrt_s1 + _nr_sqrt_nos1
 
-        if not np.isclose(
-            np.einsum("i->", _nr_t2_mdr.astype(np.float64)),  # from mpf to float64
-            np.einsum("i->", _nr_t2_s1.astype(np.float64)),
+        if not np.isclose(  # type: ignore
+            np.einsum("i->", _nr_t2_mdr.astype(np.float64)),  # type: ignore from mpf to float64
+            np.einsum("i->", _nr_t2_s1.astype(np.float64)),  # type: ignore from mpf to float64
             rtol=0,
             atol=0.5 * gbd_dps,
         ):
@@ -1125,6 +1133,8 @@ def shrratio_mgnsym_boundary_avg(
     Share combinations along the average GUPPI boundary, with
     symmetric merging-firm margins.
 
+    Faster than calling shrratio_mgnsym_boundary_avg(wgtng_policy=None).
+
     Parameters
     ----------
     _delta_star
@@ -1132,7 +1142,7 @@ def shrratio_mgnsym_boundary_avg(
     _r_val
         Recapture ratio.
     avg_method
-        Whether "arithmetic", "geometric", or "root-mean-square".
+        Whether "arithmetic", "geometric", or "distance".
     recapture_spec
         Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
         value for both merging firms ("proportional").
@@ -1151,7 +1161,7 @@ def shrratio_mgnsym_boundary_avg(
             "Margin-adjusted benchmark share ratio cannot exceed 1."
         )
 
-    if avg_method not in (_avgmthds := ("arithmetic", "geometric", "root-mean-square")):
+    if avg_method not in (_avgmthds := ("arithmetic", "geometric", "distance")):
         raise ValueError(
             f"Averarging method, {f'"{avg_method}"'} is invalid. "
             f"Must be one of, {_avgmthds!r}."
@@ -1165,18 +1175,21 @@ def shrratio_mgnsym_boundary_avg(
 
     _delta_star = mpf(f"{_delta_star}")
     _s_mid = _delta_star / (1 + _delta_star)
-    _gbd_step_sz = mp.power(10, -gbd_dps)
 
+    # initial conditions
     _s_2 = _s_mid
     _s_2_oddval = True
     _s_2_oddsum = 0
     _s_2_evnsum = 0
     _gbdry_points = [(_s_mid, _s_mid)]
+
+    # parameters for iteration
+    _gbd_step_sz = mp.power(10, -gbd_dps)
     for _s_1 in mp.arange(_s_mid, 0, -_gbd_step_sz):
         _s_1 -= _gbd_step_sz
         while True:
-            _shratio_12 = _s_2 / (1 - _s_1)
-            _shratio_21 = (
+            _delta_12 = _s_2 / (1 - _s_1)
+            _delta_21 = (
                 _s_1 / (1 - _s_2)
                 if recapture_spec == "proportional"
                 else _s_1 / (1 - lerp(_s_1, _s_2, _r_val))
@@ -1184,13 +1197,21 @@ def shrratio_mgnsym_boundary_avg(
 
             match avg_method:
                 case "geometric":
-                    _small_d = mp.sqrt(_shratio_12 * _shratio_21)
+                    _delta_test = mp.sqrt(_delta_12 * _delta_21)
                 case "distance":
-                    _small_d = mp.sqrt(mp.fdiv((_shratio_12**2 + _shratio_21**2), "2"))
+                    # _delta_test = mp.sqrt(mp.fdiv((_delta_12**2 + _delta_21**2), "2"))
+                    _delta_test = mp.sqrt(
+                        mp.fdiv(
+                            mp.fsum(
+                                mp.power(f"{_g}", "2") for _g in (_delta_12, _delta_21)
+                            ),
+                            "2",
+                        )
+                    )
                 case _:
-                    _small_d = mp.fdiv(_shratio_12 + _shratio_21, "2")
+                    _delta_test = mp.fdiv(_delta_12 + _delta_21, "2")
 
-            if _small_d < _delta_star:
+            if _delta_test < _delta_star:
                 _s_2 += _gbd_step_sz
             else:
                 break
