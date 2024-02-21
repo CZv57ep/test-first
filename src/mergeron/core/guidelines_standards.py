@@ -1134,7 +1134,11 @@ def shrratio_mgnsym_boundary_avg(
     Share combinations along the average GUPPI boundary, with
     symmetric merging-firm margins.
 
-    Faster than calling shrratio_mgnsym_boundary_avg(wgtng_policy=None).
+    Reimplements the unweighted average and distance estimations from function,
+    `shrratio_mgnsym_boundary_wtd_avg`. This reimplementation
+    is primarifly useful for testing the output of `shrratio_mgnsym_boundary_wtd_avg`
+    as it tests considerably slower.
+
 
     Parameters
     ----------
@@ -1251,7 +1255,14 @@ def shrratio_mgnsym_boundary_distance(
     gbd_dps: int = 5,
 ) -> tuple[NDArray[np.float64], float]:
     """
-    Share combinations for the GUPPI boundaries using various aggregators with symmetric merging-firm margins.
+    Share combinations for the GUPPI boundaries using various aggregators with
+    symmetric merging-firm margins.
+
+    Reimplements the arithmetic-averages and distance estimations from function,
+    `shrratio_mgnsym_boundary_wtd_avg`but uses the Minkowski-distance function,
+    `scipy.spatial.distance.minkowski` for all aggregators. This reimplementation
+    is primarifly useful for testing the output of `shrratio_mgnsym_boundary_wtd_avg`
+    as it tests considerably slower.
 
     Parameters
     ----------
