@@ -20,7 +20,6 @@ systems.
 
 from __future__ import annotations
 
-from collections import OrderedDict
 from collections.abc import Mapping, Sequence
 from datetime import datetime
 from math import sqrt
@@ -39,97 +38,95 @@ from mergeron import DATA_DIR
 
 PROG_PATH = Path(__file__)
 
-recapture_spec = "inside-out"
+RECAPTURE_SPEC = "inside-out"
 # Map boundary forms to titles and generating-function names, with
 #   additional parameters as relevant
-bdry_specs_dict: Mapping[str, Mapping[str, Any]] = OrderedDict({
+BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
     "ΔHHI": {
-        "title_str": "ΔHHI boundary boundary",
+        "title_str": "ΔHHI boundary",
+        "sheet_name": "ΔHHI",
         "func_str": R"\Delta HHI",
         "func": gsf.delta_hhi_boundary,
     },
     "OSWAG Own-shr-wtd Div Ratio Index": {
         "title_str": "Aggregated-diversion-ratio boundary, own-share wtd. avg.",
+        "sheet_name": "OSWAG, wtd avg",
         "func_str": R"(s_1 d_{12} + s_2 d_{21}) / s_M",
         "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
-        "func_kwargs": {"wgtng_policy": "own-share", "recapture_spec": recapture_spec},
+        "func_kwargs": {"wgtng_policy": "own-share", "recapture_spec": RECAPTURE_SPEC},
     },
     "OSWAG Own-shr-wtd Div Ratio Distance": {
         "title_str": "Aggregated-diversion-ratio boundary, own-shr. wtd. distance",
+        "sheet_name": "OSWAG, distance",
         "func_str": R"\surd (s_1 d_{12}^2 / s_M + s_2 d_{21}^2 / s_M)",
         "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
         "func_kwargs": {
             "wgtng_policy": "own-share",
-            "recapture_spec": recapture_spec,
-            "avg_method": "root-mean-square",
-        },
-    },
-    "OSWAG Own-shr-wtd Div Ratio Real Distance": {
-        "title_str": "Aggregated-diversion-ratio boundary, own-shr. wtd. (really) distance ",
-        "func_str": R"\surd (d_{12}^{s_1 / s_M} + d_{21}^{s_2 / s_M})",
-        "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
-        "func_kwargs": {
-            "wgtng_policy": "own-share",
-            "recapture_spec": recapture_spec,
+            "recapture_spec": RECAPTURE_SPEC,
             "avg_method": "distance",
         },
     },
     "OSWAG Min Div Ratio": {
         "title_str": "Aggregated-diversion-ratio boundary, minimum",
+        "sheet_name": "OSWAG, minimum",
         "func_str": R"\min (d_{12}, d_{21})",
         "func": gsf.shrratio_mgnsym_boundary_min,
-        "func_kwargs": {"recapture_spec": recapture_spec},
+        "func_kwargs": {"recapture_spec": RECAPTURE_SPEC},
     },
     "SAG Combined Share": {
         "title_str": "Combined Share boundary",
+        "sheet_name": "SAG, combined-share",
         "func_str": R"s_M",
         "func": gsf.combined_share_boundary,
     },
     "SAG Div Ratio Distance": {
         "title_str": "Aggregated-diversion-ratio boundary, distance",
+        "sheet_name": "SAG, distance",
         "func_str": R"\surd (d_{12}^2 / 2 + d_{21}^2 / 2)",
         "func": gsf.shrratio_mgnsym_boundary_avg,
-        "func_kwargs": {
-            "recapture_spec": recapture_spec,
-            "avg_method": "root-mean-square",
-        },
+        "func_kwargs": {"recapture_spec": RECAPTURE_SPEC, "avg_method": "distance"},
     },
     "SAG Average Div Ratio": {
         "title_str": "Aggregated-diversion-ratio boundary, simple average",
+        "sheet_name": "SAG, average",
         "func_str": R"(d_{12} + d_{21}) / 2",
         "func": gsf.shrratio_mgnsym_boundary_xact_avg,
-        "func_kwargs": {"recapture_spec": recapture_spec},
+        "func_kwargs": {"recapture_spec": RECAPTURE_SPEC},
     },
     "CPSWAG Premerger HHI-contribution": {
         "title_str": "Premerger HHI-contribution boundary",
+        "sheet_name": "CPSWAG, HHI-contrib-pre",
         "func_str": R"HHI_M^{pre}",
         "func": gsf.hhi_pre_contrib_boundary,
     },
     "CPSWAG Cross-product-shr-wtd Div Ratio Index": {
         "title_str": "Aggregated-diversion-ratio boundary, cross-product-share wtd. avg.",
+        "sheet_name": "CPSWAG, wtd avg",
         "func_str": R"(s_2 d_{12} / s_M  + s_1 d_{21} / s_M)",
         "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
         "func_kwargs": {
             "wgtng_policy": "cross-product-share",
-            "recapture_spec": recapture_spec,
+            "recapture_spec": RECAPTURE_SPEC,
         },
     },
     "CPSWAG Cross-product-shr-wtd Div Ratio Distance": {
         "title_str": "Aggregated-diversion-ratio boundary, cross-prod-shr. wtd. distance",
+        "sheet_name": "CPSWAG, distance",
         "func_str": R"\surd (s_2 d_{12}^2 / s_M + s_1 d_{21}^2 / s_M)",
         "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
         "func_kwargs": {
             "wgtng_policy": "cross-product-share",
-            "recapture_spec": recapture_spec,
-            "avg_method": "root-mean-square",
+            "recapture_spec": RECAPTURE_SPEC,
+            "avg_method": "distance",
         },
     },
     "CPSWAG Max Div Ratio": {
         "title_str": "Aggregated-diversion-ratio boundary, maximum",
+        "sheet_name": "CPSWAG, maximum",
         "func_str": R"\max (d_{12}, d_{21})",
         "func": gsf.shrratio_mgnsym_boundary_max,
     },
-})
+}
 
 
 def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
@@ -142,7 +139,9 @@ def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
 
     """
     gso = gsf.GuidelinesStandards(_gpubyr)
-    _dhhi_val, _, _r_val, _g_val, *_ = gso.presumption
+    _dhhi_val, _r_val, _g_val = (
+        getattr(gso.presumption, _f) for _f in ("delta", "rec", "guppi")
+    )
 
     _dhhi_seq = (
         (0.01, 0.02, 0.03125, 0.05, _dhhi_val)
@@ -153,7 +152,7 @@ def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
     _bdry_approx_data_dict = {
         "Criterion": {
             _k: R"\({} < {}\)".format(
-                bdry_specs_dict[_k]["func_str"],
+                BDRY_SPECS_DICT[_k]["func_str"],
                 R"\safeharb{d}"
                 if "Div Ratio" in _k
                 else (
@@ -162,7 +161,7 @@ def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
                     else R"\safeharb{H}"
                 ),
             )
-            for _k in bdry_specs_dict
+            for _k in BDRY_SPECS_DICT
             if not _k.endswith("Distance")
         }
     }
@@ -209,7 +208,7 @@ def _dhhi_stats(
 
     _bdry_stats = Parallel(n_jobs=cpu_count() // 2)(
         delayed(_bdry_stats_col)(_bdry_spec, _dhhi_val, _delta_val, _r_val)
-        for _bdry_spec in bdry_specs_dict
+        for _bdry_spec in BDRY_SPECS_DICT
     )
 
     _bounds_string = R"{{ {} \\ {} }}".format(
@@ -234,9 +233,9 @@ def _bdry_stats_col(
         case "CPSWAG Premerger HHI-contribution":
             return _bdry_spec, f"{_hhi_m_pre_prob:6.5f}"
         case _ if "Div Ratio" in _bdry_spec:
-            _gbd_func = bdry_specs_dict[_bdry_spec]["func"]
+            _gbd_func = BDRY_SPECS_DICT[_bdry_spec]["func"]
             _, _within_bdry_area = _gbd_func(
-                _delta_val, _r_val, **bdry_specs_dict[_bdry_spec].get("func_kwargs", {})
+                _delta_val, _r_val, **BDRY_SPECS_DICT[_bdry_spec].get("func_kwargs", {})
             )
             _within_bdry_prob = 2 * _within_bdry_area
             _within_conc_bdry_prob = (
@@ -261,10 +260,11 @@ def plot_and_save_boundary_coords(
 ) -> None:
     gso = gsf.GuidelinesStandards(_gpubyr)
 
-    _hmg_standards_strings = {
+    _hmg_standards_strings_dict = {
         "distributed": ("presumption", "inferred presumption", "safeharbor"),
         "collected": ("safeharbor", "inferred_presumption", "presumption"),
-    }.get(layout, ())
+    }
+    _hmg_standards_strings = _hmg_standards_strings_dict.get(layout, ())
     if not _hmg_standards_strings:
         raise ValueError(
             f"Layout parameter value, {layout!r} is invalid.  "
@@ -279,7 +279,7 @@ def plot_and_save_boundary_coords(
     for _divr_agg_method, _hmg_standards_str in zip(
         _divr_agg_methods, _hmg_standards_strings, strict=True
     ):
-        _r_bar, _g_bar = gso.presumption[2:4]
+        _r_bar, _g_bar = (getattr(gso.presumption, _f) for _f in ("rec", "guppi"))
         _dhhi_val = getattr(gso, _hmg_standards_str)[0]
         _divr_val = (
             _g_bar
@@ -301,36 +301,22 @@ def plot_and_save_boundary_coords(
             str, Sequence[tuple[float]]
         ] = {}  #: Container for boundary coordinates data, by boundary
 
-        for _bdry_spec_key in bdry_specs_dict:
-            _bdry_spec = (_bdry_spec_key, bdry_specs_dict[_bdry_spec_key])
+        for _bdry_spec_key in BDRY_SPECS_DICT:
+            _bdry_spec = (_bdry_spec_key, BDRY_SPECS_DICT[_bdry_spec_key])
 
             if _bdry_spec_key == "ΔHHI":
-                if any((
-                    _hmg_standards_str == "inferred_presumption",
-                    _hmg_standards_str == "safeharbor" and layout == "collected",
-                    _hmg_standards_str == "presumption" and _divr_agg_method != "OSWAG",
-                )):
+                if _hmg_standards_str != _hmg_standards_strings_dict[layout][0]:
                     continue
 
                 _dh_s1, _dh_s2 = gen_plot_boundary(
                     _bndry_data_dict, gso, _hmg_standards_str, _bdry_spec, _ax1
                 )
 
-                if _hmg_standards_str == "safeharbor":
-                    _ax1.fill_between(
-                        (0, *tuple(_dh_s1), 1),
-                        (1, *tuple(_dh_s2), 0),
-                        edgecolor=None,
-                        facecolor="#64bb64",  # "#64ff64"
-                        alpha=0.7,
-                        rasterized=True,
-                    )
-
                 del _dh_s1, _dh_s2
 
             elif _bdry_spec_key.startswith(
                 _divr_agg_method
-            ) and not _bdry_spec_key.endswith("Distance"):
+            ):  # and not _bdry_spec_key.endswith("Distance"):
                 gen_plot_boundary(
                     _bndry_data_dict, gso, _hmg_standards_str, _bdry_spec, _ax1
                 )
@@ -346,8 +332,8 @@ def plot_and_save_boundary_coords(
         _fig_leg.set_in_layout(False)
 
         for _bndry_name in _bndry_data_dict:
-            if _bndry_name == "ΔHHI":  # _divr_agg_method != "OSWAG" and
-                continue
+            # if _bndry_name == "ΔHHI":  # and _divr_agg_method != "OSWAG" and
+            #     continue
 
             boundary_data_to_worksheet(
                 _bndry_name,
@@ -406,10 +392,14 @@ def gen_plot_boundary(
     _pt_mdco: ptcolor.Mcset = ptcolor.tol_cset("medium-contrast")  # type: ignore
 
     _plot_line_width = 1.0
+    _plot_line_alpha = 0.8
     _plot_line_color = _pt_mdco.black
     _plot_line_style = {"OSWAG": "-", "SAG": "-.", "CPSWAG": "--"}.get(
         _bdry_spec_str.split(" ")[0], "-"
     )
+    if _bdry_spec_str.startswith("ΔHHI"):
+        _plot_line_width = 0.5
+        _plot_line_alpha = 1.0
     _zrdr = 5
 
     if not _bdry_spec_str.startswith("ΔHHI"):
@@ -425,12 +415,12 @@ def gen_plot_boundary(
             case _:
                 _plot_line_color = _pt_mdco.dark_red
 
-    _dh_bar = _gso.safeharbor[0]
-    _g_val = _gso.safeharbor[3]
+    _dh_bar = _gso.safeharbor.divr
+    _g_val = _gso.safeharbor.guppi
 
-    _r_bar = _gso.presumption[2]
+    _r_bar = _gso.presumption.rec
 
-    _dhhi_val = getattr(_gso, _gs_str)[0]  # _gso.presumption[0]
+    _dhhi_val = getattr(_gso, _gs_str).delta
     _s_mid = sqrt(_dhhi_val / 2)
     _delta_val = _g_val / _r_bar if _gs_str == "safeharbor" else _s_mid / (1 - _s_mid)
 
@@ -456,7 +446,9 @@ def gen_plot_boundary(
         _plot_label_uom,
     )
 
-    _bndry_data_dict |= {_bdry_spec_str: (_bdry_data, _bdry_area)}  # type: ignore
+    _bndry_data_dict |= {
+        _bdry_spec_str: (_bdry_spec_dict["sheet_name"], _bdry_data, _bdry_area)
+    }  # type: ignore
     _bdry_s1, _bdry_s2 = zip(*_bdry_data, strict=True)
 
     _ax1.plot(
@@ -466,30 +458,26 @@ def gen_plot_boundary(
         color=_plot_line_color,
         linestyle=_plot_line_style,
         linewidth=_plot_line_width,
+        alpha=_plot_line_alpha,
         zorder=_zrdr,
     )
 
     print("\t", _bdry_spec_str, f"{_bdry_s2[0]:.1%}")
-    match _bdry_spec_str:
-        case "ΔHHI":
-            _plot_annotator(
-                _ax1,
-                f"({_bdry_s1[0]:.1%}, {_bdry_s2[0]:.1%})",
-                (_bdry_s1[0], _bdry_s2[0]),
-                (0.005, 0),
-                "left",
-            )
-        case _ if _bdry_spec_str.startswith("SAG") or _bdry_spec_str in (
-            "CPSWAG Premerger HHI-contribution",
-            "CPSWAG Max Div Ratio",
-        ):
-            _plot_annotator(
-                _ax1,
-                f"{_bdry_s2[0]:.1%}",
-                (_bdry_s1[0], _bdry_s2[0]),
-                (-0.005, 0),
-                "right",
-            )
+    if _bdry_spec_str.startswith(("ΔHHI", "OSWAG Min")):
+        _plot_annotator(
+            _ax1,
+            f"({_bdry_s1[1]:.1%}, {_bdry_s2[1]:.1%})",
+            (_bdry_s1[1], _bdry_s2[1]),
+            (0.005, 0),
+            "left",
+        )
+    elif _bdry_spec_str.startswith("SAG") or _bdry_spec_str in (
+        "CPSWAG Premerger HHI-contribution",
+        "CPSWAG Max Div Ratio",
+    ):
+        _plot_annotator(
+            _ax1, f"{_bdry_s2[0]:.1%}", (_bdry_s1[0], _bdry_s2[0]), (-0.005, 0), "right"
+        )
 
     return _bdry_s1, _bdry_s2
 
@@ -546,9 +534,9 @@ def boundary_data_to_worksheet(
         Specified Excel Workbook
 
     """
-    _xl_sheet = _xl_book.add_worksheet(
-        f"{_bndry_name.replace('Boundary', '').strip()}"[:31]
-    )
+    _sheet_name, _bndry_points, _bndry_area = _bndry_data_dict[_bndry_name]
+
+    _xl_sheet = _xl_book.add_worksheet(_sheet_name)
 
     _xl_sheet.write("A1", "Sound GUPPI Safeharbor")
     _xl_sheet.write("A2", "Merger Screens for Unilateral Effects")
@@ -574,7 +562,6 @@ def boundary_data_to_worksheet(
     )
     _xl_sheet.set_footer(f"&L{_left_footer}")
 
-    _bndry_points, _bndry_area = _bndry_data_dict[_bndry_name]
     xlh.scalar_to_sheet(_xl_book, _xl_sheet, "B7", _bndry_area, xlh.CFmt.AREA_NUM)
 
     _results_header_row = 9
