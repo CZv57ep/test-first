@@ -282,11 +282,20 @@ def _pcm_spec_validator(
             )
 
 
+def _sample_size_validator(
+    _instance: MarketSampleSpec, _attribute: attrs.Attribute, _value: int, /
+) -> None:
+    if _value < 10**6 or (np.log10(_value) % 1 != 0):
+        raise ValueError(
+            f"Sample size must be a multiple of 10 and not less than {10**6:,d}."
+        )
+
+
 @attrs.define(slots=True, frozen=True)
 class MarketSampleSpec:
     """Parameter specification for market data generation."""
 
-    sample_size: int = 10**6
+    sample_size: int = attrs.field(default=10**6, validator=_sample_size_validator)
     """sample size generated"""
 
     recapture_rate: float | None = None
@@ -295,20 +304,21 @@ class MarketSampleSpec:
     Is None if market share specification includes
     generation of outside good choice probabilities (RECConstants.OUTIN).
     """
+
     pr_sym_spec: PRIConstants = PRIConstants.SYM
     """Price specification, see PRIConstants"""
 
     share_spec: ShareSpec = attrs.field(
         kw_only=True,
         default=ShareSpec(RECConstants.INOUT, SHRConstants.UNI, None, None),
-        validator=_share_spec_validator,
+        validator=[attrs.validators.instance_of(ShareSpec), _share_spec_validator],
     )
     """See definition of ShareSpec"""
 
     pcm_spec: PCMSpec = attrs.field(
         kw_only=True,
         default=PCMSpec(PCMConstants.UNI, FM2Constants.IID, None),
-        validator=_pcm_spec_validator,
+        validator=[attrs.validators.instance_of(PCMSpec), _pcm_spec_validator],
     )
     """See definition of PCMSpec"""
 
