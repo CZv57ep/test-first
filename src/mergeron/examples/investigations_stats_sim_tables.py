@@ -315,7 +315,7 @@ def invres_stats_sim_render(
         f"{g} {isl.LTX_ARRAY_LINEEND}" for g in _invres_stats_hdr_list
     ])
     _stats_table_content.stats_cis = "".join([
-        f"{' & '.join(g)} {isl.LTX_ARRAY_LINEEND}" for g in _invres_stats_dat_list
+        f"{" & ".join(g)} {isl.LTX_ARRAY_LINEEND}" for g in _invres_stats_dat_list
     ])
     # Print to console
     isl.stats_print_rows(_invres_stats_hdr_list, _invres_stats_dat_list)
@@ -333,7 +333,7 @@ def invres_stats_sim_render(
     # Exclude results of IPR tests
     _stats_sim_dat_list = [_f[:-1] for _f in _stats_sim_dat_list]
     _stats_table_content.stats_sim = "".join([
-        f"{' & '.join(g)} {isl.LTX_ARRAY_LINEEND}" for g in _stats_sim_dat_list
+        f"{" & ".join(g)} {isl.LTX_ARRAY_LINEEND}" for g in _stats_sim_dat_list
     ])
     # Print to console
     isl.stats_print_rows(_stats_sim_hdr_list, _stats_sim_dat_list)
@@ -362,8 +362,7 @@ if __name__ == "__main__":
     )
 
     sample_sz_base = 10**7
-    pr_sym_spec = dgl.PRIConstants.SYM
-    pcm_dist_type, pcm_dist_parms = dgl.PCMConstants.EMPR, np.empty(2)
+    pcm_dist_type, pcm_dist_parms = dgl.PCMConstants.EMPR, None
 
     save_data_to_file_flag = False
     save_data_to_file: gtl.SaveData = False
@@ -406,7 +405,6 @@ if __name__ == "__main__":
             mkt_sample_spec = dgl.MarketSampleSpec(
                 sample_sz_base,
                 invres_parm_vec.rec,
-                pr_sym_spec,
                 pcm_spec=dgl.PCMSpec(
                     pcm_dist_type, dgl.FM2Constants.MNL, pcm_dist_parms
                 ),
@@ -416,7 +414,7 @@ if __name__ == "__main__":
             # A file to write tables to, and a hierarchy under which to store the data
             if save_data_to_file:
                 h5hier_pat = re.compile(r"\W")
-                h5hier = f"/{h5hier_pat.sub('_', f'{merger_class} {study_period}')}"
+                h5hier = f"/{h5hier_pat.sub("_", f"{merger_class} {study_period}")}"
                 save_data_to_file = (True, save_data_to_file[1], h5hier)
 
             table_dottex_name = invres_stats_sim_setup(

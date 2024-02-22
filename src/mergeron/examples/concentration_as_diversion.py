@@ -26,7 +26,7 @@ from math import sqrt
 from pathlib import Path
 from typing import Any, Literal
 
-import matplotlib.axis
+import matplotlib.axes as mpa
 from joblib import Parallel, cpu_count, delayed
 from numpy import pi
 from xlsxwriter import Workbook
@@ -83,8 +83,12 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "title_str": "Aggregated-diversion-ratio boundary, distance",
         "sheet_name": "SAG, distance",
         "func_str": R"\surd (d_{12}^2 / 2 + d_{21}^2 / 2)",
-        "func": gsf.shrratio_mgnsym_boundary_avg,
-        "func_kwargs": {"recapture_spec": RECAPTURE_SPEC, "avg_method": "distance"},
+        "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
+        "func_kwargs": {
+            "wgtng_policy": None,
+            "recapture_spec": RECAPTURE_SPEC,
+            "avg_method": "distance",
+        },
     },
     "SAG Average Div Ratio": {
         "title_str": "Aggregated-diversion-ratio boundary, simple average",
@@ -323,7 +327,7 @@ def plot_and_save_boundary_coords(
 
         _fig_leg = _ax1.legend(
             loc="upper right",
-            bbox_to_anchor=(0.995, 0.995),
+            bbox_to_anchor=(0.995, 0.999),
             shadow=True,
             fancybox=False,
             frameon=False,
@@ -332,9 +336,6 @@ def plot_and_save_boundary_coords(
         _fig_leg.set_in_layout(False)
 
         for _bndry_name in _bndry_data_dict:
-            # if _bndry_name == "ΔHHI":  # and _divr_agg_method != "OSWAG" and
-            #     continue
-
             boundary_data_to_worksheet(
                 _bndry_name,
                 _dhhi_val_str,
@@ -347,7 +348,6 @@ def plot_and_save_boundary_coords(
     _fig_savepath = DATA_DIR / rf"{PROG_PATH.stem}_{_gpubyr}.pdf"
     _my_fig1.savefig(_fig_savepath)
     print()
-    del _divr_agg_method
 
 
 def gen_plot_boundary(
@@ -355,7 +355,7 @@ def gen_plot_boundary(
     _gso: gsf.GuidelinesStandards,
     _gs_str: str,
     _bdry_spec: tuple[str, Mapping[str, Any]],
-    _ax1: matplotlib.axes.Axes,
+    _ax1: mpa.Axes,
     /,
 ) -> tuple[tuple[float], tuple[float]]:
     """
@@ -378,7 +378,7 @@ def gen_plot_boundary(
         a mapping detailing the  boundary function specification including
         boundary function name and keyword parameters
     _ax1
-        matplotlib axis object for plots
+        matplotlib Axes object for plots
 
     Returns
     -------
@@ -483,7 +483,7 @@ def gen_plot_boundary(
 
 
 def _plot_annotator(
-    _ax: matplotlib.axes.Axes,
+    _ax: mpa.Axes,
     _a_str: str,
     _data_pt: tuple[float, float],
     _note_offset: tuple[float, float],

@@ -64,7 +64,7 @@ def analyze_invres_data(
             title=f"GUPPI Safeharbor {_test_sel[0].capitalize()} Rate Module",
             filters=_blosc_filters,
         )
-        _h5_hier = f"/{_h5_hier_pat.sub('_', f'Standards from {_hmg_std_pub_year} Guidelines')}"
+        _h5_hier = f"/{_h5_hier_pat.sub("_", f"Standards from {_hmg_std_pub_year} Guidelines")}"
 
         _save_data_to_file = (True, _h5_datafile, _h5_hier)
 
@@ -116,7 +116,6 @@ def analyze_invres_data(
         _ind_sample_spec = dgl.MarketSampleSpec(
             _sample_size,
             _invres_parm_vec.rec,
-            dgl.PRIConstants.SYM,
             share_spec=dgl.ShareSpec(
                 _recapture_spec_test,
                 dgl.SHRConstants.UNI,
