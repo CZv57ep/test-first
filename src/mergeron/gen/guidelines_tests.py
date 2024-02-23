@@ -24,9 +24,12 @@ from numpy.typing import NDArray
 
 from ..core import guidelines_standards as gsf  # noqa: TID252
 from . import (
+    EMPTY_ARRAY_DEFAULT,
     FCOUNT_WTS_DEFAULT,
     DataclassInstance,
     MarketSampleSpec,
+    MarketsSample,
+    RECConstants,
     UPPTestsCounts,
     UPPTestsRaw,
 )
@@ -74,7 +77,7 @@ class UPPTestRegime:
 
 def sim_invres_cnts_ll(
     _invres_parm_vec: gsf.GuidelinesSTD,
-    _mkt_sample_spec: dgl.MarketSampleSpec,
+    _mkt_sample_spec: MarketSampleSpec,
     _sim_invres_cnts_kwargs: Mapping[str, Any],
     /,
 ) -> UPPTestsCounts:
@@ -100,7 +103,7 @@ def sim_invres_cnts_ll(
 
     if (
         _mkt_sample_spec.recapture_rate is None
-        and _mkt_sample_spec.share_spec.recapture_spec != dgl.RECConstants.OUTIN
+        and _mkt_sample_spec.share_spec.recapture_spec != RECConstants.OUTIN
     ):
         _mkt_sample_spec_here = evolve(
             _mkt_sample_spec_here, recapture_rate=_invres_parm_vec.rec
@@ -301,7 +304,7 @@ def sim_invres_cnts(
 
 def gen_upp_arrays(
     _guppi_test_parms: gsf.GuidelinesSTD,
-    _market_data: dgl.MarketsSample,
+    _market_data: MarketsSample,
     _sim_test_regime: UPPTestRegime,
     /,
     *,
@@ -356,7 +359,7 @@ def gen_upp_arrays(
             GUPPIAggrSelector.OSA,
             GUPPIAggrSelector.OSD,
         )
-        else dgl.EMPTY_ARRAY_DEFAULT
+        else EMPTY_ARRAY_DEFAULT
     )
 
     match _guppi_aggregator:
