@@ -6,6 +6,8 @@ Includes a flexible system of defining cell formats.
 
 """
 
+from __future__ import annotations
+
 from importlib.metadata import version
 
 from .. import _PKG_NAME  # noqa: TID252
@@ -126,7 +128,7 @@ def matrix_to_sheet(
     elif isinstance(cell_format, CFmt):
         _cell_format = (cell_format,) * len(_data_array[0])
     else:
-        _cell_format = (CFmt.XL_DEFAULT,) * len(_data_array[0])
+        _cell_format = (CFmt.XL_DEFAULT,) * len(_data_array[0])  # type: ignore
 
     for _cell_row in range(_row_id, _bottom_row_id):
         for _cell_col in range(_col_id, _right_column_id):
@@ -222,7 +224,7 @@ def xl_fmt(
     elif isinstance(_cell_fmt, CFmt):
         _cell_fmt_dict = _cell_fmt.value
     else:
-        _cell_fmt_dict = CFmt.XL_DEFAULT.value
+        _cell_fmt_dict = CFmt.XL_DEFAULT.value  # type: ignore
 
     return _xl_book.add_format(_cell_fmt_dict)
 

@@ -12,10 +12,23 @@ import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
+from mergeron.gen import (
+    EMPTY_ARRAY_DEFAULT,
+    FCOUNT_WTS_DEFAULT,
+    MarketSampleSpec,
+    PCMConstants,
+    PCMSpec,
+    ShareSpec,
+    SHRConstants,
+)
 
 tests_of_interest: tuple[gtl.UPPTestRegime, ...] = (
-    (isl.PolicySelector.CLRN, gtl.GUPPIWghtngSelector.MAX, gtl.GUPPIWghtngSelector.MAX),
-    (isl.PolicySelector.ENFT, gtl.GUPPIWghtngSelector.MIN, gtl.GUPPIWghtngSelector.MIN),
+    gtl.UPPTestRegime(
+        isl.PolicySelector.CLRN, gtl.GUPPIAggrSelector.MAX, gtl.GUPPIAggrSelector.MAX
+    ),
+    gtl.UPPTestRegime(
+        isl.PolicySelector.ENFT, gtl.GUPPIAggrSelector.MIN, gtl.GUPPIAggrSelector.MIN
+    ),
 )
 
 PROG_PATH = Path(__file__)
@@ -24,9 +37,7 @@ PROG_PATH = Path(__file__)
 def analyze_invres_data(
     _sample_size: int = 10**6,
     _hmg_std_pub_year: Literal[1992, 2010, 2023] = 1992,
-    _test_sel: tuple[
-        str, gtl.GUPPIWghtngSelector, gtl.GUPPIWghtngSelector | None
-    ] = tests_of_interest[1],
+    _test_sel: gtl.UPPTestRegime = tests_of_interest[1],
     /,
     *,
     save_data_to_file_flag: bool = False,
@@ -61,7 +72,7 @@ def analyze_invres_data(
         _h5_datafile = ptb.open_file(
             DATA_DIR / PROG_PATH.with_suffix(".h5").name,
             mode="w",
-            title=f"GUPPI Safeharbor {_test_sel[0].capitalize()} Rate Module",
+            title=f"GUPPI Safeharbor {_test_sel.resolution.capitalize()} Rate Module",
             filters=_blosc_filters,
         )
         _h5_hier = f"/{_h5_hier_pat.sub("_", f"Standards from {_hmg_std_pub_year} Guidelines")}"
@@ -77,11 +88,7 @@ def analyze_invres_data(
         [
             tuple(
                 zip(
-                    (
-                        dgl.PCMConstants.UNI,
-                        dgl.PCMConstants.BETA,
-                        dgl.PCMConstants.EMPR,
-                    ),
+                    (PCMConstants.UNI, PCMConstants.BETA, PCMConstants.EMPR),
                     (
                         np.array((0, 1), dtype=np.float64),
                         np.array((10, 10), dtype=np.float64),
@@ -106,23 +113,23 @@ def analyze_invres_data(
 
         print()
         print(
-            f"Simulated {_test_sel[0].capitalize()} rates by range of ∆HHI",
+            f"Simulated {_test_sel.resolution.capitalize()} rates by range of ∆HHI",
             f'recapture-rate calibrated, "{_recapture_spec_test}"',
             f'Firm 2 margins, "{_pcm_dist_firm2_test}"',
             f"and margins distributed {_pcm_dist_type_test}{_pcm_dist_parms_test}:",
             sep="; ",
         )
 
-        _ind_sample_spec = dgl.MarketSampleSpec(
+        _ind_sample_spec = MarketSampleSpec(
             _sample_size,
             _invres_parm_vec.rec,
-            share_spec=dgl.ShareSpec(
+            share_spec=ShareSpec(
                 _recapture_spec_test,
-                dgl.SHRConstants.UNI,
-                dgl.EMPTY_ARRAY_DEFAULT,
-                dgl.FCOUNT_WTS_DEFAULT,
+                SHRConstants.UNI,
+                EMPTY_ARRAY_DEFAULT,
+                FCOUNT_WTS_DEFAULT,
             ),
-            pcm_spec=dgl.PCMSpec(
+            pcm_spec=PCMSpec(
                 _pcm_dist_type_test, _pcm_dist_firm2_test, _pcm_dist_parms_test
             ),
         )
@@ -133,11 +140,8 @@ def analyze_invres_data(
         }
 
         _start_time = datetime.now()
-        (
-            _invres_rate_sim_byfirmcount_array,
-            _invres_rate_sim_bydelta_array,
-            _invres_rate_sim_byconczone_array,
-        ) = gtl.sim_invres_cnts_ll(
+
+        upp_test_counts = gtl.sim_invres_cnts_ll(
             _invres_parm_vec, _ind_sample_spec, _invres_cnts_kwargs
         )
         _run_duration = datetime.now() - _start_time
@@ -148,7 +152,7 @@ def analyze_invres_data(
         )
 
         _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_1dim(
-            _invres_rate_sim_bydelta_array,
+            upp_test_counts.by_delta,
             return_type_sel=isl.StatsReturnSelector.RPT,
             sort_order=isl.SortSelector.REV,
         )

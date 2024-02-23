@@ -5,36 +5,42 @@ import mergeron.gen.data_generation as dgl
 import numpy as np
 import pytest
 from attrs import evolve
+from mergeron.gen import (
+    FCOUNT_WTS_DEFAULT,
+    FM2Constants,
+    MarketSampleSpec,
+    PCMConstants,
+    PCMSpec,
+    RECConstants,
+    ShareSpec,
+    SHRConstants,
+)
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
 
 tvals_dict = {
     # Test with uniform distribution (unrestricted shares), proportional recapture spec
-    (dgl.SHRConstants.UNI, dgl.RECConstants.FIXED, dgl.FM2Constants.IID): np.array([
+    (SHRConstants.UNI, RECConstants.FIXED, FM2Constants.IID): np.array([
         0.3333775494826034,
         0.4000546725161907,
         0.16666859164821712,
     ]),
     # Test with uniform distribution (unrestricted shares), inside-out recapture spec,
     # .i.i.d PCM values
-    (dgl.SHRConstants.UNI, dgl.RECConstants.INOUT, dgl.FM2Constants.IID): np.array([
+    (SHRConstants.UNI, RECConstants.INOUT, FM2Constants.IID): np.array([
         0.3333775494826034,
         0.37381043401375175,
         0.16666859164821712,
     ]),
     # Test with uniform distribution (unrestricted shares), inside-out recapture spec,
     # MNL-consistent PCM values
-    (dgl.SHRConstants.UNI, dgl.RECConstants.INOUT, dgl.FM2Constants.MNL): np.array([
+    (SHRConstants.UNI, RECConstants.INOUT, FM2Constants.MNL): np.array([
         0.32502286465475816,
         0.36698399533280657,
         0.16728195834397885,
     ]),
     # Test with flat dirichlet, proportional recapture spec, i.i.d. PCM values
-    (
-        dgl.SHRConstants.DIR_FLAT,
-        dgl.RECConstants.FIXED,
-        dgl.FM2Constants.IID,
-    ): np.array([
+    (SHRConstants.DIR_FLAT, RECConstants.FIXED, FM2Constants.IID): np.array([
         0.34331471002492747,
         0.4639299532812615,
         0.18757732533817648,
@@ -44,11 +50,7 @@ tvals_dict = {
         6.0,
     ]),
     # Test with flat dirichlet, inside-out recapture spec, i.i.d. PCM values
-    (
-        dgl.SHRConstants.DIR_FLAT,
-        dgl.RECConstants.INOUT,
-        dgl.FM2Constants.IID,
-    ): np.array([
+    (SHRConstants.DIR_FLAT, RECConstants.INOUT, FM2Constants.IID): np.array([
         0.34331471002492747,
         0.40745812736302944,
         0.18757732533817648,
@@ -58,11 +60,7 @@ tvals_dict = {
         6.0,
     ]),
     # Test with flat dirichlet, inside-out recapture spec, MNL-consistent PCM values
-    (
-        dgl.SHRConstants.DIR_FLAT,
-        dgl.RECConstants.INOUT,
-        dgl.FM2Constants.MNL,
-    ): np.array([
+    (SHRConstants.DIR_FLAT, RECConstants.INOUT, FM2Constants.MNL): np.array([
         0.3292729603184209,
         0.3932420089295269,
         0.1849591426831523,
@@ -72,11 +70,7 @@ tvals_dict = {
         6.0,
     ]),
     # Test with flat dirichlet, outside-in recapture spec, i.i.d PCM values
-    (
-        dgl.SHRConstants.DIR_FLAT,
-        dgl.RECConstants.OUTIN,
-        dgl.FM2Constants.IID,
-    ): np.array([
+    (SHRConstants.DIR_FLAT, RECConstants.OUTIN, FM2Constants.IID): np.array([
         0.34332714606238723,
         0.34327732941767747,
         0.1876114023527494,
@@ -86,11 +80,7 @@ tvals_dict = {
         6.0,
     ]),
     # Test with unweighted flat dirichlet, proportional recapture spec, i.i.d PCM values
-    (
-        dgl.SHRConstants.DIR_FLAT_CONSTR,
-        dgl.RECConstants.FIXED,
-        dgl.FM2Constants.IID,
-    ): np.array([
+    (SHRConstants.DIR_FLAT_CONSTR, RECConstants.FIXED, FM2Constants.IID): np.array([
         0.34331471002492747,
         0.4639299532812615,
         0.18757732533817648,
@@ -99,11 +89,7 @@ tvals_dict = {
         3.3331078,
         6.0,
     ]),
-    (
-        dgl.SHRConstants.DIR_ASYM,
-        dgl.RECConstants.FIXED,
-        dgl.FM2Constants.IID,
-    ): np.array([
+    (SHRConstants.DIR_ASYM, RECConstants.FIXED, FM2Constants.IID): np.array([
         0.3433240778115128,
         0.46397739836107904,
         0.21945448919130042,
@@ -112,11 +98,7 @@ tvals_dict = {
         3.3331078,
         6.0,
     ]),
-    (
-        dgl.SHRConstants.DIR_COND,
-        dgl.RECConstants.FIXED,
-        dgl.FM2Constants.IID,
-    ): np.array([
+    (SHRConstants.DIR_COND, RECConstants.FIXED, FM2Constants.IID): np.array([
         0.4444223338483846,
         0.6475767300577249,
         0.3372855445979423,
@@ -130,7 +112,7 @@ tvals_dict = {
 
 @pytest.mark.parametrize("_test_parms, _test_array", tuple(tvals_dict.items()))
 def test_gen_market_sample(
-    _test_parms: tuple[dgl.SHRConstants, dgl.RECConstants, dgl.FM2Constants],
+    _test_parms: tuple[SHRConstants, RECConstants, FM2Constants],
     _test_array: NDArray[np.float64],
     _tcount: int = 10**7,
     _nthreads: int = 16,
@@ -139,27 +121,25 @@ def test_gen_market_sample(
     # Reinitialize the seed sequence for each test run
     #   (this makes the tests invariant to the order in which run)
     _rng_seed_seq_tup = rmp.gen_seed_seq_list_default(
-        2 if _mktshr_dist_type_test == dgl.SHRConstants.UNI else 3
+        2 if _mktshr_dist_type_test == SHRConstants.UNI else 3
     )
 
-    _mkt_sample_spec = dgl.MarketSampleSpec(
-        _tcount,
-        0.80,
-        pcm_spec=dgl.PCMSpec(dgl.PCMConstants.UNI, _pcm_dist_firm2_test, None),
+    _mkt_sample_spec = MarketSampleSpec(
+        _tcount, 0.80, pcm_spec=PCMSpec(PCMConstants.UNI, _pcm_dist_firm2_test, None)
     )
-    if _mktshr_dist_type_test == dgl.SHRConstants.UNI:
+    if _mktshr_dist_type_test == SHRConstants.UNI:
         _shr_dist_parms = None
         _fcount_weights = None
         _test_func = _tfunc_sample_with_unrestricted_shares
     else:
         # np.arange(1, 6)[::-1] / np.arange(1, 6).sum()
-        _fcount_weights = dgl.FCOUNT_WTS_DEFAULT
+        _fcount_weights = FCOUNT_WTS_DEFAULT
         _shr_dist_parms = None
         _test_func = _tfunc_sample_with_dirichlet_shares
 
     _mkt_sample_spec = evolve(
         _mkt_sample_spec,
-        share_spec=dgl.ShareSpec(
+        share_spec=ShareSpec(
             _recapture_spec_test,
             _mktshr_dist_type_test,
             _shr_dist_parms,
@@ -177,14 +157,14 @@ def test_gen_market_sample(
     )
 
     # assert_array_equal((0, 0), (0, 0))
-    # if _pcm_dist_firm2_test != dgl.FM2Constants.MNL:
+    # if _pcm_dist_firm2_test != FM2Constants.MNL:
     assert_array_equal(_array_to_test, _test_array)
     del _mkt_sample_spec
     gc.collect()
 
 
 def _tfunc_sample_with_unrestricted_shares(
-    _mkt_sample_spec: dgl.MarketSampleSpec,
+    _mkt_sample_spec: MarketSampleSpec,
     _rng_seed_seq_tup: list[np.random.SeedSequence],
     _nthreads: int,
     /,
@@ -200,7 +180,7 @@ def _tfunc_sample_with_unrestricted_shares(
 
 
 def _tfunc_sample_with_dirichlet_shares(
-    _mkt_sample_spec: dgl.MarketSampleSpec,
+    _mkt_sample_spec: MarketSampleSpec,
     _rng_seed_seq_tup: list[np.random.SeedSequence],
     _nthreads: int,
     /,

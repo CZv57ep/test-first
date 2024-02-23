@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import gc
 from contextlib import suppress
+from dataclasses import fields
 from pathlib import Path
 from typing import Final
 
@@ -27,6 +28,7 @@ import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
 from mergeron.core.pseudorandom_numbers import DIST_PARMS_DEFAULT
+from mergeron.gen import ShareSpec
 
 PROG_PATH = Path(__file__)
 
@@ -39,12 +41,8 @@ blosc_filters = ptb.Filters(
 def gen_plot_data(
     _market_data: dgl.MarketsSample,
     _std_vec: gsf.GuidelinesSTD,
-    _pcm_firm2_star: float = 0.30,
-    _test_regime: gtl.UPPTestRegime = (
-        isl.PolicySelector.CLRN,
-        gtl.GUPPIWghtngSelector.MAX,
-        None,
-    ),
+    _pcm_firm2_star: float,
+    _test_regime: gtl.UPPTestRegime,
     /,
     *,
     h5handle: ptb.File | None = None,
@@ -59,14 +57,19 @@ def gen_plot_data(
     ))
     del _m1
 
-    _upp_tests = gtl.gen_upp_arrays(
+    _upp_test_raw = gtl.gen_upp_arrays(
         _std_vec,
-        dgl.MarketsSample(_market_data.frmshr_array, _pcm_array, *_market_data[2:]),
+        dgl.MarketsSample(*[
+            _pcm_array.astype(_f.type)
+            if _f.name == "pcm_array"
+            else getattr(_market_data, _f.name)
+            for _f in fields(_market_data)
+        ]),
         _test_regime,
     )
 
-    _gbd_test_rows = np.where(_upp_tests.guppi_test_simple)[0]
-    del _upp_tests
+    _gbd_test_rows = np.where(_upp_test_raw.guppi_test_simple)[0]
+    del _upp_test_raw
 
     _qtyshr_firm1_inv, _qtyshr_firm2_inv = (
         _market_data.frmshr_array[_gbd_test_rows][:, [0]],
@@ -99,7 +102,7 @@ def gen_plot_data(
             )
 
     _pcm_sorter = np.argsort(_pcm_plotter, axis=0)
-    if _test_regime[0] != isl.PolicySelector.CLRN:
+    if test_regime.resolution != isl.PolicySelector.CLRN:
         _pcm_sorter = _pcm_sorter[::-1, :]
     _qtyshr_firm1_plotter = _qtyshr_firm1_inv[_pcm_sorter]
     _qtyshr_firm2_plotter = _qtyshr_firm2_inv[_pcm_sorter]
@@ -125,7 +128,9 @@ def _main(
 ) -> None:
     guidelins_std_vec = getattr(
         gsf.GuidelinesStandards(_hmg_pub_year),
-        "safeharbor" if _test_regime[0] == isl.PolicySelector.ENFT else "presumption",
+        "safeharbor"
+        if test_regime.resolution == isl.PolicySelector.ENFT
+        else "presumption",
     )
 
     _, _r_bar, _g_bar, _divr_bar, *_ = guidelins_std_vec
@@ -237,10 +242,10 @@ def _main(
 
     _base_name = DATA_DIR / "{}_{}Rate_{}gbar{}PCT_{}Recapture".format(
         PROG_PATH.stem,
-        f"{_test_regime[0]}".capitalize(),
+        f"{test_regime.resolution}".capitalize(),
         _hmg_pub_year,
         f"{_g_bar * 100:02.0f}",
-        market_sample_spec.share_spec[0],
+        market_sample_spec.share_spec.recapture_spec,
     )
     _my_fig_2dsg_savepath = DATA_DIR / f"{_base_name}_2DScatterGrid.pdf"
     print(f"Save 2D plot to, {f'"{_my_fig_2dsg_savepath}"'}")
@@ -250,14 +255,14 @@ def _main(
 if __name__ == "__main__":
     # Get Guidelines parameter values
     hmg_pub_year: Final = 2023
-    test_regime: gtl.UPPTestRegime = (
-        isl.PolicySelector.ENFT,
-        gtl.GUPPIWghtngSelector.MIN,
-        gtl.GUPPIWghtngSelector.MIN,
+    test_regime: gtl.UPPTestRegime = gtl.UPPTestRegime(
+        isl.PolicySelector.ENFT, gtl.GUPPIAggrSelector.MIN, gtl.GUPPIAggrSelector.MIN
     )
     r_bar = getattr(
         gsf.GuidelinesStandards(hmg_pub_year),
-        "presumption" if test_regime[0] == isl.PolicySelector.ENFT else "safeharbor",
+        "presumption"
+        if test_regime.resolution == isl.PolicySelector.ENFT
+        else "safeharbor",
     ).rec
 
     sample_sz = 10**7
@@ -265,7 +270,7 @@ if __name__ == "__main__":
     market_sample_spec = dgl.MarketSampleSpec(
         sample_sz,
         r_bar,
-        share_spec=dgl.ShareSpec(
+        share_spec=ShareSpec(
             dgl.RECConstants.INOUT, dgl.SHRConstants.UNI, DIST_PARMS_DEFAULT, None
         ),
     )

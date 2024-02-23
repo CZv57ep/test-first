@@ -583,7 +583,7 @@ def boundary_data_to_worksheet(
         _xl_sheet,
         _bndry_points,
         _results_top_row,
-        cell_format=xlh.CFmt.PCT_NUM,
+        cell_format=xlh.CFmt.PCT_NUM,  # type: ignore
     )
 
     # Draw a bottom border

@@ -26,6 +26,7 @@ import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
 from mergeron.core.guidelines_standards import GuidelinesStandards
 from mergeron.core.proportions_tests import propn_ci
+from mergeron.gen import PCMConstants, PCMSpec, RECConstants, ShareSpec, SHRConstants
 
 if not sys.warnoptions:
     warnings.simplefilter("ignore")  # , category="RuntimeWarning")
@@ -86,9 +87,9 @@ def invres_stats_sim_setup(
 
     _sample_spec_here = evolve(
         _sample_spec,
-        share_spec=dgl.ShareSpec(
-            dgl.RECConstants.INOUT,
-            dgl.SHRConstants.DIR_FLAT,
+        share_spec=ShareSpec(
+            RECConstants.INOUT,
+            SHRConstants.DIR_FLAT,
             None,
             _invres_cnts_obs_byfirmcount_array[:-1, 1],
         ),
@@ -96,11 +97,7 @@ def invres_stats_sim_setup(
 
     # Generate simulated rates
     _start_time = datetime.now()
-    (
-        _invres_cnts_sim_byfirmcount_array,
-        _invres_cnts_sim_bydelta_array,
-        _invres_cnts_sim_byconczone_array,
-    ) = gtl.sim_invres_cnts_ll(
+    _upp_tests_counts = gtl.sim_invres_cnts_ll(
         _invres_parm_vec, _sample_spec_here, _invres_stats_kwargs
     )
     _total_duration = datetime.now() - _start_time
@@ -118,7 +115,7 @@ def invres_stats_sim_setup(
             "hcol_width": 54,
             "notewidth": 0.63,
             "obs_array": _invres_cnts_obs_byfirmcount_array,
-            "sim_array": _invres_cnts_sim_byfirmcount_array,
+            "sim_array": _upp_tests_counts.by_firm_count,
         },
         isl.StatsGrpSelector.DL: {
             "desc": Rf"{_test_regime.capitalize()} rates by range of $\Delta HHI$",
@@ -137,7 +134,7 @@ def invres_stats_sim_setup(
                 isl.LTX_ARRAY_LINEEND,
             )),
             "obs_array": _invres_cnts_obs_bydelta_array,
-            "sim_array": _invres_cnts_sim_bydelta_array,
+            "sim_array": _upp_tests_counts.by_delta,
         },
         isl.StatsGrpSelector.ZN: {
             "desc": f"{_test_regime.capitalize()} rates by Approximate Presumption Zone",
@@ -149,7 +146,7 @@ def invres_stats_sim_setup(
             "hcol_width": 190,
             "notewidth": 0.96,
             "obs_array": _invres_cnts_obs_byconczone_array,
-            "sim_array": _invres_cnts_sim_byconczone_array,
+            "sim_array": _upp_tests_counts.by_conczone,
         },
     }
 
@@ -192,9 +189,9 @@ def invres_stats_sim_render(
         for _g, _h in (("obs_array", -2), ("sim_array", -5))
     )
 
-    _invres_select, _, _ = _sim_test_regime
+    _invres_select = _sim_test_regime.resolution
     (
-        _stats_table_content.test_regime,
+        _stats_table_content.test_res,
         _stats_table_content.obs_merger_class,
         _stats_table_content.obs_period,
     ) = (_invres_select.capitalize(), _merger_class, _data_period.split("-"))
@@ -214,7 +211,7 @@ def invres_stats_sim_render(
         R"estimated by the Wilson method, given the",
         "reported numbers of investigated mergers and cleared mergers",
         _stats_group_dict_sub["desc"].replace(
-            f"{_stats_table_content.test_regime} rates ", ""
+            f"{_stats_table_content.test_res} rates ", ""
         ),
         isl.LTX_ARRAY_LINEEND,
     ))
@@ -224,7 +221,7 @@ def invres_stats_sim_render(
         propn_ci(0.50 * _eg_count, _eg_count, method="Exact")
     )
     _stats_sim_notestr = " ".join((
-        Rf"\(\cdot\) Simulated {_stats_table_content.test_regime} rates are estimated by",
+        Rf"\(\cdot\) Simulated {_stats_table_content.test_res} rates are estimated by",
         "Monte Carlo integration over generated data representing",
         Rf"{_sim_sample_sz:,d} hypothetical mergers. Thus,",
         R"for a subset of simulations with a relative frequency",
@@ -362,7 +359,7 @@ if __name__ == "__main__":
     )
 
     sample_sz_base = 10**7
-    pcm_dist_type, pcm_dist_parms = dgl.PCMConstants.EMPR, None
+    pcm_dist_type, pcm_dist_parms = PCMConstants.EMPR, None
 
     save_data_to_file_flag = False
     save_data_to_file: gtl.SaveData = False
@@ -378,8 +375,8 @@ if __name__ == "__main__":
         save_data_to_file = (True, h5datafile, "/")
 
     sim_test_regime = (
-        (isl.PolicySelector.CLRN, gtl.GUPPIWghtngSelector.MAX, None),
-        (isl.PolicySelector.ENFT, gtl.GUPPIWghtngSelector.OSD, None),
+        (isl.PolicySelector.CLRN, gtl.GUPPIAggrSelector.MAX, None),
+        (isl.PolicySelector.ENFT, gtl.GUPPIAggrSelector.OSD, None),
     )[1]
     invres_stats_kwargs = {"sim_test_regime": sim_test_regime}
 
@@ -405,9 +402,7 @@ if __name__ == "__main__":
             mkt_sample_spec = dgl.MarketSampleSpec(
                 sample_sz_base,
                 invres_parm_vec.rec,
-                pcm_spec=dgl.PCMSpec(
-                    pcm_dist_type, dgl.FM2Constants.MNL, pcm_dist_parms
-                ),
+                pcm_spec=PCMSpec(pcm_dist_type, dgl.FM2Constants.MNL, pcm_dist_parms),
                 hsr_filing_test_type=dgl.SSZConstants.HSR_NTH,
             )
 

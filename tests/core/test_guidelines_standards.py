@@ -186,7 +186,7 @@ def test_shrratio_mgnsym_boundary_wtd_avg(
         gsf.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         wgtng_policy=_tvl[2],  # type: ignore
         avg_method=_tvl[3],  # type: ignore
-        recapture_spec=_tvl[4],
+        recapture_spec=_tvl[4],  # type: ignore
     )[1]
     print("Test gsf.shrratio_mgnsym_boundary_wtd_avg(): ", end="")
     try:
@@ -279,7 +279,7 @@ def test_shrratio_mgnsym_boundary_distance(
         gsf.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         wgtng_policy=_tvl[2],  # type: ignore
         avg_method=_tvl[3],  # type: ignore
-        recapture_spec=_tvl[4],
+        recapture_spec=_tvl[4],  # type: ignore
     )[1]
     print("Test gsf.shrratio_mgnsym_boundary_wtd_avg(): ", end="")
     try:

@@ -10,19 +10,26 @@ from .. import _PKG_NAME  # noqa: TID252
 
 __version__ = version(_PKG_NAME)
 
-
 import enum
 from collections.abc import Mapping, Sequence
-from typing import Any, Literal, NamedTuple, TypeAlias
+from dataclasses import fields
+from typing import Any, Literal, TypeAlias
 
 import numpy as np
 import tables as ptb  # type: ignore
-from attr import evolve
+from attr import define, evolve, field, validators
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
 from ..core import guidelines_standards as gsf  # noqa: TID252
+from . import (
+    FCOUNT_WTS_DEFAULT,
+    DataclassInstance,
+    MarketSampleSpec,
+    UPPTestsCounts,
+    UPPTestsRaw,
+)
 from . import data_generation as dgl
 from . import investigations_stats as isl
 
@@ -33,7 +40,7 @@ SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, str]
 
 
 @enum.unique
-class GUPPIWghtngSelector(enum.StrEnum):
+class GUPPIAggrSelector(enum.StrEnum):
     """
     Aggregator selection for GUPPI and diversion ratio
 
@@ -49,16 +56,20 @@ class GUPPIWghtngSelector(enum.StrEnum):
     OSD = "own-share-weighted distance"
 
 
-UPPTestRegime: TypeAlias = tuple[
-    isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
-]
-
-
-class UPPTests(NamedTuple):
-    guppi_test_simple: NDArray[np.bool_]
-    guppi_test_compound: NDArray[np.bool_]
-    cmcr_test: NDArray[np.bool_]
-    ipr_test: NDArray[np.bool_]
+@define(slots=True, frozen=True)
+class UPPTestRegime:
+    resolution: isl.PolicySelector = field(  # type: ignore
+        default=isl.PolicySelector.ENFT,
+        validator=validators.instance_of(isl.PolicySelector),  # type: ignore
+    )
+    primary_aggregator: GUPPIAggrSelector = field(  # type: ignore
+        default=GUPPIAggrSelector.MAX,
+        validator=validators.instance_of(GUPPIAggrSelector | None),  # type: ignore
+    )
+    secondary_aggregator: GUPPIAggrSelector | None = field(  # type: ignore
+        default=primary_aggregator,
+        validator=validators.instance_of(GUPPIAggrSelector | None),  # type: ignore
+    )
 
 
 def sim_invres_cnts_ll(
@@ -66,7 +77,7 @@ def sim_invres_cnts_ll(
     _mkt_sample_spec: dgl.MarketSampleSpec,
     _sim_invres_cnts_kwargs: Mapping[str, Any],
     /,
-) -> tuple[NDArray[np.int64], NDArray[np.int64], NDArray[np.int64]]:
+) -> UPPTestsCounts:
     """
     A function to parallelize simulations
 
@@ -86,6 +97,23 @@ def sim_invres_cnts_ll(
 
     # Crate a copy, to avoid side effects in the outer scope
     _mkt_sample_spec_here = evolve(_mkt_sample_spec, sample_size=_subsample_sz)
+
+    if (
+        _mkt_sample_spec.recapture_rate is None
+        and _mkt_sample_spec.share_spec.recapture_spec != dgl.RECConstants.OUTIN
+    ):
+        _mkt_sample_spec_here = evolve(
+            _mkt_sample_spec_here, recapture_rate=_invres_parm_vec.rec
+        )
+    elif _mkt_sample_spec.recapture_rate != _invres_parm_vec.rec:
+        raise ValueError(
+            "{} {} {} {}".format(
+                f"Value, {_mkt_sample_spec.recapture_rate}",
+                "of recapture rate in the second positional argument",
+                f"must equal its value, {_invres_parm_vec.rec}",
+                "in the first positional argument.",
+            )
+        )
 
     _rng_seed_seq_list = [None] * _iter_count
     if _sim_invres_cnts_kwargs:
@@ -113,50 +141,33 @@ def sim_invres_cnts_ll(
         for _thread_id, _rng_seed_seq_list_ch in enumerate(_rng_seed_seq_list)
     )
 
-    _res_list_stacks = [np.stack([_j[_k] for _j in _res_list]) for _k in range(3)]
-    (
-        _invres_cnts_sim_byfirmcount_array,
-        _invres_cnts_sim_bydelta_array,
-        _invres_cnts_sim_byconczone_array,
-    ) = (
+    _res_list_stacks = UPPTestsCounts(*[
+        np.stack([getattr(_j, _k) for _j in _res_list])
+        for _k in ("by_firm_count", "by_delta", "by_conczone")
+    ])
+    upp_test_results = UPPTestsCounts(*[
         np.column_stack((
-            _g[0, :, :_h],
-            np.einsum("ijk->jk", np.int64(1) * _g[:, :, _h:]),
+            (_gv := getattr(_res_list_stacks, _g.name))[0, :, :_h],
+            np.einsum("ijk->jk", np.int64(1) * _gv[:, :, _h:]),
         ))
-        for _g, _h in zip(_res_list_stacks, [1, 1, 3], strict=True)
-    )
+        for _g, _h in zip(fields(_res_list_stacks), [1, 1, 3], strict=True)
+    ])
     del _res_list, _res_list_stacks
 
-    return (
-        _invres_cnts_sim_byfirmcount_array,
-        _invres_cnts_sim_bydelta_array,
-        _invres_cnts_sim_byconczone_array,
-    )
+    return upp_test_results
 
 
 def sim_invres_cnts(
     _guppi_test_parms: gsf.GuidelinesSTD,
-    _mkt_sample_spec: dgl.MarketSampleSpec,
+    _mkt_sample_spec: MarketSampleSpec,
     /,
     *,
-    sim_test_regime: tuple[
-        isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
-    ],
+    sim_test_regime: UPPTestRegime,
     saved_array_name_suffix: str = "",
     save_data_to_file: SaveData = False,
     seed_seq_list: list[SeedSequence] | None = None,
     nthreads: int = 16,
-) -> tuple[NDArray[np.int64], NDArray[np.int64], NDArray[np.int64]]:
-    if _mkt_sample_spec.recapture_rate != _guppi_test_parms.rec:
-        raise ValueError(
-            "{} {} {} {}".format(
-                f"Value, {_mkt_sample_spec.recapture_rate}",
-                "of recapture rate in the second positional argument",
-                f"must equal its value, {_guppi_test_parms.rec}",
-                "in the first positional argument.",
-            )
-        )
-
+) -> UPPTestsCounts:
     # Generate market data
     _market_data = dgl.gen_market_sample(
         _mkt_sample_spec, seed_seq_list=seed_seq_list, nthreads=nthreads
@@ -168,7 +179,7 @@ def sim_invres_cnts(
         else ()
     )
 
-    save_namedtuple_to_hdf5(
+    save_data_to_hdf5(
         _market_data,
         saved_array_name_suffix,
         _invalid_array_names,
@@ -191,12 +202,12 @@ def sim_invres_cnts(
     # Clearance/enforcement counts --- by firm count
     # Accumulate firm_count, numobs, num_gmbound, num_gsf, num_cbound, num_ibound
     _stats_rowlen = 6
-    _firm_counts_prob_weights: NDArray[np.float64 | np.int64] = (
-        dgl.FCOUNT_WTS_DEFAULT
-        if _mkt_sample_spec.share_spec.firm_counts_prob_weights is None
-        else _mkt_sample_spec.share_spec.firm_counts_prob_weights
+    _firm_counts_weights: NDArray[np.float64 | np.int64] = (
+        FCOUNT_WTS_DEFAULT
+        if _mkt_sample_spec.share_spec.firm_counts_weights is None
+        else _mkt_sample_spec.share_spec.firm_counts_weights
     )
-    _max_firm_count = len(_firm_counts_prob_weights)
+    _max_firm_count = len(_firm_counts_weights)
 
     _invres_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
     for _firm_cnt in 2 + np.arange(_max_firm_count):
@@ -208,8 +219,11 @@ def sim_invres_cnts(
                 _firm_cnt,
                 np.einsum("ij->", 1 * _firm_count_test),
                 *[
-                    np.einsum("ij->", 1 * (_firm_count_test & _f))
-                    for _f in _upp_tests_data
+                    np.einsum(
+                        "ij->",
+                        1 * (_firm_count_test & getattr(_upp_tests_data, _f.name)),
+                    )
+                    for _f in fields(_upp_tests_data)
                 ],
             ]),
         ))
@@ -226,8 +240,11 @@ def sim_invres_cnts(
                 _hhi_delta_lim,
                 np.einsum("ij->", 1 * _hhi_delta_test),
                 *[
-                    np.einsum("ij->", 1 * (_hhi_delta_test & _f))
-                    for _f in _upp_tests_data
+                    np.einsum(
+                        "ij->",
+                        1 * (_hhi_delta_test & getattr(_upp_tests_data, _f.name)),
+                    )
+                    for _f in fields(_upp_tests_data)
                 ],
             ]),
         ))
@@ -261,8 +278,10 @@ def sim_invres_cnts(
                     _hhi_zone_delta_knot,
                     np.einsum("ij->", 1 * _conc_test),
                     *[
-                        np.einsum("ij->", 1 * (_conc_test & _f))
-                        for _f in _upp_tests_data
+                        np.einsum(
+                            "ij->", 1 * (_conc_test & getattr(_upp_tests_data, _f.name))
+                        )
+                        for _f in fields(_upp_tests_data)
                     ],
                 ]),
             ))
@@ -273,7 +292,7 @@ def sim_invres_cnts(
     del _stats_byconczone_sim
     del _hhi_delta, _hhi_post, _fcounts
 
-    return (
+    return UPPTestsCounts(
         _invres_cnts_sim_byfirmcount_array,
         _invres_cnts_sim_bydelta_array,
         _invres_cnts_sim_byconczone_array,
@@ -283,19 +302,20 @@ def sim_invres_cnts(
 def gen_upp_arrays(
     _guppi_test_parms: gsf.GuidelinesSTD,
     _market_data: dgl.MarketsSample,
-    _sim_test_regime: tuple[
-        isl.PolicySelector, GUPPIWghtngSelector, GUPPIWghtngSelector | None
-    ],
+    _sim_test_regime: UPPTestRegime,
     /,
     *,
     saved_array_name_suffix: str = "",
     save_data_to_file: SaveData = False,
-) -> UPPTests:
+) -> UPPTestsRaw:
     _g_bar, _divr_bar, _cmcr_bar, _ipr_bar = (
         getattr(_guppi_test_parms, _f) for _f in ("guppi", "divr", "cmcr", "ipr")
     )
 
-    _invres_select, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_test_regime
+    _invres_resolution, _guppi_aggregator, _divr_aggregator = (
+        getattr(_sim_test_regime, _f)
+        for _f in ("resolution", "primary_aggegator", "secondary_aggegator")
+    )
 
     _guppi_array = np.empty_like(_market_data.divr_array)
     np.einsum(
@@ -329,50 +349,50 @@ def gen_upp_arrays(
     _wt_array = (
         _market_data.frmshr_array
         / np.einsum("ij->i", _market_data.frmshr_array)[:, None]
-        if _guppi_wgtng_policy
+        if _guppi_aggregator
         in (
-            GUPPIWghtngSelector.CPA,
-            GUPPIWghtngSelector.CPD,
-            GUPPIWghtngSelector.OSA,
-            GUPPIWghtngSelector.OSD,
+            GUPPIAggrSelector.CPA,
+            GUPPIAggrSelector.CPD,
+            GUPPIAggrSelector.OSA,
+            GUPPIAggrSelector.OSD,
         )
         else dgl.EMPTY_ARRAY_DEFAULT
     )
 
-    match _guppi_wgtng_policy:
-        case GUPPIWghtngSelector.AVG:
+    match _guppi_aggregator:
+        case GUPPIAggrSelector.AVG:
             _test_value_seq = (
                 1 / 2 * np.einsum("ij->i", _g)[:, None] for _g in _test_measure_seq
             )
-        case GUPPIWghtngSelector.CPA:
+        case GUPPIAggrSelector.CPA:
             _test_value_seq = (
                 np.einsum("ij,ij->i", _wt_array[:, ::-1], _g)[:, None]
                 for _g in _test_measure_seq
             )
-        case GUPPIWghtngSelector.CPD:
+        case GUPPIAggrSelector.CPD:
             _test_value_seq = (
                 np.sqrt(np.einsum("ij,ij,ij->i", _wt_array[:, ::-1], _g, _g))[:, None]
                 for _g in _test_measure_seq
             )
-        case GUPPIWghtngSelector.DIS:
+        case GUPPIAggrSelector.DIS:
             _test_value_seq = (
                 np.sqrt(1 / 2 * np.einsum("ij,ij->i", _g, _g))[:, None]
                 for _g in _test_measure_seq
             )
-        case GUPPIWghtngSelector.MAX:
+        case GUPPIAggrSelector.MAX:
             _test_value_seq = (
                 _g.max(axis=1, keepdims=True) for _g in _test_measure_seq
             )
-        case GUPPIWghtngSelector.MIN:
+        case GUPPIAggrSelector.MIN:
             _test_value_seq = (
                 _g.min(axis=1, keepdims=True) for _g in _test_measure_seq
             )
-        case GUPPIWghtngSelector.OSA:
+        case GUPPIAggrSelector.OSA:
             _test_value_seq = (
                 np.einsum("ij,ij->i", _wt_array, _g)[:, None]
                 for _g in _test_measure_seq
             )
-        case GUPPIWghtngSelector.OSD:
+        case GUPPIAggrSelector.OSD:
             _test_value_seq = (
                 np.sqrt(np.einsum("ij,ij,ij->i", _wt_array, _g, _g))[:, None]
                 for _g in _test_measure_seq
@@ -384,18 +404,18 @@ def gen_upp_arrays(
         _test_value_seq
     )
 
-    if _divr_wgtng_policy == GUPPIWghtngSelector.MAX:
+    if _divr_aggregator == GUPPIAggrSelector.MAX:
         _divr_test_vector = _market_data.divr_array.max(axis=1, keepdims=True)
 
-    if _invres_select == isl.PolicySelector.ENFT:
-        _upp_tests_data = UPPTests(
+    if _invres_resolution == isl.PolicySelector.ENFT:
+        _upp_tests_data = UPPTestsRaw(
             _guppi_test_vector >= _g_bar,
             (_guppi_test_vector >= _g_bar) | (_divr_test_vector >= _divr_bar),
             _cmcr_test_vector >= _cmcr_bar,
             _ipr_test_vector >= _ipr_bar,
         )
     else:
-        _upp_tests_data = UPPTests(
+        _upp_tests_data = UPPTestsRaw(
             _guppi_test_vector < _g_bar,
             (_guppi_test_vector < _g_bar) & (_divr_test_vector < _divr_bar),
             _cmcr_test_vector < _cmcr_bar,
@@ -403,7 +423,7 @@ def gen_upp_arrays(
         )
     del _guppi_test_vector, _divr_test_vector, _cmcr_test_vector, _ipr_test_vector
 
-    save_namedtuple_to_hdf5(
+    save_data_to_hdf5(
         _upp_tests_data,
         saved_array_name_suffix,
         (),
@@ -413,8 +433,8 @@ def gen_upp_arrays(
     return _upp_tests_data
 
 
-def save_namedtuple_to_hdf5(
-    _dclass: NamedTuple,
+def save_data_to_hdf5(
+    _dclass: DataclassInstance,
     _saved_array_name_suffix: str,
     _excl_attrs: Sequence[str] = (),
     /,
@@ -424,12 +444,12 @@ def save_namedtuple_to_hdf5(
     if save_data_to_file:
         _, _h5_datafile, _h5_hier = save_data_to_file
         # Save market data arrays
-        for _array_name in _dclass._fields:
+        for _array_name in fields(_dclass):
             if _excl_attrs and _array_name in _excl_attrs:
                 pass
             save_to_hdf(
                 _dclass,
-                _array_name,
+                _array_name.name,
                 _h5_datafile,
                 _h5_hier,
                 saved_array_name_suffix=_saved_array_name_suffix,
@@ -437,7 +457,7 @@ def save_namedtuple_to_hdf5(
 
 
 def save_to_hdf(
-    _dclass: NamedTuple,
+    _dclass: DataclassInstance,
     _array_name: str,
     _h5_datafile: ptb.File,
     _h5_hier: str,
