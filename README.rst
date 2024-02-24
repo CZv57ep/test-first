@@ -14,7 +14,7 @@ Routines for downloading and organizing FTC merger investigtions data published 
 
 Routines for plotting boundaries of (sets of mergers falling within) specified concentration and diversion ratio boundaries and for calibrating GUPPI thresholds to concentration (ΔHHI) thresholds, and vice-versa.
 
-    mergeron.core.guidelines_standards
+    mergeron.core.guidelines_boundaries
 
 Routines for generating industry data under various distributions of shares, prices, and margins. The user can specify whether rates are specified as, "proportional", "inside-out" (i.e., consistent with merging-firms' in-market shares and a default recapture rate), or "outside-in", (i.e., purchase probabilities are drawn at random for :math:`n+1` goods, from which are derived market shares and recapture rates for the :math:`n` goods in the putative market). Price-cost-margins may be specified as symmetric, i.i.d, or consistent with equilibrium conditions for (profit-mazimization in) Bertrand-Nash oligopoly with MNL demand. Prices may be specified as symmetric or asymmetric, and in the latter case, the direction of correlation between merging firm prices, if any, can also be specified. Two alternative approaches for modeling statutory filing requirements (HSR filing thresholds) are implemented.
 

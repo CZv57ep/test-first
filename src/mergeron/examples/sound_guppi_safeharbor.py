@@ -7,7 +7,7 @@ from typing import Literal
 import numpy as np
 import tables as ptb  # type: ignore
 
-import mergeron.core.guidelines_standards as gsl
+import mergeron.core.guidelines_boundaries as gsl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
@@ -15,20 +15,19 @@ from mergeron import DATA_DIR
 from mergeron.gen import (
     EMPTY_ARRAY_DEFAULT,
     FCOUNT_WTS_DEFAULT,
+    INVResolution,
     MarketSampleSpec,
     PCMConstants,
     PCMSpec,
     ShareSpec,
     SHRConstants,
+    UPPAggrSelector,
+    UPPTestRegime,
 )
 
-tests_of_interest: tuple[gtl.UPPTestRegime, ...] = (
-    gtl.UPPTestRegime(
-        isl.PolicySelector.CLRN, gtl.UPPAggrSelector.MAX, gtl.UPPAggrSelector.MAX
-    ),
-    gtl.UPPTestRegime(
-        isl.PolicySelector.ENFT, gtl.UPPAggrSelector.MIN, gtl.UPPAggrSelector.MIN
-    ),
+tests_of_interest: tuple[UPPTestRegime, ...] = (
+    gtl.UPPTestRegime(INVResolution.CLRN, UPPAggrSelector.MAX, UPPAggrSelector.MAX),
+    gtl.UPPTestRegime(INVResolution.ENFT, UPPAggrSelector.MIN, UPPAggrSelector.MIN),
 )
 
 PROG_PATH = Path(__file__)
@@ -37,7 +36,7 @@ PROG_PATH = Path(__file__)
 def analyze_invres_data(
     _sample_size: int = 10**6,
     _hmg_std_pub_year: Literal[1992, 2010, 2023] = 1992,
-    _test_sel: gtl.UPPTestRegime = tests_of_interest[1],
+    _test_sel: UPPTestRegime = tests_of_interest[1],
     /,
     *,
     save_data_to_file_flag: bool = False,
@@ -61,7 +60,7 @@ def analyze_invres_data(
         If True, simulated data are save to file (hdf5 format)
 
     """
-    _invres_parm_vec = gsl.GuidelinesStandards(_hmg_std_pub_year).presumption
+    _invres_parm_vec = gsl.GuidelinesBounds(_hmg_std_pub_year).presumption
 
     _save_data_to_file: gtl.SaveData = False
     if save_data_to_file_flag:

@@ -10,26 +10,28 @@ from .. import _PKG_NAME  # noqa: TID252
 
 __version__ = version(_PKG_NAME)
 
-import enum
 from collections.abc import Mapping, Sequence
 from dataclasses import fields
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
 import tables as ptb  # type: ignore
-from attr import define, evolve, field, validators
+from attr import evolve
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from ..core import guidelines_standards as gsl  # noqa: TID252
+from ..core import guidelines_boundaries as gsl  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
     FCOUNT_WTS_DEFAULT,
     DataclassInstance,
+    INVResolution,
     MarketDataSample,
     MarketSampleSpec,
     RECConstants,
+    UPPAggrSelector,
+    UPPTestRegime,
     UPPTestsCounts,
     UPPTestsRaw,
 )
@@ -42,41 +44,8 @@ ptb.parameters.MAX_BLOSC_THREADS = 4
 SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, str]
 
 
-@enum.unique
-class UPPAggrSelector(enum.StrEnum):
-    """
-    Aggregator selection for GUPPI and diversion ratio
-
-    """
-
-    AVG = "average"
-    CPA = "cross-product-share-weighted average"
-    CPD = "cross-product-share-weighted distance"
-    DIS = "symmetrically-weighted distance"
-    MAX = "max"
-    MIN = "min"
-    OSA = "own-share-weighted average"
-    OSD = "own-share-weighted distance"
-
-
-@define(slots=True, frozen=True)
-class UPPTestRegime:
-    resolution: isl.PolicySelector = field(  # type: ignore
-        default=isl.PolicySelector.ENFT,
-        validator=validators.instance_of(isl.PolicySelector),  # type: ignore
-    )
-    primary_aggregator: UPPAggrSelector = field(  # type: ignore
-        default=UPPAggrSelector.MAX,
-        validator=validators.instance_of(UPPAggrSelector | None),  # type: ignore
-    )
-    secondary_aggregator: UPPAggrSelector | None = field(  # type: ignore
-        default=primary_aggregator,
-        validator=validators.instance_of(UPPAggrSelector | None),  # type: ignore
-    )
-
-
 def sim_invres_cnts_ll(
-    _invres_parm_vec: gsl.GuidelinesSTD,
+    _invres_parm_vec: gsl.GuidelinesBoundsVEC,
     _mkt_sample_spec: MarketSampleSpec,
     _sim_invres_cnts_kwargs: Mapping[str, Any],
     /,
@@ -161,7 +130,7 @@ def sim_invres_cnts_ll(
 
 
 def sim_invres_cnts(
-    _upp_test_parms: gsl.GuidelinesSTD,
+    _upp_test_parms: gsl.GuidelinesBoundsVEC,
     _mkt_sample_spec: MarketSampleSpec,
     /,
     *,
@@ -303,7 +272,7 @@ def sim_invres_cnts(
 
 
 def gen_upp_arrays(
-    _upp_test_parms: gsl.GuidelinesSTD,
+    _upp_test_parms: gsl.GuidelinesBoundsVEC,
     _market_data: MarketDataSample,
     _sim_test_regime: UPPTestRegime,
     /,
@@ -410,7 +379,7 @@ def gen_upp_arrays(
     if _divr_aggregator == UPPAggrSelector.MAX:
         _divr_test_vector = _market_data.divr_array.max(axis=1, keepdims=True)
 
-    if _invres_resolution == isl.PolicySelector.ENFT:
+    if _invres_resolution == INVResolution.ENFT:
         _upp_tests_data = UPPTestsRaw(
             _guppi_test_vector >= _g_bar,
             (_guppi_test_vector >= _g_bar) | (_divr_test_vector >= _divr_bar),

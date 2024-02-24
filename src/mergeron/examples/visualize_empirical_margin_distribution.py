@@ -14,7 +14,7 @@ from scipy import stats  # type: ignore
 
 import mergeron.core.damodaran_margin_data as dmgn
 from mergeron import DATA_DIR
-from mergeron.core.guidelines_standards import boundary_plot
+from mergeron.core.guidelines_boundaries import boundary_plot
 
 PROG_PATH = Path(__file__)
 

@@ -1,7 +1,7 @@
 """
 
 Solve for, and plot, weighted-average GUPPI boundaries using sympy,
-as a check against the numerical solutions in mergeron.core.guidelines_standards
+as a check against the numerical solutions in mergeron.core.guidelines_boundaries
 
 """
 

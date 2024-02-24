@@ -1,7 +1,7 @@
 import gc
 from datetime import datetime, timedelta
 
-import mergeron.core.guidelines_standards as gsl
+import mergeron.core.guidelines_boundaries as gsl
 import mergeron.core.pseudorandom_numbers as rmp
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
@@ -74,7 +74,7 @@ stats_sim_bydelta_unrestricted_teststr = teststr_pat.sub(
 
 def test_clearance_rate_calcs() -> None:
     _test_sel: gtl.UPPTestRegime = gtl.UPPTestRegime(
-        isl.PolicySelector.CLRN, gtl.UPPAggrSelector.MAX, None
+        isl.INVResolution.CLRN, gtl.UPPAggrSelector.MAX, None
     )
 
     _ind_sample_spec = MarketSampleSpec(
@@ -90,7 +90,7 @@ def test_clearance_rate_calcs() -> None:
 
     _start_time = datetime.now()
     upp_tests_counts = gtl.sim_invres_cnts_ll(
-        gsl.GuidelinesStandards(2010).safeharbor,
+        gsl.GuidelinesBounds(2010).safeharbor,
         _ind_sample_spec,
         {
             "seed_seq_list": rmp.gen_seed_seq_list_default(3),

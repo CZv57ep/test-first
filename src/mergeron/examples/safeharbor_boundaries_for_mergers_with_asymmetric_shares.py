@@ -24,7 +24,7 @@ from numpy import (
     vstack,
 )
 
-import mergeron.core.guidelines_standards as gsl
+import mergeron.core.guidelines_boundaries as gsl
 from mergeron import DATA_DIR
 
 PROG_PATH = Path(__file__)
@@ -451,16 +451,16 @@ def get_hmg_standards_by_key(_guppi_bench_key: str, /) -> tuple:
     match _guppi_bench_key:
         case "DOJATR":
             return (
-                *(_tmp := gsl.GuidelinesStandards(2010).safeharbor[:2]),
+                *(_tmp := gsl.GuidelinesBounds(2010).safeharbor[:2]),
                 0.05,
                 _tmp[-1],
                 None,
                 None,
             )
         case "DH100":
-            return gsl.GuidelinesStandards(2010).safeharbor
+            return gsl.GuidelinesBounds(2010).safeharbor
         case "DH50":
-            return gsl.GuidelinesStandards(1992).safeharbor
+            return gsl.GuidelinesBounds(1992).safeharbor
         case _:
             raise ValueError(
                 f"GUPPI benchmark key must be one of, {guppi_benchmark_keys!r}"

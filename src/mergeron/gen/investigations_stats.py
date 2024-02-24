@@ -24,7 +24,7 @@ from scipy.interpolate import interp1d  # type: ignore
 
 from ..core import ftc_merger_investigations_data as fid  # noqa: TID252
 from ..core.proportions_tests import propn_ci  # noqa: TID252
-from . import TF, TI
+from . import TF, TI, INVResolution
 
 
 @enum.unique
@@ -47,14 +47,8 @@ class EVIDENConstants(enum.StrEnum):
     CC = "Strong Customer Complaints"
     NE = "No Entry Evidence"
     ED = "Entry Difficult"
+    EE = "Entry Easy"
     UR = "Unrestricted on additional evidence"
-
-
-@enum.unique
-class PolicySelector(enum.StrEnum):
-    CLRN = "clearance"
-    ENFT = "enforcement"
-    BOTH = "both"
 
 
 @enum.unique
@@ -219,7 +213,7 @@ def invres_stats_output(
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
     _stats_group: StatsGrpSelector = StatsGrpSelector.FC,
-    _test_regime: PolicySelector = PolicySelector.CLRN,
+    _invres_spec: INVResolution = INVResolution.CLRN,
     /,
     *,
     return_type_sel: StatsReturnSelector = StatsReturnSelector.RPT,
@@ -250,7 +244,7 @@ def invres_stats_output(
         _table_ind_group,
         _table_evid_cond,
         _stats_group,
-        _test_regime,
+        _invres_spec,
     )
 
     _invres_stats_hdr_list, _invres_stats_dat_list = _latex_tbl_invres_stats_func(
@@ -259,7 +253,7 @@ def invres_stats_output(
 
     if print_to_screen:
         print(
-            f"{_test_regime.capitalize()} stats ({return_type_sel})",
+            f"{_invres_spec.capitalize()} stats ({return_type_sel})",
             f"for Period: {_data_period}",
             "\u2014",
             f"{_table_ind_group};",
@@ -271,12 +265,12 @@ def invres_stats_output(
 
 
 def invres_stats_cnts_by_group(
-    _invdata_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.TableData]]],
+    _invdata_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVTableData]]],
     _study_period: str,
     _table_ind_grp: INDGRPConstants,
     _table_evid_cond: EVIDENConstants,
     _stats_group: StatsGrpSelector,
-    _test_regime: PolicySelector,
+    _invres_spec: INVResolution,
     /,
 ) -> NDArray[np.int64]:
     if _stats_group == StatsGrpSelector.HD:
@@ -301,17 +295,17 @@ def invres_stats_cnts_by_group(
             _study_period,
             _table_ind_grp,
             _table_evid_cond,
-            _test_regime,
+            _invres_spec,
         )
     )
 
 
 def invres_cnts_listing_byfirmcount(
-    _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.TableData]]],
+    _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVTableData]]],
     _data_period: str = "1996-2003",
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
-    _test_regime: PolicySelector = PolicySelector.CLRN,
+    _invres_spec: INVResolution = INVResolution.CLRN,
     /,
 ) -> NDArray[np.int64]:
     if _data_period not in _data_array_dict:
@@ -328,12 +322,12 @@ def invres_cnts_listing_byfirmcount(
 
     _ndim_in = 1
     _stats_kept_indxs = []
-    match _test_regime:
-        case PolicySelector.CLRN:
+    match _invres_spec:
+        case INVResolution.CLRN:
             _stats_kept_indxs = [-1, -2]
-        case PolicySelector.ENFT:
+        case INVResolution.ENFT:
             _stats_kept_indxs = [-1, -3]
-        case PolicySelector.BOTH:
+        case INVResolution.BOTH:
             _stats_kept_indxs = [-1, -3, -2]
 
     return np.column_stack([
@@ -343,11 +337,11 @@ def invres_cnts_listing_byfirmcount(
 
 
 def invres_cnts_listing_byhhianddelta(
-    _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.TableData]]],
+    _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVTableData]]],
     _data_period: str = "1996-2003",
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
-    _test_regime: PolicySelector = PolicySelector.CLRN,
+    _invres_spec: INVResolution = INVResolution.CLRN,
     /,
 ) -> NDArray[np.int64]:
     if _data_period not in _data_array_dict:
@@ -364,12 +358,12 @@ def invres_cnts_listing_byhhianddelta(
 
     _ndim_in = 2
     _stats_kept_indxs = []
-    match _test_regime:
-        case PolicySelector.CLRN:
+    match _invres_spec:
+        case INVResolution.CLRN:
             _stats_kept_indxs = [-1, -2]
-        case PolicySelector.ENFT:
+        case INVResolution.ENFT:
             _stats_kept_indxs = [-1, -3]
-        case PolicySelector.BOTH:
+        case INVResolution.BOTH:
             _stats_kept_indxs = [-1, -3, -2]
 
     return np.column_stack([
@@ -379,7 +373,7 @@ def invres_cnts_listing_byhhianddelta(
 
 
 def table_no_lku(
-    _data_array_dict_sub: Mapping[str, fid.TableData],
+    _data_array_dict_sub: Mapping[str, fid.INVTableData],
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
     /,

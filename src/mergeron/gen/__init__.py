@@ -16,8 +16,8 @@ import enum
 from dataclasses import dataclass
 from typing import ClassVar, Protocol, TypeVar
 
-import attrs
 import numpy as np
+from attrs import Attribute, define, field, validators
 from numpy.typing import NBitBase, NDArray
 
 from ..core.pseudorandom_numbers import DIST_PARMS_DEFAULT  # noqa: TID252
@@ -27,14 +27,6 @@ FCOUNT_WTS_DEFAULT = ((_nr := np.arange(1, 6)[::-1]) / _nr.sum()).astype(np.floa
 
 TF = TypeVar("TF", bound=NBitBase)
 TI = TypeVar("TI", bound=NBitBase)
-
-
-# https://stackoverflow.com/questions/54668000
-class DataclassInstance(Protocol):
-    """For type-hinting dataclass objects"""
-
-    __dataclass_asdict__: ClassVar
-    __dataclass_fields__: ClassVar
 
 
 @enum.unique
@@ -91,7 +83,7 @@ class RECConstants(enum.StrEnum):
     FIXED = "proportional"
 
 
-@attrs.define(slots=True, frozen=True)
+@define(slots=True, frozen=True)
 class ShareSpec:
     """Market share specification
 
@@ -150,7 +142,7 @@ class FM2Constants(enum.StrEnum):
     SYM = "symmetric"
 
 
-@attrs.define(slots=True, frozen=True)
+@define(slots=True, frozen=True)
 class PCMSpec:
     """Price-cost margin (PCM) specification
 
@@ -224,7 +216,7 @@ class SSZConstants(float, enum.ReprEnum):
 
 # Validators for selected attributes of MarketSampleSpec
 def _sample_size_validator(
-    _object: MarketSampleSpec, _attribute: attrs.Attribute, _value: int, /
+    _object: MarketSampleSpec, _attribute: Attribute, _value: int, /
 ) -> None:
     if _value < 10**6 or (_value % 10**5 != 0):
         raise ValueError(
@@ -233,7 +225,7 @@ def _sample_size_validator(
 
 
 def _recapture_rate_validator(
-    _object: MarketSampleSpec, _attribute: attrs.Attribute, _value: float | None, /
+    _object: MarketSampleSpec, _attribute: Attribute, _value: float | None, /
 ) -> None:
     # if _value < 10**6 or (np.log10(_value) % 1 != 0):
     if _value and not (0 < _value <= 1):
@@ -247,7 +239,7 @@ def _recapture_rate_validator(
 
 
 def _share_spec_validator(
-    _instance: MarketSampleSpec, _attribute: attrs.Attribute, _value: ShareSpec, /
+    _instance: MarketSampleSpec, _attribute: Attribute, _value: ShareSpec, /
 ) -> None:
     _r_bar = _instance.recapture_rate
     if _value.dist_type == SHRConstants.UNI:
@@ -278,7 +270,7 @@ def _share_spec_validator(
 
 
 def _pcm_spec_validator(
-    _instance: MarketSampleSpec, _attribute: attrs.Attribute, _value: PCMSpec, /
+    _instance: MarketSampleSpec, _attribute: Attribute, _value: PCMSpec, /
 ) -> None:
     if (
         _instance.share_spec.recapture_spec == RECConstants.FIXED
@@ -312,18 +304,18 @@ def _pcm_spec_validator(
             )
 
 
-@attrs.define(slots=True, frozen=True)
+@define(slots=True, frozen=True)
 class MarketSampleSpec:
     """Parameter specification for market data generation."""
 
-    sample_size: int = attrs.field(
-        default=10**6,
-        validator=(attrs.validators.instance_of(int), _sample_size_validator),
+    sample_size: int = field(
+        default=10**6, validator=(validators.instance_of(int), _sample_size_validator)
     )
     """sample size generated"""
 
-    recapture_rate: float | None = attrs.field(
-        default=None, validator=attrs.validators.instance_of(float | None)
+    recapture_rate: float | None = field(
+        default=None,
+        validator=(validators.instance_of(float | None), _recapture_rate_validator),
     )
     """market recapture rate
 
@@ -331,33 +323,81 @@ class MarketSampleSpec:
     outside good choice probabilities (RECConstants.OUTIN).
     """
 
-    pr_sym_spec: PRIConstants = attrs.field(  # type: ignore
+    pr_sym_spec: PRIConstants = field(  # type: ignore
         kw_only=True,
         default=PRIConstants.SYM,
-        validator=attrs.validators.instance_of(PRIConstants),  # type: ignore
+        validator=validators.instance_of(PRIConstants),  # type: ignore
     )
     """Price specification, see PRIConstants"""
 
-    share_spec: ShareSpec = attrs.field(
+    share_spec: ShareSpec = field(
         kw_only=True,
         default=ShareSpec(RECConstants.INOUT, SHRConstants.UNI, None, None),
-        validator=[attrs.validators.instance_of(ShareSpec), _share_spec_validator],
+        validator=[validators.instance_of(ShareSpec), _share_spec_validator],
     )
     """See definition of ShareSpec"""
 
-    pcm_spec: PCMSpec = attrs.field(
+    pcm_spec: PCMSpec = field(
         kw_only=True,
         default=PCMSpec(PCMConstants.UNI, FM2Constants.IID, None),
-        validator=[attrs.validators.instance_of(PCMSpec), _pcm_spec_validator],
+        validator=[validators.instance_of(PCMSpec), _pcm_spec_validator],
     )
     """See definition of PCMSpec"""
 
-    hsr_filing_test_type: SSZConstants = attrs.field(  # type: ignore
+    hsr_filing_test_type: SSZConstants = field(  # type: ignore
         kw_only=True,
         default=SSZConstants.ONE,
-        validator=attrs.validators.instance_of(SSZConstants),  # type: ignore
+        validator=validators.instance_of(SSZConstants),  # type: ignore
     )
     """Method for modeling HSR filing threholds, see SSZConstants"""
+
+
+@enum.unique
+class INVResolution(enum.StrEnum):
+    CLRN = "clearance"
+    ENFT = "enforcement"
+    BOTH = "both"
+
+
+@enum.unique
+class UPPAggrSelector(enum.StrEnum):
+    """
+    Aggregator selection for GUPPI and diversion ratio
+
+    """
+
+    AVG = "average"
+    CPA = "cross-product-share-weighted average"
+    CPD = "cross-product-share-weighted distance"
+    DIS = "symmetrically-weighted distance"
+    MAX = "max"
+    MIN = "min"
+    OSA = "own-share-weighted average"
+    OSD = "own-share-weighted distance"
+
+
+@define(slots=True, frozen=True)
+class UPPTestRegime:
+    resolution: INVResolution = field(  # type: ignore
+        default=INVResolution.ENFT,
+        validator=validators.instance_of(INVResolution),  # type: ignore
+    )
+    primary_aggregator: UPPAggrSelector = field(  # type: ignore
+        default=UPPAggrSelector.MAX,
+        validator=validators.instance_of(UPPAggrSelector | None),  # type: ignore
+    )
+    secondary_aggregator: UPPAggrSelector | None = field(  # type: ignore
+        default=primary_aggregator,
+        validator=validators.instance_of(UPPAggrSelector | None),  # type: ignore
+    )
+
+
+# https://stackoverflow.com/questions/54668000
+class DataclassInstance(Protocol):
+    """Generic dataclass-instance"""
+
+    __dataclass_asdict__: ClassVar
+    __dataclass_fields__: ClassVar
 
 
 @dataclass(slots=True, frozen=True)
@@ -455,14 +495,38 @@ class MarginDataSample:
 
 @dataclass(slots=True, frozen=True)
 class UPPTestsRaw:
+    """arrays marking test failures and successes
+
+    A test success is a draw ("market") that meeets the
+    specified test criterion, and a test failure is
+    one that does not; test criteria are defined and
+    evaluated in:code:`guidelines_stats.gen_upp_arrays`.
+    """
+
     guppi_test_simple: NDArray[np.bool_]
+    """True if GUPPI estimate meets criterion"""
+
     guppi_test_compound: NDArray[np.bool_]
+    """True if both GUPPI estimate and diversion ratio estimate
+    meet criterion
+    """
+
     cmcr_test: NDArray[np.bool_]
+    """True if CMCR estimate meets criterion"""
+
     ipr_test: NDArray[np.bool_]
+    """True if IPR (partial price-simulation) estimate meets criterion"""
 
 
 @dataclass(slots=True, frozen=True)
 class UPPTestsCounts:
+    """counts of markets resolved as specified
+
+    Resolution is specified in a UPPTestRegime object.
+    """
+
     by_firm_count: NDArray[np.int64]
     by_delta: NDArray[np.int64]
     by_conczone: NDArray[np.int64]
+    """Zones are "unoncentrated", "moderately concentrated", and "highly concentrated"
+    """

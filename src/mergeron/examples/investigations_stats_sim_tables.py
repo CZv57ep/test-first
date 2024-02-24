@@ -19,14 +19,23 @@ import tables as ptb  # type: ignore
 from attrs import evolve
 
 import mergeron.core.ftc_merger_investigations_data as fid
-import mergeron.core.guidelines_standards as gsl
+import mergeron.core.guidelines_boundaries as gsl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
-from mergeron.core.guidelines_standards import GuidelinesStandards
+from mergeron.core.guidelines_boundaries import GuidelinesBounds
 from mergeron.core.proportions_tests import propn_ci
-from mergeron.gen import PCMConstants, PCMSpec, RECConstants, ShareSpec, SHRConstants
+from mergeron.gen import (
+    INVResolution,
+    MarketSampleSpec,
+    PCMConstants,
+    PCMSpec,
+    RECConstants,
+    ShareSpec,
+    SHRConstants,
+    UPPTestRegime,
+)
 
 if not sys.warnoptions:
     warnings.simplefilter("ignore")  # , category="RuntimeWarning")
@@ -42,8 +51,8 @@ def invres_stats_sim_setup(
     _invdata: fid.INVData,
     _data_period: str,
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
-    _invres_parm_vec: gsl.GuidelinesSTD,
-    _sample_spec: dgl.MarketSampleSpec,
+    _invres_parm_vec: gsl.GuidelinesBoundsVEC,
+    _sample_spec: MarketSampleSpec,
     _invres_stats_kwargs: Mapping[str, Any] | None = None,
     /,
 ) -> str:
@@ -59,7 +68,7 @@ def invres_stats_sim_setup(
     )
 
     _invres_stats_kwargs = _invres_stats_kwargs or {
-        "sim_test_regime": isl.PolicySelector.ENFT
+        "sim_test_regime": INVResolution.ENFT
     }
     _sim_test_regime = _invres_stats_kwargs["sim_test_regime"]
     _test_regime, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_test_regime
@@ -177,8 +186,8 @@ def invres_stats_sim_render(
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
     _stats_group: isl.StatsGrpSelector,
     _stats_group_dict_sub: Mapping[str, Any],
-    _invres_parm_vec: gsl.GuidelinesSTD,
-    _sim_test_regime: gtl.UPPTestRegime,
+    _invres_parm_vec: gsl.GuidelinesBoundsVEC,
+    _sim_test_regime: UPPTestRegime,
     _stats_table_file: TextIOWrapper,
     /,
 ) -> None:
@@ -203,7 +212,13 @@ def invres_stats_sim_render(
         _stats_table_content.dbar,
         _stats_table_content.cmcr_bound,
         _stats_table_content.ipr_bound,
-    ) = (rf"{_s * 100:.1f}\%" for _s in _invres_parm_vec[1:])
+    ) = (
+        rf"{_s * 100:.1f}\%"
+        for _s in (
+            getattr(_invres_parm_vec, _f)
+            for _f in ("rec", "guppi", "divr", "cmcr", "ipr")
+        )
+    )
 
     # Prepare and write/print output tables
     _stats_cis_wilson_notestr = " ".join((
@@ -250,7 +265,7 @@ def invres_stats_sim_render(
     _stats_table_content.stats_cis_notewidth = _stats_group_dict_sub["notewidth"]
     _stats_cis_numobs_notestr = " ".join((
         R"\(\cdot\) Estimates for Proportion {} are based on".format(
-            "Enforced" if _invres_select == isl.PolicySelector.ENFT else "Cleared"
+            "Enforced" if _invres_select == INVResolution.ENFT else "Cleared"
         ),
         f"{_obs_sample_sz:,d} total observations (investigated mergers).",
     ))
@@ -375,8 +390,8 @@ if __name__ == "__main__":
         save_data_to_file = (True, h5datafile, "/")
 
     sim_test_regime = (
-        (isl.PolicySelector.CLRN, gtl.UPPAggrSelector.MAX, None),
-        (isl.PolicySelector.ENFT, gtl.UPPAggrSelector.OSD, None),
+        (INVResolution.CLRN, gtl.UPPAggrSelector.MAX, None),
+        (INVResolution.ENFT, gtl.UPPAggrSelector.OSD, None),
     )[1]
     invres_stats_kwargs = {"sim_test_regime": sim_test_regime}
 
@@ -394,9 +409,9 @@ if __name__ == "__main__":
             stats_table_content.obs_period = study_period.split("-")
 
             invres_parm_vec = (
-                GuidelinesStandards(2010).presumption
+                GuidelinesBounds(2010).presumption
                 if study_period.split("-")[1] == data_periods[1].split("-")[1]
-                else GuidelinesStandards(1992).presumption
+                else GuidelinesBounds(1992).presumption
             )
 
             mkt_sample_spec = dgl.MarketSampleSpec(

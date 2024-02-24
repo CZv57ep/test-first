@@ -14,6 +14,7 @@ from numpy import einsum, row_stack, unique
 import mergeron.core.ftc_merger_investigations_data as fid
 import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
+from mergeron.gen import INVResolution
 
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
@@ -144,7 +145,7 @@ def invres_stats_odds_ratio_byhhianddelta(
             _invres_rate_table_content.invdata_byhhianddelta = _odds_ratio_data_str
 
             _output_dottex_path = DATA_DIR / INVDATA_DOTTEX_FORMAT_STR.format(
-                f"{_stats_group}_{_data_period_1}_{_merger_class.replace(' ', '')}"
+                f"{_stats_group}_{_data_period_1}_{_merger_class.replace(" ", "")}"
             )
             with _output_dottex_path.open(
                 "w", encoding="utf8"
@@ -168,13 +169,13 @@ def invres_stats_obs_setup(
     _data_array_dict: Mapping,
     _data_periods: tuple[str, str],
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
-    _test_regime: isl.PolicySelector = isl.PolicySelector.CLRN,
+    _invres_spec: INVResolution = INVResolution.CLRN,
     /,
 ) -> tuple[str, ...]:
     _notes_str_base = " ".join((
         "NOTES:",
         isl.LTX_ARRAY_LINEEND,
-        Rf"\(\cdot\) Data for period, {_data_periods[1].replace('-', '--')}",
+        Rf"\(\cdot\) Data for period, {_data_periods[1].replace("-", "--")}",
         "calculated by subtracting reported figures for 1996--{}".format(
             int(_data_periods[1].split("-")[0]) - 1
         ),
@@ -182,7 +183,7 @@ def invres_stats_obs_setup(
     ))
     _stats_group_dict = {
         isl.StatsGrpSelector.FC: {
-            "desc": f"{_test_regime.capitalize()} rates by Firm Count",
+            "desc": f"{_invres_spec.capitalize()} rates by Firm Count",
             "title_str": "By Number of Significant Competitors",
             "hval": "Firm Count",
             "hcol_width": 54,
@@ -195,7 +196,7 @@ def invres_stats_obs_setup(
             )),
         },
         isl.StatsGrpSelector.DL: {
-            "desc": Rf"{_test_regime.capitalize()} rates by range of \(\Delta HHI\)",
+            "desc": Rf"{_invres_spec.capitalize()} rates by range of \(\Delta HHI\)",
             "title_str": R"By Change in Concentration (\Deltah{})",
             "hval": R"$\Delta HHI$",
             "hval_plus": R"{ $[\Delta_L, \Delta_H)$ pts.}",
@@ -217,7 +218,7 @@ def invres_stats_obs_setup(
             )),
         },
         isl.StatsGrpSelector.ZN: {
-            "desc": f"{_test_regime.capitalize()} rates by Approximate Presumption Zone",
+            "desc": f"{_invres_spec.capitalize()} rates by Approximate Presumption Zone",
             "title_str": R"By Approximate \textit{2010 Guidelines} Concentration-Based Standards",
             "hval": "Approximate Standard",
             "hcol_width": 190,
@@ -238,7 +239,7 @@ def invres_stats_obs_setup(
             _merger_classes,
             _stats_group_key,
             _stats_group_dict[_stats_group_key],
-            _test_regime,
+            _invres_spec,
         )
         _output_dottex_pathlist += (_output_dottex_path,)
 
@@ -251,7 +252,7 @@ def _invres_stats_obs_render(
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
     _stats_group: isl.StatsGrpSelector,
     _stats_group_dict: Mapping,
-    _test_regime: isl.PolicySelector = isl.PolicySelector.CLRN,
+    _invres_spec: isl.INVResolution = isl.INVResolution.CLRN,
     /,
 ) -> str:
     _invres_rate_table_content = isl.StatsContainer()
@@ -262,7 +263,7 @@ def _invres_stats_obs_render(
     print(
         f'{_stats_group_dict["desc"]}:', ", ".join([f'"{g}"' for g in _merger_classes])
     )
-    _invres_rate_table_content.test_regime = _test_regime.capitalize()
+    _invres_rate_table_content.test_regime = _invres_spec.capitalize()
     _invres_rate_table_content.obs_summary_type = f"{_stats_group}"
     _invres_rate_table_content.obs_summary_type_title = _stats_group_dict.get(
         "title_str"
@@ -290,7 +291,7 @@ def _invres_stats_obs_render(
     _invres_rate_table_content.obs_merger_class_0 = f"{_merger_classes[0]}"
     _invres_rate_table_content.obs_merger_class_1 = f"{_merger_classes[1]}"
     _invres_rate_table_content.obs_periods_str = (
-        Rf"{' & '.join(_data_periods)} \\".replace("-", "--")
+        Rf"{" & ".join(_data_periods)} \\".replace("-", "--")
     )
 
     _invres_rate_table_content.invdata_notewidth = _stats_group_dict["notewidth"]
@@ -349,7 +350,7 @@ def _invres_stats_obs_render(
                     _table_ind_group,
                     _table_evid_cond,
                     _stats_group,
-                    _test_regime,
+                    _invres_spec,
                     return_type_sel=isl.StatsReturnSelector.CNT,
                     print_to_screen=False,
                 )[1][-1][0]
@@ -361,7 +362,7 @@ def _invres_stats_obs_render(
                 _table_ind_group,
                 _table_evid_cond,
                 _stats_group,
-                _test_regime,
+                _invres_spec,
                 return_type_sel=isl.StatsReturnSelector.RPT,
                 sort_order=_sort_order,
                 print_to_screen=False,
@@ -384,7 +385,7 @@ def _invres_stats_obs_render(
     ])
 
     _invdata_datstr = "".join([
-        f"{' & '.join(_invdata_dat_list[g])} {isl.LTX_ARRAY_LINEEND}"
+        f"{" & ".join(_invdata_dat_list[g])} {isl.LTX_ARRAY_LINEEND}"
         for g in range(len(_invdata_dat_list))
     ])
 
@@ -459,7 +460,7 @@ if __name__ == "__main__":
         isl.EVIDENConstants.ED,
     )  # clstl.INDGRPConstants.IID)
     data_periods = ("1996-2003", "2004-2011")
-    test_regime = isl.PolicySelector.ENFT
+    test_regime = isl.INVResolution.ENFT
 
     # Now generate the various tables summarizing merger investigations data
     invres_stats_byhhianddelta_pathlist = invres_stats_odds_ratio_byhhianddelta(

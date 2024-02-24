@@ -33,7 +33,7 @@ class GuidelinesBoundary:
 
 
 @define(slots=True, frozen=True)
-class HMGThresholds:
+class GuidelinesBoundsVEC:
     delta: float
     rec: float
     guppi: float
@@ -43,11 +43,11 @@ class HMGThresholds:
 
 
 @define(slots=True, frozen=True)
-class GuidelinesThresholds:
+class GuidelinesBounds:
     """
-    Guidelines threholds by Guidelines publication year
+    Guidelines bounds by Guidelines publication year
 
-    ΔHHI, Recapture Rate, GUPPI, Diversion ratio, CMCR, and IPR thresholds
+    ΔHHI, Recapture Rate, GUPPI, Diversion ratio, CMCR, and IPR bounds are
     constructed from concentration standards.
     """
 
@@ -56,26 +56,26 @@ class GuidelinesThresholds:
     Year of publication of the U.S. Horizontal Merger Guidelines (HMG)
     """
 
-    safeharbor: HMGThresholds = field(kw_only=True, default=None)
+    safeharbor: GuidelinesBoundsVEC = field(kw_only=True, default=None)
     """
-    Negative presumption quantified on various measures
+    Negative presumption defined on various measures
 
     ΔHHI safeharbor bound, default recapture rate, GUPPI bound,
     diversion ratio limit, CMCR, and IPR
     """
 
-    imputed_presumption: HMGThresholds = field(kw_only=True, default=None)
+    inferred_presumption: GuidelinesBoundsVEC = field(kw_only=True, default=None)
     """
-    Presumption of harm imputed from guidelines
+    Inferred ΔHHI safeharbor presumption and related measures
 
     ΔHHI bound inferred from strict numbers-equivalent
     of (post-merger) HHI presumption, and corresponding default recapture rate,
     GUPPI bound, diversion ratio limit, CMCR, and IPR
     """
 
-    presumption: HMGThresholds = field(kw_only=True, default=None)
+    presumption: GuidelinesBoundsVEC = field(kw_only=True, default=None)
     """
-    Presumption of harm defined in HMG
+    Guidelines ΔHHI safeharbor presumption and related measures
 
     ΔHHI bound and corresponding default recapture rate, GUPPI bound,
     diversion ratio limit, CMCR, and IPR
@@ -97,7 +97,7 @@ class GuidelinesThresholds:
         object.__setattr__(
             self,
             "safeharbor",
-            HMGThresholds(
+            GuidelinesBoundsVEC(
                 _dh_s,
                 _r := round_cust((_fc := int(np.ceil(1 / _hhi_p))) / (_fc + 1)),
                 _g_s := gbd_from_dsf(_dh_s, m_star=1.0, r_bar=_r),
@@ -112,7 +112,7 @@ class GuidelinesThresholds:
             self,
             "inferred_presumption",
             (
-                HMGThresholds(
+                GuidelinesBoundsVEC(
                     _dh_i := 2 * (0.5 / _fc) ** 2,
                     _r_i := round_cust((_fc - 1 / 2) / (_fc + 1 / 2)),
                     _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r_i),
@@ -121,7 +121,7 @@ class GuidelinesThresholds:
                     _g_i,
                 )
                 if self.pub_year == 2010
-                else HMGThresholds(
+                else GuidelinesBoundsVEC(
                     _dh_i := 2 * (1 / (_fc + 1)) ** 2,
                     _r,
                     _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r),
@@ -135,7 +135,7 @@ class GuidelinesThresholds:
         object.__setattr__(
             self,
             "presumption",
-            HMGThresholds(
+            GuidelinesBoundsVEC(
                 _dh_p,
                 _r,
                 _g_p := gbd_from_dsf(_dh_p, m_star=1.0, r_bar=_r),

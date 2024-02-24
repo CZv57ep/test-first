@@ -12,7 +12,7 @@ from matplotlib import cm as colormgr
 from matplotlib import colors as mcolors
 from matplotlib.ticker import AutoMinorLocator, MultipleLocator, StrMethodFormatter
 
-import mergeron.core.guidelines_standards as gsl
+import mergeron.core.guidelines_boundaries as gsl
 from mergeron import DATA_DIR
 
 PROG_PATH = Path(__file__)

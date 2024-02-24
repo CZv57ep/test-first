@@ -32,7 +32,7 @@ from numpy import pi
 from xlsxwriter import Workbook
 
 import mergeron.core.excel_helper as xlh
-import mergeron.core.guidelines_standards as gsl
+import mergeron.core.guidelines_boundaries as gsl
 import mergeron.ext.tol_colors as ptcolor
 from mergeron import DATA_DIR
 
@@ -142,7 +142,7 @@ def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
         are drawn
 
     """
-    gso = gsl.GuidelinesStandards(_gpubyr)
+    gso = gsl.GuidelinesBounds(_gpubyr)
     _dhhi_val, _r_val, _g_val = (
         getattr(gso.presumption, _f) for _f in ("delta", "rec", "guppi")
     )
@@ -262,7 +262,7 @@ def plot_and_save_boundary_coords(
     /,
     layout: Literal["collected", "distributed"] = "collected",
 ) -> None:
-    gso = gsl.GuidelinesStandards(_gpubyr)
+    gso = gsl.GuidelinesBounds(_gpubyr)
 
     _hmg_standards_strings_dict = {
         "distributed": ("presumption", "inferred presumption", "safeharbor"),
@@ -352,7 +352,7 @@ def plot_and_save_boundary_coords(
 
 def gen_plot_boundary(
     _bndry_data_dict: Mapping[str, Sequence[tuple[float]]],
-    _gso: gsl.GuidelinesStandards,
+    _gso: gsl.GuidelinesBounds,
     _gs_str: str,
     _bdry_spec: tuple[str, Mapping[str, Any]],
     _ax1: mpa.Axes,

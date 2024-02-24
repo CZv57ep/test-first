@@ -81,13 +81,13 @@ CNT_FCOUNT_DICT = {
 }
 
 
-class TableData(NamedTuple):
+class INVTableData(NamedTuple):
     ind_grp: str
     evid_cond: str
     data_array: NDArray[np.int64]
 
 
-INVData: TypeAlias = Mapping[str, dict[str, dict[str, TableData]]]
+INVData: TypeAlias = Mapping[str, dict[str, dict[str, INVTableData]]]
 
 
 def construct_data(
@@ -130,13 +130,13 @@ def construct_data(
     if _archive_path.is_file() and not rebuild_data:
         _archived_data = msgpack.unpackb(_archive_path.read_bytes(), use_list=False)
 
-        _invdata: dict[str, dict[str, dict[str, TableData]]] = {}
+        _invdata: dict[str, dict[str, dict[str, INVTableData]]] = {}
         for _period in _archived_data:
             _invdata[_period] = {}
             for _table_type in _archived_data[_period]:
                 _invdata[_period][_table_type] = {}
                 for _table_no in _archived_data[_period][_table_type]:
-                    _invdata[_period][_table_type][_table_no] = TableData(
+                    _invdata[_period][_table_type][_table_no] = INVTableData(
                         *_archived_data[_period][_table_type][_table_no]
                     )
         return MappingProxyType(_invdata)
@@ -197,7 +197,7 @@ def _construct_no_entry_evidence_data(_invdata: INVData, _data_period: str, /) -
     _invdata_evid_cond = "No Entry Evidence"
 
     _invdata_sub_evid_cond_conc = _invdata[_data_period]["ByHHIandDelta"]
-    _invdata_sub_evid_cond_conc["Table 9.X"] = TableData(
+    _invdata_sub_evid_cond_conc["Table 9.X"] = INVTableData(
         _invdata_ind_grp,
         _invdata_evid_cond,
         np.column_stack((
@@ -211,7 +211,7 @@ def _construct_no_entry_evidence_data(_invdata: INVData, _data_period: str, /) -
     )
 
     _invdata_sub_evid_cond_fcount = _invdata[_data_period]["ByFirmCount"]
-    _invdata_sub_evid_cond_fcount["Table 10.X"] = TableData(
+    _invdata_sub_evid_cond_fcount["Table 10.X"] = INVTableData(
         _invdata_ind_grp,
         _invdata_evid_cond,
         np.column_stack((
@@ -231,7 +231,7 @@ def _construct_new_period_data(
     /,
     *,
     flag_backward_compatibility: bool = False,
-) -> dict[str, dict[str, TableData]]:
+) -> dict[str, dict[str, INVTableData]]:
     _cuml_period = "1996-{}".format(int(_data_period.split("-")[1]))
     if _cuml_period != "1996-2011":
         raise ValueError('Expected cumulative period, "1996-2011"')
@@ -350,7 +350,7 @@ def _construct_new_period_data(
                 np.einsum("ij->i", _invdata_array_bld_enfcls),
             ))
 
-            _data_typesubdict[_table_no] = TableData(
+            _data_typesubdict[_table_no] = INVTableData(
                 _invdata_indugrp, _invdata_evid_cond, _invdata_array_bld
             )
             del _invdata_indugrp, _invdata_evid_cond, _invdata_cuml_array
@@ -361,11 +361,11 @@ def _construct_new_period_data(
 
 
 def _invdata_build_aggregate_table(
-    _data_typesub: dict[str, TableData], _aggr_table_list: Sequence[str]
-) -> TableData:
+    _data_typesub: dict[str, INVTableData], _aggr_table_list: Sequence[str]
+) -> INVTableData:
     _hdr_table_no = _aggr_table_list[0]
 
-    return TableData(
+    return INVTableData(
         "Industries in Common",
         "Unrestricted on additional evidence",
         np.column_stack((
@@ -403,7 +403,7 @@ def parse_invdata(
         by range of HHI and ∆HHI.
 
     """
-    _invdata: dict[str, dict[str, dict[str, TableData]]] = {}
+    _invdata: dict[str, dict[str, dict[str, INVTableData]]] = {}
 
     for _invdata_docname in _invdata_docnames:
         _invdata_pdf_path = FTCDATA_DIR.joinpath(_invdata_docname)
@@ -563,7 +563,7 @@ def _parse_table_blocks(
         print(_table_blocks)
         raise ValueError
 
-    _table_data = TableData(_invdata_indugrp, _invdata_evid_cond, _table_array)
+    _table_data = INVTableData(_invdata_indugrp, _invdata_evid_cond, _table_array)
     _invdata[_data_period][_table_type] |= {_table_num: _table_data}
 
 
@@ -579,7 +579,7 @@ def _process_table_blks_conc_type(
     _conc_row_pat = re.compile(r"((?:0|\d,\d{3}) (?:- \d+,\d{3}|\+)|TOTAL)")
 
     _col_titles_array = tuple(CONC_DELTA_DICT.values())
-    # _col_totals: NDArray[np.int64] | None = None
+    _col_totals: NDArray[np.int64] = np.zeros(len(_col_titles_array), np.int64)
     _invdata_array: NDArray[np.int64] = np.array(None)
 
     for _tbl_blk in _table_blocks:
@@ -636,6 +636,9 @@ def _process_table_blks_cnt_type(
     _cnt_row_pat = re.compile(r"(\d+ (?:to \d+|\+)|TOTAL)")
 
     _invdata_array: NDArray[np.int64] = np.array(None)
+    _col_totals: NDArray[np.int64] = np.zeros(
+        3, np.int64
+    )  # "enforced", "closed", "total"
 
     for _tbl_blk in _table_blocks:
         if _cnt_row_pat.match(_blk_str := _tbl_blk[-3]):

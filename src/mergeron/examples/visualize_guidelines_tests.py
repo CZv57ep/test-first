@@ -22,13 +22,12 @@ from matplotlib import cm, colors
 from matplotlib.ticker import StrMethodFormatter
 from numpy.typing import NDArray
 
-import mergeron.core.guidelines_standards as gsl
+import mergeron.core.guidelines_boundaries as gsl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
-import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
 from mergeron.core.pseudorandom_numbers import DIST_PARMS_DEFAULT
-from mergeron.gen import ShareSpec
+from mergeron.gen import INVResolution, ShareSpec, UPPAggrSelector, UPPTestRegime
 
 PROG_PATH = Path(__file__)
 
@@ -40,9 +39,9 @@ blosc_filters = ptb.Filters(
 
 def gen_plot_data(
     _market_data: dgl.MarketDataSample,
-    _std_vec: gsl.GuidelinesSTD,
+    _std_vec: gsl.GuidelinesBoundsVEC,
     _pcm_firm2_star: float,
-    _test_regime: gtl.UPPTestRegime,
+    _test_regime: UPPTestRegime,
     /,
     *,
     h5handle: ptb.File | None = None,
@@ -102,7 +101,7 @@ def gen_plot_data(
             )
 
     _pcm_sorter = np.argsort(_pcm_plotter, axis=0)
-    if test_regime.resolution != isl.PolicySelector.CLRN:
+    if test_regime.resolution != INVResolution.CLRN:
         _pcm_sorter = _pcm_sorter[::-1, :]
     _qtyshr_firm1_plotter = _qtyshr_firm1_inv[_pcm_sorter]
     _qtyshr_firm2_plotter = _qtyshr_firm2_inv[_pcm_sorter]
@@ -123,14 +122,12 @@ def gen_plot_data(
 def _main(
     _hmg_pub_year: gsl.HMGPubYear,
     _market_sample_spec: dgl.MarketSampleSpec,
-    _test_regime: gtl.UPPTestRegime,
+    _test_regime: UPPTestRegime,
     _save_data_to_file: gtl.SaveData,
 ) -> None:
     guidelins_std_vec = getattr(
-        gsl.GuidelinesStandards(_hmg_pub_year),
-        "safeharbor"
-        if test_regime.resolution == isl.PolicySelector.ENFT
-        else "presumption",
+        gsl.GuidelinesBounds(_hmg_pub_year),
+        "safeharbor" if test_regime.resolution == INVResolution.ENFT else "presumption",
     )
 
     _, _r_bar, _g_bar, _divr_bar, *_ = guidelins_std_vec
@@ -255,14 +252,12 @@ def _main(
 if __name__ == "__main__":
     # Get Guidelines parameter values
     hmg_pub_year: Final = 2023
-    test_regime: gtl.UPPTestRegime = gtl.UPPTestRegime(
-        isl.PolicySelector.ENFT, gtl.UPPAggrSelector.MIN, gtl.UPPAggrSelector.MIN
+    test_regime: UPPTestRegime = UPPTestRegime(
+        INVResolution.ENFT, UPPAggrSelector.MIN, UPPAggrSelector.MIN
     )
     r_bar = getattr(
-        gsl.GuidelinesStandards(hmg_pub_year),
-        "presumption"
-        if test_regime.resolution == isl.PolicySelector.ENFT
-        else "safeharbor",
+        gsl.GuidelinesBounds(hmg_pub_year),
+        "presumption" if test_regime.resolution == INVResolution.ENFT else "safeharbor",
     ).rec
 
     sample_sz = 10**7
