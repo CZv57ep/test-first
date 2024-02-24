@@ -47,7 +47,6 @@ msgpack = ">=1.0"
 msgpack-numpy = ">=0.4"
 numpy = ">=1.26"
 openpyxl = ">=3.1.2"
-pyarrow = ">=15.0"
 pymupdf = ">=1.23"
 python = "^3.12"
 requests = ">=2.31"
@@ -70,6 +69,7 @@ sphinx = ">=7.2"
 sphinx-autodoc-typehints = ">=2.0.0"
 sphinx-autoapi = ">=3.0"
 sphinx-immaterial = ">=0.11"
+pipdeptree = "^2.15.1"
 
 [build-system]
 requires = ["poetry-core"]
