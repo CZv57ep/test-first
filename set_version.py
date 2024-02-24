@@ -10,7 +10,7 @@ rc = run("git status".split(), check=True)  # noqa: S603
 if not rc.returncode:
     run(["poetry", "version", sem_ver], check=True)  # noqa: S603, S607
     run(["git", "tag", sem_ver], check=True)  # noqa: S603, S607
-    run("git commit pyproject.toml -m 'chore: bump version number'".split(), check=True)  # noqa: S603, S607
+    run(["git", "commit", "pyproject.toml", "-m", '"chore: bump version number"'], check=True)  # noqa: S603, S607
 else:
     raise RuntimeError(
         "Repository has uncommitted changes. Commit changes before updating package version."
