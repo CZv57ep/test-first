@@ -7,7 +7,7 @@ from typing import Literal
 import numpy as np
 import tables as ptb  # type: ignore
 
-import mergeron.core.guidelines_standards as gsf
+import mergeron.core.guidelines_standards as gsl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
@@ -24,10 +24,10 @@ from mergeron.gen import (
 
 tests_of_interest: tuple[gtl.UPPTestRegime, ...] = (
     gtl.UPPTestRegime(
-        isl.PolicySelector.CLRN, gtl.GUPPIAggrSelector.MAX, gtl.GUPPIAggrSelector.MAX
+        isl.PolicySelector.CLRN, gtl.UPPAggrSelector.MAX, gtl.UPPAggrSelector.MAX
     ),
     gtl.UPPTestRegime(
-        isl.PolicySelector.ENFT, gtl.GUPPIAggrSelector.MIN, gtl.GUPPIAggrSelector.MIN
+        isl.PolicySelector.ENFT, gtl.UPPAggrSelector.MIN, gtl.UPPAggrSelector.MIN
     ),
 )
 
@@ -61,7 +61,7 @@ def analyze_invres_data(
         If True, simulated data are save to file (hdf5 format)
 
     """
-    _invres_parm_vec = gsf.GuidelinesStandards(_hmg_std_pub_year).presumption
+    _invres_parm_vec = gsl.GuidelinesStandards(_hmg_std_pub_year).presumption
 
     _save_data_to_file: gtl.SaveData = False
     if save_data_to_file_flag:

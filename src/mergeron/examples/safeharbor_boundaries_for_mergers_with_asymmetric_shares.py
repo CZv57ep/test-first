@@ -24,7 +24,7 @@ from numpy import (
     vstack,
 )
 
-import mergeron.core.guidelines_standards as gsf
+import mergeron.core.guidelines_standards as gsl
 from mergeron import DATA_DIR
 
 PROG_PATH = Path(__file__)
@@ -40,7 +40,7 @@ def plot_delta_boundaries(
         raise ValueError(f"Recapture specification must be one of, {_recspecs!r}")
 
     print("ΔHHI safeharbor boundary")
-    _plt, _my_fig1, _ax1, _ = gsf.boundary_plot()
+    _plt, _my_fig1, _ax1, _ = gsl.boundary_plot()
 
     _dh_bar, _r_bar, _guppi_bench, _divr_bench, _, _ = get_hmg_standards_by_key(
         _guppi_bench_key
@@ -52,7 +52,7 @@ def plot_delta_boundaries(
         if _dh_bound in (300, 500):
             continue
 
-        _dh_safeharb, _dh_prob = gsf.delta_hhi_boundary(_dh_bound / 1e4)
+        _dh_safeharb, _dh_prob = gsl.delta_hhi_boundary(_dh_bound / 1e4)
         _dh_dat_x, _dh_dat_y = zip(*_dh_safeharb, strict=True)
         if _dh_bound == 100:
             _lwval, _lsval = 0.75, "-"
@@ -69,8 +69,8 @@ def plot_delta_boundaries(
         )
 
         if _print_guppi_max_bndry_envs_flag:
-            _symshr = gsf.round_cust(sqrt(_dh_bound / 2e4))
-            _dstar = gsf.round_cust(_symshr / (1 - _symshr))
+            _symshr = gsl.round_cust(sqrt(_dh_bound / 2e4))
+            _dstar = gsl.round_cust(_symshr / (1 - _symshr))
             _m_star = _guppi_bench / (_dstar * _r_bar)
             print(_symshr, _dstar, _m_star, _r_bar, _guppi_bench, "...", end="")
 
@@ -150,10 +150,10 @@ def plot_guppi_boundaries(  # noqa PLR0915
     )
 
     # First we get the data for the ΔHHI benchmark we want to plot
-    _dh_safeharb, _dh_prob = gsf.delta_hhi_boundary(_dh_bar)
+    _dh_safeharb, _dh_prob = gsl.delta_hhi_boundary(_dh_bar)
     _dh_dat_x, _dh_dat_y = zip(*_dh_safeharb, strict=True)
 
-    _plt, _my_fig1, _ax1, _set_axis_def = gsf.boundary_plot()
+    _plt, _my_fig1, _ax1, _set_axis_def = gsl.boundary_plot()
     _plt.delaxes(_ax1)
     del _my_fig1, _ax1
 
@@ -316,13 +316,13 @@ def plot_guppi_boundaries(  # noqa PLR0915
     #  print("Diversion ratio bound")
     if _divr_bench < _r_bar:
         _m_star_bench = _guppi_bench / _divr_bench
-        _s_mid_bench = gsf.shr_from_gbd(
+        _s_mid_bench = gsl.shr_from_gbd(
             _guppi_bench, m_star=_m_star_bench, r_bar=_r_bar
         )
-        _delta_star = gsf.critical_shrratio(
+        _delta_star = gsl.critical_shrratio(
             _guppi_bench, m_star=_m_star_bench, r_bar=_r_bar
         )
-        (guppi_boundary_data, guppi_boundary_area) = gsf.shrratio_mgnsym_boundary_max(
+        (guppi_boundary_data, guppi_boundary_area) = gsl.shrratio_boundary_max(
             _delta_star
         )
         _x_drt, _y_drt = zip(*guppi_boundary_data, strict=True)
@@ -451,16 +451,16 @@ def get_hmg_standards_by_key(_guppi_bench_key: str, /) -> tuple:
     match _guppi_bench_key:
         case "DOJATR":
             return (
-                *(_tmp := gsf.GuidelinesStandards(2010).safeharbor[:2]),
+                *(_tmp := gsl.GuidelinesStandards(2010).safeharbor[:2]),
                 0.05,
                 _tmp[-1],
                 None,
                 None,
             )
         case "DH100":
-            return gsf.GuidelinesStandards(2010).safeharbor
+            return gsl.GuidelinesStandards(2010).safeharbor
         case "DH50":
-            return gsf.GuidelinesStandards(1992).safeharbor
+            return gsl.GuidelinesStandards(1992).safeharbor
         case _:
             raise ValueError(
                 f"GUPPI benchmark key must be one of, {guppi_benchmark_keys!r}"

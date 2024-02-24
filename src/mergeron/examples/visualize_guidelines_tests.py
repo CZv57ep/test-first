@@ -22,7 +22,7 @@ from matplotlib import cm, colors
 from matplotlib.ticker import StrMethodFormatter
 from numpy.typing import NDArray
 
-import mergeron.core.guidelines_standards as gsf
+import mergeron.core.guidelines_standards as gsl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
@@ -39,8 +39,8 @@ blosc_filters = ptb.Filters(
 
 
 def gen_plot_data(
-    _market_data: dgl.MarketsSample,
-    _std_vec: gsf.GuidelinesSTD,
+    _market_data: dgl.MarketDataSample,
+    _std_vec: gsl.GuidelinesSTD,
     _pcm_firm2_star: float,
     _test_regime: gtl.UPPTestRegime,
     /,
@@ -59,7 +59,7 @@ def gen_plot_data(
 
     _upp_test_raw = gtl.gen_upp_arrays(
         _std_vec,
-        dgl.MarketsSample(*[
+        dgl.MarketDataSample(*[
             _pcm_array.astype(_f.type)
             if _f.name == "pcm_array"
             else getattr(_market_data, _f.name)
@@ -121,13 +121,13 @@ def gen_plot_data(
 
 # Generate market data
 def _main(
-    _hmg_pub_year: gsf.HMGPubYear,
+    _hmg_pub_year: gsl.HMGPubYear,
     _market_sample_spec: dgl.MarketSampleSpec,
     _test_regime: gtl.UPPTestRegime,
     _save_data_to_file: gtl.SaveData,
 ) -> None:
     guidelins_std_vec = getattr(
-        gsf.GuidelinesStandards(_hmg_pub_year),
+        gsl.GuidelinesStandards(_hmg_pub_year),
         "safeharbor"
         if test_regime.resolution == isl.PolicySelector.ENFT
         else "presumption",
@@ -145,14 +145,14 @@ def _main(
     )
     _fig_norm = colors.Normalize(0.0, 1.0)
     _cmap_kwargs = {"cmap": "cividis", "norm": _fig_norm}
-    _plt, _, _, _set_axis_def = gsf.boundary_plot()
+    _plt, _, _, _set_axis_def = gsl.boundary_plot()
 
     _fig_2dsg = _plt.figure(figsize=(8.5, 9.5), dpi=600)
 
     _fig_grid = _fig_2dsg.add_gridspec(
         nrows=1, ncols=2, figure=_fig_2dsg, width_ratios=[6, 0.125], wspace=0.0
     )
-    _fig_grid_gsf = _fig_grid[0, 0].subgridspec(
+    _fig_grid_gbd = _fig_grid[0, 0].subgridspec(
         nrows=3, ncols=1, wspace=0, hspace=0.125
     )
 
@@ -161,7 +161,7 @@ def _main(
         _g_bar / _divr_bar,
         _g_bar / _r_bar,
     )):
-        _ax_now = _fig_2dsg.add_subplot(_fig_grid_gsf[_ax_row, 0])
+        _ax_now = _fig_2dsg.add_subplot(_fig_grid_gbd[_ax_row, 0])
         _ax_now = _set_axis_def(_ax_now, mktshares_plot_flag=True)
         _ax_now.set_xlabel(None)
         _ax_now.set_ylabel(None)
@@ -256,10 +256,10 @@ if __name__ == "__main__":
     # Get Guidelines parameter values
     hmg_pub_year: Final = 2023
     test_regime: gtl.UPPTestRegime = gtl.UPPTestRegime(
-        isl.PolicySelector.ENFT, gtl.GUPPIAggrSelector.MIN, gtl.GUPPIAggrSelector.MIN
+        isl.PolicySelector.ENFT, gtl.UPPAggrSelector.MIN, gtl.UPPAggrSelector.MIN
     )
     r_bar = getattr(
-        gsf.GuidelinesStandards(hmg_pub_year),
+        gsl.GuidelinesStandards(hmg_pub_year),
         "presumption"
         if test_regime.resolution == isl.PolicySelector.ENFT
         else "safeharbor",

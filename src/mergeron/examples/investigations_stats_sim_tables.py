@@ -19,7 +19,7 @@ import tables as ptb  # type: ignore
 from attrs import evolve
 
 import mergeron.core.ftc_merger_investigations_data as fid
-import mergeron.core.guidelines_standards as gsf
+import mergeron.core.guidelines_standards as gsl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
@@ -42,7 +42,7 @@ def invres_stats_sim_setup(
     _invdata: fid.INVData,
     _data_period: str,
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
-    _invres_parm_vec: gsf.GuidelinesSTD,
+    _invres_parm_vec: gsl.GuidelinesSTD,
     _sample_spec: dgl.MarketSampleSpec,
     _invres_stats_kwargs: Mapping[str, Any] | None = None,
     /,
@@ -177,7 +177,7 @@ def invres_stats_sim_render(
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
     _stats_group: isl.StatsGrpSelector,
     _stats_group_dict_sub: Mapping[str, Any],
-    _invres_parm_vec: gsf.GuidelinesSTD,
+    _invres_parm_vec: gsl.GuidelinesSTD,
     _sim_test_regime: gtl.UPPTestRegime,
     _stats_table_file: TextIOWrapper,
     /,
@@ -375,8 +375,8 @@ if __name__ == "__main__":
         save_data_to_file = (True, h5datafile, "/")
 
     sim_test_regime = (
-        (isl.PolicySelector.CLRN, gtl.GUPPIAggrSelector.MAX, None),
-        (isl.PolicySelector.ENFT, gtl.GUPPIAggrSelector.OSD, None),
+        (isl.PolicySelector.CLRN, gtl.UPPAggrSelector.MAX, None),
+        (isl.PolicySelector.ENFT, gtl.UPPAggrSelector.OSD, None),
     )[1]
     invres_stats_kwargs = {"sim_test_regime": sim_test_regime}
 

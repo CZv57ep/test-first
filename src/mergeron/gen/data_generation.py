@@ -20,14 +20,16 @@ from . import (
     EMPTY_ARRAY_DEFAULT,
     TF,
     FM2Constants,
+    MarketDataSample,
     MarketSampleSpec,
-    MarketsSample,
     PRIConstants,
     RECConstants,
     SHRConstants,
     SSZConstants,
 )
 from ._data_generation_functions_nonpublic import (
+    _gen_market_shares_dirichlet,  # noqa: F401 easter-egg for external modules
+    _gen_market_shares_uniform,  # noqa: F401 easter-egg for external modules
     _gen_pcm_data,
     _gen_pr_data,
     _gen_share_data,
@@ -40,7 +42,7 @@ def gen_market_sample(
     *,
     seed_seq_list: list[SeedSequence] | None = None,
     nthreads: int = 16,
-) -> MarketsSample:
+) -> MarketDataSample:
     """
     Generate share, diversion ratio, price, and margin data based on supplied parameters
 
@@ -173,7 +175,7 @@ def gen_market_sample(
         _hhi_delta + np.einsum("ij,ij->i", _mktshr_array, _mktshr_array)[:, None]
     )
 
-    return MarketsSample(
+    return MarketDataSample(
         _frmshr_array,
         _pcm_array,
         _price_array,

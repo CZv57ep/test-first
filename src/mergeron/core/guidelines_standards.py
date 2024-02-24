@@ -4,7 +4,6 @@ with a canvas on which to draw boundaries for Guidelines standards.
 
 """
 
-from collections import namedtuple
 from importlib.metadata import version
 
 from .. import _PKG_NAME  # noqa: TID252
@@ -12,9 +11,11 @@ from .. import _PKG_NAME  # noqa: TID252
 __version__ = version(_PKG_NAME)
 
 import decimal
+from dataclasses import dataclass
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
+from attr import define, field
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
 from scipy.spatial.distance import minkowski as distance_function
@@ -23,9 +24,25 @@ mp.prec = 80
 mp.trap_complex = True
 
 HMGPubYear: TypeAlias = Literal[1992, 2010, 2023]
-GuidelinesSTD = namedtuple("GuidelinesSTD", "delta rec guppi divr cmcr ipr")
 
 
+@dataclass(slots=True, frozen=True)
+class GuidelinesBoundary:
+    coordinates: NDArray[np.float64]
+    area: float
+
+
+@define(slots=True, frozen=True)
+class GuidelinesSTD:
+    delta: float
+    rec: float
+    guppi: float
+    divr: float
+    cmcr: float
+    ipr: float
+
+
+@define(slots=True, frozen=True)
 class GuidelinesStandards:
     """
     Guidelines standards by Guidelines publication year
@@ -33,76 +50,100 @@ class GuidelinesStandards:
     Diversion ratio, GUPPI, CMCR, and IPR standards are constructed from
     concentration standards.
 
-    Attributes
-    ----------
-    pub_year: HMGPubYear
-        Year of publication of the U.S. Horizontal Merger Guidelines (HMG);
-        1992, 2010, or 2023
-    safeharbor: GuidelinesSTD
-        ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
-        diversion ratio limit at ΔHHI safeharbor
-    inferred_presumption: GuidelinesSTD
-        ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
-        diversion ratio limit at enforcement margin for Guidelines
-        presumption of harm, interpreted strictly
-    presumption: GuidelinesSTD
-        ΔHHI safeharbor bound, default recapture rate, GUPPI bound and
-        diversion ratio limit at enforcement margin for Guidelines
-        presumption of harm, as typically interpreted in the literature
-        on merger enforcement
     """
 
-    def __init__(self, _pub_year: HMGPubYear = 1992, /):
-        self.pub_year: HMGPubYear = _pub_year
+    pub_year: HMGPubYear
+    """
+    Year of publication of the U.S. Horizontal Merger Guidelines (HMG)
+    """
 
-        # In the 2023 Guidlines, the agencies do not specify a safeharbor
-        # Practically speaking, given resource constraints and loss aversion,
-        # it is likely that staff only investigates mergers that
-        # meet the presumption; nonetheless, the "safeharbor" is set here at
-        # the 1992 level
+    safeharbor: GuidelinesSTD = field(kw_only=True, default=None)
+    """
+    Negative presumption defined on various measures
+
+    ΔHHI safeharbor bound, default recapture rate, GUPPI bound,
+    diversion ratio limit, CMCR, and IPR
+    """
+
+    inferred_presumption: GuidelinesSTD = field(kw_only=True, default=None)
+    """
+    Inferred ΔHHI safeharbor presumption and related measures
+
+    ΔHHI bound inferred from strict numbers-equivalent
+    of (post-merger) HHI presumption, and corresponding default recapture rate,
+    GUPPI bound, diversion ratio limit, CMCR, and IPR
+    """
+
+    presumption: GuidelinesSTD = field(kw_only=True, default=None)
+    """
+    Guidelines ΔHHI safeharbor presumption and related measures
+
+    ΔHHI bound and corresponding default recapture rate, GUPPI bound,
+    diversion ratio limit, CMCR, and IPR
+    """
+
+    def __attrs_post_init__(self, /):
+        # In the 2023 Guidlines, the agencies do not define a
+        # negative presumption, or safeharbor. Practically speaking,
+        # given resource constraints and loss aversion, it is likely
+        # that staff only investigates mergers that meet the presumption;
+        # thus, here, the tentative delta safeharbor under
+        # the 2023 Guidelines is 100 points
         _hhi_p, _dh_s, _dh_p = {
             1992: (0.18, 0.005, 0.01),
             2010: (0.25, 0.01, 0.02),
             2023: (0.18, 0.01, 0.01),
-        }[_pub_year]
+        }[self.pub_year]
 
-        self.safeharbor = GuidelinesSTD(
-            _dh_s,
-            _r := round_cust((_fc := int(np.ceil(1 / _hhi_p))) / (_fc + 1)),
-            _g_s := gbd_from_dsf(_dh_s, m_star=1.0, r_bar=_r),
-            _dr := round_cust(1 / (_fc + 1)),
-            _cmcr := 0.03,  # Not strictly a Guidelines standard
-            _ipr := _g_s,  # Not strictly a Guidelines standard
+        object.__setattr__(
+            self,
+            "safeharbor",
+            GuidelinesSTD(
+                _dh_s,
+                _r := round_cust((_fc := int(np.ceil(1 / _hhi_p))) / (_fc + 1)),
+                _g_s := gbd_from_dsf(_dh_s, m_star=1.0, r_bar=_r),
+                _dr := round_cust(1 / (_fc + 1)),
+                _cmcr := 0.03,  # Not strictly a Guidelines standard
+                _ipr := _g_s,  # Not strictly a Guidelines standard
+            ),
         )
 
         # inferred_presumption is relevant for 2010 Guidelines
-        self.inferred_presumption = (
-            GuidelinesSTD(
-                _dh_i := 2 * (_s := 1 / (_fc + 1)) * _s,
-                _r,
-                _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r),
-                _dr,
-                _cmcr,
-                _g_i,
-            )
-            if _pub_year in (1992, 2023)
-            else GuidelinesSTD(
-                _dh_i := 2 * (_s := 0.5 / _fc) * _s,
-                _r_i := round_cust((_fc - 1 / 2) / (_fc + 1 / 2)),
-                _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r_i),
-                round_cust((1 / 2) / (_fc - 1 / 2)),
-                _cmcr,
-                _g_i,
-            )
+        object.__setattr__(
+            self,
+            "inferred_presumption",
+            (
+                GuidelinesSTD(
+                    _dh_i := 2 * (0.5 / _fc) ** 2,
+                    _r_i := round_cust((_fc - 1 / 2) / (_fc + 1 / 2)),
+                    _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r_i),
+                    round_cust((1 / 2) / (_fc - 1 / 2)),
+                    _cmcr,
+                    _g_i,
+                )
+                if self.pub_year == 2010
+                else GuidelinesSTD(
+                    _dh_i := 2 * (1 / (_fc + 1)) ** 2,
+                    _r,
+                    _g_i := gbd_from_dsf(_dh_i, m_star=1.0, r_bar=_r),
+                    _dr,
+                    _cmcr,
+                    _g_i,
+                )
+            ),
         )
 
-        self.presumption = GuidelinesSTD(
-            _dh_p,
-            _r,
-            _g_p := gbd_from_dsf(_dh_p, m_star=1.0, r_bar=_r),
-            _dr,
-            _cmcr,
-            _ipr := _g_p,
+        object.__setattr__(
+            self,
+            "presumption",
+            GuidelinesSTD(
+                _dh_p,
+                _r,
+                _g_p := gbd_from_dsf(_dh_p, m_star=1.0, r_bar=_r),
+                _dr,
+                _cmcr,
+                _ipr := _g_p,
+            ),
         )
 
 
@@ -521,7 +562,7 @@ def dh_area_quad(_dh_val: float = 0.01, /, *, dh_dps: int = 9) -> float:
 
 def delta_hhi_boundary(
     _dh_val: float = 0.01, /, *, dh_dps: int = 5
-) -> tuple[NDArray[np.float64], float]:
+) -> GuidelinesBoundary:
     """
     Generate the list of share combination on the ΔHHI boundary.
 
@@ -557,7 +598,7 @@ def delta_hhi_boundary(
     _dh_bdry_pts = np.row_stack((np.flip(_dh_half, 0), np.flip(_dh_half[1:], 1)))
 
     _s_1_pts, _s_2_pts = np.split(_dh_bdry_pts, 2, axis=1)
-    return (
+    return GuidelinesBoundary(
         np.column_stack((
             np.array(_s_1_pts, np.float64),
             np.array(_s_2_pts, np.float64),
@@ -568,7 +609,7 @@ def delta_hhi_boundary(
 
 def combined_share_boundary(
     _s_intcpt: float = 0.0625, /, *, bdry_dps: int = 10
-) -> tuple[NDArray[np.float64], float]:
+) -> GuidelinesBoundary:
     """
     Share combinations on the merging-firms' combined share boundary.
 
@@ -592,7 +633,7 @@ def combined_share_boundary(
     _s_mid = _s_intcpt / 2
 
     _s1_pts = (0, _s_mid, _s_intcpt)
-    return (
+    return GuidelinesBoundary(
         np.column_stack((
             np.array(_s1_pts, np.float64),
             np.array(_s1_pts[::-1], np.float64),
@@ -603,7 +644,7 @@ def combined_share_boundary(
 
 def hhi_pre_contrib_boundary(
     _hhi_contrib: float = 0.03125, /, *, bdry_dps: int = 5
-) -> tuple[NDArray[np.float64], float]:
+) -> GuidelinesBoundary:
     """
     Share combinations on the premerger HHI contribution boundary.
 
@@ -627,15 +668,15 @@ def hhi_pre_contrib_boundary(
     _s_1 = np.array(mp.arange(_s_mid, -_bdry_step_sz, -_bdry_step_sz), np.float64)
     _s_2 = np.sqrt(_hhi_contrib - _s_1**2).astype(np.float64)
     _bdry_pts_mid = np.column_stack((_s_1, _s_2))
-    return (
+    return GuidelinesBoundary(
         np.row_stack((np.flip(_bdry_pts_mid, 0), np.flip(_bdry_pts_mid[1:], 1))),
         round(float(mp.pi * _hhi_contrib / 4), bdry_dps),
     )
 
 
-def shrratio_mgnsym_boundary_max(
+def shrratio_boundary_max(
     _delta_star: float = 0.075, _r_val: float = 0.80, /, *, gbd_dps: int = 10
-) -> tuple[NDArray[np.float64], float]:
+) -> GuidelinesBoundary:
     """
     Share combinations on the minimum GUPPI boundary with symmetric
     merging-firm margins.
@@ -670,7 +711,7 @@ def shrratio_mgnsym_boundary_max(
 
     _s1_pts = (0, _s_mid, _s_intcpt)
 
-    return (
+    return GuidelinesBoundary(
         np.column_stack((
             np.array(_s1_pts, np.float64),
             np.array(_s1_pts[::-1], np.float64),
@@ -679,14 +720,14 @@ def shrratio_mgnsym_boundary_max(
     )
 
 
-def shrratio_mgnsym_boundary_min(
+def shrratio_boundary_min(
     _delta_star: float = 0.075,
     _r_val: float = 0.80,
     /,
     *,
     recapture_spec: str = "inside-out",
     gbd_dps: int = 10,
-) -> tuple[NDArray[np.float64], float]:
+) -> GuidelinesBoundary:
     """
     Share combinations on the minimum GUPPI boundary, with symmetric
     merging-firm margins.
@@ -749,10 +790,12 @@ def shrratio_mgnsym_boundary_min(
     else:
         _s1_pts, _gbd_area = np.array((0, _s_mid, _s_intcpt), np.float64), _s_mid
 
-    return np.column_stack((_s1_pts, _s1_pts[::-1])), round(float(_gbd_area), gbd_dps)
+    return GuidelinesBoundary(
+        np.column_stack((_s1_pts, _s1_pts[::-1])), round(float(_gbd_area), gbd_dps)
+    )
 
 
-def shrratio_mgnsym_boundary_wtd_avg(
+def shrratio_boundary_wtd_avg(
     _delta_star: float = 0.075,
     _r_val: float = 0.80,
     /,
@@ -761,7 +804,7 @@ def shrratio_mgnsym_boundary_wtd_avg(
     wgtng_policy: Literal["own-share", "cross-product-share"] | None = "own-share",
     recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
     gbd_dps: int = 5,
-) -> tuple[NDArray[np.float64], float]:
+) -> GuidelinesBoundary:
     """
     Share combinations for the share-weighted average GUPPI boundary with symmetric
     merging-firm margins.
@@ -947,20 +990,20 @@ def shrratio_mgnsym_boundary_wtd_avg(
         np.float64
     )
     # Points defining boundary to point-of-symmetry
-    return (
+    return GuidelinesBoundary(
         np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbdry_area_total), gbd_dps),
     )
 
 
-def shrratio_mgnsym_boundary_xact_avg(
+def shrratio_boundary_xact_avg(
     _delta_star: float = 0.075,
     _r_val: float = 0.80,
     /,
     *,
     recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
     gbd_dps: int = 5,
-) -> tuple[NDArray[np.float64], float]:
+) -> GuidelinesBoundary:
     """
     Share combinations for the simple average GUPPI boundary with symmetric
     merging-firm margins.
@@ -1115,13 +1158,13 @@ def shrratio_mgnsym_boundary_xact_avg(
     ) - np.power(_s_mid, 2)
 
     _s_1_pts, _s_2_pts = np.split(_gbdry_points, 2, axis=1)
-    return (
+    return GuidelinesBoundary(
         np.column_stack((np.array(_s_1_pts), np.array(_s_2_pts))),
         round(float(_gbdry_area_simpson), gbd_dps),
     )
 
 
-def shrratio_mgnsym_boundary_avg(
+def shrratio_boundary_avg(
     _delta_star: float = 0.075,
     _r_val: float = 0.80,
     /,
@@ -1129,14 +1172,14 @@ def shrratio_mgnsym_boundary_avg(
     avg_method: Literal["arithmetic", "geometric", "distance"] = "arithmetic",
     recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
     gbd_dps: int = 5,
-) -> tuple[NDArray[np.float64], float]:
+) -> GuidelinesBoundary:
     """
     Share combinations along the average GUPPI boundary, with
     symmetric merging-firm margins.
 
     Reimplements the unweighted average and distance estimations from function,
-    `shrratio_mgnsym_boundary_wtd_avg`. This reimplementation
-    is primarifly useful for testing the output of `shrratio_mgnsym_boundary_wtd_avg`
+    `shrratio_boundary_wtd_avg`. This reimplementation
+    is primarifly useful for testing the output of `shrratio_boundary_wtd_avg`
     as it tests considerably slower.
 
 
@@ -1238,13 +1281,13 @@ def shrratio_mgnsym_boundary_avg(
     ) - mp.power(_s_mid, 2)
 
     _gbdry_points = np.array(_gbdry_points, np.float64)
-    return (
+    return GuidelinesBoundary(
         np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbd_prtlarea), gbd_dps),
     )
 
 
-def shrratio_mgnsym_boundary_distance(
+def shrratio_boundary_distance(
     _delta_star: float = 0.075,
     _r_val: float = 0.80,
     /,
@@ -1253,15 +1296,15 @@ def shrratio_mgnsym_boundary_distance(
     wgtng_policy: Literal["own-share", "cross-product-share"] | None = "own-share",
     recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
     gbd_dps: int = 5,
-) -> tuple[NDArray[np.float64], float]:
+) -> GuidelinesBoundary:
     """
     Share combinations for the GUPPI boundaries using various aggregators with
     symmetric merging-firm margins.
 
     Reimplements the arithmetic-averages and distance estimations from function,
-    `shrratio_mgnsym_boundary_wtd_avg`but uses the Minkowski-distance function,
+    `shrratio_boundary_wtd_avg`but uses the Minkowski-distance function,
     `scipy.spatial.distance.minkowski` for all aggregators. This reimplementation
-    is primarifly useful for testing the output of `shrratio_mgnsym_boundary_wtd_avg`
+    is primarifly useful for testing the output of `shrratio_boundary_wtd_avg`
     as it tests considerably slower.
 
     Parameters
@@ -1400,7 +1443,7 @@ def shrratio_mgnsym_boundary_distance(
         np.float64
     )
     # Points defining boundary to point-of-symmetry
-    return (
+    return GuidelinesBoundary(
         np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbdry_area_total), gbd_dps),
     )

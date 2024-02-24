@@ -24,28 +24,28 @@ d_bar = 0.2  # 0.2  # r_bar  # g_bar  # 0.8 * 0.125 / (1 - 0.125)
 sample_sz = 10**8
 
 
-def icr_gsh_sym(_ssz: int = sample_sz) -> NDArray[float]:
+def icr_gsh_sym(_ssz: int = sample_sz) -> NDArray[np.float64]:
     """With symmetric shares, margins, and prices; closed-form integrand."""
     _m_lim = g_bar / d_bar
     _m_star = _m_lim + (1.0 - _m_lim) * rng.uniform(size=(_ssz, 1))
     _d_star = g_bar / (r_bar * _m_star)
     _divr_limit_prob = 2 * g_bar / (r_bar + d_bar)
-    _gsf_bound_prob = 2 * (1 - _m_lim) * (_d_star / (1 + _d_star)).mean()
-    return np.array([_ssz, _divr_limit_prob + _gsf_bound_prob, np.nan, np.nan])
+    _guppi_bound_prob = 2 * (1 - _m_lim) * (_d_star / (1 + _d_star)).mean()
+    return np.array([_ssz, _divr_limit_prob + _guppi_bound_prob, np.nan, np.nan])
 
 
-def icr_gsh_asymmshr(_ssz: int = sample_sz) -> NDArray[float]:
+def icr_gsh_asymmshr(_ssz: int = sample_sz) -> NDArray[np.float64]:
     """With symmetric margins and prices, unequal shares; closed-form integrand."""
     _m_lim = g_bar / d_bar
     _m_star = _m_lim + (1.0 - _m_lim) * rng.random(size=(_ssz, 1))
 
     _d_star = g_bar / (r_bar * _m_star)
     _divr_limit_prob = 2 * (g_bar / r_bar) * d_bar / (r_bar + d_bar)
-    _gsf_bound_prob = 2 * (1 - _m_lim) * (_d_star**2 / (1 + _d_star)).mean()
-    return np.array([_ssz, _divr_limit_prob + _gsf_bound_prob, np.nan, np.nan])
+    _guppi_bound_prob = 2 * (1 - _m_lim) * (_d_star**2 / (1 + _d_star)).mean()
+    return np.array([_ssz, _divr_limit_prob + _guppi_bound_prob, np.nan, np.nan])
 
 
-def gen_qtyshr(_ssz: int = sample_sz, *, sym_flag: bool = False) -> NDArray[float]:
+def gen_qtyshr(_ssz: int = sample_sz, *, sym_flag: bool = False) -> NDArray[np.float64]:
     """Unequal shares and margins, and symmetric prices; indicator-function integrand."""
     if sym_flag:
         # for symmetric shares
@@ -57,7 +57,7 @@ def gen_qtyshr(_ssz: int = sample_sz, *, sym_flag: bool = False) -> NDArray[floa
     return _mktshr_array
 
 
-def icr_gsh_asymmshrmgn(_ssz: int = sample_sz) -> NDArray[float]:
+def icr_gsh_asymmshrmgn(_ssz: int = sample_sz) -> NDArray[np.float64]:
     """With symmetric prices, unequal shares and margins; indicator-function integrand."""
 
     _shr_sym_flag = False
@@ -98,17 +98,17 @@ def icr_gsh_asymmshrmgn(_ssz: int = sample_sz) -> NDArray[float]:
     _divr_test = _divr_array.max(axis=1) < d_bar
     _pcm_min_test = _pcm_array.min(axis=1) >= (g_bar / d_bar)
     _divr_limit_test = _gbd_test & _divr_test & np.logical_not(_pcm_min_test)
-    _gsf_not_in_deltah = np.logical_not(_delta_test) & _gbd_test & _divr_test
+    _gbd_not_in_deltah = np.logical_not(_delta_test) & _gbd_test & _divr_test
 
     _scount = len(_gbd_test)
-    _gsf_prob = len(_gbd_test[_gbd_test & _divr_test]) / _scount
+    _gbd_prob = len(_gbd_test[_gbd_test & _divr_test]) / _scount
     _deltah_prob = len(_gbd_test[_delta_test]) / _scount
-    _cum_clr_prob = len(_gbd_test[_delta_test | _gsf_not_in_deltah]) / _scount
+    _cum_clr_prob = len(_gbd_test[_delta_test | _gbd_not_in_deltah]) / _scount
 
     del _guppi_array, _divr_array, _pcm_array
     del _gbd_test, _divr_test, _pcm_min_test, _divr_limit_test
 
-    return np.array([_scount, _gsf_prob, _deltah_prob, _cum_clr_prob])
+    return np.array([_scount, _gbd_prob, _deltah_prob, _cum_clr_prob])
 
 
 if __name__ == "__main__":

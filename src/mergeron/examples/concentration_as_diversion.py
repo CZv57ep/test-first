@@ -32,7 +32,7 @@ from numpy import pi
 from xlsxwriter import Workbook
 
 import mergeron.core.excel_helper as xlh
-import mergeron.core.guidelines_standards as gsf
+import mergeron.core.guidelines_standards as gsl
 import mergeron.ext.tol_colors as ptcolor
 from mergeron import DATA_DIR
 
@@ -46,20 +46,20 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "title_str": "ΔHHI boundary",
         "sheet_name": "ΔHHI",
         "func_str": R"\Delta HHI",
-        "func": gsf.delta_hhi_boundary,
+        "func": gsl.delta_hhi_boundary,
     },
     "OSWAG Own-shr-wtd Div Ratio Index": {
         "title_str": "Aggregated-diversion-ratio boundary, own-share wtd. avg.",
         "sheet_name": "OSWAG, wtd avg",
         "func_str": R"(s_1 d_{12} + s_2 d_{21}) / s_M",
-        "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
+        "func": gsl.shrratio_boundary_wtd_avg,
         "func_kwargs": {"wgtng_policy": "own-share", "recapture_spec": RECAPTURE_SPEC},
     },
     "OSWAG Own-shr-wtd Div Ratio Distance": {
         "title_str": "Aggregated-diversion-ratio boundary, own-shr. wtd. distance",
         "sheet_name": "OSWAG, distance",
         "func_str": R"\surd (s_1 d_{12}^2 / s_M + s_2 d_{21}^2 / s_M)",
-        "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
+        "func": gsl.shrratio_boundary_wtd_avg,
         "func_kwargs": {
             "wgtng_policy": "own-share",
             "recapture_spec": RECAPTURE_SPEC,
@@ -70,20 +70,20 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "title_str": "Aggregated-diversion-ratio boundary, minimum",
         "sheet_name": "OSWAG, minimum",
         "func_str": R"\min (d_{12}, d_{21})",
-        "func": gsf.shrratio_mgnsym_boundary_min,
+        "func": gsl.shrratio_boundary_min,
         "func_kwargs": {"recapture_spec": RECAPTURE_SPEC},
     },
     "SAG Combined Share": {
         "title_str": "Combined Share boundary",
         "sheet_name": "SAG, combined-share",
         "func_str": R"s_M",
-        "func": gsf.combined_share_boundary,
+        "func": gsl.combined_share_boundary,
     },
     "SAG Div Ratio Distance": {
         "title_str": "Aggregated-diversion-ratio boundary, distance",
         "sheet_name": "SAG, distance",
         "func_str": R"\surd (d_{12}^2 / 2 + d_{21}^2 / 2)",
-        "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
+        "func": gsl.shrratio_boundary_wtd_avg,
         "func_kwargs": {
             "wgtng_policy": None,
             "recapture_spec": RECAPTURE_SPEC,
@@ -94,20 +94,20 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "title_str": "Aggregated-diversion-ratio boundary, simple average",
         "sheet_name": "SAG, average",
         "func_str": R"(d_{12} + d_{21}) / 2",
-        "func": gsf.shrratio_mgnsym_boundary_xact_avg,
+        "func": gsl.shrratio_boundary_xact_avg,
         "func_kwargs": {"recapture_spec": RECAPTURE_SPEC},
     },
     "CPSWAG Premerger HHI-contribution": {
         "title_str": "Premerger HHI-contribution boundary",
         "sheet_name": "CPSWAG, HHI-contrib-pre",
         "func_str": R"HHI_M^{pre}",
-        "func": gsf.hhi_pre_contrib_boundary,
+        "func": gsl.hhi_pre_contrib_boundary,
     },
     "CPSWAG Cross-product-shr-wtd Div Ratio Index": {
         "title_str": "Aggregated-diversion-ratio boundary, cross-product-share wtd. avg.",
         "sheet_name": "CPSWAG, wtd avg",
         "func_str": R"(s_2 d_{12} / s_M  + s_1 d_{21} / s_M)",
-        "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
+        "func": gsl.shrratio_boundary_wtd_avg,
         "func_kwargs": {
             "wgtng_policy": "cross-product-share",
             "recapture_spec": RECAPTURE_SPEC,
@@ -117,7 +117,7 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "title_str": "Aggregated-diversion-ratio boundary, cross-prod-shr. wtd. distance",
         "sheet_name": "CPSWAG, distance",
         "func_str": R"\surd (s_2 d_{12}^2 / s_M + s_1 d_{21}^2 / s_M)",
-        "func": gsf.shrratio_mgnsym_boundary_wtd_avg,
+        "func": gsl.shrratio_boundary_wtd_avg,
         "func_kwargs": {
             "wgtng_policy": "cross-product-share",
             "recapture_spec": RECAPTURE_SPEC,
@@ -128,7 +128,7 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "title_str": "Aggregated-diversion-ratio boundary, maximum",
         "sheet_name": "CPSWAG, maximum",
         "func_str": R"\max (d_{12}, d_{21})",
-        "func": gsf.shrratio_mgnsym_boundary_max,
+        "func": gsl.shrratio_boundary_max,
     },
 }
 
@@ -142,7 +142,7 @@ def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
         are drawn
 
     """
-    gso = gsf.GuidelinesStandards(_gpubyr)
+    gso = gsl.GuidelinesStandards(_gpubyr)
     _dhhi_val, _r_val, _g_val = (
         getattr(gso.presumption, _f) for _f in ("delta", "rec", "guppi")
     )
@@ -200,7 +200,7 @@ def _dhhi_stats(
 
     _delta_val = _s_mid / (1 - _s_mid)
     if _dhhi_val * 1e4 in (50, 100, 200):
-        _delta_val = gsf.round_cust(_r_val * _delta_val) / _r_val
+        _delta_val = gsl.round_cust(_r_val * _delta_val) / _r_val
     _divr_val = _r_val * _delta_val
 
     print(
@@ -225,7 +225,7 @@ def _dhhi_stats(
 def _bdry_stats_col(
     _bdry_spec: str, _dhhi_val: float, _delta_val: float, _r_val: float, /
 ) -> tuple[str, str]:
-    _dhhi_prob = 2 * gsf.dh_area(_dhhi_val)
+    _dhhi_prob = 2 * gsl.dh_area(_dhhi_val)
     _cs_prob = 2 * _dhhi_val
     _hhi_m_pre_prob = pi * _dhhi_val / 2
 
@@ -262,7 +262,7 @@ def plot_and_save_boundary_coords(
     /,
     layout: Literal["collected", "distributed"] = "collected",
 ) -> None:
-    gso = gsf.GuidelinesStandards(_gpubyr)
+    gso = gsl.GuidelinesStandards(_gpubyr)
 
     _hmg_standards_strings_dict = {
         "distributed": ("presumption", "inferred presumption", "safeharbor"),
@@ -276,7 +276,7 @@ def plot_and_save_boundary_coords(
         )
 
     # Initialize plot area
-    _plt, _my_fig1, _ax1, _set_axis_def = gsf.boundary_plot()
+    _plt, _my_fig1, _ax1, _set_axis_def = gsl.boundary_plot()
 
     _divr_agg_methods = ("OSWAG", "SAG", "CPSWAG")
 
@@ -352,7 +352,7 @@ def plot_and_save_boundary_coords(
 
 def gen_plot_boundary(
     _bndry_data_dict: Mapping[str, Sequence[tuple[float]]],
-    _gso: gsf.GuidelinesStandards,
+    _gso: gsl.GuidelinesStandards,
     _gs_str: str,
     _bdry_spec: tuple[str, Mapping[str, Any]],
     _ax1: mpa.Axes,
@@ -366,7 +366,7 @@ def gen_plot_boundary(
     _bndry_data_dict
         mapping for storing boundary coordinates for each plotted boundary
     _gso
-        gsf.GuidelinesStandards instance of tuples listing
+        gsl.GuidelinesStandards instance of tuples listing
         concentration standard, default recapture-rate, GUPPI bound,
         and diversion ratio bound for "safeharbor", "weak presumption",
         and "presumption", where "weak presumption" represents an alternative

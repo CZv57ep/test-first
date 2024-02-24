@@ -361,7 +361,7 @@ class MarketSampleSpec:
 
 
 @dataclass(slots=True, frozen=True)
-class MarketsSample:
+class MarketDataSample:
     """Container for generated markets data sample."""
 
     frmshr_array: NDArray[np.floating]

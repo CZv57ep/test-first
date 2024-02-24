@@ -12,14 +12,14 @@ from matplotlib import cm as colormgr
 from matplotlib import colors as mcolors
 from matplotlib.ticker import AutoMinorLocator, MultipleLocator, StrMethodFormatter
 
-import mergeron.core.guidelines_standards as gsf
+import mergeron.core.guidelines_standards as gsl
 from mergeron import DATA_DIR
 
 PROG_PATH = Path(__file__)
 
 
 def _main() -> None:
-    plt, _, _, set_axis_def = gsf.boundary_plot()
+    plt, _, _, set_axis_def = gsl.boundary_plot()
     # plt.delaxes(ax1)
     # del my_fig1, ax1
     # del ax1
@@ -45,7 +45,7 @@ def _main() -> None:
     g_bar, r_bar, dr_bar = 0.06, 0.80, 0.20
 
     step_size = 10**-5
-    sym_shr_vec = np.arange(gsf.shr_from_gbd(g_bar), 0.5 + step_size, step_size)
+    sym_shr_vec = np.arange(gsl.shr_from_gbd(g_bar), 0.5 + step_size, step_size)
     mst_vec = (g_bar / r_bar) * (1 - sym_shr_vec) / sym_shr_vec
 
     print("Setup basic figure and axes for plots of safe harbor boundaries.")

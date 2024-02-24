@@ -1,5 +1,5 @@
 """
-Routines to estimateintrinsic clearnace rates and intrinsic enforcement rates
+Routines to estimate intrinsic clearnace rates and intrinsic enforcement rates
 from generated market data.
 
 """
@@ -22,13 +22,13 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from ..core import guidelines_standards as gsf  # noqa: TID252
+from ..core import guidelines_standards as gsl  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
     FCOUNT_WTS_DEFAULT,
     DataclassInstance,
+    MarketDataSample,
     MarketSampleSpec,
-    MarketsSample,
     RECConstants,
     UPPTestsCounts,
     UPPTestsRaw,
@@ -43,7 +43,7 @@ SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, str]
 
 
 @enum.unique
-class GUPPIAggrSelector(enum.StrEnum):
+class UPPAggrSelector(enum.StrEnum):
     """
     Aggregator selection for GUPPI and diversion ratio
 
@@ -65,18 +65,18 @@ class UPPTestRegime:
         default=isl.PolicySelector.ENFT,
         validator=validators.instance_of(isl.PolicySelector),  # type: ignore
     )
-    primary_aggregator: GUPPIAggrSelector = field(  # type: ignore
-        default=GUPPIAggrSelector.MAX,
-        validator=validators.instance_of(GUPPIAggrSelector | None),  # type: ignore
+    primary_aggregator: UPPAggrSelector = field(  # type: ignore
+        default=UPPAggrSelector.MAX,
+        validator=validators.instance_of(UPPAggrSelector | None),  # type: ignore
     )
-    secondary_aggregator: GUPPIAggrSelector | None = field(  # type: ignore
+    secondary_aggregator: UPPAggrSelector | None = field(  # type: ignore
         default=primary_aggregator,
-        validator=validators.instance_of(GUPPIAggrSelector | None),  # type: ignore
+        validator=validators.instance_of(UPPAggrSelector | None),  # type: ignore
     )
 
 
 def sim_invres_cnts_ll(
-    _invres_parm_vec: gsf.GuidelinesSTD,
+    _invres_parm_vec: gsl.GuidelinesSTD,
     _mkt_sample_spec: MarketSampleSpec,
     _sim_invres_cnts_kwargs: Mapping[str, Any],
     /,
@@ -161,7 +161,7 @@ def sim_invres_cnts_ll(
 
 
 def sim_invres_cnts(
-    _guppi_test_parms: gsf.GuidelinesSTD,
+    _upp_test_parms: gsl.GuidelinesSTD,
     _mkt_sample_spec: MarketSampleSpec,
     /,
     *,
@@ -190,7 +190,7 @@ def sim_invres_cnts(
     )
 
     _upp_tests_data = gen_upp_arrays(
-        _guppi_test_parms,
+        _upp_test_parms,
         _market_data,
         sim_test_regime,
         saved_array_name_suffix=saved_array_name_suffix,
@@ -203,7 +203,6 @@ def sim_invres_cnts(
     del _market_data
 
     # Clearance/enforcement counts --- by firm count
-    # Accumulate firm_count, numobs, num_gmbound, num_gsf, num_cbound, num_ibound
     _stats_rowlen = 6
     _firm_counts_weights: NDArray[np.float64 | np.int64] = (
         FCOUNT_WTS_DEFAULT
@@ -232,6 +231,7 @@ def sim_invres_cnts(
         ))
     _invres_cnts_sim_byfirmcount_array = _invres_cnts_sim_byfirmcount_array[1:]
 
+    # Clearance/enfrocement counts --- by delta
     _hhi_delta_ranged = isl.hhi_delta_ranger(_hhi_delta)
     _invres_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int64)
     for _hhi_delta_lim in isl.HHI_DELTA_KNOTS[:-1]:
@@ -254,7 +254,7 @@ def sim_invres_cnts(
 
     _invres_cnts_sim_bydelta_array = _invres_cnts_sim_bydelta_array[1:]
 
-    # Clearance/enfrocement counts --- by zone, coded
+    # Clearance/enfrocement counts --- by zone
     try:
         _hhi_zone_post_ranged = isl.hhi_zone_post_ranger(_hhi_post)
     except ValueError as _err:
@@ -303,8 +303,8 @@ def sim_invres_cnts(
 
 
 def gen_upp_arrays(
-    _guppi_test_parms: gsf.GuidelinesSTD,
-    _market_data: MarketsSample,
+    _upp_test_parms: gsl.GuidelinesSTD,
+    _market_data: MarketDataSample,
     _sim_test_regime: UPPTestRegime,
     /,
     *,
@@ -312,12 +312,12 @@ def gen_upp_arrays(
     save_data_to_file: SaveData = False,
 ) -> UPPTestsRaw:
     _g_bar, _divr_bar, _cmcr_bar, _ipr_bar = (
-        getattr(_guppi_test_parms, _f) for _f in ("guppi", "divr", "cmcr", "ipr")
+        getattr(_upp_test_parms, _f) for _f in ("guppi", "divr", "cmcr", "ipr")
     )
 
     _invres_resolution, _guppi_aggregator, _divr_aggregator = (
         getattr(_sim_test_regime, _f)
-        for _f in ("resolution", "primary_aggegator", "secondary_aggegator")
+        for _f in ("resolution", "primary_aggregator", "secondary_aggregator")
     )
 
     _guppi_array = np.empty_like(_market_data.divr_array)
@@ -354,48 +354,48 @@ def gen_upp_arrays(
         / np.einsum("ij->i", _market_data.frmshr_array)[:, None]
         if _guppi_aggregator
         in (
-            GUPPIAggrSelector.CPA,
-            GUPPIAggrSelector.CPD,
-            GUPPIAggrSelector.OSA,
-            GUPPIAggrSelector.OSD,
+            UPPAggrSelector.CPA,
+            UPPAggrSelector.CPD,
+            UPPAggrSelector.OSA,
+            UPPAggrSelector.OSD,
         )
         else EMPTY_ARRAY_DEFAULT
     )
 
     match _guppi_aggregator:
-        case GUPPIAggrSelector.AVG:
+        case UPPAggrSelector.AVG:
             _test_value_seq = (
                 1 / 2 * np.einsum("ij->i", _g)[:, None] for _g in _test_measure_seq
             )
-        case GUPPIAggrSelector.CPA:
+        case UPPAggrSelector.CPA:
             _test_value_seq = (
                 np.einsum("ij,ij->i", _wt_array[:, ::-1], _g)[:, None]
                 for _g in _test_measure_seq
             )
-        case GUPPIAggrSelector.CPD:
+        case UPPAggrSelector.CPD:
             _test_value_seq = (
                 np.sqrt(np.einsum("ij,ij,ij->i", _wt_array[:, ::-1], _g, _g))[:, None]
                 for _g in _test_measure_seq
             )
-        case GUPPIAggrSelector.DIS:
+        case UPPAggrSelector.DIS:
             _test_value_seq = (
                 np.sqrt(1 / 2 * np.einsum("ij,ij->i", _g, _g))[:, None]
                 for _g in _test_measure_seq
             )
-        case GUPPIAggrSelector.MAX:
+        case UPPAggrSelector.MAX:
             _test_value_seq = (
                 _g.max(axis=1, keepdims=True) for _g in _test_measure_seq
             )
-        case GUPPIAggrSelector.MIN:
+        case UPPAggrSelector.MIN:
             _test_value_seq = (
                 _g.min(axis=1, keepdims=True) for _g in _test_measure_seq
             )
-        case GUPPIAggrSelector.OSA:
+        case UPPAggrSelector.OSA:
             _test_value_seq = (
                 np.einsum("ij,ij->i", _wt_array, _g)[:, None]
                 for _g in _test_measure_seq
             )
-        case GUPPIAggrSelector.OSD:
+        case UPPAggrSelector.OSD:
             _test_value_seq = (
                 np.sqrt(np.einsum("ij,ij,ij->i", _wt_array, _g, _g))[:, None]
                 for _g in _test_measure_seq
@@ -407,7 +407,7 @@ def gen_upp_arrays(
         _test_value_seq
     )
 
-    if _divr_aggregator == GUPPIAggrSelector.MAX:
+    if _divr_aggregator == UPPAggrSelector.MAX:
         _divr_test_vector = _market_data.divr_array.max(axis=1, keepdims=True)
 
     if _invres_resolution == isl.PolicySelector.ENFT:

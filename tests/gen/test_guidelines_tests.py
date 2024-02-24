@@ -1,13 +1,13 @@
 import gc
 from datetime import datetime, timedelta
 
-import mergeron.core.guidelines_standards as gsf
+import mergeron.core.guidelines_standards as gsl
 import mergeron.core.pseudorandom_numbers as rmp
-import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
 import numpy as np
 import re2 as re  # type: ignore
+from mergeron.gen import MarketSampleSpec, RECConstants, ShareSpec, SHRConstants
 
 teststr_pat = re.compile(r"(?m)^ +")
 stats_sim_byfirmcount_teststr = teststr_pat.sub(
@@ -73,18 +73,16 @@ stats_sim_bydelta_unrestricted_teststr = teststr_pat.sub(
 
 
 def test_clearance_rate_calcs() -> None:
-    _test_sel: gtl.UPPTestRegime = (
-        isl.PolicySelector.CLRN,
-        gtl.GUPPIAggrSelector.MAX,
-        None,
+    _test_sel: gtl.UPPTestRegime = gtl.UPPTestRegime(
+        isl.PolicySelector.CLRN, gtl.UPPAggrSelector.MAX, None
     )
 
-    _ind_sample_spec = dgl.MarketSampleSpec(
+    _ind_sample_spec = MarketSampleSpec(
         10**8,
         0.80,
-        share_spec=dgl.ShareSpec(
-            dgl.RECConstants.FIXED,
-            dgl.SHRConstants.DIR_FLAT,
+        share_spec=ShareSpec(
+            RECConstants.FIXED,
+            SHRConstants.DIR_FLAT,
             None,  # TODO: type-fix this, with None as default
             np.array((133, 184, 134, 52, 32, 10, 12, 4, 3)),
         ),
@@ -92,7 +90,7 @@ def test_clearance_rate_calcs() -> None:
 
     _start_time = datetime.now()
     upp_tests_counts = gtl.sim_invres_cnts_ll(
-        gsf.GuidelinesStandards(2010).safeharbor,
+        gsl.GuidelinesStandards(2010).safeharbor,
         _ind_sample_spec,
         {
             "seed_seq_list": rmp.gen_seed_seq_list_default(3),
@@ -111,7 +109,7 @@ def test_clearance_rate_calcs() -> None:
     print()
     print(
         "Simulated {} stats by number of significant competitors:".format(
-            _test_sel[0].capitalize()
+            _test_sel.resolution.capitalize()
         )
     )
     _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_1dim(
@@ -128,7 +126,7 @@ def test_clearance_rate_calcs() -> None:
     del _stats_hdr_list, _stats_dat_list
 
     print()
-    print(f"Simulated {_test_sel[0].capitalize()} stats by range of ∆HHI")
+    print(f"Simulated {_test_sel.resolution.capitalize()} stats by range of ∆HHI")
     _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_1dim(
         upp_tests_counts.by_delta[:, :-1],
         return_type_sel=_return_type_sel,
@@ -147,7 +145,7 @@ def test_clearance_rate_calcs() -> None:
     print()
     print(
         "Merger {} stats by Merger Guidelines concentration presumptions".format(
-            _test_sel[0].capitalize()
+            _test_sel.resolution.capitalize()
         )
     )
     _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_byzone(
