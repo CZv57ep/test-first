@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mergeron"
 # See ./get_version_str.py
-version = "2024.738940.0"
+version = "2024.738940.1"
 description = "Analysis of standards defined in Horizontal Merger Guidelines"
 keywords = [
     "merger policy analysis",
@@ -42,7 +42,6 @@ jinja2 = ">=3.1"
 joblib = ">=1.3"
 lxml = ">=5.0"
 matplotlib = ">=3.8"
-mkl = "2023.2"
 mpmath = ">=1.3"
 msgpack = ">=1.0"
 msgpack-numpy = ">=0.4"
