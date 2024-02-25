@@ -12,17 +12,7 @@ from matplotlib import cm as colormgr
 from matplotlib import colormaps
 from matplotlib import colors as mcolors
 from matplotlib.ticker import StrMethodFormatter
-from numpy import (
-    arange,
-    arctan,
-    array,
-    concatenate,
-    insert,
-    rad2deg,
-    round,
-    sqrt,
-    vstack,
-)
+from numpy import arange, arctan, array, hsplit, insert, rad2deg, round, sqrt, vstack
 
 import mergeron.core.guidelines_boundaries as gbl
 from mergeron import DATA_DIR
@@ -42,8 +32,9 @@ def plot_delta_boundaries(
     print("ΔHHI safeharbor boundary")
     _plt, _my_fig1, _ax1, _ = gbl.boundary_plot()
 
-    _dh_bar, _r_bar, _guppi_bench, _divr_bench, _, _ = get_hmg_standards_by_key(
-        _guppi_bench_key
+    _hmg_thresholds = get_hmg_thresholds_by_key(_guppi_bench_key)
+    _dh_bar, _r_bar, _guppi_bench, _divr_bench = (
+        getattr(_hmg_thresholds, _f) for _f in ("delta", "rec", "guppi", "divr")
     )
 
     print("Contour map of selected ∆HHI boundaries")
@@ -52,8 +43,8 @@ def plot_delta_boundaries(
         if _dh_bound in (300, 500):
             continue
 
-        _dh_safeharb, _dh_prob = gbl.delta_hhi_boundary(_dh_bound / 1e4)
-        _dh_dat_x, _dh_dat_y = zip(*_dh_safeharb, strict=True)
+        _dh_boundary = gbl.delta_hhi_boundary(_dh_bound / 1e4)
+        _dh_dat_x, _dh_dat_y = (_z.T[0] for _z in hsplit(_dh_boundary.coordinates, 2))
         if _dh_bound == 100:
             _lwval, _lsval = 0.75, "-"
         else:
@@ -101,36 +92,32 @@ def plot_delta_boundaries(
                 color=colormaps["cividis"](_m_star),
                 zorder=3,
             )
-            del _symshr, _dstar, _m_star, _guppi_bdry_env_xs
+            del _symshr, _dstar, _m_star
 
-        if _dh_bound not in (200, 300, 500):
-            _ax1.annotate(
-                rf"$\Delta HHI$ = {_dh_bound:,d} pts.",
-                xy=(_dh_dat_x[0], _dh_dat_y[0]),
-                xytext=(_dh_dat_x[0], _dh_dat_y[0]),
-                textcoords="data",
-                ha="left",
-                va="center",
-                fontsize=5,
-                zorder=5.1,
-            )
+            if recapture_spec == "inside-out" and _dh_bound not in (200, 300, 500):
+                _ax1.annotate(
+                    rf"$\Delta HHI$ = {_dh_bound:,d} pts.",
+                    xy=(_dh_dat_x[1], _dh_dat_y[1]),
+                    xytext=(_dh_dat_x[1], _dh_dat_y[1]),
+                    textcoords="data",
+                    ha="left",
+                    va="center",
+                    fontsize=5,
+                    zorder=5.1,
+                )
+            del _guppi_bdry_env_xs
 
         if _dh_bound == 100:
             _ax1.fill_between(
-                (0, *_dh_dat_x, 100),
-                (100, *_dh_dat_y, 0),
+                _dh_dat_x,
+                _dh_dat_y,
                 0,
                 edgecolor=None,
                 facecolor="#64bb64",
                 alpha=0.7,
                 rasterized=True,
             )
-        del (
-            _dh_safeharb,
-            _dh_prob,
-            _dh_dat_x,
-            _dh_dat_y,
-        )  # , _dh_dat_x_pla, _dh_dat_y_pla
+        del (_dh_boundary, _dh_dat_x, _dh_dat_y)  # , _dh_dat_x_pla, _dh_dat_y_pla
 
     _my_fig1.savefig((DATA_DIR / f"{PROG_PATH.stem}_DH100_deltaHHI_only.pdf"), dpi=600)
 
@@ -145,17 +132,16 @@ def plot_guppi_boundaries(  # noqa PLR0915
     if recapture_spec not in (_recspecs := ("inside-out", "proportional")):
         raise ValueError(f"Recapture specification must be one of, {_recspecs!r}")
 
-    _dh_bar, _r_bar, _guppi_bench, _divr_bench, _, _ = get_hmg_standards_by_key(
-        _guppi_bench_key
+    _hmg_thresholds = get_hmg_thresholds_by_key(_guppi_bench_key)
+    _dh_bar, _r_bar, _guppi_bench, _divr_bench = (
+        getattr(_hmg_thresholds, _f) for _f in ("delta", "rec", "guppi", "divr")
     )
 
     # First we get the data for the ΔHHI benchmark we want to plot
-    _dh_safeharb, _dh_prob = gbl.delta_hhi_boundary(_dh_bar)
-    _dh_dat_x, _dh_dat_y = zip(*_dh_safeharb, strict=True)
+    _dh_boundary = gbl.delta_hhi_boundary(_dh_bar)
+    _dh_dat_x, _dh_dat_y = (_z.T[0] for _z in hsplit(_dh_boundary.coordinates, 2))
 
-    _plt, _my_fig1, _ax1, _set_axis_def = gbl.boundary_plot()
-    _plt.delaxes(_ax1)
-    del _my_fig1, _ax1
+    _plt, _, _, _set_axis_def = gbl.boundary_plot()
 
     _my_fig1 = _plt.figure(figsize=(5.5, 5.0))
 
@@ -168,14 +154,12 @@ def plot_guppi_boundaries(  # noqa PLR0915
         wspace=0.0,
     )
     _ax1 = _my_fig1.add_subplot(_fig1_grid[0, 0])
-    _ax1 = _set_axis_def(_ax1)
-    _ax1.set_aspect(1.0)
-    _ax1.set_facecolor("#F6F6F6")
+    _ax1 = _set_axis_def(_ax1, mktshares_plot_flag=True, mktshares_axlbls_flag=True)
 
     _ax1.plot(_dh_dat_x, _dh_dat_y, linewidth=0.75, color="black", zorder=3)
     _ax1.fill_between(
-        (0, *_dh_dat_x, 100),
-        (100, *_dh_dat_y, 0),
+        _dh_dat_x,
+        _dh_dat_y,
         0,
         edgecolor=None,
         facecolor="#64bb64",
@@ -188,6 +172,8 @@ def plot_guppi_boundaries(  # noqa PLR0915
     _m_lim = _guppi_bench / _r_bar
     _mst_vec = arange(_m_lim, 1.00 + _step_size, _step_size)
     _sym_shr_vec = (_dst_vec := _m_lim / _mst_vec) / (1 + _dst_vec)
+    # _sym_shr_vec = np.arange(gbl.shr_from_gbd(g_bar), 0.5 + step_size, step_size)
+    # _mst_vec = (g_bar / r_bar) * (1 - sym_shr_vec) / sym_shr_vec
     # https://stackoverflow.com/questions/39753282/
     _ax1.scatter(
         _sym_shr_vec,
@@ -202,7 +188,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
         zorder=3,
     )
 
-    for _m_star in concatenate((arange(1.00, _m_lim, -0.10), (_m_lim,))):
+    for _m_star in arange(1.00, _m_lim - 0.10, -0.10):
         _m_star, _delta_star, _s_mid = (
             round(_s, 4)
             for _s in (_m_star, _m_lim / _m_star, _m_lim / (_m_star + _m_lim))
@@ -322,10 +308,8 @@ def plot_guppi_boundaries(  # noqa PLR0915
         _delta_star = gbl.critical_shrratio(
             _guppi_bench, m_star=_m_star_bench, r_bar=_r_bar
         )
-        (guppi_boundary_data, guppi_boundary_area) = gbl.shrratio_boundary_max(
-            _delta_star
-        )
-        _x_drt, _y_drt = zip(*guppi_boundary_data, strict=True)
+        guppi_boundary = gbl.shrratio_boundary_max(_delta_star)
+        _x_drt, _y_drt = zip(*guppi_boundary.coordinates, strict=True)
 
         _ax1.plot(
             _x_drt,
@@ -447,15 +431,16 @@ def grad_est(_ax: matplotlib.axis.Axis, _pt_xs: tuple, _pt_ys: tuple) -> float:
     return (_pt2[1] - _pt1[1]) / (_pt2[0] - _pt1[0])
 
 
-def get_hmg_standards_by_key(_guppi_bench_key: str, /) -> tuple:
+def get_hmg_thresholds_by_key(_guppi_bench_key: str, /) -> gbl.HMGThresholds:
     match _guppi_bench_key:
         case "DOJATR":
-            return (
-                *(_tmp := gbl.GuidelinesThresholds(2010).safeharbor[:2]),
+            return gbl.HMGThresholds(
+                (_tmp := gbl.GuidelinesThresholds(2010).safeharbor).delta,
+                _tmp.rec,
                 0.05,
-                _tmp[-1],
-                None,
-                None,
+                _tmp.divr,
+                _tmp.cmcr,
+                _tmp.ipr,
             )
         case "DH100":
             return gbl.GuidelinesThresholds(2010).safeharbor

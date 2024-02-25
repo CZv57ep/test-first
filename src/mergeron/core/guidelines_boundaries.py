@@ -390,7 +390,13 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
     _fig = plt.figure(figsize=(5, 5), dpi=600)
     _ax_out = _fig.add_subplot()
 
-    def _set_axis_def(_ax1: mpa.Axes, /, mktshares_plot_flag: bool = False) -> mpa.Axes:
+    def _set_axis_def(
+        _ax1: mpa.Axes,
+        /,
+        *,
+        mktshares_plot_flag: bool = False,
+        mktshares_axlbls_flag: bool = False,
+    ) -> mpa.Axes:
         # Set the width of axis gridlines, and tick marks:
         # both axes, both major and minor ticks
         # Frame, grid, and facecolor
@@ -401,7 +407,7 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
             _ax1.spines[_spos1].set_linewidth(0.0)
             _ax1.spines[_spos1].set_zorder(0)
             _ax1.spines[_spos1].set_visible(False)
-        _ax1.set_facecolor("#F6F6F6")
+        _ax1.set_facecolor("#E6E6E6")
 
         _ax1.grid(linewidth=0.5, linestyle=":", color="grey", zorder=1)
         _ax1.tick_params(axis="x", which="both", width=0.5)
@@ -420,15 +426,16 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
             _ax1.yaxis.get_majorticklabels(), horizontalalignment="right", fontsize=6
         )
 
-        # Axis labels
-        # x-axis
-        _ax1.set_xlabel("Firm 1 Market Share, $s_1$", fontsize=10)
-        _ax1.xaxis.set_label_coords(0.75, -0.1)
-        # y-axis
-        _ax1.set_ylabel("Firm 2 Market Share, $s_2$", fontsize=10)
-        _ax1.yaxis.set_label_coords(-0.1, 0.75)
-
         if mktshares_plot_flag:
+            # Axis labels
+            if mktshares_axlbls_flag:
+                # x-axis
+                _ax1.set_xlabel("Firm 1 Market Share, $s_1$", fontsize=10)
+                _ax1.xaxis.set_label_coords(0.75, -0.1)
+                # y-axis
+                _ax1.set_ylabel("Firm 2 Market Share, $s_2$", fontsize=10)
+                _ax1.yaxis.set_label_coords(-0.1, 0.75)
+
             # Plot the ray of symmetry
             _ax1.plot(
                 [0, 1], [0, 1], linewidth=0.5, linestyle=":", color="grey", zorder=1
