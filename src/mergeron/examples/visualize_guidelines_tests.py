@@ -27,7 +27,16 @@ import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 from mergeron import DATA_DIR
 from mergeron.core.pseudorandom_numbers import DIST_PARMS_DEFAULT
-from mergeron.gen import INVResolution, ShareSpec, UPPAggrSelector, UPPTestRegime
+from mergeron.gen import (
+    INVResolution,
+    MarketDataSample,
+    MarketSampleSpec,
+    RECConstants,
+    ShareSpec,
+    SHRConstants,
+    UPPAggrSelector,
+    UPPTestRegime,
+)
 
 PROG_PATH = Path(__file__)
 
@@ -38,7 +47,7 @@ blosc_filters = ptb.Filters(
 
 
 def gen_plot_data(
-    _market_data: dgl.MarketDataSample,
+    _market_data: MarketDataSample,
     _std_vec: gbl.HMGThresholds,
     _pcm_firm2_star: float,
     _test_regime: UPPTestRegime,
@@ -58,10 +67,8 @@ def gen_plot_data(
 
     _upp_test_raw = gtl.gen_upp_arrays(
         _std_vec,
-        dgl.MarketDataSample(*[
-            _pcm_array.astype(_f.type)
-            if _f.name == "pcm_array"
-            else getattr(_market_data, _f.name)
+        MarketDataSample(*[  # type: ignore
+            _pcm_array if _f.name == "pcm_array" else getattr(_market_data, _f.name)
             for _f in fields(_market_data)
         ]),
         _test_regime,
@@ -121,7 +128,7 @@ def gen_plot_data(
 # Generate market data
 def _main(
     _hmg_pub_year: gbl.HMGPubYear,
-    _market_sample_spec: dgl.MarketSampleSpec,
+    _market_sample_spec: MarketSampleSpec,
     _test_regime: UPPTestRegime,
     _save_data_to_file: gtl.SaveData,
 ) -> None:
@@ -130,7 +137,9 @@ def _main(
         "safeharbor" if test_regime.resolution == INVResolution.ENFT else "presumption",
     )
 
-    _, _r_bar, _g_bar, _divr_bar, *_ = guidelins_std_vec
+    _r_bar, _g_bar, _divr_bar = (
+        getattr(guidelins_std_vec, _f) for _f in ("rec", "guppi", "divr")
+    )
 
     market_data = dgl.gen_market_sample(_market_sample_spec, seed_seq_list=None)
 
@@ -262,11 +271,11 @@ if __name__ == "__main__":
 
     sample_sz = 10**7
 
-    market_sample_spec = dgl.MarketSampleSpec(
+    market_sample_spec = MarketSampleSpec(
         sample_sz,
         r_bar,
         share_spec=ShareSpec(
-            dgl.RECConstants.INOUT, dgl.SHRConstants.UNI, DIST_PARMS_DEFAULT, None
+            RECConstants.INOUT, SHRConstants.UNI, DIST_PARMS_DEFAULT, None
         ),
     )
 

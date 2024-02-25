@@ -403,39 +403,39 @@ class DataclassInstance(Protocol):
 class MarketDataSample:
     """Container for generated markets data sample."""
 
-    frmshr_array: NDArray[np.floating]
+    frmshr_array: NDArray[np.float64]
     """Merging-firm shares (with two merging firms)"""
 
-    pcm_array: NDArray[np.floating]
+    pcm_array: NDArray[np.float64]
     """Merging-firms' prices (normalized to 1, in default specification)"""
 
-    price_array: NDArray[np.floating]
+    price_array: NDArray[np.float64]
     """Merging-firms' price-cost margins (PCM)"""
 
-    fcounts: NDArray[np.integer]
+    fcounts: NDArray[np.int64]
     """Number of firms in market"""
 
-    ratio_choice_prob_to_mktshr: NDArray[np.floating]
+    ratio_choice_prob_to_mktshr: NDArray[np.float64]
     """
     One (1) minus probability that the outside good is chosen
 
     Converts market shares to choice probabilities by multiplication.
     """
 
-    nth_firm_share: NDArray[np.floating]
+    nth_firm_share: NDArray[np.float64]
     """Market-share of n-th firm
 
     Relevant for testing for draws the do or
     do not meet HSR filing thresholds.
     """
 
-    divr_array: NDArray[np.floating]
+    divr_array: NDArray[np.float64]
     """Diversion ratio between the merging firms"""
 
-    hhi_post: NDArray[np.floating]
+    hhi_post: NDArray[np.float64]
     """Post-merger change in Herfindahl-Hirschmann Index (HHI)"""
 
-    hhi_delta: NDArray[np.floating]
+    hhi_delta: NDArray[np.float64]
     """Change in HHI from combination of merging firms"""
 
 

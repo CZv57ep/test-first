@@ -14,7 +14,6 @@ import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
 from mergeron.core.pseudorandom_numbers import DIST_PARMS_DEFAULT
 from mergeron.gen import (
-    EMPTY_ARRAY_DEFAULT,
     INVResolution,
     MarketSampleSpec,
     PCMConstants,

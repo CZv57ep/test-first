@@ -97,4 +97,4 @@ if __name__ == "__main__":
     mgn_ax.set_ylabel("Relative Frequency", fontsize=10)
 
     mgn_fig.tight_layout()
-    plt.savefig(PROG_PATH.with_suffix(".pdf"))
+    plt.savefig(DATA_DIR / PROG_PATH.with_suffix(".pdf").name)
