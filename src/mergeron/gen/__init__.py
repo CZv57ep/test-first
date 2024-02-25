@@ -227,7 +227,6 @@ def _sample_size_validator(
 def _recapture_rate_validator(
     _object: MarketSampleSpec, _attribute: Attribute, _value: float | None, /
 ) -> None:
-    # if _value < 10**6 or (np.log10(_value) % 1 != 0):
     if _value and not (0 < _value <= 1):
         raise ValueError("Recapture rate must lie in the interval, [0, 1).")
 

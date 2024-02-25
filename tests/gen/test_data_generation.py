@@ -125,7 +125,9 @@ def test_gen_market_sample(
     )
 
     _mkt_sample_spec = MarketSampleSpec(
-        _tcount, 0.80, pcm_spec=PCMSpec(PCMConstants.UNI, _pcm_dist_firm2_test, None)
+        _tcount,
+        None if _recapture_spec_test == RECConstants.OUTIN else 0.80,
+        pcm_spec=PCMSpec(PCMConstants.UNI, _pcm_dist_firm2_test, None),
     )
     if _mktshr_dist_type_test == SHRConstants.UNI:
         _shr_dist_parms = None
