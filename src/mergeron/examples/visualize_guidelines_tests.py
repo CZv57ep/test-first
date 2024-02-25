@@ -22,7 +22,7 @@ from matplotlib import cm, colors
 from matplotlib.ticker import StrMethodFormatter
 from numpy.typing import NDArray
 
-import mergeron.core.guidelines_boundaries as gsl
+import mergeron.core.guidelines_boundaries as gbl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 from mergeron import DATA_DIR
@@ -39,7 +39,7 @@ blosc_filters = ptb.Filters(
 
 def gen_plot_data(
     _market_data: dgl.MarketDataSample,
-    _std_vec: gsl.GuidelinesBoundsVEC,
+    _std_vec: gbl.GuidelinesBoundsVEC,
     _pcm_firm2_star: float,
     _test_regime: UPPTestRegime,
     /,
@@ -120,13 +120,13 @@ def gen_plot_data(
 
 # Generate market data
 def _main(
-    _hmg_pub_year: gsl.HMGPubYear,
+    _hmg_pub_year: gbl.HMGPubYear,
     _market_sample_spec: dgl.MarketSampleSpec,
     _test_regime: UPPTestRegime,
     _save_data_to_file: gtl.SaveData,
 ) -> None:
     guidelins_std_vec = getattr(
-        gsl.GuidelinesBounds(_hmg_pub_year),
+        gbl.GuidelinesBounds(_hmg_pub_year),
         "safeharbor" if test_regime.resolution == INVResolution.ENFT else "presumption",
     )
 
@@ -142,7 +142,7 @@ def _main(
     )
     _fig_norm = colors.Normalize(0.0, 1.0)
     _cmap_kwargs = {"cmap": "cividis", "norm": _fig_norm}
-    _plt, _, _, _set_axis_def = gsl.boundary_plot()
+    _plt, _, _, _set_axis_def = gbl.boundary_plot()
 
     _fig_2dsg = _plt.figure(figsize=(8.5, 9.5), dpi=600)
 
@@ -256,7 +256,7 @@ if __name__ == "__main__":
         INVResolution.ENFT, UPPAggrSelector.MIN, UPPAggrSelector.MIN
     )
     r_bar = getattr(
-        gsl.GuidelinesBounds(hmg_pub_year),
+        gbl.GuidelinesBounds(hmg_pub_year),
         "presumption" if test_regime.resolution == INVResolution.ENFT else "safeharbor",
     ).rec
 

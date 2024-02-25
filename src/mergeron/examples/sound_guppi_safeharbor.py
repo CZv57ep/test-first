@@ -7,7 +7,7 @@ from typing import Literal
 import numpy as np
 import tables as ptb  # type: ignore
 
-import mergeron.core.guidelines_boundaries as gsl
+import mergeron.core.guidelines_boundaries as gbl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
@@ -60,7 +60,7 @@ def analyze_invres_data(
         If True, simulated data are save to file (hdf5 format)
 
     """
-    _invres_parm_vec = gsl.GuidelinesBounds(_hmg_std_pub_year).presumption
+    _invres_parm_vec = gbl.GuidelinesBounds(_hmg_std_pub_year).presumption
 
     _save_data_to_file: gtl.SaveData = False
     if save_data_to_file_flag:

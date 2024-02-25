@@ -19,7 +19,7 @@ import tables as ptb  # type: ignore
 from attrs import evolve
 
 import mergeron.core.ftc_merger_investigations_data as fid
-import mergeron.core.guidelines_boundaries as gsl
+import mergeron.core.guidelines_boundaries as gbl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
@@ -51,7 +51,7 @@ def invres_stats_sim_setup(
     _invdata: fid.INVData,
     _data_period: str,
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
-    _invres_parm_vec: gsl.GuidelinesBoundsVEC,
+    _invres_parm_vec: gbl.GuidelinesBoundsVEC,
     _sample_spec: MarketSampleSpec,
     _invres_stats_kwargs: Mapping[str, Any] | None = None,
     /,
@@ -186,7 +186,7 @@ def invres_stats_sim_render(
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
     _stats_group: isl.StatsGrpSelector,
     _stats_group_dict_sub: Mapping[str, Any],
-    _invres_parm_vec: gsl.GuidelinesBoundsVEC,
+    _invres_parm_vec: gbl.GuidelinesBoundsVEC,
     _sim_test_regime: UPPTestRegime,
     _stats_table_file: TextIOWrapper,
     /,

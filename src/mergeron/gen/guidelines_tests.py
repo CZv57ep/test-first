@@ -21,7 +21,7 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from ..core import guidelines_boundaries as gsl  # noqa: TID252
+from ..core import guidelines_boundaries as gbl  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
     FCOUNT_WTS_DEFAULT,
@@ -45,7 +45,7 @@ SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, str]
 
 
 def sim_invres_cnts_ll(
-    _invres_parm_vec: gsl.GuidelinesBoundsVEC,
+    _invres_parm_vec: gbl.GuidelinesBoundsVEC,
     _mkt_sample_spec: MarketSampleSpec,
     _sim_invres_cnts_kwargs: Mapping[str, Any],
     /,
@@ -130,7 +130,7 @@ def sim_invres_cnts_ll(
 
 
 def sim_invres_cnts(
-    _upp_test_parms: gsl.GuidelinesBoundsVEC,
+    _upp_test_parms: gbl.GuidelinesBoundsVEC,
     _mkt_sample_spec: MarketSampleSpec,
     /,
     *,
@@ -272,7 +272,7 @@ def sim_invres_cnts(
 
 
 def gen_upp_arrays(
-    _upp_test_parms: gsl.GuidelinesBoundsVEC,
+    _upp_test_parms: gbl.GuidelinesBoundsVEC,
     _market_data: MarketDataSample,
     _sim_test_regime: UPPTestRegime,
     /,
