@@ -39,7 +39,7 @@ blosc_filters = ptb.Filters(
 
 def gen_plot_data(
     _market_data: dgl.MarketDataSample,
-    _std_vec: gbl.GuidelinesBoundsVEC,
+    _std_vec: gbl.HMGThresholds,
     _pcm_firm2_star: float,
     _test_regime: UPPTestRegime,
     /,
@@ -126,7 +126,7 @@ def _main(
     _save_data_to_file: gtl.SaveData,
 ) -> None:
     guidelins_std_vec = getattr(
-        gbl.GuidelinesBounds(_hmg_pub_year),
+        gbl.GuidelinesThresholds(_hmg_pub_year),
         "safeharbor" if test_regime.resolution == INVResolution.ENFT else "presumption",
     )
 
@@ -256,7 +256,7 @@ if __name__ == "__main__":
         INVResolution.ENFT, UPPAggrSelector.MIN, UPPAggrSelector.MIN
     )
     r_bar = getattr(
-        gbl.GuidelinesBounds(hmg_pub_year),
+        gbl.GuidelinesThresholds(hmg_pub_year),
         "presumption" if test_regime.resolution == INVResolution.ENFT else "safeharbor",
     ).rec
 

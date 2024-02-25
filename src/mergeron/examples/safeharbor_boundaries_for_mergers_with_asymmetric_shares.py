@@ -451,16 +451,16 @@ def get_hmg_standards_by_key(_guppi_bench_key: str, /) -> tuple:
     match _guppi_bench_key:
         case "DOJATR":
             return (
-                *(_tmp := gbl.GuidelinesBounds(2010).safeharbor[:2]),
+                *(_tmp := gbl.GuidelinesThresholds(2010).safeharbor[:2]),
                 0.05,
                 _tmp[-1],
                 None,
                 None,
             )
         case "DH100":
-            return gbl.GuidelinesBounds(2010).safeharbor
+            return gbl.GuidelinesThresholds(2010).safeharbor
         case "DH50":
-            return gbl.GuidelinesBounds(1992).safeharbor
+            return gbl.GuidelinesThresholds(1992).safeharbor
         case _:
             raise ValueError(
                 f"GUPPI benchmark key must be one of, {guppi_benchmark_keys!r}"

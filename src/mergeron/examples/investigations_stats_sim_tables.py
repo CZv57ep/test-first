@@ -24,7 +24,6 @@ import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
-from mergeron.core.guidelines_boundaries import GuidelinesBounds
 from mergeron.core.proportions_tests import propn_ci
 from mergeron.gen import (
     INVResolution,
@@ -34,6 +33,7 @@ from mergeron.gen import (
     RECConstants,
     ShareSpec,
     SHRConstants,
+    UPPAggrSelector,
     UPPTestRegime,
 )
 
@@ -51,7 +51,7 @@ def invres_stats_sim_setup(
     _invdata: fid.INVData,
     _data_period: str,
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
-    _invres_parm_vec: gbl.GuidelinesBoundsVEC,
+    _invres_parm_vec: gbl.HMGThresholds,
     _sample_spec: MarketSampleSpec,
     _invres_stats_kwargs: Mapping[str, Any] | None = None,
     /,
@@ -68,10 +68,13 @@ def invres_stats_sim_setup(
     )
 
     _invres_stats_kwargs = _invres_stats_kwargs or {
-        "sim_test_regime": INVResolution.ENFT
+        "sim_test_regime": UPPTestRegime(INVResolution.ENFT, UPPAggrSelector.MAX, None)
     }
     _sim_test_regime = _invres_stats_kwargs["sim_test_regime"]
-    _test_regime, _guppi_wgtng_policy, _divr_wgtng_policy = _sim_test_regime
+    _invres_spec, _guppi_wgtng_policy, _divr_wgtng_policy = (
+        getattr(_sim_test_regime, _f)
+        for _f in ("resolution", "guppi_aggregator", "divr_aggregator")
+    )
 
     # Get observed rates
     (
@@ -85,7 +88,7 @@ def invres_stats_sim_setup(
             _table_ind_group,
             _table_evid_cond,
             _grp,
-            _test_regime,
+            _invres_spec,
         )
         for _grp in (
             isl.StatsGrpSelector.FC,
@@ -118,7 +121,7 @@ def invres_stats_sim_setup(
     # Prepare and write/print output tables
     _stats_group_dict = {
         isl.StatsGrpSelector.FC: {
-            "desc": f"{_test_regime.capitalize()} rates by firm count",
+            "desc": f"{_invres_spec.capitalize()} rates by firm count",
             "title_str": "By Number of Significant Competitors",
             "hval": "Firm Count",
             "hcol_width": 54,
@@ -127,7 +130,7 @@ def invres_stats_sim_setup(
             "sim_array": _upp_tests_counts.by_firm_count,
         },
         isl.StatsGrpSelector.DL: {
-            "desc": Rf"{_test_regime.capitalize()} rates by range of $\Delta HHI$",
+            "desc": Rf"{_invres_spec.capitalize()} rates by range of $\Delta HHI$",
             "title_str": R"By Change in Concentration (\Deltah{})",
             "hval": R"$\Delta HHI$",
             "hval_plus": R"{ $[\Delta_L, \Delta_H)$ }",
@@ -146,7 +149,7 @@ def invres_stats_sim_setup(
             "sim_array": _upp_tests_counts.by_delta,
         },
         isl.StatsGrpSelector.ZN: {
-            "desc": f"{_test_regime.capitalize()} rates by Approximate Presumption Zone",
+            "desc": f"{_invres_spec.capitalize()} rates by Approximate Presumption Zone",
             "title_str": "{} {}".format(
                 R"By Approximate \textit{2010 Guidelines}",
                 "Concentration-Based Standards",
@@ -160,7 +163,7 @@ def invres_stats_sim_setup(
     }
 
     _stats_table_name = dottex_format_str.format(
-        _test_regime.capitalize(),
+        _invres_spec.capitalize(),
         _merger_class.replace(" ", ""),
         _data_period.split("-")[1],
     )
@@ -186,7 +189,7 @@ def invres_stats_sim_render(
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
     _stats_group: isl.StatsGrpSelector,
     _stats_group_dict_sub: Mapping[str, Any],
-    _invres_parm_vec: gbl.GuidelinesBoundsVEC,
+    _invres_parm_vec: gbl.HMGThresholds,
     _sim_test_regime: UPPTestRegime,
     _stats_table_file: TextIOWrapper,
     /,
@@ -231,9 +234,9 @@ def invres_stats_sim_render(
         isl.LTX_ARRAY_LINEEND,
     ))
 
-    _eg_count = (_relfreq_eg := 0.01) * _sim_sample_sz
+    _eg_count = int(_relfreq_eg := 0.01) * _sim_sample_sz
     _stats_sim_ci_eg = 100 * np.array(
-        propn_ci(0.50 * _eg_count, _eg_count, method="Exact")
+        propn_ci(int(0.50 * _eg_count), _eg_count, method="Exact")
     )
     _stats_sim_notestr = " ".join((
         Rf"\(\cdot\) Simulated {_stats_table_content.test_res} rates are estimated by",
@@ -390,8 +393,8 @@ if __name__ == "__main__":
         save_data_to_file = (True, h5datafile, "/")
 
     sim_test_regime = (
-        (INVResolution.CLRN, gtl.UPPAggrSelector.MAX, None),
-        (INVResolution.ENFT, gtl.UPPAggrSelector.OSD, None),
+        UPPTestRegime(INVResolution.CLRN, gtl.UPPAggrSelector.MAX, None),
+        UPPTestRegime(INVResolution.ENFT, gtl.UPPAggrSelector.OSD, None),
     )[1]
     invres_stats_kwargs = {"sim_test_regime": sim_test_regime}
 
@@ -402,16 +405,16 @@ if __name__ == "__main__":
                 continue
 
             print(
-                f"{sim_test_regime[0].capitalize()} rates and c.i.s",
+                f"{sim_test_regime.resolution.capitalize()} rates and c.i.s",
                 f"for the class of mergers, '{merger_class}',",
                 f"for study period, {study_period}:",
             )
             stats_table_content.obs_period = study_period.split("-")
 
             invres_parm_vec = (
-                GuidelinesBounds(2010).presumption
+                gbl.GuidelinesThresholds(2010).presumption
                 if study_period.split("-")[1] == data_periods[1].split("-")[1]
-                else GuidelinesBounds(1992).presumption
+                else gbl.GuidelinesThresholds(1992).presumption
             )
 
             mkt_sample_spec = dgl.MarketSampleSpec(
@@ -439,7 +442,7 @@ if __name__ == "__main__":
 
     isl.render_table_pdf(
         table_dottex_namelist,
-        dottex_format_str.format(f"{sim_test_regime[0]}".capitalize(), "All", "All"),
+        dottex_format_str.format(sim_test_regime.resolution.capitalize(), "All", "All"),
     )
 
     if save_data_to_file:

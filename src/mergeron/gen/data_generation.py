@@ -118,10 +118,7 @@ def gen_market_sample(
 
     # Generate merging-firm price data
     _price_data = _gen_pr_data(
-        _mktshr_data.mktshr_array[:, :2],
-        _mktshr_data.nth_firm_share,
-        _mkt_sample_spec_here,
-        _pr_rng_seed_seq,
+        _mktshr_array[:, :2], _nth_firm_share, _mkt_sample_spec_here, _pr_rng_seed_seq
     )
 
     _price_array, _hsr_filing_test = (

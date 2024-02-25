@@ -45,7 +45,7 @@ SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, str]
 
 
 def sim_invres_cnts_ll(
-    _invres_parm_vec: gbl.GuidelinesBoundsVEC,
+    _invres_parm_vec: gbl.HMGThresholds,
     _mkt_sample_spec: MarketSampleSpec,
     _sim_invres_cnts_kwargs: Mapping[str, Any],
     /,
@@ -130,7 +130,7 @@ def sim_invres_cnts_ll(
 
 
 def sim_invres_cnts(
-    _upp_test_parms: gbl.GuidelinesBoundsVEC,
+    _upp_test_parms: gbl.HMGThresholds,
     _mkt_sample_spec: MarketSampleSpec,
     /,
     *,
@@ -272,7 +272,7 @@ def sim_invres_cnts(
 
 
 def gen_upp_arrays(
-    _upp_test_parms: gbl.GuidelinesBoundsVEC,
+    _upp_test_parms: gbl.HMGThresholds,
     _market_data: MarketDataSample,
     _sim_test_regime: UPPTestRegime,
     /,
@@ -286,7 +286,7 @@ def gen_upp_arrays(
 
     _invres_resolution, _guppi_aggregator, _divr_aggregator = (
         getattr(_sim_test_regime, _f)
-        for _f in ("resolution", "primary_aggregator", "secondary_aggregator")
+        for _f in ("resolution", "guppi_aggregator", "divr_aggregator")
     )
 
     _guppi_array = np.empty_like(_market_data.divr_array)

@@ -107,10 +107,10 @@ class GuidelinesThresholds:
             ),
         )
 
-        # inferred_presumption is relevant for 2010 Guidelines
+        # imputed_presumption is relevant for 2010 Guidelines
         object.__setattr__(
             self,
-            "inferred_presumption",
+            "imputed_presumption",
             (
                 HMGThresholds(
                     _dh_i := 2 * (0.5 / _fc) ** 2,

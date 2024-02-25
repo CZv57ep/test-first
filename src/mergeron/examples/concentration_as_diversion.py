@@ -142,7 +142,7 @@ def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
         are drawn
 
     """
-    gso = gbl.GuidelinesBounds(_gpubyr)
+    gso = gbl.GuidelinesThresholds(_gpubyr)
     _dhhi_val, _r_val, _g_val = (
         getattr(gso.presumption, _f) for _f in ("delta", "rec", "guppi")
     )
@@ -262,11 +262,11 @@ def plot_and_save_boundary_coords(
     /,
     layout: Literal["collected", "distributed"] = "collected",
 ) -> None:
-    gso = gbl.GuidelinesBounds(_gpubyr)
+    gso = gbl.GuidelinesThresholds(_gpubyr)
 
     _hmg_standards_strings_dict = {
         "distributed": ("presumption", "inferred presumption", "safeharbor"),
-        "collected": ("safeharbor", "inferred_presumption", "presumption"),
+        "collected": ("safeharbor", "imputed_presumption", "presumption"),
     }
     _hmg_standards_strings = _hmg_standards_strings_dict.get(layout, ())
     if not _hmg_standards_strings:
@@ -352,7 +352,7 @@ def plot_and_save_boundary_coords(
 
 def gen_plot_boundary(
     _bndry_data_dict: Mapping[str, Sequence[tuple[float]]],
-    _gso: gbl.GuidelinesBounds,
+    _gso: gbl.GuidelinesThresholds,
     _gs_str: str,
     _bdry_spec: tuple[str, Mapping[str, Any]],
     _ax1: mpa.Axes,

@@ -90,7 +90,7 @@ def test_clearance_rate_calcs() -> None:
 
     _start_time = datetime.now()
     upp_tests_counts = gtl.sim_invres_cnts_ll(
-        gbl.GuidelinesBounds(2010).safeharbor,
+        gbl.GuidelinesThresholds(2010).safeharbor,
         _ind_sample_spec,
         {
             "seed_seq_list": rmp.gen_seed_seq_list_default(3),

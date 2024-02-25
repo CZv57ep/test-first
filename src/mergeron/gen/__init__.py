@@ -218,9 +218,9 @@ class SSZConstants(float, enum.ReprEnum):
 def _sample_size_validator(
     _object: MarketSampleSpec, _attribute: Attribute, _value: int, /
 ) -> None:
-    if _value < 10**6 or (_value % 10**5 != 0):
+    if _value < 10**6:
         raise ValueError(
-            f"Sample size must be a multiple of {10** 4:,d} and not less than {10** 6:,d}."
+            f"Sample size must be not less than {10**6:,d}. Got, {_value:,d}."
         )
 
 
@@ -381,12 +381,12 @@ class UPPTestRegime:
         default=INVResolution.ENFT,
         validator=validators.instance_of(INVResolution),  # type: ignore
     )
-    primary_aggregator: UPPAggrSelector = field(  # type: ignore
+    guppi_aggregator: UPPAggrSelector = field(  # type: ignore
         default=UPPAggrSelector.MAX,
-        validator=validators.instance_of(UPPAggrSelector | None),  # type: ignore
+        validator=validators.instance_of(UPPAggrSelector),  # type: ignore
     )
-    secondary_aggregator: UPPAggrSelector | None = field(  # type: ignore
-        default=primary_aggregator,
+    divr_aggregator: UPPAggrSelector | None = field(  # type: ignore
+        default=guppi_aggregator,
         validator=validators.instance_of(UPPAggrSelector | None),  # type: ignore
     )
 

@@ -12,9 +12,9 @@ import mergeron.gen.data_generation as dgl
 import mergeron.gen.guidelines_tests as gtl
 import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
+from mergeron.core.pseudorandom_numbers import DIST_PARMS_DEFAULT
 from mergeron.gen import (
     EMPTY_ARRAY_DEFAULT,
-    FCOUNT_WTS_DEFAULT,
     INVResolution,
     MarketSampleSpec,
     PCMConstants,
@@ -26,8 +26,8 @@ from mergeron.gen import (
 )
 
 tests_of_interest: tuple[UPPTestRegime, ...] = (
-    gtl.UPPTestRegime(INVResolution.CLRN, UPPAggrSelector.MAX, UPPAggrSelector.MAX),
-    gtl.UPPTestRegime(INVResolution.ENFT, UPPAggrSelector.MIN, UPPAggrSelector.MIN),
+    UPPTestRegime(INVResolution.CLRN, UPPAggrSelector.MAX, UPPAggrSelector.MAX),
+    UPPTestRegime(INVResolution.ENFT, UPPAggrSelector.MIN, UPPAggrSelector.MIN),
 )
 
 PROG_PATH = Path(__file__)
@@ -60,7 +60,7 @@ def analyze_invres_data(
         If True, simulated data are save to file (hdf5 format)
 
     """
-    _invres_parm_vec = gbl.GuidelinesBounds(_hmg_std_pub_year).presumption
+    _invres_parm_vec = gbl.GuidelinesThresholds(_hmg_std_pub_year).presumption
 
     _save_data_to_file: gtl.SaveData = False
     if save_data_to_file_flag:
@@ -123,10 +123,7 @@ def analyze_invres_data(
             _sample_size,
             _invres_parm_vec.rec,
             share_spec=ShareSpec(
-                _recapture_spec_test,
-                SHRConstants.UNI,
-                EMPTY_ARRAY_DEFAULT,
-                FCOUNT_WTS_DEFAULT,
+                _recapture_spec_test, SHRConstants.UNI, DIST_PARMS_DEFAULT, None
             ),
             pcm_spec=PCMSpec(
                 _pcm_dist_type_test, _pcm_dist_firm2_test, _pcm_dist_parms_test
