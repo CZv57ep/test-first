@@ -9,7 +9,7 @@ import tables as ptb  # type: ignore
 
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.gen.data_generation as dgl
-import mergeron.gen.guidelines_tests as gtl
+import mergeron.gen.upp_tests as utl
 import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
 from mergeron.core.pseudorandom_numbers import DIST_PARMS_DEFAULT
@@ -61,7 +61,7 @@ def analyze_invres_data(
     """
     _invres_parm_vec = gbl.GuidelinesThresholds(_hmg_std_pub_year).presumption
 
-    _save_data_to_file: gtl.SaveData = False
+    _save_data_to_file: utl.SaveData = False
     if save_data_to_file_flag:
         _h5_hier_pat = re.compile(r"\W")
         _blosc_filters = ptb.Filters(
@@ -136,7 +136,7 @@ def analyze_invres_data(
 
         _start_time = datetime.now()
 
-        upp_test_counts = gtl.sim_invres_cnts_ll(
+        upp_test_counts = utl.sim_invres_cnts_ll(
             _invres_parm_vec, _ind_sample_spec, _invres_cnts_kwargs
         )
         _run_duration = datetime.now() - _start_time

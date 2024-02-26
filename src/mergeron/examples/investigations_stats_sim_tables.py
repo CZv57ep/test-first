@@ -21,7 +21,7 @@ from attrs import evolve
 import mergeron.core.ftc_merger_investigations_data as fid
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.gen.data_generation as dgl
-import mergeron.gen.guidelines_tests as gtl
+import mergeron.gen.upp_tests as utl
 import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
 from mergeron.core.proportions_tests import propn_ci
@@ -109,7 +109,7 @@ def invres_stats_sim_setup(
 
     # Generate simulated rates
     _start_time = datetime.now()
-    _upp_tests_counts = gtl.sim_invres_cnts_ll(
+    _upp_tests_counts = utl.sim_invres_cnts_ll(
         _invres_parm_vec, _sample_spec_here, _invres_stats_kwargs
     )
     _total_duration = datetime.now() - _start_time
@@ -380,7 +380,7 @@ if __name__ == "__main__":
     pcm_dist_type, pcm_dist_parms = PCMConstants.EMPR, None
 
     save_data_to_file_flag = False
-    save_data_to_file: gtl.SaveData = False
+    save_data_to_file: utl.SaveData = False
     if save_data_to_file_flag:
         h5path = DATA_DIR / Path(__file__).with_suffix(".h5").name
         blosc_filters = ptb.Filters(complevel=3, complib="blosc:lz4", fletcher32=True)
@@ -393,8 +393,8 @@ if __name__ == "__main__":
         save_data_to_file = (True, h5datafile, "/")
 
     sim_test_regime = (
-        UPPTestRegime(INVResolution.CLRN, gtl.UPPAggrSelector.MAX, None),
-        UPPTestRegime(INVResolution.ENFT, gtl.UPPAggrSelector.OSD, None),
+        UPPTestRegime(INVResolution.CLRN, utl.UPPAggrSelector.MAX, None),
+        UPPTestRegime(INVResolution.ENFT, utl.UPPAggrSelector.OSD, None),
     )[1]
     invres_stats_kwargs = {"sim_test_regime": sim_test_regime}
 

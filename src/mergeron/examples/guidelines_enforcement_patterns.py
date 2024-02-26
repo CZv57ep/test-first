@@ -1,19 +1,22 @@
 from __future__ import annotations
 
-from numpy import array, column_stack
+import numpy as np
 
 import mergeron.core.proportions_tests as pcl
 
-enf_counts = array((
-    (24, 25, 33, 33),
-    (30, 33, 27, 32),
-    (14, 15, 9, 11),
-    (13, 22, 6, 11),
-    (6, 8, 7, 9),
-    (1, 3, 2, 4),
-    (1, 3, 2, 4),
-    (1e-15, 1e-15, 1, 1),
-))
+enf_counts = np.array(
+    (
+        (24, 25, 33, 33),
+        (30, 33, 27, 32),
+        (14, 15, 9, 11),
+        (13, 22, 6, 11),
+        (6, 8, 7, 9),
+        (1, 3, 2, 4),
+        (1, 3, 2, 4),
+        (1e-15, 1e-15, 1, 1),
+    ),
+    np.int16,
+)
 
 if __name__ == "__main__":
     adj_n = len(enf_counts)
@@ -37,13 +40,12 @@ if __name__ == "__main__":
                 count, ic_1996_2003.sum(), alpha=0.05 / adj_n, method="Wilson"
             )[2:]
         )
-    del count
 
     print("Conf. intervals for relative frequency of II Requests (Goodman, 1965)")
     for goodman_alternative in "default", "simplified":
         for goodman_method in "goodman", "quesenberry-hurst":
             print(f"Method, {goodman_method!r}; alternative, {goodman_alternative!r}")
-            for _cis in column_stack([
+            for _cis in np.column_stack([
                 pcl.propn_ci_multinomial(
                     enf_counts[:, _cidx],
                     method=goodman_method,
@@ -68,5 +70,5 @@ if __name__ == "__main__":
         "(Bonnferoni-adjusted Newcombe C.I.s)",
     )
     for counts in enf_counts:
-        print(pcl.propn_diff_ci(*counts, alpha=0.05 / adj_n, method="Newcombe")[2:])
+        print(pcl.propn_diff_ci(*counts, alpha=0.05 / adj_n, method="Newcombe"))
     print()

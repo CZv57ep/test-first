@@ -24,7 +24,7 @@ from numpy.typing import NDArray
 
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.gen.data_generation as dgl
-import mergeron.gen.guidelines_tests as gtl
+import mergeron.gen.upp_tests as utl
 from mergeron import DATA_DIR
 from mergeron.core.pseudorandom_numbers import DIST_PARMS_DEFAULT
 from mergeron.gen import (
@@ -65,7 +65,7 @@ def gen_plot_data(
     ))
     del _m1
 
-    _upp_test_raw = gtl.gen_upp_arrays(
+    _upp_test_raw = utl.gen_upp_arrays(
         _std_vec,
         MarketDataSample(*[  # type: ignore
             _pcm_array if _f.name == "pcm_array" else getattr(_market_data, _f.name)
@@ -130,7 +130,7 @@ def _main(
     _hmg_pub_year: gbl.HMGPubYear,
     _market_sample_spec: MarketSampleSpec,
     _test_regime: UPPTestRegime,
-    _save_data_to_file: gtl.SaveData,
+    _save_data_to_file: utl.SaveData,
 ) -> None:
     guidelins_std_vec = getattr(
         gbl.GuidelinesThresholds(_hmg_pub_year),
@@ -288,7 +288,7 @@ if __name__ == "__main__":
             title="Datasets, Sound GUPPI Safeharbor, Envelopes of GUPPI Boundaries",
             filters=blosc_filters,
         )
-        save_data_to_file: gtl.SaveData = (
+        save_data_to_file: utl.SaveData = (
             True,
             h5datafile,
             "Intrinsic clearance stats",
