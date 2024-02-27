@@ -5,7 +5,7 @@ Draw boundaries for various standards from U.S. Horizontal Merger Guidelines.
 
 from itertools import product as iterprod
 from pathlib import Path
-from typing import Literal
+from typing import Literal, TypedDict
 
 import matplotlib.axis
 from matplotlib import cm as colormgr
@@ -20,14 +20,22 @@ from mergeron import DATA_DIR
 PROG_PATH = Path(__file__)
 
 
+class _CMAPArgs(TypedDict):
+    cmap: mcolors.Colormap
+    norm: mcolors.Normalize
+
+
+_color_kwargs = _CMAPArgs(cmap=colormaps["cividis"], norm=mcolors.Normalize(0, 1.0))
+
+
 def plot_delta_boundaries(
     _guppi_bench_key: str,
-    _print_guppi_max_bndry_envs_flag: bool = False,
-    *,
-    recapture_spec: str = "inside-out",
+    _print_guppi_max_bndry_envs_flag: bool,
+    _recapture_spec: Literal["inside-out", "proportional"],
+    _color_kwargs: _CMAPArgs = _color_kwargs,
+    /,
 ):
-    if recapture_spec not in (_recspecs := ("inside-out", "proportional")):
-        raise ValueError(f"Recapture specification must be one of, {_recspecs!r}")
+    _print_guppi_max_bndry_envs_flag = _print_guppi_max_bndry_envs_flag or False
 
     print("ΔHHI safeharbor boundary")
     _plt, _my_fig1, _ax1, _ = gbl.boundary_plot()
@@ -66,7 +74,7 @@ def plot_delta_boundaries(
             print(_symshr, _dstar, _m_star, _r_bar, _guppi_bench, "...", end="")
 
             _guppi_bdry_env_xs = (0, _symshr, 1)
-            if recapture_spec == "inside-out":
+            if _recapture_spec == "inside-out":
                 # ## Plot envelope of GUPPI boundaries with
                 #   r_k = r_bar if s_k = min(_s_1, _s_2)
                 # ## See (s_i, s_j) in equation~(44), or thereabouts, in paper
@@ -89,12 +97,12 @@ def plot_delta_boundaries(
                 _guppi_bdry_env_xs[::-1],
                 linewidth=0.5,
                 linestyle="--",
-                color=colormaps["cividis"](_m_star),
+                color=_color_kwargs["cmap"](_m_star),
                 zorder=3,
             )
             del _symshr, _dstar, _m_star
 
-            if recapture_spec == "inside-out" and _dh_bound not in (200, 300, 500):
+            if _recapture_spec == "inside-out" and _dh_bound not in (200, 300, 500):
                 _ax1.annotate(
                     rf"$\Delta HHI$ = {_dh_bound:,d} pts.",
                     xy=(_dh_dat_x[1], _dh_dat_y[1]),
@@ -127,7 +135,9 @@ def plot_delta_boundaries(
 def plot_guppi_boundaries(  # noqa PLR0915
     _guppi_bench_key: str,
     _pcm_same_flag: bool,
-    _recapture_spec: Literal["proportional", "inside-out"] = "inside-out",
+    _recapture_spec: Literal["proportional", "inside-out"],
+    _color_kwargs: _CMAPArgs = _color_kwargs,
+    /,
 ):
     if recapture_spec not in (_recspecs := ("inside-out", "proportional")):
         raise ValueError(f"Recapture specification must be one of, {_recspecs!r}")
@@ -183,7 +193,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
         s=(0.25 * 72.0 / _my_fig1.dpi) ** 2,
         edgecolor=None,
         c=_mst_vec,
-        **cmap_kwargs,
+        **_color_kwargs,
         rasterized=True,
         zorder=3,
     )
@@ -202,7 +212,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
                 _s2_vals,
                 linestyle="--",
                 linewidth=0.75,
-                color=colormaps["cividis"](_m_star),
+                color=_color_kwargs["cmap"](_m_star),
                 zorder=3,
             )
         else:
@@ -316,7 +326,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
             _y_drt,
             linestyle="-",
             linewidth=0.75,
-            color=colormaps["cividis"](_m_star_bench),
+            color=_color_kwargs["cmap"](_m_star_bench),
             zorder=4,
         )
 
@@ -365,7 +375,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
         xerr=_ebar_array,
         yerr=_ebar_array,
         fmt=".",
-        mfc=colormaps["cividis"](_guppi_bench / _r_bar),
+        mfc=_color_kwargs["cmap"](_guppi_bench / _r_bar),
         mec="None",
         alpha=0.9,
         zorder=5,
@@ -374,7 +384,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
     # https://stackoverflow.com/questions/22995797/
     for _ix in range(2):
         _ebar_plot[-1][_ix].set(
-            color=colormaps["cividis"](_guppi_bench / _r_bar),
+            color=_color_kwargs["cmap"](_guppi_bench / _r_bar),
             linestyle="--",
             linewidth=0.5,
             alpha=0.9,
@@ -394,7 +404,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
     ax1_cb = _my_fig1.add_subplot(_fig1_grid[0, 1], frameon=False)
     ax1_cb.axis("off")
     _cm_plot = _my_fig1.colorbar(
-        colormgr.ScalarMappable(**cmap_kwargs),
+        colormgr.ScalarMappable(**_color_kwargs),
         use_gridspec=True,
         ax=ax1_cb,
         orientation="vertical",
@@ -455,17 +465,14 @@ def get_hmg_thresholds_by_key(_guppi_bench_key: str, /) -> gbl.HMGThresholds:
 if __name__ == "__main__":
     print("Define parameters for GUPPI safeharbor plots")
 
-    _pcm_colornorm = mcolors.Normalize(0, 1.0)
-    cmap_kwargs = {"cmap": "cividis", "norm": _pcm_colornorm}
-
     guppi_benchmark_keys = ("DH50", "DH100", "DOJATR")
 
     print("Plot countour-maps of ∆HHI boundaries and GUPPI safeharbor boundaries")
 
-    plot_delta_boundaries("DH100", True, recapture_spec="inside-out")
+    pcm_same_flag: bool = True
+    recapture_spec: Literal["inside-out", "proportional"] = "inside-out"
+    plot_delta_boundaries("DH100", pcm_same_flag, recapture_spec, _color_kwargs)
 
-    pcm_same_flag: bool
-    recapture_spec: Literal["inside-out", "proportional"]
     print("GUPPI safeharbor boundaries, by precentage price-cost margin")
     for pcm_same_flag, recapture_spec in iterprod(
         (False, True), ("inside-out", "proportional")
@@ -475,4 +482,6 @@ if __name__ == "__main__":
 
         print(f"Symmetric margins: {pcm_same_flag!r}; recapture: '{recapture_spec}'")
         for guppi_bench_key in guppi_benchmark_keys:
-            plot_guppi_boundaries(guppi_bench_key, pcm_same_flag, recapture_spec)
+            plot_guppi_boundaries(
+                guppi_bench_key, pcm_same_flag, recapture_spec, _color_kwargs
+            )

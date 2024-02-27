@@ -415,7 +415,7 @@ class MarketDataSample:
     fcounts: NDArray[np.int64]
     """Number of firms in market"""
 
-    ratio_choice_prob_to_mktshr: NDArray[np.float64]
+    aggregate_purchase_prob: NDArray[np.float64]
     """
     One (1) minus probability that the outside good is chosen
 

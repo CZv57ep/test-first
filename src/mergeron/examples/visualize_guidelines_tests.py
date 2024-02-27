@@ -11,13 +11,13 @@ with the larger GUPPI estimate.
 from __future__ import annotations
 
 import gc
-from contextlib import suppress
 from dataclasses import fields
 from pathlib import Path
 from typing import Final
 
 import numpy as np
 import tables as ptb  # type: ignore
+from attrs import fields as attrs_fields
 from matplotlib import cm, colors
 from matplotlib.ticker import StrMethodFormatter
 from numpy.typing import NDArray
@@ -41,11 +41,6 @@ from mergeron.gen import (
 PROG_PATH = Path(__file__)
 
 
-blosc_filters = ptb.Filters(
-    complevel=3, complib="blosc:lz4", bitshuffle=True, fletcher32=True
-)
-
-
 def gen_plot_data(
     _market_data: MarketDataSample,
     _std_vec: gbl.HMGThresholds,
@@ -53,11 +48,18 @@ def gen_plot_data(
     _test_regime: UPPTestRegime,
     /,
     *,
-    h5handle: ptb.File | None = None,
+    save_data_to_file: utl.SaveData = False,
 ) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
-    _h5hier = "/plotData_mstar{}PCT".format(
-        f"{_pcm_firm2_star * 100:03.1f}".replace(".", "dot")
-    )
+    if save_data_to_file:
+        _, _h5_file, _h5_hier = save_data_to_file
+        _h5_hier = _h5_file.create_group(
+            _h5_hier,
+            "plotData_mstar{}PCT".format(
+                f"{_pcm_firm2_star * 100:03.1f}".replace(".", "dot")
+            ),
+            title=f"Firm 2 margin = {_pcm_firm2_star * 100:03.1f}%",
+        )
+        save_data_to_file = (True, _h5_file, _h5_hier)
 
     _pcm_array = np.column_stack((
         _m1 := _market_data.pcm_array[:, [0]],
@@ -89,7 +91,7 @@ def gen_plot_data(
 
     _pcm_plotter = _pcm_firm1_inv
 
-    if h5handle:
+    if save_data_to_file:
         print("Save data to tables")
         for _array_name in (
             "qtyshr_firm1_inv",
@@ -97,15 +99,11 @@ def gen_plot_data(
             "pcm_firm1_inv",
             "pcm_firm2_inv",
         ):
-            with suppress(ptb.NoSuchNodeError):
-                h5handle.remove_node(_h5hier, name=_array_name)
-            _array_h5 = h5handle.create_carray(
-                _h5hier,
-                _array_name,
-                obj=locals().get(f"_{_array_name}"),
-                createparents=True,
-                title=f"{_array_name}",
-            )
+            _array_obj: NDArray[any] = locals().get(f"_{_array_name}")  # type: ignore
+            if np.any(_array_obj):
+                utl.save_array_to_hdf5(
+                    _array_obj, _array_name, save_data_to_file[-1], save_data_to_file[1]
+                )
 
     _pcm_sorter = np.argsort(_pcm_plotter, axis=0)
     if test_regime.resolution != INVResolution.CLRN:
@@ -130,7 +128,7 @@ def _main(
     _hmg_pub_year: gbl.HMGPubYear,
     _market_sample_spec: MarketSampleSpec,
     _test_regime: UPPTestRegime,
-    _save_data_to_file: utl.SaveData,
+    save_data_to_file: utl.SaveData,
 ) -> None:
     guidelins_std_vec = getattr(
         gbl.GuidelinesThresholds(_hmg_pub_year),
@@ -210,7 +208,7 @@ def _main(
             guidelins_std_vec,
             _pcm_firm2_star,
             _test_regime,
-            h5handle=_save_data_to_file[1] if _save_data_to_file else None,
+            save_data_to_file=save_data_to_file,
         )
 
         _ax_now.scatter(
@@ -261,9 +259,11 @@ def _main(
 if __name__ == "__main__":
     # Get Guidelines parameter values
     hmg_pub_year: Final = 2023
+
     test_regime: UPPTestRegime = UPPTestRegime(
         INVResolution.ENFT, UPPAggrSelector.MIN, UPPAggrSelector.MIN
     )
+
     r_bar = getattr(
         gbl.GuidelinesThresholds(hmg_pub_year),
         "presumption" if test_regime.resolution == INVResolution.ENFT else "safeharbor",
@@ -279,24 +279,29 @@ if __name__ == "__main__":
         ),
     )
 
-    save_data_to_file_flag = False
+    save_data_to_file_flag = True
     if save_data_to_file_flag:
-        h5path = DATA_DIR / PROG_PATH.with_suffix(".h5").name
-        h5datafile = ptb.open_file(
-            h5path,
-            mode="w",
-            title="Datasets, Sound GUPPI Safeharbor, Envelopes of GUPPI Boundaries",
-            filters=blosc_filters,
+        h5_path = DATA_DIR / PROG_PATH.with_suffix(".h5").name
+        _, h5_file, h5_group = utl.initialize_hd5(h5_path, hmg_pub_year, test_regime)  # type: ignore
+
+        h5_subgroup_name = "invres_{}_{}_{}_{}".format(
+            hmg_pub_year,
+            *(
+                getattr(test_regime, _f.name).name
+                for _f in attrs_fields(type(test_regime))
+            ),
         )
-        save_data_to_file: utl.SaveData = (
-            True,
-            h5datafile,
-            "Intrinsic clearance stats",
+        h5_subgroup = h5_file.create_group(
+            h5_group,
+            h5_subgroup_name,
+            title=f"Market sample specifications: {market_sample_spec}",
         )
+        save_data_to_file: utl.SaveData = (True, h5_file, h5_subgroup)
     else:
         save_data_to_file = False
 
     _main(hmg_pub_year, market_sample_spec, test_regime, save_data_to_file)
 
     if save_data_to_file_flag:
+        save_data_to_file[1].flush()  # type: ignore
         save_data_to_file[1].close()  # type: ignore

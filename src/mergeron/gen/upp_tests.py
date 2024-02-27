@@ -5,14 +5,16 @@ from generated market data.
 """
 
 from importlib.metadata import version
+from pathlib import Path
 
 from .. import _PKG_NAME  # noqa: TID252
 
 __version__ = version(_PKG_NAME)
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
+from contextlib import suppress
 from dataclasses import fields
-from typing import Any, Literal, TypeAlias
+from typing import Literal, TypeAlias, TypedDict
 
 import numpy as np
 import tables as ptb  # type: ignore
@@ -24,7 +26,6 @@ from numpy.typing import NDArray
 from ..core import guidelines_boundaries as gbl  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
-    FCOUNT_WTS_DEFAULT,
     DataclassInstance,
     INVResolution,
     MarketDataSample,
@@ -41,13 +42,21 @@ from . import investigations_stats as isl
 ptb.parameters.MAX_NUMEXPR_THREADS = 8
 ptb.parameters.MAX_BLOSC_THREADS = 4
 
-SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, str]
+SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, ptb.Group]
+
+
+class IVNRESCntsArgs(TypedDict, total=False):
+    sim_test_regime: UPPTestRegime
+    saved_array_name_suffix: str
+    save_data_to_file: SaveData
+    seed_seq_list: SeedSequence
+    num_threads: int
 
 
 def sim_invres_cnts_ll(
     _invres_parm_vec: gbl.HMGThresholds,
     _mkt_sample_spec: MarketSampleSpec,
-    _sim_invres_cnts_kwargs: Mapping[str, Any],
+    _sim_invres_cnts_kwargs: IVNRESCntsArgs,
     /,
 ) -> UPPTestsCounts:
     """
@@ -94,23 +103,23 @@ def sim_invres_cnts_ll(
                 zip(*[g.spawn(_iter_count) for g in _sseql], strict=True)  # type: ignore
             )
 
-        _sim_invres_cnts_ll_kwargs = {
+        _sim_invres_cnts_ll_kwargs: IVNRESCntsArgs = {  # type: ignore
             _k: _v
             for _k, _v in _sim_invres_cnts_kwargs.items()
             if _k != "seed_seq_list"
         }
     else:
-        _sim_invres_cnts_ll_kwargs = {}
+        _sim_invres_cnts_ll_kwargs: IVNRESCntsArgs = {}
 
     _res_list = Parallel(n_jobs=_thread_count, prefer="threads")(
         delayed(sim_invres_cnts)(
             _invres_parm_vec,
             _mkt_sample_spec_here,
             **_sim_invres_cnts_ll_kwargs,
-            saved_array_name_suffix=f"{_thread_id:0{int(np.ceil(np.log10(_thread_count)))}d}",
+            saved_array_name_suffix=f"{_iter_id:0{2 + int(np.ceil(np.log10(_iter_count)))}d}",
             seed_seq_list=_rng_seed_seq_list_ch,
         )
-        for _thread_id, _rng_seed_seq_list_ch in enumerate(_rng_seed_seq_list)
+        for _iter_id, _rng_seed_seq_list_ch in enumerate(_rng_seed_seq_list)
     )
 
     _res_list_stacks = UPPTestsCounts(*[
@@ -171,34 +180,36 @@ def sim_invres_cnts(
     )
     del _market_data
 
-    # Clearance/enforcement counts --- by firm count
     _stats_rowlen = 6
-    _firm_counts_weights: NDArray[np.float64 | np.int64] = (
-        FCOUNT_WTS_DEFAULT
-        if _mkt_sample_spec.share_spec.firm_counts_weights is None
-        else _mkt_sample_spec.share_spec.firm_counts_weights
-    )
-    _max_firm_count = len(_firm_counts_weights)
+    # Clearance/enforcement counts --- by firm count
+    _firm_counts_weights = _mkt_sample_spec.share_spec.firm_counts_weights
+    if _firm_counts_weights is not None and np.all(_firm_counts_weights >= 0):
+        _max_firm_count = len(_firm_counts_weights)
 
-    _invres_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
-    for _firm_cnt in 2 + np.arange(_max_firm_count):
-        _firm_count_test = _fcounts == _firm_cnt
+        _invres_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
+        for _firm_cnt in 2 + np.arange(_max_firm_count):
+            _firm_count_test = _fcounts == _firm_cnt
 
-        _invres_cnts_sim_byfirmcount_array = np.row_stack((
-            _invres_cnts_sim_byfirmcount_array,
-            np.array([
-                _firm_cnt,
-                np.einsum("ij->", 1 * _firm_count_test),
-                *[
-                    np.einsum(
-                        "ij->",
-                        1 * (_firm_count_test & getattr(_upp_tests_data, _f.name)),
-                    )
-                    for _f in fields(_upp_tests_data)
-                ],
-            ]),
-        ))
-    _invres_cnts_sim_byfirmcount_array = _invres_cnts_sim_byfirmcount_array[1:]
+            _invres_cnts_sim_byfirmcount_array = np.row_stack((
+                _invres_cnts_sim_byfirmcount_array,
+                np.array([
+                    _firm_cnt,
+                    np.einsum("ij->", 1 * _firm_count_test),
+                    *[
+                        np.einsum(
+                            "ij->",
+                            1 * (_firm_count_test & getattr(_upp_tests_data, _f.name)),
+                        )
+                        for _f in fields(_upp_tests_data)
+                    ],
+                ]),
+            ))
+        _invres_cnts_sim_byfirmcount_array = _invres_cnts_sim_byfirmcount_array[1:]
+    else:
+        _invres_cnts_sim_byfirmcount_array = np.array(
+            np.nan * np.empty((1, _stats_rowlen)), np.int64
+        )
+        _invres_cnts_sim_byfirmcount_array[0] = 2
 
     # Clearance/enfrocement counts --- by delta
     _hhi_delta_ranged = isl.hhi_delta_ranger(_hhi_delta)
@@ -405,52 +416,60 @@ def gen_upp_arrays(
     return _upp_tests_data
 
 
+def initialize_hd5(
+    _h5_path: Path, _hmg_pub_year: gbl.HMGPubYear, _test_regime: UPPTestRegime, /
+) -> SaveData:
+    _h5_title = f"HMG version: {_hmg_pub_year}; Test regime: {_test_regime}"
+    if _h5_path.is_file():
+        _h5_path.unlink()
+    _h5_file = ptb.open_file(_h5_path, mode="w", title=_h5_title)
+    _save_data_to_file: tuple[Literal[True], ptb.File, str] = (True, _h5_file, "/")
+    return _save_data_to_file
+
+
 def save_data_to_hdf5(
     _dclass: DataclassInstance,
-    _saved_array_name_suffix: str,
+    _saved_array_name_suffix: str = "",
     _excl_attrs: Sequence[str] = (),
     /,
     *,
     save_data_to_file: SaveData = False,
 ) -> None:
     if save_data_to_file:
-        _, _h5_datafile, _h5_hier = save_data_to_file
+        _, _h5_file, _h5_group = save_data_to_file
         # Save market data arrays
-        for _array_name in fields(_dclass):
-            if _excl_attrs and _array_name in _excl_attrs:
-                pass
-            save_to_hdf(
-                _dclass,
-                _array_name.name,
-                _h5_datafile,
-                _h5_hier,
+        for _array_field in fields(_dclass):
+            _array_name = _array_field.name
+            if _array_name in _excl_attrs:
+                continue
+            save_array_to_hdf5(
+                getattr(_dclass, _array_name),
+                _array_name,
+                _h5_group,
+                _h5_file,
                 saved_array_name_suffix=_saved_array_name_suffix,
             )
 
 
-def save_to_hdf(
-    _dclass: DataclassInstance,
+def save_array_to_hdf5(
+    _array_obj: NDArray[np.floating | np.integer | np.bool_],
     _array_name: str,
-    _h5_datafile: ptb.File,
-    _h5_hier: str,
+    _h5_group: ptb.Group,
+    _h5_file: ptb.File,
     /,
     *,
     saved_array_name_suffix: str | None = None,
 ) -> None:
-    _data_array = getattr(_dclass, _array_name)
-    _h5_array_name = (
-        f"{_array_name}_{saved_array_name_suffix}"
-        if saved_array_name_suffix
-        else _array_name
-    )
-    print(
-        f"PyTables: Now saving array, {_h5_array_name!r}, at node, {f'"{_h5_hier}"'}."
-    )
-    _h5_array = _h5_datafile.create_carray(
-        _h5_hier,
+    _h5_array_name = f"{_array_name}_{saved_array_name_suffix or ""}".rstrip("_")
+
+    with suppress(ptb.NoSuchNodeError):
+        _h5_file.remove_node(_h5_group, name=_array_name)
+
+    _h5_array = ptb.CArray(
+        _h5_group,
         _h5_array_name,
-        obj=_data_array,
-        createparents=True,
-        title=f"{_array_name})",
+        atom=ptb.Atom.from_dtype(_array_obj.dtype),
+        shape=_array_obj.shape,
+        filters=ptb.Filters(complevel=3, complib="blosc:lz4hc", fletcher32=True),
     )
-    _h5_array[:] = _data_array
+    _h5_array[:] = _array_obj

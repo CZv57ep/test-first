@@ -8,6 +8,7 @@ Format output as LaTeX tables (using TikZ).
 import sys
 import warnings
 from collections.abc import Mapping, Sequence
+from dataclasses import fields
 from datetime import datetime, timedelta
 from io import TextIOWrapper
 from pathlib import Path
@@ -21,8 +22,8 @@ from attrs import evolve
 import mergeron.core.ftc_merger_investigations_data as fid
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.gen.data_generation as dgl
-import mergeron.gen.upp_tests as utl
 import mergeron.gen.investigations_stats as isl
+import mergeron.gen.upp_tests as utl
 from mergeron import DATA_DIR
 from mergeron.core.proportions_tests import propn_ci
 from mergeron.gen import (
@@ -53,7 +54,7 @@ def invres_stats_sim_setup(
     _merger_class: isl.INDGRPConstants | isl.EVIDENConstants,
     _invres_parm_vec: gbl.HMGThresholds,
     _sample_spec: MarketSampleSpec,
-    _invres_stats_kwargs: Mapping[str, Any] | None = None,
+    _invres_stats_kwargs: utl.IVNRESCntsArgs | None = None,
     /,
 ) -> str:
     _table_ind_group = (
@@ -71,9 +72,9 @@ def invres_stats_sim_setup(
         "sim_test_regime": UPPTestRegime(INVResolution.ENFT, UPPAggrSelector.MAX, None)
     }
     _sim_test_regime = _invres_stats_kwargs["sim_test_regime"]
+
     _invres_spec, _guppi_wgtng_policy, _divr_wgtng_policy = (
-        getattr(_sim_test_regime, _f)
-        for _f in ("resolution", "guppi_aggregator", "divr_aggregator")
+        getattr(_sim_test_regime, _f.name) for _f in fields(_sim_test_regime)
     )
 
     # Get observed rates
@@ -379,19 +380,6 @@ if __name__ == "__main__":
     sample_sz_base = 10**7
     pcm_dist_type, pcm_dist_parms = PCMConstants.EMPR, None
 
-    save_data_to_file_flag = False
-    save_data_to_file: utl.SaveData = False
-    if save_data_to_file_flag:
-        h5path = DATA_DIR / Path(__file__).with_suffix(".h5").name
-        blosc_filters = ptb.Filters(complevel=3, complib="blosc:lz4", fletcher32=True)
-        h5datafile = ptb.open_file(
-            str(h5path),
-            mode="w",
-            title="Datasets, Sound GUPPI Safeharbor",
-            filters=blosc_filters,
-        )
-        save_data_to_file = (True, h5datafile, "/")
-
     sim_test_regime = (
         UPPTestRegime(INVResolution.CLRN, utl.UPPAggrSelector.MAX, None),
         UPPTestRegime(INVResolution.ENFT, utl.UPPAggrSelector.OSD, None),
@@ -424,12 +412,6 @@ if __name__ == "__main__":
                 hsr_filing_test_type=dgl.SSZConstants.HSR_NTH,
             )
 
-            # A file to write tables to, and a hierarchy under which to store the data
-            if save_data_to_file:
-                h5hier_pat = re.compile(r"\W")
-                h5hier = f"/{h5hier_pat.sub("_", f"{merger_class} {study_period}")}"
-                save_data_to_file = (True, save_data_to_file[1], h5hier)
-
             table_dottex_name = invres_stats_sim_setup(
                 invdata_array_dict,
                 study_period,
@@ -445,5 +427,3 @@ if __name__ == "__main__":
         dottex_format_str.format(sim_test_regime.resolution.capitalize(), "All", "All"),
     )
 
-    if save_data_to_file:
-        save_data_to_file[1].close()

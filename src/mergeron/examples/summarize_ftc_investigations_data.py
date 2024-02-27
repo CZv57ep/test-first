@@ -16,12 +16,12 @@ for data_period in invdata:
         print(leader_str, table_type, "-->")
         leader_str += "\t"
         for table_no in (isd11 := isd1[table_type]):
-            (invdata_indugrp, invdata_evid_cond, table_data_array) = isd11[table_no]
+            (invdata_ind_group, invdata_evid_cond, table_data_array) = isd11[table_no]
             print(
                 leader_str,
                 table_no,
                 " \N{EM DASH} ",
-                invdata_indugrp,
+                invdata_ind_group,
                 f", {invdata_evid_cond or 'N/A'}",
                 ", ",
                 sep="",

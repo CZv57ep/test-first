@@ -249,7 +249,7 @@ def _construct_new_period_data(
         _data_typesubdict = {}
         for _table_no in _invdata_cuml[_table_type]:
             _invdata_cuml_sub_table = _invdata_cuml[_table_type][_table_no]
-            _invdata_indugrp, _invdata_evid_cond, _invdata_cuml_array = (
+            _invdata_ind_group, _invdata_evid_cond, _invdata_cuml_array = (
                 _invdata_cuml_sub_table.ind_grp,
                 _invdata_cuml_sub_table.evid_cond,
                 _invdata_cuml_sub_table.data_array,
@@ -257,16 +257,16 @@ def _construct_new_period_data(
 
             _invdata_base_sub_table = _invdata_base[_table_type].get(_table_no, None)
 
-            (_invdata_base_indugrp, _invdata_base_evid_cond, _invdata_base_array) = (
+            (_invdata_base_ind_group, _invdata_base_evid_cond, _invdata_base_array) = (
                 _invdata_base_sub_table or ("", "", None)
             )
 
             # Some tables can't be constructed due to inconsistencies in the data
             # across time periods
             if (
-                (_data_period != "2004-2011" and _invdata_indugrp != "All Markets")
-                or (_invdata_indugrp in ('"Other" Markets', "Industries in Common"))
-                or (_invdata_base_indugrp in ('"Other" Markets', ""))
+                (_data_period != "2004-2011" and _invdata_ind_group != "All Markets")
+                or (_invdata_ind_group in ('"Other" Markets', "Industries in Common"))
+                or (_invdata_base_ind_group in ('"Other" Markets', ""))
             ):
                 continue
 
@@ -334,7 +334,7 @@ def _construct_new_period_data(
                 # )
                 # if np.einsum('ij->', invdata_array_bld_tbc):
                 #     print(
-                #       f"{_data_period}, {_table_no}, {_invdata_indugrp}:",
+                #       f"{_data_period}, {_table_no}, {_invdata_ind_group}:",
                 #       abs(np.einsum('ij->', invdata_array_bld_tbc))
                 #       )
 
@@ -351,10 +351,10 @@ def _construct_new_period_data(
             ))
 
             _data_typesubdict[_table_no] = INVTableData(
-                _invdata_indugrp, _invdata_evid_cond, _invdata_array_bld
+                _invdata_ind_group, _invdata_evid_cond, _invdata_array_bld
             )
-            del _invdata_indugrp, _invdata_evid_cond, _invdata_cuml_array
-            del _invdata_base_indugrp, _invdata_base_evid_cond, _invdata_base_array
+            del _invdata_ind_group, _invdata_evid_cond, _invdata_cuml_array
+            del _invdata_base_ind_group, _invdata_base_evid_cond, _invdata_base_array
             del _invdata_array_bld
         _invdata_bld[_table_type] = _data_typesubdict
     return _invdata_bld
@@ -508,7 +508,7 @@ def _parse_table_blocks(
     )
 
     if _data_period == "1996-2011":
-        _invdata_indugrp = (
+        _invdata_ind_group = (
             _table_blocks[1][-3].split("\n")[1]
             if _table_num == "Table 4.8"
             else _table_blocks[2][-3].split("\n")[0]
@@ -524,19 +524,19 @@ def _parse_table_blocks(
     elif _data_period == "1996-2005":
         _table_blocks = sorted(_table_blocks, key=itemgetter(6))
 
-        _invdata_indugrp = _table_blocks[3][-3].strip()
+        _invdata_ind_group = _table_blocks[3][-3].strip()
         if _table_ser > 4:
             _invdata_evid_cond = _table_blocks[5][-3].strip()
 
     elif _table_ser % 2 == 0:
-        _invdata_indugrp = _table_blocks[1][-3].split("\n")[2]
+        _invdata_ind_group = _table_blocks[1][-3].split("\n")[2]
         if (_evid_cond_teststr := _table_blocks[2][-3].strip()) == "Outcome":
             _invdata_evid_cond = "Unrestricted on additional evidence"
         else:
             _invdata_evid_cond = _evid_cond_teststr
 
     elif _table_blocks[3][-3].startswith("FTC Horizontal Merger Investigations"):
-        _invdata_indugrp = _table_blocks[3][-3].split("\n")[2]
+        _invdata_ind_group = _table_blocks[3][-3].split("\n")[2]
         _invdata_evid_cond = "Unrestricted on additional evidence"
 
     else:
@@ -546,10 +546,10 @@ def _parse_table_blocks(
             if _table_ser == 9
             else _table_blocks[3][-3].strip()
         )
-        _invdata_indugrp = _table_blocks[4][-3].split("\n")[2]
+        _invdata_ind_group = _table_blocks[4][-3].split("\n")[2]
 
-    if _invdata_indugrp == "Pharmaceutical Markets":
-        _invdata_indugrp = "Pharmaceuticals Markets"
+    if _invdata_ind_group == "Pharmaceutical Markets":
+        _invdata_ind_group = "Pharmaceuticals Markets"
 
     process_table_func = (
         _process_table_blks_conc_type
@@ -563,7 +563,7 @@ def _parse_table_blocks(
         print(_table_blocks)
         raise ValueError
 
-    _table_data = INVTableData(_invdata_indugrp, _invdata_evid_cond, _table_array)
+    _table_data = INVTableData(_invdata_ind_group, _invdata_evid_cond, _table_array)
     _invdata[_data_period][_table_type] |= {_table_num: _table_data}
 
 

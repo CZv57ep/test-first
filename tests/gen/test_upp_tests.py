@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.core.pseudorandom_numbers as rmp
-import mergeron.gen.upp_tests as utl
 import mergeron.gen.investigations_stats as isl
+import mergeron.gen.upp_tests as utl
 import numpy as np
 import re2 as re  # type: ignore
 from mergeron.gen import MarketSampleSpec, RECConstants, ShareSpec, SHRConstants
@@ -77,7 +77,7 @@ def test_clearance_rate_calcs() -> None:
         isl.INVResolution.CLRN, utl.UPPAggrSelector.MAX, None
     )
 
-    _ind_sample_spec = MarketSampleSpec(
+    _mkt_sample_spec = MarketSampleSpec(
         10**8,
         0.80,
         share_spec=ShareSpec(
@@ -91,7 +91,7 @@ def test_clearance_rate_calcs() -> None:
     _start_time = datetime.now()
     upp_tests_counts = utl.sim_invres_cnts_ll(
         gbl.GuidelinesThresholds(2010).safeharbor,
-        _ind_sample_spec,
+        _mkt_sample_spec,
         {
             "seed_seq_list": rmp.gen_seed_seq_list_default(3),
             "sim_test_regime": _test_sel,
