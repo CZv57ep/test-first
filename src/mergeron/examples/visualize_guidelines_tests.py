@@ -16,8 +16,6 @@ from pathlib import Path
 from typing import Final
 
 import numpy as np
-import tables as ptb  # type: ignore
-from attrs import fields as attrs_fields
 from matplotlib import cm, colors
 from matplotlib.ticker import StrMethodFormatter
 from numpy.typing import NDArray
@@ -279,18 +277,13 @@ if __name__ == "__main__":
         ),
     )
 
-    save_data_to_file_flag = True
+    save_data_to_file_flag = False
     if save_data_to_file_flag:
         h5_path = DATA_DIR / PROG_PATH.with_suffix(".h5").name
-        _, h5_file, h5_group = utl.initialize_hd5(h5_path, hmg_pub_year, test_regime)  # type: ignore
+        (_, h5_file, h5_group), h5_subgroup_name = utl.initialize_hd5(
+            h5_path, hmg_pub_year, test_regime
+        )  # type: ignore
 
-        h5_subgroup_name = "invres_{}_{}_{}_{}".format(
-            hmg_pub_year,
-            *(
-                getattr(test_regime, _f.name).name
-                for _f in attrs_fields(type(test_regime))
-            ),
-        )
         h5_subgroup = h5_file.create_group(
             h5_group,
             h5_subgroup_name,

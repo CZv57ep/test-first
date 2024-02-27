@@ -18,7 +18,8 @@ from typing import Literal, TypeAlias, TypedDict
 
 import numpy as np
 import tables as ptb  # type: ignore
-from attr import evolve
+from attrs import evolve
+from attrs import fields as attrs_fields
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
@@ -418,13 +419,20 @@ def gen_upp_arrays(
 
 def initialize_hd5(
     _h5_path: Path, _hmg_pub_year: gbl.HMGPubYear, _test_regime: UPPTestRegime, /
-) -> SaveData:
+) -> tuple[SaveData, str]:
     _h5_title = f"HMG version: {_hmg_pub_year}; Test regime: {_test_regime}"
     if _h5_path.is_file():
         _h5_path.unlink()
     _h5_file = ptb.open_file(_h5_path, mode="w", title=_h5_title)
     _save_data_to_file: tuple[Literal[True], ptb.File, str] = (True, _h5_file, "/")
-    return _save_data_to_file
+    _next_subgroup_name = "invres_{}_{}_{}_{}".format(
+        _hmg_pub_year,
+        *(
+            getattr(_test_regime, _f.name).name
+            for _f in attrs_fields(type(_test_regime))
+        ),
+    )
+    return _save_data_to_file, _next_subgroup_name
 
 
 def save_data_to_hdf5(

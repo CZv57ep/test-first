@@ -4,8 +4,6 @@ from pathlib import Path
 from typing import Literal
 
 import numpy as np
-import tables as ptb  # type: ignore
-from attrs import fields as attrs_fields
 
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.gen.data_generation as dgl
@@ -34,8 +32,8 @@ tests_of_interest: tuple[UPPTestRegime, ...] = (
 
 def analyze_invres_data(
     _sample_size: int = 10**6,
-    _hmg_std_pub_year: Literal[1992, 2010, 2023] = 1992,
-    _test_sel: UPPTestRegime = tests_of_interest[1],
+    _hmg_pub_year: Literal[1992, 2010, 2023] = 1992,
+    _test_regime: UPPTestRegime = tests_of_interest[1],
     /,
     *,
     save_data_to_file_flag: bool = False,
@@ -64,19 +62,12 @@ def analyze_invres_data(
     _save_data_to_file: utl.SaveData = False
     if save_data_to_file_flag:
         _h5_path = DATA_DIR / PROG_PATH.with_suffix(".h5").name
-        _, _h5_file, _h5_group = utl.initialize_hd5(
-            h5_path, _hmg_pub_year, _test_regime
+        (_, _h5_file, _h5_group), _h5_subgroup_name = utl.initialize_hd5(
+            _h5_path, _hmg_pub_year, _test_regime
         )  # type: ignore
 
-        _h5_group_name = "invres_yr{}_res{}_priagg{}_secagg{}".format(
-            _hmg_pub_year,
-            *(
-                getattr(_test_regime, _f.name).name
-                for _f in attrs_fields(type(_test_regime))
-            ),
-        )
         _h5_group = _h5_file.create_group(
-            _h5_group, f"invres_{_hmg_pub_year}", f"{_invres_parm_vec}"
+            _h5_group, _h5_subgroup_name, f"{_invres_parm_vec}"
         )
         _save_data_to_file = (True, _h5_file, _h5_group)
 
@@ -188,4 +179,4 @@ def analyze_invres_data(
 
 
 if __name__ == "__main__":
-    analyze_invres_data(10**7, 2023, tests_of_interest[1], save_data_to_file_flag=True)
+    analyze_invres_data(10**7, 2023, tests_of_interest[1], save_data_to_file_flag=False)

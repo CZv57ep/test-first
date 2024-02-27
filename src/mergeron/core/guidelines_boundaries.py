@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
-from attr import define, field
+from attrs import define, field
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
 from scipy.spatial.distance import minkowski as distance_function
