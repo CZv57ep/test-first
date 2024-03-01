@@ -395,7 +395,6 @@ class UPPTestRegime:
 class DataclassInstance(Protocol):
     """Generic dataclass-instance"""
 
-    __dataclass_asdict__: ClassVar
     __dataclass_fields__: ClassVar
 
 
@@ -464,7 +463,7 @@ class ShareDataSample:
 class PriceDataSample:
     """Container for generated price array, and related."""
 
-    price_array: NDArray[np.floating]
+    price_array: NDArray[np.float64]
     """Merging-firms' prices"""
 
     hsr_filing_test: NDArray[np.bool_]

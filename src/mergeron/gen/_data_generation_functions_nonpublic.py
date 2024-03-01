@@ -116,7 +116,7 @@ def _gen_share_data(
 
 def _gen_market_shares_uniform(
     _s_size: int = 10**6,
-    _dist_parms_mktshr: NDArray[np.floating[TF]] | None = DIST_PARMS_DEFAULT,
+    _dist_parms_mktshr: NDArray[np.floating[TF]] | None = DIST_PARMS_DEFAULT,  # type: ignore
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
     /,
@@ -141,8 +141,8 @@ def _gen_market_shares_uniform(
     """
 
     _frmshr_array = np.empty((_s_size, 2), dtype=np.float64)
-    _dist_parms_mktshr = (
-        DIST_PARMS_DEFAULT if _dist_parms_mktshr is None else _dist_parms_mktshr  # type: ignore
+    _dist_parms_mktshr: NDArray[np.floating] = (
+        DIST_PARMS_DEFAULT if _dist_parms_mktshr is None else _dist_parms_mktshr
     )
     _mrng = MultithreadedRNG(
         _frmshr_array,
@@ -220,9 +220,9 @@ def _gen_market_shares_dirichlet_multisample(
 
     """
 
-    _firm_count_wts: np.float64 = (
+    _firm_count_wts: NDArray[np.floating] = (
         FCOUNT_WTS_DEFAULT if _firm_count_wts is None else _firm_count_wts
-    )  # type: ignore
+    )
 
     _min_choice_wt = 0.03 if _dist_type_dir == SHRConstants.DIR_FLAT_CONSTR else 0.00
     _fcount_keys, _choice_wts = zip(
@@ -441,7 +441,7 @@ def _gen_pr_data(
             )
     # del _pr_max_ratio
 
-    _price_ratio_array = _price_array / _price_array[:, ::-1]
+    _price_array = _price_array.astype(np.float64)
     _rev_array = _price_array * _frmshr_array
     _nth_firm_rev = _nth_firm_price * _nth_firm_share
 

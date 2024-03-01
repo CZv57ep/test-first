@@ -22,7 +22,7 @@ for data_period in invdata:
                 table_no,
                 " \N{EM DASH} ",
                 invdata_ind_group,
-                f", {invdata_evid_cond or 'N/A'}",
+                f", {invdata_evid_cond or "N/A"}",
                 ", ",
                 sep="",
                 end="",
@@ -39,6 +39,6 @@ data_period, data_type, table_no = ("2004-2011", "HHI and Delta", "Table 3.3")
 print(f"Investigations data, {data_period}, by {data_type}, {table_no}")
 print(
     "{}, {}\n{}".format(
-        *invdata[data_period][f"By{data_type.replace(' ', '')}"][table_no]
+        *invdata[data_period][f"By{data_type.replace(" ", "")}"][table_no]
     )
 )

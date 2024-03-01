@@ -11,12 +11,9 @@ from collections.abc import Mapping, Sequence
 from dataclasses import fields
 from datetime import datetime, timedelta
 from io import TextIOWrapper
-from pathlib import Path
 from typing import Any
 
 import numpy as np
-import re2 as re  # type: ignore
-import tables as ptb  # type: ignore
 from attrs import evolve
 
 import mergeron.core.ftc_merger_investigations_data as fid
@@ -71,10 +68,11 @@ def invres_stats_sim_setup(
     _invres_stats_kwargs = _invres_stats_kwargs or {
         "sim_test_regime": UPPTestRegime(INVResolution.ENFT, UPPAggrSelector.MAX, None)
     }
-    _sim_test_regime = _invres_stats_kwargs["sim_test_regime"]
+    _sim_test_regime = _invres_stats_kwargs.get("sim_test_regime")
 
     _invres_spec, _guppi_wgtng_policy, _divr_wgtng_policy = (
-        getattr(_sim_test_regime, _f.name) for _f in fields(_sim_test_regime)
+        getattr(_sim_test_regime, _f.name)
+        for _f in fields(_sim_test_regime)  # type: ignore
     )
 
     # Get observed rates
@@ -418,7 +416,7 @@ if __name__ == "__main__":
                 merger_class,
                 invres_parm_vec,
                 mkt_sample_spec,
-                invres_stats_kwargs,
+                invres_stats_kwargs, # type: ignore
             )
             table_dottex_namelist += (table_dottex_name,)
 
@@ -426,4 +424,3 @@ if __name__ == "__main__":
         table_dottex_namelist,
         dottex_format_str.format(sim_test_regime.resolution.capitalize(), "All", "All"),
     )
-
