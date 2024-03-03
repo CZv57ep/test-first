@@ -43,10 +43,11 @@ match args.update_level:
         sem_ver = _get_pkg_version()
     case "full":
         sem_ver = f"{tsn.year}.{tsn.toordinal()}.0"
+        pkg_ver = _get_pkg_version()
 
-        if compare(sem_ver, _get_pkg_version()) <= 0:
+        if compare(sem_ver, pkg_ver) <= 0:
             raise ValueError(
-                f"Package already at version, {sem_ver}. Perhaps update patch-level."
+                f"Package version, {pkg_ver} at or above version, {sem_ver}. Perhaps update patch-level."
             )
 
         run(["poetry", "version", sem_ver], check=True)  # noqa: S603, S607
