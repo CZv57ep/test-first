@@ -37,12 +37,12 @@ def _get_pkg_version(_toml_path: str = "pyproject.toml") -> str:
     return _toml_dict["tool"]["poetry"]["version"]  # type: ignore
 
 
+sem_ver = f"{tsn.year}.{tsn.toordinal()}.0"
 match args.update_level:
     case "patch":
         run(["poetry", "version", "patch"], check=True)  # noqa: S603, S607
         sem_ver = _get_pkg_version()
     case "full":
-        sem_ver = f"{tsn.year}.{tsn.toordinal()}.0"
         pkg_ver = _get_pkg_version()
 
         if compare(sem_ver, pkg_ver) <= 0:
