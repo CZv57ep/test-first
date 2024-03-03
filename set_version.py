@@ -6,6 +6,7 @@ from pathlib import Path
 from subprocess import run
 
 import re2 as re
+from semver import compare
 from tomlkit import parse
 
 # Set up the argument parser
@@ -13,7 +14,10 @@ parser = argparse.ArgumentParser(
     description="Updates package version number, and commits and tags repository. User must specify `full` or `patch` level update."
 )
 parser.add_argument(
-    "patch_level", type=str, help="Whether `full` or `patch` level version update."
+    "update_level",
+    type=str,
+    choices=["full", "patch"],
+    help="Whether `full` or `patch` level version update.",
 )
 
 args = parser.parse_args()
@@ -33,18 +37,19 @@ def _get_pkg_version(_toml_path: str = "pyproject.toml") -> str:
     return _toml_dict["tool"]["poetry"]["version"]  # type: ignore
 
 
-if args.patch_level == "patch":
-    run(["poetry", "version", "patch"], check=True)  # noqa: S603, S607
-    sem_ver = _get_pkg_version()
-else:
-    sem_ver = f"{tsn.year}.{tsn.toordinal()}.0"
+match args.update_level:
+    case "patch":
+        run(["poetry", "version", "patch"], check=True)  # noqa: S603, S607
+        sem_ver = _get_pkg_version()
+    case "full":
+        sem_ver = f"{tsn.year}.{tsn.toordinal()}.0"
 
-    if sem_ver == _get_pkg_version():
-        raise ValueError(
-            f"Package already at version, {pkg_version}. Perhaps update patch-level."
-        )
+        if compare(sem_ver, _get_pkg_version()) <= 0:
+            raise ValueError(
+                f"Package already at version, {sem_ver}. Perhaps update patch-level."
+            )
 
-    run(["poetry", "version", sem_ver], check=True)  # noqa: S603, S607
+        run(["poetry", "version", sem_ver], check=True)  # noqa: S603, S607
 
 run(["git", "tag", f"{sem_ver}"], check=True)  # noqa: S603, S607
 run(
