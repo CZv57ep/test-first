@@ -22,7 +22,7 @@ tsn = datetime.now()
 
 
 rc = run("git status".split(), check=True, capture_output=True, text=True)  # noqa: S603
-if re.search("modified:", rc.stdout):
+if not re.search("nothing to commit, working tree clean", rc.stdout):
     raise RuntimeError(
         "Repository has uncommitted changes. Commit changes before updating package version."
     )
