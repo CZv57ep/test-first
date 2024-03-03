@@ -7,6 +7,7 @@ Functions to estimate confidence intervals for
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from importlib.metadata import version
 
 from .. import _PKG_NAME  # noqa: TID252
@@ -101,12 +102,12 @@ def propn_ci(
         case "Agresti-Coull":
             _zsc = norm.ppf(1 - alpha / 2)
             _zscsq = _zsc * _zsc
-            _adjmt_t = 4 if alpha == 0.05 else _zscsq
-            _est_phat = (_npos + _adjmt_t / 2) / (_nobs + _adjmt_t)
+            _adjmt = 4 if alpha == 0.05 else _zscsq
+            _est_phat = (_npos + _adjmt / 2) / (_nobs + _adjmt)
             _est_ci_l, _est_ci_u = (
                 _est_phat + _g
                 for _g in [
-                    _f * _zsc * np.sqrt(_est_phat * (1 - _est_phat) / (_nobs + 4))
+                    _f * _zsc * np.sqrt(_est_phat * (1 - _est_phat) / (_nobs + _adjmt))
                     for _f in (-1, 1)
                 ]
             )
@@ -441,7 +442,7 @@ def _propn_diff_chisq_mn(
     )
 
 
-def propn_ci_diff_multinomial(
+def propn_diff_ci_multinomial(
     _counts: NDArray[np.integer[TI]], /, *, alpha: float = 0.05
 ) -> NDArray[np.float64]:
     """Estimate confidence intervals of pair-wise differences in multinomial proportions
@@ -475,16 +476,17 @@ def propn_ci_diff_multinomial(
     return np.column_stack([_d + _f * _d_cr * np.sqrt(_var) for _f in (-1, 1)])
 
 
-class MultinomialDiffTest(NamedTuple):
+@dataclass(slots=True, frozen=True)
+class MultinomialPropnsTest:
     estimate: np.float64
     dof: int
     critical_value: np.float64
     p_value: np.float64
 
 
-def propn_diff_multinomial_chisq(
+def propn_test_multinomial(
     _counts: NDArray[np.integer[TI]], /, *, alpha: float = 0.05
-) -> MultinomialDiffTest:
+) -> MultinomialPropnsTest:
     """Chi-square test for homogeneity of differences in multinomial proportions.
 
     Differences in multinomial proportions sum to zero.
@@ -510,9 +512,9 @@ def propn_diff_multinomial_chisq(
     _p_bar = _n / np.einsum("jk->j", _n_k / _prob)
 
     _y_sq = _n * ((1 / np.einsum("j->", _p_bar)) - 1)
-    _dof = np.array([_f - 1 for _f in _counts.shape]).prod()
+    _dof = np.array([_s - 1 for _s in _counts.shape]).prod()
     _chi_rv = chi2(_dof)
 
-    return MultinomialDiffTest(
+    return MultinomialPropnsTest(
         _y_sq, _dof, _chi_rv.ppf(1 - alpha), 1 - _chi_rv.cdf(_y_sq)
     )

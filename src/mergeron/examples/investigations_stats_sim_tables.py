@@ -416,7 +416,7 @@ if __name__ == "__main__":
                 merger_class,
                 invres_parm_vec,
                 mkt_sample_spec,
-                invres_stats_kwargs, # type: ignore
+                invres_stats_kwargs,  # type: ignore
             )
             table_dottex_namelist += (table_dottex_name,)
 

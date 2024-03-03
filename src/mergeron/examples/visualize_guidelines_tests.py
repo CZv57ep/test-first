@@ -277,7 +277,7 @@ if __name__ == "__main__":
         ),
     )
 
-    save_data_to_file_flag = False
+    save_data_to_file_flag = True
     if save_data_to_file_flag:
         h5_path = DATA_DIR / PROG_PATH.with_suffix(".h5").name
         (_, h5_file, h5_group), h5_subgroup_name = utl.initialize_hd5(
