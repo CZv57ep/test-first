@@ -34,7 +34,6 @@ classifiers = [
 [tool.poetry.dependencies]
 # You may need to apply the fixes in, https://github.com/python-poetry/poetry/issues/3365
 # if poetry dependency resolution appears to hang (read the page at link to the end)
-aenum = ">=3.1"
 attrs = ">=23.2"
 bs4 = ">=0.0.1"
 google-re2 = ">=1.1"

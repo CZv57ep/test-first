@@ -14,16 +14,29 @@ from .. import _PKG_NAME  # noqa: TID252
 
 __version__ = version(_PKG_NAME)
 
-from collections.abc import Sequence
-from typing import Any, ClassVar
+import enum
+from collections.abc import Mapping, Sequence
+from types import MappingProxyType
+from typing import Any
 
-import aenum  # type: ignore
 import numpy as np
 import numpy.typing as npt
 import xlsxwriter  # type: ignore
 
 
-class CFmt(aenum.UniqueEnum):  # type: ignore
+@enum.unique
+class CFmtParent(dict[str, Any], enum.ReprEnum):
+    def merge(self, _other) -> CFmtParent:
+        if isinstance(_other, CFmtParent):
+            return self.value | _other.value
+        else:
+            raise RuntimeWarning(
+                f"Object {_other!r} not valid for merge(), returned original."
+            )
+            return self.value
+
+
+class CFmt(CFmtParent):  # type: ignore
     """
     Initialize cell formats for xlsxwriter.
 
@@ -35,31 +48,31 @@ class CFmt(aenum.UniqueEnum):  # type: ignore
     See, https://xlsxwriter.readthedocs.io/format.html
     """
 
-    XL_DEFAULT: ClassVar = {"font_name": "Calibri", "font_size": 11}
-    XL_DEFAULT_2003: ClassVar = {"font_name": "Arial", "font_size": 10}
+    XL_DEFAULT = MappingProxyType({"font_name": "Calibri", "font_size": 11})
+    XL_DEFAULT_2003 = MappingProxyType({"font_name": "Arial", "font_size": 10})
 
-    A_CTR: ClassVar = {"align": "center"}
-    A_CTR_ACROSS: ClassVar = {"align": "center_across"}
-    A_LEFT: ClassVar = {"align": "left"}
-    A_RIGHT: ClassVar = {"align": "right"}
+    A_CTR = MappingProxyType({"align": "center"})
+    A_CTR_ACROSS = MappingProxyType({"align": "center_across"})
+    A_LEFT = MappingProxyType({"align": "left"})
+    A_RIGHT = MappingProxyType({"align": "right"})
 
-    BOLD: ClassVar = {"bold": True}
-    ITALIC: ClassVar = {"italic": True}
-    ULINE: ClassVar = {"underline": True}
+    BOLD = MappingProxyType({"bold": True})
+    ITALIC = MappingProxyType({"italic": True})
+    ULINE = MappingProxyType({"underline": True})
 
-    TEXT_WRAP: ClassVar = {"text_wrap": True}
-    IND_1: ClassVar = {"indent": 1}
+    TEXT_WRAP = MappingProxyType({"text_wrap": True})
+    IND_1 = MappingProxyType({"indent": 1})
 
-    DOLLAR_NUM: ClassVar = {"num_format": "[$$-409]#,##0.00"}
-    DT_NUM: ClassVar = {"num_format": "mm/dd/yyyy"}
-    QTY_NUM: ClassVar = {"num_format": "#,##0.0"}
-    PCT_NUM: ClassVar = {"num_format": "##0.000000%"}
-    AREA_NUM: ClassVar = {"num_format": "0.00000000"}
+    DOLLAR_NUM = MappingProxyType({"num_format": "[$$-409]#,##0.00"})
+    DT_NUM = MappingProxyType({"num_format": "mm/dd/yyyy"})
+    QTY_NUM = MappingProxyType({"num_format": "#,##0.0"})
+    PCT_NUM = MappingProxyType({"num_format": "##0.000000%"})
+    AREA_NUM = MappingProxyType({"num_format": "0.00000000"})
 
-    BAR_FILL: ClassVar = {"pattern": 1, "bg_color": "dfeadf"}
-    BOT_BORDER: ClassVar = {"bottom": 1, "bottom_color": "000000"}
-    TOP_BORDER: ClassVar = {"top": 1, "top_color": "000000"}
-    HDR_BORDER: ClassVar = TOP_BORDER | BOT_BORDER
+    BAR_FILL = MappingProxyType({"pattern": 1, "bg_color": "dfeadf"})
+    BOT_BORDER = MappingProxyType({"bottom": 1, "bottom_color": "000000"})
+    TOP_BORDER = MappingProxyType({"top": 1, "top_color": "000000"})
+    HDR_BORDER = TOP_BORDER | BOT_BORDER
 
 
 def matrix_to_sheet(
@@ -216,7 +229,7 @@ def xl_fmt(
         :code:`xlsxwriter` `Format`  object
 
     """
-    _cell_fmt_dict: dict[str, Any] = {}
+    _cell_fmt_dict: Mapping[str, Any] = MappingProxyType({})
     if isinstance(_cell_fmt, tuple):
         ensure_cell_format_spec_tuple(_cell_fmt)
         for _cf in _cell_fmt:

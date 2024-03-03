@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     print()
     print("Goodman's chi-squared test for homogeneity of enforcement patterns")
-    print(repr(pcl.propn_test_multinomial_chisq(enf_counts[:, [1, 3]])))
+    print(repr(pcl.propn_test_multinomial(enf_counts[:, [1, 3]])))
 
     print()
     print(

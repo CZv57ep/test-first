@@ -15,7 +15,7 @@ from .. import _PKG_NAME  # noqa: TID252
 __version__ = version(_PKG_NAME)
 
 from collections.abc import Sequence
-from typing import Literal, NamedTuple, TypeVar
+from typing import Literal, TypeVar
 
 import numpy as np
 from numpy.typing import NBitBase, NDArray
