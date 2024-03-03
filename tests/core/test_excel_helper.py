@@ -54,7 +54,8 @@ def test_excel(excel_file_path: Path) -> None:
     del _xl_book
 
     _xl_book = load_workbook(excel_file_path)
-    _xl_sheet_vals = tuple(_xl_book.active.values)
+    _xl_sheet = _xl_book[_xl_book.sheetnames[0]]
+    _xl_sheet_vals = tuple(_xl_sheet.values)
     _xl_book.close()
 
     try:
