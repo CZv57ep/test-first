@@ -8,13 +8,8 @@ We drop reported row and column totals from source data for reducing stored data
 
 """
 
-from importlib.metadata import version
-
-from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
 from collections.abc import Mapping, Sequence
+from importlib.metadata import version
 from operator import itemgetter
 from pathlib import Path
 from types import MappingProxyType
@@ -29,6 +24,10 @@ import requests
 from bs4 import BeautifulSoup
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
+
+from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
 
 m.patch()
 

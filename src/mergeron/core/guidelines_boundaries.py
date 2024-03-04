@@ -4,14 +4,9 @@ with a canvas on which to draw boundaries for Guidelines standards.
 
 """
 
-from importlib.metadata import version
-
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
 import decimal
 from dataclasses import dataclass
+from importlib.metadata import version
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
@@ -19,6 +14,11 @@ from attrs import define, field
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
 from scipy.spatial.distance import minkowski as distance_function
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 
 mp.prec = 80
 mp.trap_complex = True

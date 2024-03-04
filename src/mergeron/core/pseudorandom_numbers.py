@@ -6,20 +6,20 @@ https://github.com/numpy/numpy/issues/16313.
 
 """
 
-from importlib.metadata import version
-
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
 import concurrent.futures
 from collections.abc import Sequence
+from importlib.metadata import version
 from multiprocessing import cpu_count
 from typing import Literal, TypeVar
 
 import numpy as np
 from numpy.random import PCG64DXSM, Generator, SeedSequence
 from numpy.typing import NBitBase, NDArray
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 
 TF = TypeVar("TF", bound=NBitBase)
 TI = TypeVar("TI", bound=NBitBase)

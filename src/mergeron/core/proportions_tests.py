@@ -7,20 +7,20 @@ Functions to estimate confidence intervals for
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from importlib.metadata import version
-
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
-from collections.abc import Sequence
 from typing import Literal, TypeVar
 
 import numpy as np
 from numpy.typing import NBitBase, NDArray
 from scipy.optimize import OptimizeResult, root  # type: ignore
 from scipy.stats import beta, chi2, norm  # type: ignore
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 
 TI = TypeVar("TI", bound=NBitBase)
 

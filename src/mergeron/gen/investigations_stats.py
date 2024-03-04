@@ -3,16 +3,10 @@ Routines to format and print summary data on merger enforcement patterns.
 
 """
 
-import subprocess
-from importlib.metadata import version
-
-from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
-
 import enum
+import subprocess
 from collections.abc import Mapping, Sequence
+from importlib.metadata import version
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -22,9 +16,12 @@ from jinja2 import Environment, FileSystemLoader, Template, select_autoescape
 from numpy.typing import NDArray
 from scipy.interpolate import interp1d  # type: ignore
 
+from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
 from ..core import ftc_merger_investigations_data as fid  # noqa: TID252
 from ..core.proportions_tests import propn_ci  # noqa: TID252
 from . import TF, TI, INVResolution
+
+__version__ = version(_PKG_NAME)
 
 
 @enum.unique

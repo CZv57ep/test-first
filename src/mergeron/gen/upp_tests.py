@@ -4,16 +4,11 @@ from generated market data.
 
 """
 
-from importlib.metadata import version
-from pathlib import Path
-
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
 from collections.abc import Sequence
 from contextlib import suppress
 from dataclasses import fields
+from importlib.metadata import version
+from pathlib import Path
 from typing import Literal, TypeAlias, TypedDict
 
 import numpy as np
@@ -24,6 +19,7 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
+from .. import _PKG_NAME  # noqa: TID252
 from ..core import guidelines_boundaries as gbl  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
@@ -39,6 +35,9 @@ from . import (
 )
 from . import data_generation as dgl
 from . import investigations_stats as isl
+
+__version__ = version(_PKG_NAME)
+
 
 ptb.parameters.MAX_NUMEXPR_THREADS = 8
 ptb.parameters.MAX_BLOSC_THREADS = 4

@@ -32,13 +32,8 @@ price-cost margins fall in the interval :math:`[0, 1]`.
 
 """
 
-from importlib.metadata import version
-
-from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
 from collections.abc import Mapping
+from importlib.metadata import version
 from pathlib import Path
 from types import MappingProxyType
 
@@ -50,6 +45,11 @@ from numpy.typing import NDArray
 from requests_toolbelt.downloadutils import stream  # type: ignore
 from scipy import stats  # type: ignore
 from xlrd import open_workbook  # type: ignore
+
+from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
+
 
 MGNDATA_ARCHIVE_PATH = DATA_DIR / "damodaran_margin_data_dict.msgpack"
 

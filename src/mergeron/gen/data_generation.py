@@ -7,15 +7,12 @@ from __future__ import annotations
 
 from importlib.metadata import version
 
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
 import attrs
 import numpy as np
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
+from .. import _PKG_NAME  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
     TF,
@@ -34,6 +31,8 @@ from ._data_generation_functions_nonpublic import (
     _gen_pr_data,
     _gen_share_data,
 )
+
+__version__ = version(_PKG_NAME)
 
 
 def gen_market_sample(

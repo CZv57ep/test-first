@@ -8,20 +8,19 @@ Includes a flexible system of defining cell formats.
 
 from __future__ import annotations
 
-from importlib.metadata import version
-
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
 import enum
 from collections.abc import Mapping, Sequence
+from importlib.metadata import version
 from types import MappingProxyType
 from typing import Any
 
 import numpy as np
 import numpy.typing as npt
 import xlsxwriter  # type: ignore
+
+from .. import _PKG_NAME  # noqa: TID252
+
+__version__ = version(_PKG_NAME)
 
 
 @enum.unique

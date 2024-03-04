@@ -5,17 +5,13 @@ Non-public functions called in data_generation.py
 from __future__ import annotations
 
 from importlib.metadata import version
-
-from .. import _PKG_NAME  # noqa: TID252
-
-__version__ = version(_PKG_NAME)
-
 from typing import Literal
 
 import numpy as np
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
+from .. import _PKG_NAME  # noqa: TID252
 from ..core.damodaran_margin_data import resample_mgn_data  # noqa: TID252
 from ..core.pseudorandom_numbers import (  # noqa: TID252
     DIST_PARMS_DEFAULT,
@@ -36,6 +32,8 @@ from . import (
     SHRConstants,
     SSZConstants,
 )
+
+__version__ = version(_PKG_NAME)
 
 
 def _gen_share_data(
