@@ -232,7 +232,7 @@ def xl_fmt(
     if isinstance(_cell_fmt, tuple):
         ensure_cell_format_spec_tuple(_cell_fmt)
         for _cf in _cell_fmt:
-            _cell_fmt_dict |= _cf.value
+            _cell_fmt_dict = _cell_fmt_dict | _cf.value
     elif isinstance(_cell_fmt, CFmt):
         _cell_fmt_dict = _cell_fmt.value
     else:
