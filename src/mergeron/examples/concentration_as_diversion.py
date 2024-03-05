@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 import matplotlib.axes as mpa
+from jinja2 import FileSystemLoader
 from joblib import Parallel, cpu_count, delayed
 from numpy import pi
 from xlsxwriter import Workbook
@@ -34,6 +35,7 @@ from xlsxwriter import Workbook
 import mergeron.core.excel_helper as xlh
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.ext.tol_colors as ptcolor
+import mergeron.gen.investigations_stats as isl
 from mergeron import DATA_DIR
 
 PROG_PATH = Path(__file__)
@@ -79,6 +81,13 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "func_str": R"s_M",
         "func": gbl.combined_share_boundary,
     },
+    "SAG Average Div Ratio": {
+        "title_str": "Aggregated-diversion-ratio boundary, simple average",
+        "sheet_name": "SAG, average",
+        "func_str": R"(d_{12} + d_{21}) / 2",
+        "func": gbl.shrratio_boundary_wtd_avg,
+        "func_kwargs": {"wgtng_policy": None, "recapture_spec": RECAPTURE_SPEC},
+    },
     "SAG Div Ratio Distance": {
         "title_str": "Aggregated-diversion-ratio boundary, distance",
         "sheet_name": "SAG, distance",
@@ -89,13 +98,6 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
             "recapture_spec": RECAPTURE_SPEC,
             "avg_method": "distance",
         },
-    },
-    "SAG Average Div Ratio": {
-        "title_str": "Aggregated-diversion-ratio boundary, simple average",
-        "sheet_name": "SAG, average",
-        "func_str": R"(d_{12} + d_{21}) / 2",
-        "func": gbl.shrratio_boundary_xact_avg,
-        "func_kwargs": {"recapture_spec": RECAPTURE_SPEC},
     },
     "CPSWAG Premerger HHI-contribution": {
         "title_str": "Premerger HHI-contribution boundary",
@@ -133,7 +135,7 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
 }
 
 
-def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
+def tabulate_boundary_stats(_gpubyr: gbl.HMGPubYear, /) -> None:
     """
     Parameters
     ----------
@@ -142,15 +144,17 @@ def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
         are drawn
 
     """
+    _invres_rate_table_content = isl.StatsContainer()
+
     gso = gbl.GuidelinesThresholds(_gpubyr)
     _dhhi_val, _r_val, _g_val = (
         getattr(gso.presumption, _f) for _f in ("delta", "rec", "guppi")
     )
 
     _dhhi_seq = (
-        (0.01, 0.02, 0.03125, 0.05, _dhhi_val)
+        (0.01, 0.02, gso.imputed_presumption.delta, 0.08)  # , 0.05
         if _gpubyr == 2010
-        else (0.005, 0.01, 0.02, 0.03125, _dhhi_val)
+        else (0.005, 0.01, 0.02, gso.imputed_presumption.delta)  # , 0.03125
     )
 
     _bdry_approx_data_dict = {
@@ -166,7 +170,7 @@ def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
                 ),
             )
             for _k in BDRY_SPECS_DICT
-            if not _k.endswith("Distance")
+            # if not _k.endswith("Distance")
         }
     }
     _bdry_approx_data_dict |= {
@@ -180,14 +184,29 @@ def tabulate_boundary_stats(_gpubyr: Literal[1992, 2010, 2023], /) -> None:
     )
     _bdry_approx_data_dict |= dict(_bdry_data)
 
-    print(" & ".join(_k for _k in _bdry_approx_data_dict), R" \\")
-    for _sk in _bdry_approx_data_dict["Criterion"]:
-        print(
-            " & ".join(
-                _bdry_approx_data_dict[_k][_sk] for _k in _bdry_approx_data_dict
-            ),
-            R"\\",
+    _data_str = ""
+    _data_str = "{} \\\\ \n".format(
+        " & ".join(
+            _k.replace("Criterion", R"{\text{} \\ Criterion}")  # \phantom{Criterion}
+            for _k in _bdry_approx_data_dict
         )
+    )
+    for _sk in _bdry_approx_data_dict["Criterion"]:
+        _data_str += "{} \\\\ \n".format(
+            " & ".join(_bdry_approx_data_dict[_k][_sk] for _k in _bdry_approx_data_dict)
+        )
+    print(_data_str)
+
+    _invres_rate_table_content.data_str = _data_str
+
+    _j2_env = isl.latex_jinja_env
+    _j2_env.loader = FileSystemLoader(str(PROG_PATH.parent / "templates"))
+    _j2_templ = _j2_env.get_template(
+        "concentration_as_diversion_intrinsic_enforcement_rates.tex.jinja2"
+    )
+    PROG_PATH.parents[1].joinpath(
+        f"{PROG_PATH.stem}_intrinsic_enforcement_rates_{_gpubyr}.tex"
+    ).write_text(_j2_templ.render(tmpl_data=_invres_rate_table_content))
 
 
 def _dhhi_stats(
@@ -196,12 +215,14 @@ def _dhhi_stats(
     _dhhi_val = round(_dhhi_val, 5)
 
     _r_val = round(_r_val, 4)
-    _s_mid = sqrt(_dhhi_val / 2)
+    _divr_val = gbl.gbd_from_dsf(_dhhi_val, r_bar=_r_val)
+    _delta_val = gbl.critical_shrratio(gbl.gbd_from_dsf(_dhhi_val), r_bar=_r_val)
+    # _s_mid = sqrt(_dhhi_val / 2)
 
-    _delta_val = _s_mid / (1 - _s_mid)
-    if _dhhi_val * 1e4 in (50, 100, 200):
-        _delta_val = gbl.round_cust(_r_val * _delta_val) / _r_val
-    _divr_val = _r_val * _delta_val
+    # _delta_val = _s_mid / (1 - _s_mid)
+    # if _dhhi_val * 1e4 in (50, 100, 200):
+    #     _delta_val = gbl.critical_shrratio()(_r_val * _delta_val) / _r_val
+    # _divr_val = _r_val * _delta_val
 
     print(
         "Processing data for ΔHHI = {0:.{1}f} points;".format(
@@ -238,15 +259,16 @@ def _bdry_stats_col(
             return _bdry_spec, f"{_hhi_m_pre_prob:6.5f}"
         case _ if "Div Ratio" in _bdry_spec:
             _gbd_func = BDRY_SPECS_DICT[_bdry_spec]["func"]
-            _, _within_bdry_area = _gbd_func(
+            _within_bdry_area = _gbd_func(
                 _delta_val, _r_val, **BDRY_SPECS_DICT[_bdry_spec].get("func_kwargs", {})
-            )
+            ).area
             _within_bdry_prob = 2 * _within_bdry_area
-            _within_conc_bdry_prob = (
-                _hhi_m_pre_prob
-                if _bdry_spec.startswith("CPSWAG")
-                else (_cs_prob if _bdry_spec.startswith("SAG") else _dhhi_prob)
-            )
+            if _bdry_spec.startswith("CPSWAG"):
+                _within_conc_bdry_prob = _hhi_m_pre_prob
+            elif _bdry_spec.startswith("SAG"):
+                _within_conc_bdry_prob = _cs_prob
+            else:
+                _within_conc_bdry_prob = _dhhi_prob
 
             return _bdry_spec, R"{{ {:6.5f} \\ {:.2f}\% }}".format(
                 _within_bdry_prob,
@@ -257,7 +279,7 @@ def _bdry_stats_col(
 
 
 def plot_and_save_boundary_coords(
-    _gpubyr: Literal[1992, 2010, 2023],
+    _gpubyr: gbl.HMGPubYear,
     _xl_book: Workbook,
     /,
     layout: Literal["collected", "distributed"] = "collected",
@@ -439,11 +461,12 @@ def gen_plot_boundary(
         _bdry_boundary = _bdry_func(_dhhi_val)
         _plot_label_mag, _plot_label_uom = _dhhi_val * 1e4, " points"
 
-    _plot_label = R"${0}$ = {1:.{2}f}{3}".format(
+    _plot_label = R"${0}$ = {1:.{2}f}{3} ({4:.5f})".format(
         _bdry_spec_dict["func_str"],
         _plot_label_mag,
         1 * (_plot_label_mag % 1 > 1e-8),
         _plot_label_uom,
+        _bdry_boundary.area,
     )
 
     _bndry_data_dict |= {
@@ -599,8 +622,8 @@ def boundary_data_to_worksheet(
 
 
 if __name__ == "__main__":
-    for gpubyr in [1992, 2010, 2023][2:]:
-        # tabulate_boundary_stats(gpubyr)
+    for gpubyr in [1992, 2010, 2023][1:][:1]:
+        tabulate_boundary_stats(gpubyr)
 
         # Initiliaze workbook for saving boundary coordinates
         with Workbook(
