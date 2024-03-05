@@ -5,6 +5,7 @@ with a canvas on which to draw boundaries for Guidelines standards.
 """
 
 import decimal
+from collections.abc import Callable
 from dataclasses import dataclass
 from importlib.metadata import version
 from typing import Any, Literal, TypeAlias
@@ -14,6 +15,8 @@ from attrs import define, field
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
 from scipy.spatial.distance import minkowski as distance_function
+from sympy import lambdify, simplify, solve, symbols
+from sympy import plot as symplot
 
 from .. import _PKG_NAME  # noqa: TID252
 
@@ -29,6 +32,12 @@ HMGPubYear: TypeAlias = Literal[1992, 2010, 2023]
 @dataclass(slots=True, frozen=True)
 class GuidelinesBoundary:
     coordinates: NDArray[np.float64]
+    area: float
+
+
+@dataclass(slots=True, frozen=True)
+class GuidelinesBoundaryCallable:
+    boundary_function: Callable[[NDArray[np.float64]]]
     area: float
 
 
@@ -371,18 +380,18 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
             r"\setsansfont{Fira Sans Light}",
             R"\setmonofont[Scale=MatchLowercase,]{Fira Mono}",
             R"\defaultfontfeatures[\rmfamily]{",
-            R"	Ligatures={TeX, Common},",
-            R"	Numbers={Proportional, Lining},",
-            R"	}",
+            R"  Ligatures={TeX, Common},",
+            R"  Numbers={Proportional, Lining},",
+            R"  }",
             R"\defaultfontfeatures[\sffamily]{",
-            R"	Ligatures={TeX, Common},",
-            R"	Numbers={Monospaced, Lining},",
-            R"	LetterSpace=0.50,",
-            R"	}",
+            R"  Ligatures={TeX, Common},",
+            R"  Numbers={Monospaced, Lining},",
+            R"  LetterSpace=0.50,",
+            R"  }",
             R"\usepackage[",
-            R"	activate={true, nocompatibility},",
-            R"	tracking=true,",
-            R"	]{microtype}",
+            R"  activate={true, nocompatibility},",
+            R"  tracking=true,",
+            R"  ]{microtype}",
         ]),
     })
 
@@ -613,6 +622,41 @@ def delta_hhi_boundary(
     )
 
 
+def delta_hhi_boundary_qdtr(_dh_val: float = 0.01) -> GuidelinesBoundaryCallable:
+    """
+    Generate the list of share combination on the ΔHHI boundary.
+
+    Parameters
+    ----------
+    _dh_val:
+        Merging-firms' ΔHHI bound.
+    dh_dps
+        Number of decimal places for rounding reported shares.
+
+    Returns
+    -------
+        Callable to generate array of share-pairs, area under boundary.
+
+    """
+
+    _dh_val = mpf(f"{_dh_val}")
+
+    s_1, s_2 = symbols("s_1, s_2", positive=True)
+
+    hhi_eqn = s_2 - 0.01 / (2 * s_1)
+
+    hhi_bdry = solve(hhi_eqn, s_2)[0]
+    hs_0 = float(solve(hhi_eqn.subs({s_2: 1 - s_1}), s_1)[0])
+    hs_mid = np.sqrt(0.01 / 2)
+    symplot(hhi_bdry, (s_1, hs_0, hs_mid))
+
+    hhi_bdry_area = 2 * (
+        hs_0 + mp.quad(lambdify(s_1, hhi_bdry, "mpmath"), (hs_0, 1 - hs_0))
+    )
+
+    return GuidelinesBoundaryCallable(lambdify(s_1, hhi_bdry, "numpy"), hhi_bdry_area)
+
+
 def combined_share_boundary(
     _s_intcpt: float = 0.0625, /, *, bdry_dps: int = 10
 ) -> GuidelinesBoundary:
@@ -801,6 +845,113 @@ def shrratio_boundary_min(
     )
 
 
+def shrratio_boundary_qdtr_wtd_avg(
+    _delta_star: float = 0.075,
+    _r_val: float = 0.80,
+    /,
+    *,
+    wgtng_policy: Literal["own-share", "cross-product-share"] | None = "own-share",
+    recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
+) -> GuidelinesBoundaryCallable:
+    """
+    Share combinations for the share-weighted average GUPPI boundary with symmetric
+    merging-firm margins.
+
+    Parameters
+    ----------
+    _delta_star
+        corollary to GUPPI bound (:math:`\\overline{g} / (m^* \\cdot \\overline{r})`)
+    _r_val
+        recapture ratio
+    wgtng_policy
+        Whether "own-share" or "cross-product-share" (or None for simple, unweighted average)
+    recapture_spec
+        Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
+        value for both merging firms ("proportional").
+
+    Returns
+    -------
+        Array of share-pairs, area under boundary.
+
+    """
+
+    if _delta_star > 1:
+        raise ValueError(
+            "Margin-adjusted benchmark share ratio, `_delta_star` cannot exceed 1."
+        )
+
+    _delta_star = mpf(f"{_delta_star}")
+    _s_mid = _delta_star / (1 + _delta_star)
+
+    _s_1, _s_2, _d_star = symbols(R"s_1 s_2 \delta^*", positive=True)
+
+    match wgtng_policy:
+        case "own-share":
+            _bdry_eqn = (
+                _s_1 * _s_2 / (1 - _s_1)
+                + _s_2
+                * _s_1
+                / (
+                    (1 - (_r_val * _s_2 + (1 - _r_val) * _s_1))
+                    if recapture_spec == "inside-out"
+                    else (1 - _s_2)
+                )
+                - (_s_1 + _s_2) * _delta_star
+            )
+
+            _bdry_func = solve(_bdry_eqn, _s_2)[0]
+            _s_knot = solve(simplify(_bdry_eqn.subs({_s_2: 1 - _s_1})), _s_1)[0]
+            symplot(_bdry_func, (_s_1, _s_knot, _s_mid), ylabel=_s_2)
+            _bdry_area = 2 * (
+                _s_knot
+                + mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (_s_knot, _s_mid))
+                - 1 / 2 * (_s_mid**2 + _s_knot**2)
+            )
+
+        case "cross-product-share":
+            _bdry_eqn = (
+                _s_2 * _s_2 / (1 - _s_1)
+                + _s_1
+                * _s_1
+                / (
+                    (1 - (_r_val * _s_2 + (1 - _r_val) * _s_1))
+                    if recapture_spec == "inside-out"
+                    else (1 - _s_2)
+                )
+                - (_s_1 + _s_2) * _d_star
+            )
+
+            _bdry_func = solve(_bdry_eqn, _s_2)[0]
+            symplot(_bdry_func, (_s_1, 0, _s_mid), ylabel=_s_2)
+            _bdry_area = 2 * (
+                mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (0, _s_mid))
+                - 1 / 2 * _s_mid**2
+            )
+
+        case _:
+            _bdry_eqn = (
+                1 / 2 * _s_2 / (1 - _s_1)
+                + 1
+                / 2
+                * _s_1
+                / (
+                    (1 - (_r_val * _s_2 + (1 - _r_val) * _s_1))
+                    if recapture_spec == "inside-out"
+                    else (1 - _s_2)
+                )
+                - _d_star
+            )
+
+            _bdry_func = solve(_bdry_eqn, _s_2)[0]
+            symplot(_bdry_func, (_s_1, 0, _s_mid), ylabel=_s_2)
+            _bdry_area = 2 * (
+                mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (0, _s_mid))
+                - 1 / 2 * _s_mid**2
+            )
+
+    return GuidelinesBoundaryCallable(lambdify(_s_1, _bdry_func, "numpy"), _bdry_area)
+
+
 def shrratio_boundary_wtd_avg(
     _delta_star: float = 0.075,
     _r_val: float = 0.80,
@@ -815,16 +966,36 @@ def shrratio_boundary_wtd_avg(
     Share combinations for the share-weighted average GUPPI boundary with symmetric
     merging-firm margins.
 
+    Parameters
+    ----------
+    _delta_star
+        corollary to GUPPI bound (:math:`\\overline{g} / (m^* \\cdot \\overline{r})`)
+    _r_val
+        recapture ratio
+    avg_method
+        Whether "arithmetic", "geometric", or "distance".
+    wgtng_policy
+        Whether "own-share" or "cross-product-share"  (or None for simple, unweighted average).
+    recapture_spec
+        Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
+        value for both merging firms ("proportional").
+    gbd_dps
+        Number of decimal places for rounding returned shares and area.
+
+    Returns
+    -------
+        Array of share-pairs, area under boundary.
+
     Notes
     -----
     An analytical expression for the share-weighted arithmetic mean boundary
     is derived and plotted from y-intercept to the ray of symmetry as follows::
 
         from sympy import plot as symplot, solve, symbols
-        s_1, s_2, delta_star = symbols("s_1 s_2 \\delta^*")
+        s_1, s_2, delta_star = symbols("s_1 s_2", positive=True)
 
         g_val, r_val, m_val = 0.06, 0.80, 0.30
-        d_hat = g_val / (r_val * m_val)
+        delta_star = g_val / (r_val * m_val)
 
         # recapture_spec == "inside-out"
         oswag = solve(
@@ -834,7 +1005,7 @@ def shrratio_boundary_wtd_avg(
             s_2
         )[0]
         symplot(
-            oswag.subs({delta_star: d_hat}),
+            oswag,
             (s_1, 0., d_hat / (1 + d_hat)),
             ylabel=s_2
         )
@@ -846,7 +1017,7 @@ def shrratio_boundary_wtd_avg(
             s_2
         )[1]
         symplot(
-            cpwag.subs({delta_star: d_hat}),
+            cpwag,
             (s_1, 0., d_hat / (1 + d_hat)),
             ylabel=s_2
         )
@@ -859,7 +1030,7 @@ def shrratio_boundary_wtd_avg(
              s_2
         )[0]
         symplot(
-            oswag.subs({delta_star: d_hat}),
+            oswag,
             (s_1, 0., d_hat / (1 + d_hat)),
             ylabel=s_2
         )
@@ -871,30 +1042,11 @@ def shrratio_boundary_wtd_avg(
              s_2
         )[1]
         symplot(
-            cpswag.subs({delta_star: d_hat}),
+            cpswag,
             (s_1, 0.0, d_hat / (1 + d_hat)),
             ylabel=s_2
         )
 
-    Parameters
-    ----------
-    _delta_star
-        corollary to GUPPI bound (:math:`\\overline{g} / (m^* \\cdot \\overline{r})`)
-    _r_val
-        recapture ratio
-    avg_method
-        Whether "arithmetic", "geometric", or "distance".
-    wgtng_policy
-        Whether "own-share" or "cross-product-share".
-    recapture_spec
-        Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
-        value for both merging firms ("proportional").
-    gbd_dps
-        Number of decimal places for rounding returned shares and area.
-
-    Returns
-    -------
-        Array of share-pairs, area under boundary.
 
     """
 
@@ -970,13 +1122,12 @@ def shrratio_boundary_wtd_avg(
         _s_2_pre = _s_2
         _s_1_pre = _s_1
 
-    _gbd_prtlarea = _gbd_step_sz * (
-        (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _delta_star) / 3
+    _gbd_prtlarea = (
+        _gbd_step_sz * (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _delta_star) / 3
         if wgtng_policy == "cross-product-share"
-        else (
-            (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3
-            + _s_1_pre * (1 + _s_2_pre) / 2
-        )
+        else _gbd_step_sz
+        * ((4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3)
+        + _s_1_pre * (1 + _s_2_pre) / 2
     )
 
     # Area under boundary
