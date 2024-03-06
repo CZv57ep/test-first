@@ -37,7 +37,7 @@ class GuidelinesBoundary:
 
 @dataclass(slots=True, frozen=True)
 class GuidelinesBoundaryCallable:
-    boundary_function: Callable[[NDArray[np.float64]]]
+    boundary_function: Callable[[NDArray[np.float64]], NDArray[np.float64]]
     area: float
 
 
@@ -641,20 +641,21 @@ def delta_hhi_boundary_qdtr(_dh_val: float = 0.01) -> GuidelinesBoundaryCallable
 
     _dh_val = mpf(f"{_dh_val}")
 
-    s_1, s_2 = symbols("s_1, s_2", positive=True)
+    _s_1, _s_2 = symbols("s_1, s_2", positive=True)
 
-    hhi_eqn = s_2 - 0.01 / (2 * s_1)
+    _hhi_eqn = _s_2 - 0.01 / (2 * _s_1)
 
-    hhi_bdry = solve(hhi_eqn, s_2)[0]
-    hs_0 = float(solve(hhi_eqn.subs({s_2: 1 - s_1}), s_1)[0])
-    hs_mid = np.sqrt(0.01 / 2)
-    symplot(hhi_bdry, (s_1, hs_0, hs_mid))
+    _hhi_bdry = solve(_hhi_eqn, _s_2)[0]
+    _hs_0 = float(solve(_hhi_eqn.subs({_s_2: 1 - _s_1}), _s_1)[0])
+    _hs_mid = np.sqrt(0.01 / 2)
 
-    hhi_bdry_area = 2 * (
-        hs_0 + mp.quad(lambdify(s_1, hhi_bdry, "mpmath"), (hs_0, 1 - hs_0))
+    _hhi_bdry_area = 2 * (
+        _hs_0 + mp.quad(lambdify(_s_1, _hhi_bdry, "mpmath"), (_hs_0, 1 - _hs_0))
     )
 
-    return GuidelinesBoundaryCallable(lambdify(s_1, hhi_bdry, "numpy"), hhi_bdry_area)
+    return GuidelinesBoundaryCallable(
+        lambdify(_s_1, _hhi_bdry, "numpy"), _hhi_bdry_area
+    )
 
 
 def combined_share_boundary(
@@ -1073,7 +1074,7 @@ def shrratio_boundary_wtd_avg(
         _s_2 = _s_2_pre * (1 + _theta)
 
         if (_s_1 + _s_2) > mpf("0.99875"):
-            # 1: # We lose accuracy at 3-9s and up
+            # Loss of accuracy at 3-9s and up
             break
 
         while True:
@@ -1122,17 +1123,6 @@ def shrratio_boundary_wtd_avg(
         _s_2_pre = _s_2
         _s_1_pre = _s_1
 
-    _gbd_prtlarea = (
-        _gbd_step_sz * (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _delta_star) / 3
-        if wgtng_policy == "cross-product-share"
-        else _gbd_step_sz
-        * ((4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3)
-        + _s_1_pre * (1 + _s_2_pre) / 2
-    )
-
-    # Area under boundary
-    _gbdry_area_total = 2 * _gbd_prtlarea - mp.power(_s_mid, 2)
-
     match wgtng_policy:
         case "cross-product-share":
             _s_intcpt = _delta_star
@@ -1141,11 +1131,29 @@ def shrratio_boundary_wtd_avg(
         case None if avg_method == "distance":
             _s_intcpt = _delta_star * mp.sqrt("2")
         case _:
+            # Need to add more precise terms for other cases
             _s_intcpt = _s_2_pre
 
-    _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
-        np.float64
+    _gbd_prtlarea = (
+        _gbd_step_sz * (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _delta_star) / 3
+        if wgtng_policy == "cross-product-share"
+        else _gbd_step_sz
+        * ((4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3)
+        + (_s_1_pre if wgtng_policy == "own-product-share" else 0)
     )
+
+    # Area under boundary
+    _gbdry_area_total = (
+        2 * _gbd_prtlarea
+        - mp.power(_s_mid, 2)
+        - (mp.power(_s_intcpt, "2") if wgtng_policy == "own-product-share" else 0)
+    )
+
+    if wgtng_policy == "own-product-share":
+        _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
+            np.float64
+        )
+
     # Points defining boundary to point-of-symmetry
     return GuidelinesBoundary(
         np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
