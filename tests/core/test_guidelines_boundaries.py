@@ -164,8 +164,48 @@ def test_shrratio_boundary_min(
 @pytest.mark.parametrize(
     "_tvl",
     (
+        (0.06, 1.0, "own-share", "proportional", 0.05109304376203841),
+        (0.06, 0.67, "own-share", "proportional", 0.07725625014417284),
+        (0.06, 0.3, "own-share", "proportional", 0.17095706110994838),
+        (0.06, 1.0, "cross-product-share", "proportional", 0.006600706829415734),
+        (0.06, 0.67, "cross-product-share", "proportional", 0.01409071869102121),
+        (0.06, 0.3, "cross-product-share", "proportional", 0.0606003596099902),
+        # below are different from ~_avg() in 4th decimal
+        (0.06, 1.0, None, "proportional", 0.010202305341592572711721127),
+        (0.06, 0.67, None, "proportional", 0.021688811233381205151727031),
+        (0.06, 0.3, None, "proportional", 0.091226363716114866214444818),
+        (0.06, 1.0, None, "inside-out", 0.010256625940293613886783542),
+        (0.06, 0.67, None, "inside-out", 0.021867653765402224297618528),
+        (0.06, 0.3, None, "inside-out", 0.093231884646380737814431487),
+    ),
+)
+def test_shrratio_boundary_qdtr_wtd_avg(
+    _tvl: tuple[float, float, str, str, float],
+) -> None:
+    _ts = gbl.shrratio_boundary_qdtr_wtd_avg(
+        gbl.critical_shrratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
+        wgtng_policy=_tvl[2],  # type: ignore
+        recapture_spec=_tvl[3],  # type: ignore
+    ).area
+    print("Test gbl.shrratio_boundary_wtd_avg(): ", end="")
+    try:
+        assert_equal(float(_ts), _tvl[-1])
+    except AssertionError as _err:
+        print(
+            "g_val = {}; m_val = {}; wgtng = {}; meanf = {}; {}".format(*_tvl),
+            "=?",
+            _ts,
+            end="",
+        )
+        raise _err
+    print_done()
+
+
+@pytest.mark.parametrize(
+    "_tvl",
+    (
         (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05092),
-        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07697),
+        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07696),
         (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17016),
         (0.06, 1.0, "cross-product-share", "arithmetic", "proportional", 0.00658),
         (0.06, 0.67, "cross-product-share", "arithmetic", "proportional", 0.01409),
@@ -179,9 +219,7 @@ def test_shrratio_boundary_min(
         (0.06, 0.3, None, "arithmetic", "inside-out", 0.09323),
     ),
 )
-def test_shrratio_boundary_wtd_avg(
-    _tvl: tuple[float, float, str, str, float],
-) -> None:
+def test_shrratio_boundary_wtd_avg(_tvl: tuple[float, float, str, str, float]) -> None:
     _ts = gbl.shrratio_boundary_wtd_avg(
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         wgtng_policy=_tvl[2],  # type: ignore
@@ -213,9 +251,7 @@ def test_shrratio_boundary_wtd_avg(
         (0.06, 0.3, "proportional", 0.09123),
     ),
 )
-def test_shrratio_boundary_xact_avg(
-    _tvl: tuple[float, float, str, float],
-) -> None:
+def test_shrratio_boundary_xact_avg(_tvl: tuple[float, float, str, float]) -> None:
     _ts = gbl.shrratio_boundary_xact_avg(
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         recapture_spec=_tvl[2],  # type: ignore
@@ -258,7 +294,7 @@ def test_shrratio_boundary_avg(_tvl: tuple[float, float, str, float]) -> None:
     "_tvl",
     (
         (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05092),
-        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07697),
+        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07696),
         (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17016),
         (0.06, 1.0, "cross-product-share", "arithmetic", "proportional", 0.00658),
         (0.06, 0.67, "cross-product-share", "arithmetic", "proportional", 0.01409),
@@ -272,9 +308,7 @@ def test_shrratio_boundary_avg(_tvl: tuple[float, float, str, float]) -> None:
         (0.06, 0.3, None, "arithmetic", "inside-out", 0.09323),
     ),
 )
-def test_shrratio_boundary_distance(
-    _tvl: tuple[float, float, str, str, float],
-) -> None:
+def test_shrratio_boundary_distance(_tvl: tuple[float, float, str, str, float]) -> None:
     _ts = gbl.shrratio_boundary_distance(
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         wgtng_policy=_tvl[2],  # type: ignore

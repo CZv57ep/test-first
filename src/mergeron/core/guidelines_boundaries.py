@@ -16,7 +16,6 @@ from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
 from scipy.spatial.distance import minkowski as distance_function
 from sympy import lambdify, simplify, solve, symbols
-from sympy import plot as symplot
 
 from .. import _PKG_NAME  # noqa: TID252
 
@@ -287,7 +286,12 @@ def gbd_from_dsf(
 
 
 def critical_shrratio(
-    _gbd: float = 0.06, /, *, m_star: float = 1.00, r_bar: float = 0.80
+    _gbd: float = 0.06,
+    /,
+    *,
+    m_star: float = 1.00,
+    r_bar: float = 0.80,
+    frac: float = 1e-16,
 ) -> mpf:
     """
     Corollary to GUPPI bound.
@@ -307,7 +311,7 @@ def critical_shrratio(
         for given margin and recapture rate.
 
     """
-    return mpf(f"{_gbd}") / mp.fmul(f"{m_star}", f"{r_bar}")
+    return round_cust(mpf(f"{_gbd}") / mp.fmul(f"{m_star}", f"{r_bar}"), frac=frac)
 
 
 def shr_from_gbd(
@@ -884,7 +888,7 @@ def shrratio_boundary_qdtr_wtd_avg(
     _delta_star = mpf(f"{_delta_star}")
     _s_mid = _delta_star / (1 + _delta_star)
 
-    _s_1, _s_2, _d_star = symbols(R"s_1 s_2 \delta^*", positive=True)
+    _s_1, _s_2 = symbols("s_1:3", positive=True)
 
     match wgtng_policy:
         case "own-share":
@@ -901,15 +905,23 @@ def shrratio_boundary_qdtr_wtd_avg(
             )
 
             _bdry_func = solve(_bdry_eqn, _s_2)[0]
-            _s_knot = solve(simplify(_bdry_eqn.subs({_s_2: 1 - _s_1})), _s_1)[0]
-            symplot(_bdry_func, (_s_1, _s_knot, _s_mid), ylabel=_s_2)
-            _bdry_area = 2 * (
-                _s_knot
-                + mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (_s_knot, _s_mid))
-                - 1 / 2 * (_s_mid**2 + _s_knot**2)
+            _s_knot = (
+                float(solve(simplify(_bdry_eqn.subs({_s_2: 1 - _s_1})), _s_1)[0])
+                if recapture_spec == "inside-out"
+                else 0
+            )
+            _bdry_area = float(
+                2
+                * (
+                    _s_knot
+                    + mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (_s_knot, _s_mid))
+                )
+                - (_s_mid**2 + _s_knot**2)
             )
 
         case "cross-product-share":
+            mp.trap_complex = False
+            _d_star = symbols("d", positive=True)
             _bdry_eqn = (
                 _s_2 * _s_2 / (1 - _s_1)
                 + _s_1
@@ -922,11 +934,18 @@ def shrratio_boundary_qdtr_wtd_avg(
                 - (_s_1 + _s_2) * _d_star
             )
 
-            _bdry_func = solve(_bdry_eqn, _s_2)[0]
-            symplot(_bdry_func, (_s_1, 0, _s_mid), ylabel=_s_2)
-            _bdry_area = 2 * (
-                mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (0, _s_mid))
-                - 1 / 2 * _s_mid**2
+            _bdry_func = solve(_bdry_eqn, _s_2)[1]
+            _bdry_area = float(
+                2
+                * (
+                    mp.quad(
+                        lambdify(
+                            _s_1, _bdry_func.subs({_d_star: _delta_star}), "mpmath"
+                        ),
+                        (0, _s_mid),
+                    )
+                ).real
+                - _s_mid**2
             )
 
         case _:
@@ -940,14 +959,16 @@ def shrratio_boundary_qdtr_wtd_avg(
                     if recapture_spec == "inside-out"
                     else (1 - _s_2)
                 )
-                - _d_star
+                - _delta_star
             )
 
             _bdry_func = solve(_bdry_eqn, _s_2)[0]
-            symplot(_bdry_func, (_s_1, 0, _s_mid), ylabel=_s_2)
-            _bdry_area = 2 * (
-                mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (0, _s_mid))
-                - 1 / 2 * _s_mid**2
+            _bdry_area = float(
+                2
+                * (
+                    mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (0, _s_mid))
+                    - 1 / 2 * _s_mid**2
+                )
             )
 
     return GuidelinesBoundaryCallable(lambdify(_s_1, _bdry_func, "numpy"), _bdry_area)
@@ -993,7 +1014,7 @@ def shrratio_boundary_wtd_avg(
     is derived and plotted from y-intercept to the ray of symmetry as follows::
 
         from sympy import plot as symplot, solve, symbols
-        s_1, s_2, delta_star = symbols("s_1 s_2", positive=True)
+        s_1, s_2 = symbols("s_1 s_2", positive=True)
 
         g_val, r_val, m_val = 0.06, 0.80, 0.30
         delta_star = g_val / (r_val * m_val)
@@ -1101,10 +1122,11 @@ def shrratio_boundary_wtd_avg(
                 case _:
                     _delta_test = lerp(_de_1, _de_2, _r)
 
-            if wgtng_policy == "cross-product-share":
-                _test_flag, _incr_decr = (_delta_test > _delta_star, -1)
-            else:
-                _test_flag, _incr_decr = (_delta_test < _delta_star, 1)
+            _test_flag, _incr_decr = (
+                (_delta_test > _delta_star, -1)
+                if wgtng_policy == "cross-product-share"
+                else (_delta_test < _delta_star, 1)
+            )
 
             if _test_flag:
                 _s_2 += _incr_decr * _gbd_step_sz
@@ -1123,36 +1145,42 @@ def shrratio_boundary_wtd_avg(
         _s_2_pre = _s_2
         _s_1_pre = _s_1
 
-    match wgtng_policy:
-        case "cross-product-share":
-            _s_intcpt = _delta_star
-        case "own-product-share":
-            _s_intcpt = mpf("1.0")
-        case None if avg_method == "distance":
-            _s_intcpt = _delta_star * mp.sqrt("2")
-        case _:
-            # Need to add more precise terms for other cases
-            _s_intcpt = _s_2_pre
+    if _s_2_oddval:
+        _s_2_evnsum -= _s_2_pre
+    else:
+        _s_2_oddsum -= _s_1_pre
 
-    _gbd_prtlarea = (
-        _gbd_step_sz * (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _delta_star) / 3
-        if wgtng_policy == "cross-product-share"
-        else _gbd_step_sz
-        * ((4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3)
-        + (_s_1_pre if wgtng_policy == "own-product-share" else 0)
+    _s_intcpt = _shrratio_boundary_intcpt(
+        _s_1_pre,
+        _delta_star,
+        _r_val,
+        recapture_spec=recapture_spec,
+        avg_method=avg_method,
+        wgtng_policy=wgtng_policy,
     )
 
-    # Area under boundary
-    _gbdry_area_total = (
-        2 * _gbd_prtlarea
-        - mp.power(_s_mid, 2)
-        - (mp.power(_s_intcpt, "2") if wgtng_policy == "own-product-share" else 0)
-    )
-
-    if wgtng_policy == "own-product-share":
-        _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
-            np.float64
+    if wgtng_policy == "own-share":
+        _gbd_prtlarea = (
+            _gbd_step_sz * (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3
         )
+        # Area under boundary
+        _gbdry_area_total = float(
+            _s_intcpt
+            + 2 * _gbd_prtlarea
+            - mp.power(_s_mid, "2")
+            - mp.power(_s_intcpt, "2")
+        )
+
+    else:
+        _gbd_prtlarea = (
+            _gbd_step_sz * (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_intcpt) / 3
+        )
+        # Area under boundary
+        _gbdry_area_total = float(2 * _gbd_prtlarea - mp.power(_s_mid, "2"))
+
+    _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
+        np.float64
+    )
 
     # Points defining boundary to point-of-symmetry
     return GuidelinesBoundary(
@@ -1469,8 +1497,8 @@ def shrratio_boundary_distance(
     Reimplements the arithmetic-averages and distance estimations from function,
     `shrratio_boundary_wtd_avg`but uses the Minkowski-distance function,
     `scipy.spatial.distance.minkowski` for all aggregators. This reimplementation
-    is primarifly useful for testing the output of `shrratio_boundary_wtd_avg`
-    as it tests considerably slower.
+    is useful for testing the output of `shrratio_boundary_wtd_avg`
+    but runs considerably slower.
 
     Parameters
     ----------
@@ -1551,10 +1579,11 @@ def shrratio_boundary_distance(
                         (_de_1, _de_2), (0.0, 0.0), p=2, w=_weights_i
                     )
 
-            if wgtng_policy == "cross-product-share":
-                _test_flag, _incr_decr = (_delta_test > _delta_star, -1)
-            else:
-                _test_flag, _incr_decr = (_delta_test < _delta_star, 1)
+            _test_flag, _incr_decr = (
+                (_delta_test > _delta_star, -1)
+                if wgtng_policy == "cross-product-share"
+                else (_delta_test < _delta_star, 1)
+            )
 
             if _test_flag:
                 _s_2 += _incr_decr * _gbd_step_sz
@@ -1573,22 +1602,63 @@ def shrratio_boundary_distance(
         _s_2_pre = _s_2
         _s_1_pre = _s_1
 
-    _gbd_prtlarea = _gbd_step_sz * (
-        (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _delta_star) / 3
-        if wgtng_policy == "cross-product-share"
-        else (
-            (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3
-            + _s_1_pre * (1 + _s_2_pre) / 2
-        )
+    if _s_2_oddval:
+        _s_2_evnsum -= _s_2_pre
+    else:
+        _s_2_oddsum -= _s_1_pre
+
+    _s_intcpt = _shrratio_boundary_intcpt(
+        _s_1_pre,
+        _delta_star,
+        _r_val,
+        recapture_spec=recapture_spec,
+        avg_method=avg_method,
+        wgtng_policy=wgtng_policy,
     )
 
-    # Area under boundary
-    _gbdry_area_total = 2 * _gbd_prtlarea - mp.power(_s_mid, 2)
+    if wgtng_policy == "own-share":
+        _gbd_prtlarea = (
+            _gbd_step_sz * (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3
+        )
+        # Area under boundary
+        _gbdry_area_total = (
+            _s_intcpt
+            + 2 * _gbd_prtlarea
+            - mp.power(_s_mid, "2")
+            - mp.power(_s_intcpt, "2")
+        )
 
+    else:
+        _gbd_prtlarea = (
+            _gbd_step_sz * (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_intcpt) / 3
+        )
+        # Area under boundary
+        _gbdry_area_total = 2 * _gbd_prtlarea - mp.power(_s_mid, "2")
+
+    _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
+        np.float64
+    )
+    # Points defining boundary to point-of-symmetry
+    return GuidelinesBoundary(
+        np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
+        round(float(_gbdry_area_total), gbd_dps),
+    )
+
+
+def _shrratio_boundary_intcpt(
+    _s_2_pre: float,
+    _delta_star: mpf,
+    _r_val: mpf,
+    /,
+    *,
+    recapture_spec: Literal["inside-out", "proportional"],
+    avg_method: Literal["arithmetic", "geometric", "distance"],
+    wgtng_policy: Literal["cross-product-share", "own-share"] | None,
+) -> float:
     match wgtng_policy:
         case "cross-product-share":
             _s_intcpt = _delta_star
-        case "own-product-share":
+        case "own-share":
             _s_intcpt = mpf("1.0")
         case None if avg_method == "distance":
             _s_intcpt = _delta_star * mp.sqrt("2")
@@ -1604,11 +1674,4 @@ def shrratio_boundary_distance(
         case _:
             _s_intcpt = _s_2_pre
 
-    _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
-        np.float64
-    )
-    # Points defining boundary to point-of-symmetry
-    return GuidelinesBoundary(
-        np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
-        round(float(_gbdry_area_total), gbd_dps),
-    )
+    return _s_intcpt

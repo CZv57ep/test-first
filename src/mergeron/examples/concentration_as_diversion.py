@@ -27,16 +27,15 @@ from pathlib import Path
 from typing import Any, Literal
 
 import matplotlib.axes as mpa
-from jinja2 import FileSystemLoader
-from joblib import Parallel, cpu_count, delayed
-from numpy import pi
-from xlsxwriter import Workbook
-
 import mergeron.core.excel_helper as xlh
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.ext.tol_colors as ptcolor
 import mergeron.gen.investigations_stats as isl
+from jinja2 import FileSystemLoader
+from joblib import Parallel, cpu_count, delayed
 from mergeron import DATA_DIR
+from numpy import pi
+from xlsxwriter import Workbook
 
 PROG_PATH = Path(__file__)
 
@@ -489,6 +488,7 @@ def gen_plot_boundary(
         zorder=_zrdr,
     )
 
+    print("\t", _bdry_spec_str, _bdry_s2[0])
     print("\t", _bdry_spec_str, f"{_bdry_s2[0]:.1%}")
     if _bdry_spec_str.startswith(("ΔHHI", "OSWAG Min")):
         _plot_annotator(
