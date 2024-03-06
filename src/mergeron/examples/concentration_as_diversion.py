@@ -488,7 +488,6 @@ def gen_plot_boundary(
         zorder=_zrdr,
     )
 
-    print("\t", _bdry_spec_str, _bdry_s2[0])
     print("\t", _bdry_spec_str, f"{_bdry_s2[0]:.1%}")
     if _bdry_spec_str.startswith(("ΔHHI", "OSWAG Min")):
         _plot_annotator(

@@ -38,6 +38,7 @@ class GuidelinesBoundary:
 class GuidelinesBoundaryCallable:
     boundary_function: Callable[[NDArray[np.float64]], NDArray[np.float64]]
     area: float
+    s_naught: float = 0
 
 
 @define(slots=True, frozen=True)
@@ -602,19 +603,16 @@ def delta_hhi_boundary(
     _s1_zero = 1 / 2 * (1 - mp.sqrt(1 - 2 * _dh_val))
     _s1_one = 1 - _s1_zero
 
-    _s_mid = mp.sqrt(_dh_val / 2)
-
     _dh_step_sz = mp.power(10, -6)
-    _s_1 = np.array(mp.arange(_s_mid, _s1_zero, -_dh_step_sz))
+    _s_1 = np.array(mp.arange(_s1_zero, _s1_one + _dh_step_sz, _dh_step_sz))
     _s_2 = _dh_val / (2 * _s_1)
 
     # Boundary points
-    _dh_half = np.row_stack((
-        np.column_stack((_s_1, _s_2)),
-        np.array([(_s1_zero, _s1_one)]),
+    _dh_bdry_pts = np.row_stack((
         np.array([(mpf("0.0"), mpf("1.0"))]),
+        np.column_stack((_s_1, _s_2)),
+        np.array([(mpf("1.0"), mpf("0.0"))]),
     ))
-    _dh_bdry_pts = np.row_stack((np.flip(_dh_half, 0), np.flip(_dh_half[1:], 1)))
 
     _s_1_pts, _s_2_pts = np.split(_dh_bdry_pts, 2, axis=1)
     return GuidelinesBoundary(
@@ -650,15 +648,14 @@ def delta_hhi_boundary_qdtr(_dh_val: float = 0.01) -> GuidelinesBoundaryCallable
     _hhi_eqn = _s_2 - 0.01 / (2 * _s_1)
 
     _hhi_bdry = solve(_hhi_eqn, _s_2)[0]
-    _hs_0 = float(solve(_hhi_eqn.subs({_s_2: 1 - _s_1}), _s_1)[0])
-    _hs_mid = np.sqrt(0.01 / 2)
+    _s_nought = float(solve(_hhi_eqn.subs({_s_2: 1 - _s_1}), _s_1)[0])
 
     _hhi_bdry_area = 2 * (
-        _hs_0 + mp.quad(lambdify(_s_1, _hhi_bdry, "mpmath"), (_hs_0, 1 - _hs_0))
+        _s_nought + mp.quad(lambdify(_s_1, _hhi_bdry, "mpmath"), (_s_nought, 1 - _s_nought))
     )
 
     return GuidelinesBoundaryCallable(
-        lambdify(_s_1, _hhi_bdry, "numpy"), _hhi_bdry_area
+        lambdify(_s_1, _hhi_bdry, "numpy"), _hhi_bdry_area, _s_nought
     )
 
 
@@ -887,6 +884,7 @@ def shrratio_boundary_qdtr_wtd_avg(
 
     _delta_star = mpf(f"{_delta_star}")
     _s_mid = _delta_star / (1 + _delta_star)
+    _s_naught = 0
 
     _s_1, _s_2 = symbols("s_1:3", positive=True)
 
@@ -905,7 +903,7 @@ def shrratio_boundary_qdtr_wtd_avg(
             )
 
             _bdry_func = solve(_bdry_eqn, _s_2)[0]
-            _s_knot = (
+            _s_naught = (
                 float(solve(simplify(_bdry_eqn.subs({_s_2: 1 - _s_1})), _s_1)[0])
                 if recapture_spec == "inside-out"
                 else 0
@@ -913,10 +911,10 @@ def shrratio_boundary_qdtr_wtd_avg(
             _bdry_area = float(
                 2
                 * (
-                    _s_knot
-                    + mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (_s_knot, _s_mid))
+                    _s_naught
+                    + mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (_s_naught, _s_mid))
                 )
-                - (_s_mid**2 + _s_knot**2)
+                - (_s_mid**2 + _s_naught**2)
             )
 
         case "cross-product-share":
@@ -971,7 +969,9 @@ def shrratio_boundary_qdtr_wtd_avg(
                 )
             )
 
-    return GuidelinesBoundaryCallable(lambdify(_s_1, _bdry_func, "numpy"), _bdry_area)
+    return GuidelinesBoundaryCallable(
+        lambdify(_s_1, _bdry_func, "numpy"), _bdry_area, _s_naught
+    )
 
 
 def shrratio_boundary_wtd_avg(
