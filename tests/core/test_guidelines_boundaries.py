@@ -204,9 +204,9 @@ def test_shrratio_boundary_qdtr_wtd_avg(
 @pytest.mark.parametrize(
     "_tvl",
     (
-        (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05092),
-        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07696),
-        (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17016),
+        (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05111),
+        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07726),
+        (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17098),
         (0.06, 1.0, "cross-product-share", "arithmetic", "proportional", 0.00658),
         (0.06, 0.67, "cross-product-share", "arithmetic", "proportional", 0.01409),
         (0.06, 0.3, "cross-product-share", "arithmetic", "proportional", 0.0606),
@@ -293,9 +293,9 @@ def test_shrratio_boundary_avg(_tvl: tuple[float, float, str, float]) -> None:
 @pytest.mark.parametrize(
     "_tvl",
     (
-        (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05092),
-        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07696),
-        (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17016),
+        (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05111),
+        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07726),
+        (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17098),
         (0.06, 1.0, "cross-product-share", "arithmetic", "proportional", 0.00658),
         (0.06, 0.67, "cross-product-share", "arithmetic", "proportional", 0.01409),
         (0.06, 0.3, "cross-product-share", "arithmetic", "proportional", 0.0606),

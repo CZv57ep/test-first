@@ -651,7 +651,8 @@ def delta_hhi_boundary_qdtr(_dh_val: float = 0.01) -> GuidelinesBoundaryCallable
     _s_nought = float(solve(_hhi_eqn.subs({_s_2: 1 - _s_1}), _s_1)[0])
 
     _hhi_bdry_area = 2 * (
-        _s_nought + mp.quad(lambdify(_s_1, _hhi_bdry, "mpmath"), (_s_nought, 1 - _s_nought))
+        _s_nought
+        + mp.quad(lambdify(_s_1, _hhi_bdry, "mpmath"), (_s_nought, 1 - _s_nought))
     )
 
     return GuidelinesBoundaryCallable(
@@ -962,11 +963,8 @@ def shrratio_boundary_qdtr_wtd_avg(
 
             _bdry_func = solve(_bdry_eqn, _s_2)[0]
             _bdry_area = float(
-                2
-                * (
-                    mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (0, _s_mid))
-                    - 1 / 2 * _s_mid**2
-                )
+                2 * (mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (0, _s_mid)))
+                - _s_mid**2
             )
 
     return GuidelinesBoundaryCallable(
@@ -1165,10 +1163,8 @@ def shrratio_boundary_wtd_avg(
         )
         # Area under boundary
         _gbdry_area_total = float(
-            _s_intcpt
-            + 2 * _gbd_prtlarea
-            - mp.power(_s_mid, "2")
-            - mp.power(_s_intcpt, "2")
+            2 * (_s_1_pre + _gbd_prtlarea)
+            - (mp.power(_s_mid, "2") + mp.power(_s_1_pre, "2"))
         )
 
     else:
@@ -1468,10 +1464,10 @@ def shrratio_boundary_avg(
     _s_intcpt = _s_2
 
     _gbd_prtlarea = 2 * _gbd_step_sz * (
-        mp.fmul(4 / 3, _s_2_oddsum)
-        + mp.fmul(2 / 3, _s_2_evnsum)
-        + mp.fmul(1 / 3, _s_mid + _s_intcpt)
-    ) - mp.power(_s_mid, 2)
+        mp.fmul(4, _s_2_oddsum)
+        + mp.fmul(2, _s_2_evnsum)
+        + mp.fmul(1, _s_mid + _s_intcpt)
+    ) / 3 - mp.power(_s_mid, 2)
 
     _gbdry_points = np.array(_gbdry_points, np.float64)
     return GuidelinesBoundary(
@@ -1621,11 +1617,8 @@ def shrratio_boundary_distance(
             _gbd_step_sz * (4 * _s_2_oddsum + 2 * _s_2_evnsum + _s_mid + _s_2_pre) / 3
         )
         # Area under boundary
-        _gbdry_area_total = (
-            _s_intcpt
-            + 2 * _gbd_prtlarea
-            - mp.power(_s_mid, "2")
-            - mp.power(_s_intcpt, "2")
+        _gbdry_area_total = 2 * (_s_1_pre + _gbd_prtlarea) - (
+            mp.power(_s_mid, "2") + mp.power(_s_1_pre, "2")
         )
 
     else:

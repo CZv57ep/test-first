@@ -151,9 +151,9 @@ def tabulate_boundary_stats(_gpubyr: gbl.HMGPubYear, /) -> None:
     )
 
     _dhhi_seq = (
-        (0.01, 0.02, gso.imputed_presumption.delta, 0.08)  # , 0.05
+        (0.005, 0.01, 0.02, gso.imputed_presumption.delta, 0.08)
         if _gpubyr == 2010
-        else (0.005, 0.01, 0.02, gso.imputed_presumption.delta)  # , 0.03125
+        else (0.005, 0.01, 0.02, gso.imputed_presumption.delta, 0.08)
     )
 
     _bdry_approx_data_dict = {
@@ -179,7 +179,7 @@ def tabulate_boundary_stats(_gpubyr: gbl.HMGPubYear, /) -> None:
     }
 
     _bdry_data = Parallel(n_jobs=-1)(
-        delayed(_dhhi_stats)(_dhhi_val, _r_val, _g_val) for _dhhi_val in _dhhi_seq
+        delayed(_dhhi_stats)(_dhhi_val, _r_val) for _dhhi_val in _dhhi_seq
     )
     _bdry_approx_data_dict |= dict(_bdry_data)
 
@@ -208,14 +208,11 @@ def tabulate_boundary_stats(_gpubyr: gbl.HMGPubYear, /) -> None:
     ).write_text(_j2_templ.render(tmpl_data=_invres_rate_table_content))
 
 
-def _dhhi_stats(
-    _dhhi_val: float, _r_val: float, _g_val: float
-) -> tuple[str, dict[str, str]]:
+def _dhhi_stats(_dhhi_val: float, _r_val: float) -> tuple[str, dict[str, str]]:
     _dhhi_val = round(_dhhi_val, 5)
 
-    _r_val = round(_r_val, 4)
     _divr_val = gbl.gbd_from_dsf(_dhhi_val, r_bar=_r_val)
-    _delta_val = gbl.critical_shrratio(gbl.gbd_from_dsf(_dhhi_val), r_bar=_r_val)
+    _delta_val = gbl.critical_shrratio(_divr_val, r_bar=_r_val)
     # _s_mid = sqrt(_dhhi_val / 2)
 
     # _delta_val = _s_mid / (1 - _s_mid)
@@ -460,12 +457,11 @@ def gen_plot_boundary(
         _bdry_boundary = _bdry_func(_dhhi_val)
         _plot_label_mag, _plot_label_uom = _dhhi_val * 1e4, " points"
 
-    _plot_label = R"${0}$ = {1:.{2}f}{3} ({4:.5f})".format(
+    _plot_label = R"${0}$ = {1:.{2}f}{3}".format(
         _bdry_spec_dict["func_str"],
         _plot_label_mag,
         1 * (_plot_label_mag % 1 > 1e-8),
         _plot_label_uom,
-        _bdry_boundary.area,
     )
 
     _bndry_data_dict |= {
@@ -621,7 +617,8 @@ def boundary_data_to_worksheet(
 
 
 if __name__ == "__main__":
-    for gpubyr in [1992, 2010, 2023][1:][:1]:
+    gpubyrs: list[gbl.HMGPubYear] = [1992, 2010, 2023]
+    for gpubyr in gpubyrs[2:][:1]:
         tabulate_boundary_stats(gpubyr)
 
         # Initiliaze workbook for saving boundary coordinates
