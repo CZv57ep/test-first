@@ -841,7 +841,7 @@ def shrratio_boundary_min(
             np.float64,
         )
 
-        _gbd_area = (_smin_nr + (_smax_nr - _smin_nr) * _s_mid) / _guppi_bdry_env_dr
+        _gbd_area = _s_mid + _s1_pts[1] * (1 - 2 * _s_mid)
     else:
         _s1_pts, _gbd_area = np.array((0, _s_mid, _s_intcpt), np.float64), _s_mid
 
