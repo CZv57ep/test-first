@@ -4,6 +4,7 @@ Routines to format and print summary data on merger enforcement patterns.
 """
 
 import enum
+import shutil
 import subprocess
 from collections.abc import Mapping, Sequence
 from importlib.metadata import version
@@ -122,13 +123,11 @@ latex_jinja_env = Environment(
     loader=FileSystemLoader(Path(__file__).parents[1] / "jinja_LaTex_templates"),
 )
 
-# Place files related to rendering latex in outpu data directory
+# Place files related to rendering latex in output data directory
 if not (_out_path := DATA_DIR.joinpath(f"{_PKG_NAME}.cls")).is_file():
-    _out_path.write_text(
-        Path(__file__)
-        .parents[1]
-        .joinpath("jinja_LaTex_templates", "mergeron.cls")
-        .read_text()
+    shutil.copyfile(
+        Path(__file__).parents[1].joinpath("jinja_LaTex_templates", "mergeron.cls"),
+        _out_path,
     )
 
 

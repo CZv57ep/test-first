@@ -29,7 +29,7 @@ class RECConstants(enum.StrEnum):
 
 
 @enum.unique
-class UPPAggrSelector(enum.Enum):
+class UPPAggrSelector(enum.StrEnum):
     """
     Aggregator selection for GUPPI and diversion ratio
 

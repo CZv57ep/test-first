@@ -8,6 +8,7 @@ We drop reported row and column totals from source data for reducing stored data
 
 """
 
+import shutil
 from collections.abc import Mapping, Sequence
 from importlib.metadata import version
 from operator import itemgetter
@@ -36,6 +37,11 @@ if not FTCDATA_DIR.is_dir():
     FTCDATA_DIR.mkdir(parents=True)
 
 INVDATA_ARCHIVE_PATH = DATA_DIR / "ftc_invdata.msgpack"
+if not INVDATA_ARCHIVE_PATH.is_file():
+    if (
+        _bundled_copy := Path(__file__).parent.joinpath(INVDATA_ARCHIVE_PATH.name)
+    ).is_file():
+        shutil.copyfile(_bundled_copy, INVDATA_ARCHIVE_PATH)
 
 TABLE_NO_RE = re.compile(r"Table \d+\.\d+")
 TABLE_TYPES = ("ByHHIandDelta", "ByFirmCount")

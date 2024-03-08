@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from importlib.metadata import version
-from multiprocessing import Value
 
 from attrs import Attribute, define, field, validators
 
