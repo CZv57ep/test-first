@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from openpyxl import load_workbook
 from pytest import TempPathFactory
-from xlsxwriter import Workbook
+from xlsxwriter import Workbook  # type: ignore
 
 
 @pytest.fixture(scope="session")

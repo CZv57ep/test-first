@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from importlib.metadata import version
 
-from .. import _PKG_NAME  # noqa: TID252
+from .. import _PKG_NAME, RECConstants, UPPAggrSelector  # noqa: TID252
 
 __version__ = version(_PKG_NAME)
 
@@ -72,15 +72,6 @@ class SHRConstants(enum.StrEnum):
     Shape parameters for merging-firm-share are 2.0 each; and
     are equiproportional and add to 2.0 for all non-merging-firm-shares.
     """
-
-
-@enum.unique
-class RECConstants(enum.StrEnum):
-    """Recapture rate - derivation methods."""
-
-    INOUT = "inside-out"
-    OUTIN = "outside-in"
-    FIXED = "proportional"
 
 
 @define(slots=True, frozen=True)
@@ -216,7 +207,7 @@ class SSZConstants(float, enum.ReprEnum):
 
 # Validators for selected attributes of MarketSampleSpec
 def _sample_size_validator(
-    _object: MarketSampleSpec, _attribute: Attribute, _value: int, /
+    _object: MarketSampleSpec, _attribute: Attribute[int], _value: int, /
 ) -> None:
     if _value < 10**6:
         raise ValueError(
@@ -225,7 +216,10 @@ def _sample_size_validator(
 
 
 def _recapture_rate_validator(
-    _object: MarketSampleSpec, _attribute: Attribute, _value: float | None, /
+    _object: MarketSampleSpec,
+    _attribute: Attribute[float | None],
+    _value: float | None,
+    /,
 ) -> None:
     if _value and not (0 < _value <= 1):
         raise ValueError("Recapture rate must lie in the interval, [0, 1).")
@@ -238,7 +232,7 @@ def _recapture_rate_validator(
 
 
 def _share_spec_validator(
-    _instance: MarketSampleSpec, _attribute: Attribute, _value: ShareSpec, /
+    _instance: MarketSampleSpec, _attribute: Attribute[ShareSpec], _value: ShareSpec, /
 ) -> None:
     _r_bar = _instance.recapture_rate
     if _value.dist_type == SHRConstants.UNI:
@@ -269,7 +263,7 @@ def _share_spec_validator(
 
 
 def _pcm_spec_validator(
-    _instance: MarketSampleSpec, _attribute: Attribute, _value: PCMSpec, /
+    _instance: MarketSampleSpec, _attribute: Attribute[PCMSpec], _value: PCMSpec, /
 ) -> None:
     if (
         _instance.share_spec.recapture_spec == RECConstants.FIXED
@@ -313,8 +307,7 @@ class MarketSampleSpec:
     """sample size generated"""
 
     recapture_rate: float | None = field(
-        default=None,
-        validator=(validators.instance_of(float | None), _recapture_rate_validator),
+        default=None, validator=_recapture_rate_validator
     )
     """market recapture rate
 
@@ -356,23 +349,6 @@ class INVResolution(enum.StrEnum):
     CLRN = "clearance"
     ENFT = "enforcement"
     BOTH = "both"
-
-
-@enum.unique
-class UPPAggrSelector(enum.StrEnum):
-    """
-    Aggregator selection for GUPPI and diversion ratio
-
-    """
-
-    AVG = "average"
-    CPA = "cross-product-share-weighted average"
-    CPD = "cross-product-share-weighted distance"
-    DIS = "symmetrically-weighted distance"
-    MAX = "max"
-    MIN = "min"
-    OSA = "own-share-weighted average"
-    OSD = "own-share-weighted distance"
 
 
 @define(slots=True, frozen=True)

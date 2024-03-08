@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from subprocess import run
 
-import re2 as re
+import re2 as re  # type: ignore
 from semver import compare
 from tomlkit import parse
 

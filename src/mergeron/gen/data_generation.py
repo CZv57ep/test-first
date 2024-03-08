@@ -12,7 +12,7 @@ import numpy as np
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from .. import _PKG_NAME  # noqa: TID252
+from .. import _PKG_NAME, RECConstants  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
     TF,
@@ -20,7 +20,6 @@ from . import (
     MarketDataSample,
     MarketSampleSpec,
     PRIConstants,
-    RECConstants,
     SHRConstants,
     SSZConstants,
 )

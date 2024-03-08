@@ -19,7 +19,9 @@ from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from .. import _PKG_NAME  # noqa: TID252
+from mergeron.core.pseudorandom_numbers import TF, TI
+
+from .. import _PKG_NAME, RECConstants, UPPAggrSelector  # noqa: TID252
 from ..core import guidelines_boundaries as gbl  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
@@ -27,8 +29,6 @@ from . import (
     INVResolution,
     MarketDataSample,
     MarketSampleSpec,
-    RECConstants,
-    UPPAggrSelector,
     UPPTestRegime,
     UPPTestsCounts,
     UPPTestsRaw,
@@ -49,8 +49,8 @@ class IVNRESCntsArgs(TypedDict, total=False):
     sim_test_regime: UPPTestRegime
     saved_array_name_suffix: str
     save_data_to_file: SaveData
-    seed_seq_list: SeedSequence
-    num_threads: int
+    seed_seq_list: list[SeedSequence]
+    nthreads: int
 
 
 def sim_invres_cnts_ll(
@@ -109,7 +109,7 @@ def sim_invres_cnts_ll(
             if _k != "seed_seq_list"
         }
     else:
-        _sim_invres_cnts_ll_kwargs: IVNRESCntsArgs = {}
+        _sim_invres_cnts_ll_kwargs = {}
 
     _res_list = Parallel(n_jobs=_thread_count, prefer="threads")(
         delayed(sim_invres_cnts)(
@@ -459,7 +459,7 @@ def save_data_to_hdf5(
 
 
 def save_array_to_hdf5(
-    _array_obj: NDArray[np.floating | np.integer | np.bool_],
+    _array_obj: NDArray[np.floating[TF] | np.integer[TI] | np.bool_],
     _array_name: str,
     _h5_group: ptb.Group,
     _h5_file: ptb.File,

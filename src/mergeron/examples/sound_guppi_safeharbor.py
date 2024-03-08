@@ -6,19 +6,18 @@ from typing import Literal
 import numpy as np
 
 import mergeron.core.guidelines_boundaries as gbl
-import mergeron.gen.data_generation as dgl
 import mergeron.gen.investigations_stats as isl
 import mergeron.gen.upp_tests as utl
-from mergeron import DATA_DIR
+from mergeron import DATA_DIR, RECConstants, UPPAggrSelector
 from mergeron.core.pseudorandom_numbers import DIST_PARMS_DEFAULT
 from mergeron.gen import (
+    FM2Constants,
     INVResolution,
     MarketSampleSpec,
     PCMConstants,
     PCMSpec,
     ShareSpec,
     SHRConstants,
-    UPPAggrSelector,
     UPPTestRegime,
 )
 
@@ -62,7 +61,7 @@ def analyze_invres_data(
     _save_data_to_file: utl.SaveData = False
     if save_data_to_file_flag:
         _h5_path = DATA_DIR / PROG_PATH.with_suffix(".h5").name
-        (_, _h5_file, _h5_group), _h5_subgroup_name = utl.initialize_hd5(
+        (_, _h5_file, _h5_group), _h5_subgroup_name = utl.initialize_hd5(  # type: ignore
             _h5_path, _hmg_pub_year, _test_regime
         )  # type: ignore
 
@@ -76,7 +75,7 @@ def analyze_invres_data(
     #   with asymmetric margins
     #  ##
     for _recapture_spec_test, _pcm_dist_test, _pcm_dist_firm2_test in iterprod(
-        (dgl.RECConstants.INOUT, dgl.RECConstants.FIXED),
+        (RECConstants.INOUT, RECConstants.FIXED),
         [
             tuple(
                 zip(
@@ -91,7 +90,7 @@ def analyze_invres_data(
             )[_s]
             for _s in [0, 2]
         ],
-        (dgl.FM2Constants.IID, dgl.FM2Constants.MNL),
+        (FM2Constants.IID, FM2Constants.MNL),
     ):
         if _recapture_spec_test == "proportional" and (
             _pcm_dist_test[0] != "Uniform" or _pcm_dist_firm2_test == "MNL-dep"
@@ -128,7 +127,7 @@ def analyze_invres_data(
         if _save_data_to_file:
             _h5_file.flush()
 
-            _h5_subgrp_name = "invres_rec{}_pcm{}_fm2res{}".format(
+            _h5_subgrp_name = "invres_rec{}_pcm{}_fm2res{}".format(  # noqa: UP032
                 _recapture_spec_test.name,
                 _pcm_dist_type_test.name,
                 _pcm_dist_firm2_test.name,

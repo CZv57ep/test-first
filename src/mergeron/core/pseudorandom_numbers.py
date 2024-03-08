@@ -145,7 +145,7 @@ class MultithreadedRNG:
         dist_type: Literal[
             "Beta", "Dirichlet", "Gaussian", "Normal", "Random", "Uniform"
         ] = "Uniform",
-        dist_parms: NDArray[np.floating[TF]] | None = DIST_PARMS_DEFAULT,
+        dist_parms: NDArray[np.floating[TF]] | None = DIST_PARMS_DEFAULT,  # type: ignore
         seed_sequence: SeedSequence | None = None,
         nthreads: int = NTHREADS,
     ):

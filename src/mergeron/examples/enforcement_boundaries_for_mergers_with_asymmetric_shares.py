@@ -15,7 +15,8 @@ from matplotlib.ticker import StrMethodFormatter
 from numpy import arange, arctan, array, hsplit, insert, rad2deg, round, sqrt, vstack
 
 import mergeron.core.guidelines_boundaries as gbl
-from mergeron import DATA_DIR
+from mergeron import DATA_DIR, UPPAggrSelector
+from mergeron.core import UPPBoundarySpec
 
 PROG_PATH = Path(__file__)
 
@@ -34,7 +35,7 @@ def plot_delta_boundaries(
     _recapture_spec: Literal["inside-out", "proportional"],
     _color_kwargs: _CMAPArgs = _color_kwargs,
     /,
-):
+) -> None:
     _print_guppi_max_bndry_envs_flag = _print_guppi_max_bndry_envs_flag or False
 
     print("ΔHHI safeharbor boundary")
@@ -81,7 +82,7 @@ def plot_delta_boundaries(
                 _smin_nr = _dstar * (1 - _r_bar)
                 _smax_nr = 1 - _dstar * _r_bar
                 _guppi_bdry_env_dr = _smin_nr + _smax_nr
-                _guppi_bdry_env_xs = (
+                _guppi_bdry_env_xs = (  # type: ignore
                     0,
                     _smin_nr / _guppi_bdry_env_dr,
                     _symshr,
@@ -138,7 +139,7 @@ def plot_guppi_boundaries(  # noqa PLR0915
     _recapture_spec: Literal["proportional", "inside-out"],
     _color_kwargs: _CMAPArgs = _color_kwargs,
     /,
-):
+) -> None:
     if recapture_spec not in (_recspecs := ("inside-out", "proportional")):
         raise ValueError(f"Recapture specification must be one of, {_recspecs!r}")
 
@@ -318,7 +319,9 @@ def plot_guppi_boundaries(  # noqa PLR0915
         _delta_star = gbl.critical_shrratio(
             _guppi_bench, m_star=_m_star_bench, r_bar=_r_bar
         )
-        guppi_boundary = gbl.shrratio_boundary_max(_delta_star)
+        guppi_boundary = gbl.shrratio_boundary(
+            UPPBoundarySpec(_delta_star, _r_bar, agg_method=UPPAggrSelector.MAX)
+        )
         _x_drt, _y_drt = zip(*guppi_boundary.coordinates, strict=True)
 
         _ax1.plot(
@@ -429,7 +432,9 @@ def plot_guppi_boundaries(  # noqa PLR0915
     del _dh_dat_x, _dh_dat_y
 
 
-def grad_est(_ax: matplotlib.axis.Axis, _pt_xs: tuple, _pt_ys: tuple) -> float:
+def grad_est(
+    _ax: matplotlib.axis.Axis, _pt_xs: tuple[float, ...], _pt_ys: tuple[float, ...]
+) -> float:
     if (_pt_len := max(len(_pt_xs), len(_pt_ys))) > 2:
         raise ValueError(
             "Expecting only 2 points for calculation of line-gradient; got {_pt_len}."
@@ -438,7 +443,8 @@ def grad_est(_ax: matplotlib.axis.Axis, _pt_xs: tuple, _pt_ys: tuple) -> float:
         _ax.transData.transform_point((_pt_xs[_i], _pt_ys[_i]))  # type: ignore
         for _i in range(2)
     )
-    return (_pt2[1] - _pt1[1]) / (_pt2[0] - _pt1[0])
+    _grad: float = (_pt2[1] - _pt1[1]) / (_pt2[0] - _pt1[0])
+    return _grad
 
 
 def get_hmg_thresholds_by_key(_guppi_bench_key: str, /) -> gbl.HMGThresholds:

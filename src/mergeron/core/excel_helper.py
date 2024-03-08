@@ -24,18 +24,11 @@ __version__ = version(_PKG_NAME)
 
 
 @enum.unique
-class CFmtParent(dict[str, Any], enum.ReprEnum):
-    def merge(self, _other) -> CFmtParent:
-        if isinstance(_other, CFmtParent):
-            return self.value | _other.value
-        else:
-            raise RuntimeWarning(
-                f"Object {_other!r} not valid for merge(), returned original."
-            )
-            return self.value
+class CFmtParent(dict[str, Any], enum.ReprEnum):  # type: ignore
+    """Unique mappings defining xlsxwirter Workbook formats"""
 
 
-class CFmt(CFmtParent):  # type: ignore
+class CFmt(CFmtParent):
     """
     Initialize cell formats for xlsxwriter.
 
@@ -140,7 +133,7 @@ def matrix_to_sheet(
     elif isinstance(cell_format, CFmt):
         _cell_format = (cell_format,) * len(_data_array[0])
     else:
-        _cell_format = (CFmt.XL_DEFAULT,) * len(_data_array[0])  # type: ignore
+        _cell_format = (CFmt.XL_DEFAULT,) * len(_data_array[0])
 
     for _cell_row in range(_row_id, _bottom_row_id):
         for _cell_col in range(_col_id, _right_column_id):
@@ -236,7 +229,7 @@ def xl_fmt(
     elif isinstance(_cell_fmt, CFmt):
         _cell_fmt_dict = _cell_fmt.value
     else:
-        _cell_fmt_dict = CFmt.XL_DEFAULT.value  # type: ignore
+        _cell_fmt_dict = CFmt.XL_DEFAULT.value
 
     return _xl_book.add_format(_cell_fmt_dict)
 

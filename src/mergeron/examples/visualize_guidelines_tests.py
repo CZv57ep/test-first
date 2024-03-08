@@ -23,16 +23,14 @@ from numpy.typing import NDArray
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.gen.data_generation as dgl
 import mergeron.gen.upp_tests as utl
-from mergeron import DATA_DIR
+from mergeron import DATA_DIR, RECConstants, UPPAggrSelector
 from mergeron.core.pseudorandom_numbers import DIST_PARMS_DEFAULT
 from mergeron.gen import (
     INVResolution,
     MarketDataSample,
     MarketSampleSpec,
-    RECConstants,
     ShareSpec,
     SHRConstants,
-    UPPAggrSelector,
     UPPTestRegime,
 )
 
@@ -280,9 +278,9 @@ if __name__ == "__main__":
     save_data_to_file_flag = True
     if save_data_to_file_flag:
         h5_path = DATA_DIR / PROG_PATH.with_suffix(".h5").name
-        (_, h5_file, h5_group), h5_subgroup_name = utl.initialize_hd5(
+        (_, h5_file, h5_group), h5_subgroup_name = utl.initialize_hd5(  # type: ignore
             h5_path, hmg_pub_year, test_regime
-        )  # type: ignore
+        )
 
         h5_subgroup = h5_file.create_group(
             h5_group,

@@ -7,7 +7,14 @@ import mergeron.gen.investigations_stats as isl
 import mergeron.gen.upp_tests as utl
 import numpy as np
 import re2 as re  # type: ignore
-from mergeron.gen import MarketSampleSpec, RECConstants, ShareSpec, SHRConstants
+from mergeron import RECConstants, UPPAggrSelector
+from mergeron.gen import (
+    INVResolution,
+    MarketSampleSpec,
+    ShareSpec,
+    SHRConstants,
+    UPPTestRegime,
+)
 
 teststr_pat = re.compile(r"(?m)^ +")
 stats_sim_byfirmcount_teststr = teststr_pat.sub(
@@ -73,8 +80,8 @@ stats_sim_bydelta_unrestricted_teststr = teststr_pat.sub(
 
 
 def test_clearance_rate_calcs() -> None:
-    _test_sel: utl.UPPTestRegime = utl.UPPTestRegime(
-        isl.INVResolution.CLRN, utl.UPPAggrSelector.MAX, None
+    _test_sel: UPPTestRegime = UPPTestRegime(
+        INVResolution.CLRN, UPPAggrSelector.MAX, None
     )
 
     _mkt_sample_spec = MarketSampleSpec(
@@ -100,17 +107,13 @@ def test_clearance_rate_calcs() -> None:
     )
     _total_duration = datetime.now() - _start_time
     print(
-        "Estimations completed in total duration of {:.6f} secs.".format(
-            _total_duration / timedelta(seconds=1)
-        )
+        f"Estimations completed in total duration of {_total_duration / timedelta(seconds=1):.6f} secs."
     )
 
     _return_type_sel = isl.StatsReturnSelector.CNT
     print()
     print(
-        "Simulated {} stats by number of significant competitors:".format(
-            _test_sel.resolution.capitalize()
-        )
+        f"Simulated {_test_sel.resolution.capitalize()} stats by number of significant competitors:"
     )
     _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_1dim(
         upp_tests_counts.by_firm_count[:, :-1], return_type_sel=_return_type_sel
@@ -144,9 +147,7 @@ def test_clearance_rate_calcs() -> None:
 
     print()
     print(
-        "Merger {} stats by Merger Guidelines concentration presumptions".format(
-            _test_sel.resolution.capitalize()
-        )
+        f"Merger {_test_sel.resolution.capitalize()} stats by Merger Guidelines concentration presumptions"
     )
     _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_byzone(
         upp_tests_counts.by_conczone[:, :-1],

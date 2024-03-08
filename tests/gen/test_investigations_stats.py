@@ -2,6 +2,7 @@ import mergeron.core.ftc_merger_investigations_data as fid
 import mergeron.gen.investigations_stats as isl
 import numpy as np
 import pytest
+from mergeron.core.pseudorandom_numbers import TI
 from mergeron.gen import INVResolution
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
@@ -22,7 +23,7 @@ invdata_array_dict = fid.construct_data(
     ),
 )
 def test_invres_stats(
-    _stats_group: isl.StatsGrpSelector, _test_val: NDArray[np.integer]
+    _stats_group: isl.StatsGrpSelector, _test_val: NDArray[np.integer[TI]]
 ) -> None:
     _invres_spec = INVResolution.CLRN
     _invres_stats_cnts = isl.invres_stats_cnts_by_group(

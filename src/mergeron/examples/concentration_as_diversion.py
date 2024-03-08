@@ -27,19 +27,21 @@ from pathlib import Path
 from typing import Any, Literal
 
 import matplotlib.axes as mpa
+from jinja2 import FileSystemLoader
+from joblib import Parallel, cpu_count, delayed  # type: ignore
+from numpy import pi
+from xlsxwriter import Workbook  # type: ignore
+
 import mergeron.core.excel_helper as xlh
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.ext.tol_colors as ptcolor
 import mergeron.gen.investigations_stats as isl
-from jinja2 import FileSystemLoader
-from joblib import Parallel, cpu_count, delayed
-from mergeron import DATA_DIR
-from numpy import pi
-from xlsxwriter import Workbook
+from mergeron import DATA_DIR, RECConstants, UPPAggrSelector
+from mergeron.core import UPPBoundarySpec
 
 PROG_PATH = Path(__file__)
 
-RECAPTURE_SPEC = "inside-out"
+RECAPTURE_SPEC = RECConstants.INOUT
 # Map boundary forms to titles and generating-function names, with
 #   additional parameters as relevant
 BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
@@ -53,26 +55,22 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "title_str": "Aggregated-diversion-ratio boundary, own-share wtd. avg.",
         "sheet_name": "OSWAG, wtd avg",
         "func_str": R"(s_1 d_{12} + s_2 d_{21}) / s_M",
-        "func": gbl.shrratio_boundary_wtd_avg,
-        "func_kwargs": {"wgtng_policy": "own-share", "recapture_spec": RECAPTURE_SPEC},
+        "agg_method": UPPAggrSelector.OSA,
+        "recapture_spec": RECAPTURE_SPEC,
     },
     "OSWAG Own-shr-wtd Div Ratio Distance": {
         "title_str": "Aggregated-diversion-ratio boundary, own-shr. wtd. distance",
         "sheet_name": "OSWAG, distance",
         "func_str": R"\surd (s_1 d_{12}^2 / s_M + s_2 d_{21}^2 / s_M)",
-        "func": gbl.shrratio_boundary_wtd_avg,
-        "func_kwargs": {
-            "wgtng_policy": "own-share",
-            "recapture_spec": RECAPTURE_SPEC,
-            "avg_method": "distance",
-        },
+        "agg_method": UPPAggrSelector.OSD,
+        "recapture_spec": RECAPTURE_SPEC,
     },
     "OSWAG Min Div Ratio": {
         "title_str": "Aggregated-diversion-ratio boundary, minimum",
         "sheet_name": "OSWAG, minimum",
         "func_str": R"\min (d_{12}, d_{21})",
-        "func": gbl.shrratio_boundary_min,
-        "func_kwargs": {"recapture_spec": RECAPTURE_SPEC},
+        "agg_method": UPPAggrSelector.MIN,
+        "recapture_spec": RECAPTURE_SPEC,
     },
     "SAG Combined Share": {
         "title_str": "Combined Share boundary",
@@ -84,19 +82,15 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "title_str": "Aggregated-diversion-ratio boundary, simple average",
         "sheet_name": "SAG, average",
         "func_str": R"(d_{12} + d_{21}) / 2",
-        "func": gbl.shrratio_boundary_wtd_avg,
-        "func_kwargs": {"wgtng_policy": None, "recapture_spec": RECAPTURE_SPEC},
+        "agg_method": UPPAggrSelector.AVG,
+        "recapture_spec": RECAPTURE_SPEC,
     },
     "SAG Div Ratio Distance": {
         "title_str": "Aggregated-diversion-ratio boundary, distance",
         "sheet_name": "SAG, distance",
         "func_str": R"\surd (d_{12}^2 / 2 + d_{21}^2 / 2)",
-        "func": gbl.shrratio_boundary_wtd_avg,
-        "func_kwargs": {
-            "wgtng_policy": None,
-            "recapture_spec": RECAPTURE_SPEC,
-            "avg_method": "distance",
-        },
+        "agg_method": UPPAggrSelector.DIS,
+        "recapture_spec": RECAPTURE_SPEC,
     },
     "CPSWAG Premerger HHI-contribution": {
         "title_str": "Premerger HHI-contribution boundary",
@@ -108,28 +102,22 @@ BDRY_SPECS_DICT: Mapping[str, Mapping[str, Any]] = {
         "title_str": "Aggregated-diversion-ratio boundary, cross-product-share wtd. avg.",
         "sheet_name": "CPSWAG, wtd avg",
         "func_str": R"(s_2 d_{12} / s_M  + s_1 d_{21} / s_M)",
-        "func": gbl.shrratio_boundary_wtd_avg,
-        "func_kwargs": {
-            "wgtng_policy": "cross-product-share",
-            "recapture_spec": RECAPTURE_SPEC,
-        },
+        "agg_method": UPPAggrSelector.CPA,
+        "recapture_spec": RECAPTURE_SPEC,
     },
     "CPSWAG Cross-product-shr-wtd Div Ratio Distance": {
         "title_str": "Aggregated-diversion-ratio boundary, cross-prod-shr. wtd. distance",
         "sheet_name": "CPSWAG, distance",
         "func_str": R"\surd (s_2 d_{12}^2 / s_M + s_1 d_{21}^2 / s_M)",
-        "func": gbl.shrratio_boundary_wtd_avg,
-        "func_kwargs": {
-            "wgtng_policy": "cross-product-share",
-            "recapture_spec": RECAPTURE_SPEC,
-            "avg_method": "distance",
-        },
+        "agg_method": UPPAggrSelector.CPD,
+        "recapture_spec": RECAPTURE_SPEC,
     },
     "CPSWAG Max Div Ratio": {
         "title_str": "Aggregated-diversion-ratio boundary, maximum",
         "sheet_name": "CPSWAG, maximum",
         "func_str": R"\max (d_{12}, d_{21})",
-        "func": gbl.shrratio_boundary_max,
+        "agg_method": UPPAggrSelector.MAX,
+        "recapture_spec": RECAPTURE_SPEC,
     },
 }
 
@@ -254,9 +242,13 @@ def _bdry_stats_col(
         case "CPSWAG Premerger HHI-contribution":
             return _bdry_spec, f"{_hhi_m_pre_prob:6.5f}"
         case _ if "Div Ratio" in _bdry_spec:
-            _gbd_func = BDRY_SPECS_DICT[_bdry_spec]["func"]
-            _within_bdry_area = _gbd_func(
-                _delta_val, _r_val, **BDRY_SPECS_DICT[_bdry_spec].get("func_kwargs", {})
+            _within_bdry_area = gbl.shrratio_boundary(
+                UPPBoundarySpec(
+                    _delta_val,
+                    _r_val,
+                    agg_method=BDRY_SPECS_DICT[_bdry_spec]["agg_method"],
+                    recapture_spec=BDRY_SPECS_DICT[_bdry_spec]["recapture_spec"],
+                )
             ).area
             _within_bdry_prob = 2 * _within_bdry_area
             if _bdry_spec.startswith("CPSWAG"):
@@ -266,7 +258,7 @@ def _bdry_stats_col(
             else:
                 _within_conc_bdry_prob = _dhhi_prob
 
-            return _bdry_spec, R"{{ {:6.5f} \\ {:.2f}\% }}".format(
+            return _bdry_spec, R"{{ {:6.5f} \\ {:.2f}\% }}".format(  # noqa: UP032
                 _within_bdry_prob,
                 100 * (1 - (_within_conc_bdry_prob / _within_bdry_prob)),
             )
@@ -408,10 +400,11 @@ def gen_plot_boundary(
     print(_bdry_spec_dict["title_str"])
 
     _pt_mdco: ptcolor.Mcset = ptcolor.tol_cset("medium-contrast")  # type: ignore
+    _pt_vbco: ptcolor.Vcset = ptcolor.tol_cset("vibrant")  # type: ignore
 
     _plot_line_width = 1.0
     _plot_line_alpha = 0.8
-    _plot_line_color = _pt_mdco.black
+    _plot_line_color = _pt_vbco.black
     _plot_line_style = {"OSWAG": "-", "SAG": "-.", "CPSWAG": "--"}.get(
         _bdry_spec_str.split(" ")[0], "-"
     )
@@ -425,15 +418,14 @@ def gen_plot_boundary(
             case _ if _bdry_spec_str.startswith(("SAG Combined", "CPSWAG Premerger")):
                 _zrdr = 2
             case _ if "Distance" in _bdry_spec_str:
-                _plot_line_color = _pt_mdco.light_blue
+                _plot_line_color = _pt_vbco.blue
                 _zrdr = 3
             case _ if "shr-wtd" in _bdry_spec_str or "Mean" in _bdry_spec_str:
-                _plot_line_color = _pt_mdco.light_yellow
+                _plot_line_color = _pt_vbco.teal
                 _zrdr = 3
             case _:
-                _plot_line_color = _pt_mdco.dark_red
+                _plot_line_color = _pt_vbco.red
 
-    _dh_bar = _gso.safeharbor.divr
     _g_val = _gso.safeharbor.guppi
 
     _r_bar = _gso.presumption.rec
@@ -442,12 +434,15 @@ def gen_plot_boundary(
     _s_mid = sqrt(_dhhi_val / 2)
     _delta_val = _g_val / _r_bar if _gs_str == "safeharbor" else _s_mid / (1 - _s_mid)
 
-    _bdry_func = _bdry_spec_dict["func"]
+    _bdry_func = _bdry_spec_dict.get("func", gbl.shrratio_boundary)
     if "Div Ratio" in _bdry_spec_str:
-        _bdry_boundary = _bdry_func(
-            _delta_val,
-            _r_bar,
-            **_bdry_spec_dict.get("func_kwargs", {}),  # tupe: ignore
+        _bdry_boundary = gbl.shrratio_boundary(
+            UPPBoundarySpec(
+                _delta_val,
+                _r_bar,
+                agg_method=_bdry_spec_dict["agg_method"],
+                recapture_spec=_bdry_spec_dict["recapture_spec"],
+            )
         )
         _plot_label_mag, _plot_label_uom = _r_bar * _delta_val * 1e2, "%"
     elif _bdry_spec_str.endswith("Combined Share"):

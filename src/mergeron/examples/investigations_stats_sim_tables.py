@@ -18,20 +18,19 @@ from attrs import evolve
 
 import mergeron.core.ftc_merger_investigations_data as fid
 import mergeron.core.guidelines_boundaries as gbl
-import mergeron.gen.data_generation as dgl
 import mergeron.gen.investigations_stats as isl
 import mergeron.gen.upp_tests as utl
-from mergeron import DATA_DIR
+from mergeron import DATA_DIR, RECConstants, UPPAggrSelector
 from mergeron.core.proportions_tests import propn_ci
 from mergeron.gen import (
+    FM2Constants,
     INVResolution,
     MarketSampleSpec,
     PCMConstants,
     PCMSpec,
-    RECConstants,
     ShareSpec,
     SHRConstants,
-    UPPAggrSelector,
+    SSZConstants,
     UPPTestRegime,
 )
 
@@ -70,7 +69,7 @@ def invres_stats_sim_setup(
     }
     _sim_test_regime = _invres_stats_kwargs.get("sim_test_regime")
 
-    _invres_spec, _guppi_wgtng_policy, _divr_wgtng_policy = (
+    _invres_spec, _guppi_weighting, _divr_weighting = (
         getattr(_sim_test_regime, _f.name)
         for _f in fields(_sim_test_regime)  # type: ignore
     )
@@ -246,7 +245,7 @@ def invres_stats_sim_render(
         R"and an estimated clearance rate of, for example, 50.0\%,",
         Rf"the margin of error (m.o.e.) is {isl.moe_tmpl.render(rv=_stats_sim_ci_eg)}."
         R"The m.o.e. is derived from the",
-        R"Clopper-Pearson exact 95\% confidence interval, {}.".format(
+        R"Clopper-Pearson exact 95\% confidence interval, {}.".format(  # noqa: UP032
             isl.ci_format_str.format(*_stats_sim_ci_eg).strip()
         ),
         R"(The m.o.e. for simulated clearance rates varies",
@@ -379,8 +378,8 @@ if __name__ == "__main__":
     pcm_dist_type, pcm_dist_parms = PCMConstants.EMPR, None
 
     sim_test_regime = (
-        UPPTestRegime(INVResolution.CLRN, utl.UPPAggrSelector.MAX, None),
-        UPPTestRegime(INVResolution.ENFT, utl.UPPAggrSelector.OSD, None),
+        UPPTestRegime(INVResolution.CLRN, UPPAggrSelector.MAX, None),
+        UPPTestRegime(INVResolution.ENFT, UPPAggrSelector.OSD, None),
     )[1]
     invres_stats_kwargs = {"sim_test_regime": sim_test_regime}
 
@@ -403,11 +402,11 @@ if __name__ == "__main__":
                 else gbl.GuidelinesThresholds(1992).presumption
             )
 
-            mkt_sample_spec = dgl.MarketSampleSpec(
+            mkt_sample_spec = MarketSampleSpec(
                 sample_sz_base,
                 invres_parm_vec.rec,
-                pcm_spec=PCMSpec(pcm_dist_type, dgl.FM2Constants.MNL, pcm_dist_parms),
-                hsr_filing_test_type=dgl.SSZConstants.HSR_NTH,
+                pcm_spec=PCMSpec(pcm_dist_type, FM2Constants.MNL, pcm_dist_parms),
+                hsr_filing_test_type=SSZConstants.HSR_NTH,
             )
 
             table_dottex_name = invres_stats_sim_setup(
@@ -418,7 +417,7 @@ if __name__ == "__main__":
                 mkt_sample_spec,
                 invres_stats_kwargs,  # type: ignore
             )
-            table_dottex_namelist += (table_dottex_name,)
+            table_dottex_namelist += (table_dottex_name,)  # type: ignore
 
     isl.render_table_pdf(
         table_dottex_namelist,

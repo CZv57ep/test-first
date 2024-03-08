@@ -5,13 +5,13 @@ import mergeron.gen.data_generation as dgl
 import numpy as np
 import pytest
 from attrs import evolve
+from mergeron import RECConstants
 from mergeron.gen import (
     FCOUNT_WTS_DEFAULT,
     FM2Constants,
     MarketSampleSpec,
     PCMConstants,
     PCMSpec,
-    RECConstants,
     ShareSpec,
     SHRConstants,
 )

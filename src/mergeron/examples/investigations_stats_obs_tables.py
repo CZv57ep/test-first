@@ -26,7 +26,7 @@ INVDATA_DOTTEX_FORMAT_STR = "{}.tex".format(
 
 
 def invres_stats_odds_ratio_byhhianddelta(
-    _data_array_dict: Mapping,
+    _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVData]]],
     _data_periods: tuple[str, str],
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
     /,
@@ -67,7 +67,9 @@ def invres_stats_odds_ratio_byhhianddelta(
         for _data_period in _data_periods:
             _data_array_dict_sub = _data_array_dict[_data_period][f"{_stats_group}"]
             _table_no = isl.table_no_lku(
-                _data_array_dict_sub, _table_ind_group, _table_evid_cond
+                _data_array_dict_sub,  # type: ignore
+                _table_ind_group,
+                _table_evid_cond,
             )
 
             _invres_rate_table_content.table_ref = _table_no
@@ -109,14 +111,14 @@ def invres_stats_odds_ratio_byhhianddelta(
             _invres_rate_table_content.obs_merger_class = f"{_merger_class}"
             _invres_rate_table_content.obs_period = _data_period.split("-")
 
-            _invres_cnts_array = _data_array_dict_sub[_table_no][-1]
+            _invres_cnts_array = _data_array_dict_sub[_table_no][-1]  # type: ignore
             _odds_ratio_data_str = ""
-            for _hhi_range_it in unique(_invres_cnts_array[:, 0]):
+            for _hhi_range_it in unique(_invres_cnts_array[:, 0]):  # type: ignore
                 _invres_cnts_row_for_hhi_range = _invres_cnts_array[
                     _invres_cnts_array[:, 0] == _hhi_range_it
-                ][:, 2:]
+                ][:, 2:]  # type: ignore
                 _odds_ratio_data_str += " & ".join([
-                    INVRES_RATIO_FORMAT_STR.format(*g)
+                    INVRES_RATIO_FORMAT_STR.format(*g)  # type: ignore
                     for g in _invres_cnts_row_for_hhi_range
                 ])
                 _odds_ratio_data_str += " & {}".format(
@@ -241,7 +243,7 @@ def invres_stats_obs_setup(
             _stats_group_dict[_stats_group_key],
             _invres_spec,
         )
-        _output_dottex_pathlist += (_output_dottex_path,)
+        _output_dottex_pathlist += (_output_dottex_path,)  # type: ignore
 
     return _output_dottex_pathlist
 
@@ -252,7 +254,7 @@ def _invres_stats_obs_render(
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
     _stats_group: isl.StatsGrpSelector,
     _stats_group_dict: Mapping,
-    _invres_spec: isl.INVResolution = isl.INVResolution.CLRN,
+    _invres_spec: isl.INVResolution = INVResolution.CLRN,
     /,
 ) -> str:
     _invres_rate_table_content = isl.StatsContainer()
@@ -416,12 +418,12 @@ def _invres_stats_obs_render(
 
 
 def get_table_nos(
-    _data_array_dict: Mapping,
+    _data_array_dict: Mapping[str, fid.INVData],
     _merger_classes: Sequence[isl.INDGRPConstants | isl.EVIDENConstants],
     _stats_group: isl.StatsGrpSelector,
     _data_period: str,
     /,
-) -> list:
+) -> list[str]:
     _stats_group_major = (
         "ByFirmCount" if _stats_group == isl.StatsGrpSelector.FC else "ByHHIandDelta"
     )
@@ -460,7 +462,7 @@ if __name__ == "__main__":
         isl.EVIDENConstants.ED,
     )  # clstl.INDGRPConstants.IID)
     data_periods = ("1996-2003", "2004-2011")
-    test_regime = isl.INVResolution.ENFT
+    test_regime = INVResolution.ENFT
 
     # Now generate the various tables summarizing merger investigations data
     invres_stats_byhhianddelta_pathlist = invres_stats_odds_ratio_byhhianddelta(

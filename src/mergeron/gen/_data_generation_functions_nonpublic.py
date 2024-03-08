@@ -11,7 +11,7 @@ import numpy as np
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from .. import _PKG_NAME  # noqa: TID252
+from .. import _PKG_NAME, RECConstants  # noqa: TID252
 from ..core.damodaran_margin_data import resample_mgn_data  # noqa: TID252
 from ..core.pseudorandom_numbers import (  # noqa: TID252
     DIST_PARMS_DEFAULT,
@@ -27,7 +27,6 @@ from . import (
     PCMConstants,
     PriceDataSample,
     PRIConstants,
-    RECConstants,
     ShareDataSample,
     SHRConstants,
     SSZConstants,
@@ -139,8 +138,8 @@ def _gen_market_shares_uniform(
     """
 
     _frmshr_array = np.empty((_s_size, 2), dtype=np.float64)
-    _dist_parms_mktshr: NDArray[np.floating] = (
-        DIST_PARMS_DEFAULT if _dist_parms_mktshr is None else _dist_parms_mktshr
+    _dist_parms_mktshr: NDArray[np.floating[TF]] = (
+        DIST_PARMS_DEFAULT if _dist_parms_mktshr is None else _dist_parms_mktshr  # type: ignore
     )
     _mrng = MultithreadedRNG(
         _frmshr_array,
@@ -218,7 +217,7 @@ def _gen_market_shares_dirichlet_multisample(
 
     """
 
-    _firm_count_wts: NDArray[np.floating] = (
+    _firm_count_wts: NDArray[np.floating[TF]] = (
         FCOUNT_WTS_DEFAULT if _firm_count_wts is None else _firm_count_wts
     )
 
@@ -254,7 +253,7 @@ def _gen_market_shares_dirichlet_multisample(
     else:
 
         def _gen_dir_alphas(_fcv: int) -> NDArray[np.float64]:
-            return np.array(_dir_alphas_full[:_fcv], dtype=np.float64)
+            return np.array(_dir_alphas_full[:_fcv], dtype=np.float64)  # type: ignore
 
     _fcounts = prng(_fcount_rng_seed_seq).choice(
         _fcount_keys, size=(_s_size, 1), p=_choice_wts
