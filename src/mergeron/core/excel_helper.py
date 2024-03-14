@@ -27,6 +27,8 @@ __version__ = version(_PKG_NAME)
 class CFmtParent(dict[str, Any], enum.ReprEnum):  # type: ignore
     """Unique mappings defining xlsxwirter Workbook formats"""
 
+    ...
+
 
 class CFmt(CFmtParent):
     """
