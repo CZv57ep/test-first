@@ -16,7 +16,6 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Any, NamedTuple, TypeAlias
 
-import fitz  # type: ignore
 import msgpack  # type: ignore
 import msgpack_numpy as m  # type: ignore
 import numpy as np
@@ -146,7 +145,7 @@ def construct_data(
                     )
         return MappingProxyType(_invdata)
 
-    _invdata = dict(parse_invdata())  # Convert immutable to mutable
+    _invdata = dict(_parse_invdata())  # Convert immutable to mutable
 
     # Add some data periods (
     #   only periods ending in 2011, others have few observations and
@@ -385,20 +384,8 @@ def _invdata_build_aggregate_table(
     )
 
 
-def parse_invdata(
-    _invdata_docnames: Sequence[str] = (
-        "040831horizmergersdata96-03.pdf",
-        "p035603horizmergerinvestigationdata1996-2005.pdf",
-        "081201hsrmergerdata.pdf",
-        "130104horizontalmergerreport.pdf",
-    ),
-) -> INVData:
+def _parse_invdata() -> INVData:
     """Parse FTC merger investigations data reports to structured data.
-
-    Parameters
-    ----------
-    _invdata_docnames
-        Names of PDF files reporting FTC merger investigations data.
 
     Returns
     -------
@@ -408,6 +395,16 @@ def parse_invdata(
         by range of HHI and ∆HHI.
 
     """
+    import fitz  # type: ignore
+    # user must install pymupdf to make this function operable
+
+    _invdata_docnames: Sequence[str] = (
+        "040831horizmergersdata96-03.pdf",
+        "p035603horizmergerinvestigationdata1996-2005.pdf",
+        "081201hsrmergerdata.pdf",
+        "130104horizontalmergerreport.pdf",
+    )
+
     _invdata: dict[str, dict[str, dict[str, INVTableData]]] = {}
 
     for _invdata_docname in _invdata_docnames:
