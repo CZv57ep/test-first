@@ -15,6 +15,7 @@ from numpy.typing import NDArray
 from .. import _PKG_NAME, RECConstants  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
+    TF,
     FM2Constants,
     MarketDataSample,
     MarketSampleSpec,
@@ -220,10 +221,10 @@ def parse_seed_seq_list(
 
 
 def gen_divr_array(
-    _frmshr_array: NDArray[np.float64],
+    _frmshr_array: NDArray[np.floating[TF]],
     _r_bar: float,
     _recapture_spec: RECConstants = RECConstants.INOUT,
-    _aggregate_purchase_prob: NDArray[np.float64] = EMPTY_ARRAY_DEFAULT,
+    _aggregate_purchase_prob: NDArray[np.floating[TF]] = EMPTY_ARRAY_DEFAULT,
     /,
 ) -> NDArray[np.float64]:
     """
@@ -254,14 +255,14 @@ def gen_divr_array(
 
     """
 
-    _divr_array = (
-        _r_bar * _frmshr_array[:, ::-1] / (1 - _frmshr_array)
-        if _recapture_spec == RECConstants.FIXED
-        else (
-            (_purchprob_array := _aggregate_purchase_prob * _frmshr_array)[:, ::-1]
-            / (1 - _purchprob_array)
-        )
-    )
+    _divr_array: NDArray[np.float64]
+    if _recapture_spec == RECConstants.FIXED:
+        _divr_array = _r_bar * _frmshr_array[:, ::-1] / (1 - _frmshr_array)
+
+    else:
+        _purchprob_array = _aggregate_purchase_prob * _frmshr_array
+        _divr_array = _purchprob_array[:, ::-1] / (1 - _purchprob_array)
+
     _divr_assert_test = (
         (np.round(np.einsum("ij->i", _frmshr_array), 15) == 1)
         | (np.argmin(_frmshr_array, axis=1) == np.argmax(_divr_array, axis=1))
