@@ -15,7 +15,6 @@ from numpy.typing import NDArray
 from .. import _PKG_NAME, RECConstants  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
-    TF,
     FM2Constants,
     MarketDataSample,
     MarketSampleSpec,
@@ -221,10 +220,10 @@ def parse_seed_seq_list(
 
 
 def gen_divr_array(
-    _frmshr_array: NDArray[np.floating[TF]],
+    _frmshr_array: NDArray[np.float64],
     _r_bar: float,
     _recapture_spec: RECConstants = RECConstants.INOUT,
-    _aggregate_purchase_prob: NDArray[np.floating[TF]] = EMPTY_ARRAY_DEFAULT,
+    _aggregate_purchase_prob: NDArray[np.float64] = EMPTY_ARRAY_DEFAULT,
     /,
 ) -> NDArray[np.float64]:
     """

@@ -179,7 +179,7 @@ def _gen_market_shares_dirichlet_multisample(
     _recapture_spec: RECConstants = RECConstants.INOUT,
     _dist_type_dir: SHRConstants = SHRConstants.DIR_FLAT,
     _dist_parms_dir: NDArray[np.floating[TF]] | None = None,
-    _firm_count_wts: NDArray[np.floating[TF]] | None = None,  # type: ignore
+    _firm_count_wts: NDArray[np.floating[TF]] | None = None,
     _fcount_rng_seed_seq: SeedSequence | None = None,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
@@ -226,7 +226,7 @@ def _gen_market_shares_dirichlet_multisample(
         *(
             _f
             for _f in zip(
-                2 + np.arange(len(_firm_count_wts)),  # type: ignore
+                2 + np.arange(len(_firm_count_wts)),
                 _firm_count_wts / _firm_count_wts.sum(),
                 strict=True,
             )
@@ -395,8 +395,8 @@ def _gen_market_shares_dirichlet(
 
 
 def _gen_pr_data(
-    _frmshr_array: NDArray[np.floating[TF]],
-    _nth_firm_share: NDArray[np.floating[TF]],
+    _frmshr_array: NDArray[np.float64],
+    _nth_firm_share: NDArray[np.float64],
     _mkt_sample_spec: MarketSampleSpec,
     _seed_seq: SeedSequence | None = None,
     /,
@@ -406,9 +406,9 @@ def _gen_pr_data(
     _hsr_filing_test_type = _mkt_sample_spec.hsr_filing_test_type
 
     _price_array, _price_ratio_array, _hsr_filing_test = (
-        np.ones_like(_frmshr_array),
-        np.empty_like(_frmshr_array),
-        np.empty(_ssz, dtype=bool),
+        np.ones_like(_frmshr_array, np.float64),
+        np.empty_like(_frmshr_array, np.float64),
+        np.empty(_ssz, bool),
     )
 
     _pr_max_ratio = 5.0
@@ -539,7 +539,7 @@ def _gen_pcm_data(
         del _pcm_rng
 
     if _dist_type_pcm == PCMConstants.BETA_BND:
-        _beta_min, _beta_max = _dist_parms_pcm[2:]  # type: ignore
+        _beta_min, _beta_max = _dist_parms_pcm[2:]
         _pcm_array = (_beta_max - _beta_min) * _pcm_array + _beta_min
         del _beta_min, _beta_max
 
