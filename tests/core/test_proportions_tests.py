@@ -9,21 +9,25 @@ import pytest
 from numpy.testing import assert_array_almost_equal
 from numpy.typing import NDArray
 
-test_propn_ci_cases = MappingProxyType({
-    "Wilson": (0.4, 0.427753279986, 0.168180329706, 0.687326230266),
-    "Agresti-Coull": (0.4, 6.0 / 14.0, 0.169346564040, 0.687796293102),
-    "Clopper-Pearson": (0.4, 0.429587090756, 0.121552258120, 0.737621923393),
-})
 
-
-@pytest.mark.parametrize("_method", tuple(test_propn_ci_cases.keys()))
+@pytest.mark.parametrize(
+    "_method, _test_val",
+    (
+        "Wilson",
+        (0.4, 0.427753279986, 0.168180329706, 0.687326230266),
+        "Agresti-Coull",
+        (0.4, 6.0 / 14.0, 0.169346564040, 0.687796293102),
+        "Clopper-Pearson",
+        (0.4, 0.429587090756, 0.121552258120, 0.737621923393),
+    ),
+)
 def test_propn_ci(
     _method: Literal["Agresti-Coull", "Clopper-Pearson", "Exact", "Wilson", "Score"],
+    _test_val: Sequence[float],
 ) -> None:
-    _test_val = test_propn_ci_cases[_method]
     _est_val = pci.propn_ci(4, 10, alpha=0.05, method=_method)
     try:
-        assert_array_almost_equal(_est_val, _test_val, decimal=12)
+        assert_array_almost_equal(_est_val, _test_val, decimal=12)  # type: ignore
     except AssertionError as _err:
         _err_str = (
             "Testing poportion c.i.s using method, "
@@ -32,7 +36,7 @@ def test_propn_ci(
         raise ValueError(_err_str) from _err
 
 
-propn_diff_ci_test_cases: Mapping[str, tuple[tuple[int | float, ...], ...]] = (
+propn_diff_ci_test_cases: Mapping[str, Sequence[Sequence[int | float]]] = (
     MappingProxyType({
         "counts": (
             # Comparison to R
