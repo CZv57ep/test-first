@@ -507,7 +507,7 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
     return plt, _fig, _ax_out, _set_axis_def
 
 
-def dh_area(_dh_val: float = 0.01, /, *, dh_dps: int = 9) -> float:
+def dh_area(_dh_val: float = 0.01, /, *, prec: int = 9) -> float:
     R"""
     Area under the ΔHHI boundary.
 
@@ -530,7 +530,7 @@ def dh_area(_dh_val: float = 0.01, /, *, dh_dps: int = 9) -> float:
     ----------
     _dh_val
         Change in concentration.
-    dh_dps
+    prec
         Specified precision in decimal places.
 
     Returns
@@ -544,11 +544,11 @@ def dh_area(_dh_val: float = 0.01, /, *, dh_dps: int = 9) -> float:
 
     return round(
         float(_s_naught + (_dh_val / 2) * (mp.ln(1 - _s_naught) - mp.ln(_s_naught))),
-        dh_dps,
+        prec,
     )
 
 
-def dh_area_quad(_dh_val: float = 0.01, /, *, dh_dps: int = 9) -> float:
+def dh_area_quad(_dh_val: float = 0.01, /, *, prec: int = 9) -> float:
     """
     Area under the ΔHHI boundary.
 
@@ -560,7 +560,7 @@ def dh_area_quad(_dh_val: float = 0.01, /, *, dh_dps: int = 9) -> float:
     ----------
     _dh_val
         Merging-firms' ΔHHI bound.
-    dh_dps
+    prec
         Specified precision in decimal places.
 
     Returns
@@ -576,7 +576,7 @@ def dh_area_quad(_dh_val: float = 0.01, /, *, dh_dps: int = 9) -> float:
         float(
             _s_naught + mp.quad(lambda x: _dh_val / (2 * x), [_s_naught, 1 - _s_naught])
         ),
-        dh_dps,
+        prec,
     )
 
 
@@ -590,7 +590,7 @@ def delta_hhi_boundary(
     ----------
     _dh_val:
         Merging-firms' ΔHHI bound.
-    dh_dps
+    prec
         Number of decimal places for rounding reported shares.
 
     Returns
@@ -620,7 +620,7 @@ def delta_hhi_boundary(
             np.array(_s_1_pts, np.float64),
             np.array(_s_2_pts, np.float64),
         )),
-        dh_area(_dh_val, dh_dps=prec),
+        dh_area(_dh_val, prec=prec),
     )
 
 
@@ -1134,7 +1134,7 @@ def shrratio_boundary_xact_avg(
             ),
             2 * mpf(f"{_r_val}"),
         )
-        _nr_t1 = 1 + 2 * _delta_star * _r_val * (1 - _s_1) - _s_1 * (1 - _r_val)  # type: ignore
+        _nr_t1 = 1 + 2 * _delta_star * _r_val * (1 - _s_1) - _s_1 * (1 - _r_val)
 
         _nr_sqrt_mdr = 4 * _delta_star * _r_val
         _nr_sqrt_mdr2 = _nr_sqrt_mdr * _r_val
@@ -1159,7 +1159,7 @@ def shrratio_boundary_xact_avg(
 
         _nr_t2_s1 = _nr_sqrt_s1sq + _nr_sqrt_s1 + _nr_sqrt_nos1
 
-        if not np.isclose(  # type: ignore
+        if not np.isclose(
             np.einsum("i->", _nr_t2_mdr.astype(np.float64)),
             np.einsum("i->", _nr_t2_s1.astype(np.float64)),
             rtol=0,

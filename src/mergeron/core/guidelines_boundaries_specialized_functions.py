@@ -29,7 +29,7 @@ mp.prec = 80
 mp.trap_complex = True
 
 
-def delta_hhi_boundary_qdtr(_dh_val: float = 0.01) -> GuidelinesBoundaryCallable:
+def delta_hhi_boundary_qdtr(_dh_val: float = 0.01, /) -> GuidelinesBoundaryCallable:
     """
     Generate the list of share combination on the ΔHHI boundary.
 
@@ -37,8 +37,6 @@ def delta_hhi_boundary_qdtr(_dh_val: float = 0.01) -> GuidelinesBoundaryCallable
     ----------
     _dh_val:
         Merging-firms' ΔHHI bound.
-    prec
-        Number of decimal places for rounding reported shares.
 
     Returns
     -------
