@@ -127,7 +127,7 @@ def test_gen_market_sample(
     _mkt_sample_spec = MarketSampleSpec(
         _tcount,
         None if _recapture_spec_test == RECConstants.OUTIN else 0.80,
-        pcm_spec=PCMSpec(PCMConstants.UNI, _pcm_dist_firm2_test, None),
+        pcm_spec=PCMSpec(_pcm_dist_firm2_test, PCMConstants.UNI, None),
     )
     if _mktshr_dist_type_test == SHRConstants.UNI:
         _shr_dist_parms = None
@@ -152,10 +152,9 @@ def test_gen_market_sample(
     _array_to_test = _test_func(_mkt_sample_spec, _rng_seed_seq_tup, _nthreads)
 
     print(
-        "{}, {} ({}): {:,d} \n".format(
-            _mktshr_dist_type_test, _recapture_spec_test, _pcm_dist_firm2_test, _tcount
-        ),
+        f"{_mktshr_dist_type_test}, {_recapture_spec_test} ({_pcm_dist_firm2_test}): {_tcount:,d}",
         repr(_array_to_test),
+        sep="\n",
     )
 
     # assert_array_equal((0, 0), (0, 0))

@@ -149,11 +149,11 @@ class PCMSpec:
 
     """
 
-    dist_type: PCMConstants
-    """See PCMConstants"""
-
     firm2_pcm_constraint: FM2Constants
     """See FM2Constants"""
+
+    dist_type: PCMConstants
+    """See PCMConstants"""
 
     dist_parms: NDArray[np.float64] | None
     """Parameter specification for tailoring PCM distribution
@@ -315,10 +315,10 @@ class MarketSampleSpec:
     outside good choice probabilities (RECConstants.OUTIN).
     """
 
-    pr_sym_spec: PRIConstants = field(  # type: ignore
+    pr_sym_spec: PRIConstants = field(
         kw_only=True,
         default=PRIConstants.SYM,
-        validator=validators.instance_of(PRIConstants),  # type: ignore
+        validator=validators.instance_of(PRIConstants),
     )
     """Price specification, see PRIConstants"""
 
@@ -331,15 +331,15 @@ class MarketSampleSpec:
 
     pcm_spec: PCMSpec = field(
         kw_only=True,
-        default=PCMSpec(PCMConstants.UNI, FM2Constants.IID, None),
+        default=PCMSpec(FM2Constants.IID, PCMConstants.UNI, None),
         validator=[validators.instance_of(PCMSpec), _pcm_spec_validator],
     )
     """See definition of PCMSpec"""
 
-    hsr_filing_test_type: SSZConstants = field(  # type: ignore
+    hsr_filing_test_type: SSZConstants = field(
         kw_only=True,
         default=SSZConstants.ONE,
-        validator=validators.instance_of(SSZConstants),  # type: ignore
+        validator=validators.instance_of(SSZConstants),
     )
     """Method for modeling HSR filing threholds, see SSZConstants"""
 
@@ -353,17 +353,15 @@ class INVResolution(enum.StrEnum):
 
 @define(slots=True, frozen=True)
 class UPPTestRegime:
-    resolution: INVResolution = field(  # type: ignore
-        default=INVResolution.ENFT,
-        validator=validators.instance_of(INVResolution),  # type: ignore
+    resolution: INVResolution = field(
+        default=INVResolution.ENFT, validator=validators.instance_of(INVResolution)
     )
-    guppi_aggregator: UPPAggrSelector = field(  # type: ignore
-        default=UPPAggrSelector.MAX,
-        validator=validators.instance_of(UPPAggrSelector),  # type: ignore
+    guppi_aggregator: UPPAggrSelector = field(
+        default=UPPAggrSelector.MAX, validator=validators.instance_of(UPPAggrSelector)
     )
-    divr_aggregator: UPPAggrSelector | None = field(  # type: ignore
+    divr_aggregator: UPPAggrSelector | None = field(
         default=guppi_aggregator,
-        validator=validators.instance_of(UPPAggrSelector | None),  # type: ignore
+        validator=validators.instance_of((UPPAggrSelector, type(None))),
     )
 
 
