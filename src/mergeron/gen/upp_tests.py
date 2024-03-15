@@ -6,7 +6,6 @@ from generated market data.
 
 from collections.abc import Sequence
 from contextlib import suppress
-from dataclasses import fields
 from importlib.metadata import version
 from pathlib import Path
 from typing import Literal, TypeAlias, TypedDict
@@ -14,7 +13,6 @@ from typing import Literal, TypeAlias, TypedDict
 import numpy as np
 import tables as ptb  # type: ignore
 from attrs import evolve
-from attrs import fields as attrs_fields
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
@@ -54,23 +52,38 @@ class IVNRESCntsArgs(TypedDict, total=False):
 
 
 def sim_invres_cnts_ll(
-    _invres_parm_vec: gbl.HMGThresholds,
     _mkt_sample_spec: MarketSampleSpec,
+    _invres_parm_vec: gbl.HMGThresholds,
     _sim_invres_cnts_kwargs: IVNRESCntsArgs,
     /,
 ) -> UPPTestsCounts:
-    """
-    A function to parallelize simulations
+    """A function to parallelize data-generation and testing
 
-    The parameters _sim_invres_cnts_kwargs is passed unaltered to
-    the parent function, sim_invres_cnts(), except that, if provided,
-    "seed_seq_list" is used to spawn a seed sequence for each thread,
-    to assure independent samples in each thread. The number of draws
-    in each thread may be tuned, by trial and error, to the amount of
+    The parameters `_sim_invres_cnts_kwargs` are passed unaltered to
+    the parent function, `sim_invres_cnts()`, except that, if provided,
+    `seed_seq_list` is used to spawn a seed sequence for each thread,
+    to assure independent samples in each thread, and `nthreads` defines
+    the number of parallel processes used. The number of draws in
+    each thread may be tuned, by trial and error, to the amount of
     memory (RAM) available.
 
-    """
+    Parameters
+    ----------
 
+    _invres_parm_vec
+        Guidelines thresholds to test against
+
+    _mkt_sample_spec
+        Configuration to use for generating sample data to test
+
+    _sim_invres_cnts_kwargs
+        Arguments to downstream test function `sim_invres_cnts
+
+    Returns
+    -------
+        Arrays of UPPTestCounts
+
+    """
     _sample_sz = _mkt_sample_spec.sample_size
     _subsample_sz = 10**6
     _iter_count = int(_sample_sz / _subsample_sz) if _subsample_sz < _sample_sz else 1
@@ -98,24 +111,24 @@ def sim_invres_cnts_ll(
 
     _rng_seed_seq_list = [None] * _iter_count
     if _sim_invres_cnts_kwargs:
-        if _sseql := _sim_invres_cnts_kwargs.get("seed_seq_list", None):
+        if _sseql := _sim_invres_cnts_kwargs.get("seed_seq_list"):
             _rng_seed_seq_list = list(
                 zip(*[g.spawn(_iter_count) for g in _sseql], strict=True)  # type: ignore
             )
 
-        _sim_invres_cnts_ll_kwargs: IVNRESCntsArgs = {  # type: ignore
+        _sim_invres_cnts_kwargs: IVNRESCntsArgs = {  # type: ignore
             _k: _v
             for _k, _v in _sim_invres_cnts_kwargs.items()
             if _k != "seed_seq_list"
         }
     else:
-        _sim_invres_cnts_ll_kwargs = {}
+        _sim_invres_cnts_kwargs = {}
 
     _res_list = Parallel(n_jobs=_thread_count, prefer="threads")(
         delayed(sim_invres_cnts)(
-            _invres_parm_vec,
             _mkt_sample_spec_here,
-            **_sim_invres_cnts_ll_kwargs,
+            _invres_parm_vec,
+            **_sim_invres_cnts_kwargs,
             saved_array_name_suffix=f"{_iter_id:0{2 + int(np.ceil(np.log10(_iter_count)))}d}",
             seed_seq_list=_rng_seed_seq_list_ch,
         )
@@ -128,10 +141,12 @@ def sim_invres_cnts_ll(
     ])
     upp_test_results = UPPTestsCounts(*[
         np.column_stack((
-            (_gv := getattr(_res_list_stacks, _g.name))[0, :, :_h],
+            (_gv := getattr(_res_list_stacks, _g))[0, :, :_h],
             np.einsum("ijk->jk", np.int64(1) * _gv[:, :, _h:]),
         ))
-        for _g, _h in zip(fields(_res_list_stacks), [1, 1, 3], strict=True)
+        for _g, _h in zip(
+            _res_list_stacks.__dataclass_fields__.keys(), [1, 1, 3], strict=True
+        )
     ])
     del _res_list, _res_list_stacks
 
@@ -139,8 +154,8 @@ def sim_invres_cnts_ll(
 
 
 def sim_invres_cnts(
-    _upp_test_parms: gbl.HMGThresholds,
     _mkt_sample_spec: MarketSampleSpec,
+    _upp_test_parms: gbl.HMGThresholds,
     /,
     *,
     sim_test_regime: UPPTestRegime,
@@ -168,8 +183,8 @@ def sim_invres_cnts(
     )
 
     _upp_tests_data = gen_upp_arrays(
-        _upp_test_parms,
         _market_data,
+        _upp_test_parms,
         sim_test_regime,
         saved_array_name_suffix=saved_array_name_suffix,
         save_data_to_file=save_data_to_file,
@@ -198,9 +213,9 @@ def sim_invres_cnts(
                     *[
                         np.einsum(
                             "ij->",
-                            1 * (_firm_count_test & getattr(_upp_tests_data, _f.name)),
+                            1 * (_firm_count_test & getattr(_upp_tests_data, _f)),
                         )
-                        for _f in fields(_upp_tests_data)
+                        for _f in _upp_tests_data.__dataclass_fields__
                     ],
                 ]),
             ))
@@ -224,10 +239,9 @@ def sim_invres_cnts(
                 np.einsum("ij->", 1 * _hhi_delta_test),
                 *[
                     np.einsum(
-                        "ij->",
-                        1 * (_hhi_delta_test & getattr(_upp_tests_data, _f.name)),
+                        "ij->", 1 * (_hhi_delta_test & getattr(_upp_tests_data, _f))
                     )
-                    for _f in fields(_upp_tests_data)
+                    for _f in _upp_tests_data.__dataclass_fields__
                 ],
             ]),
         ))
@@ -262,9 +276,9 @@ def sim_invres_cnts(
                     np.einsum("ij->", 1 * _conc_test),
                     *[
                         np.einsum(
-                            "ij->", 1 * (_conc_test & getattr(_upp_tests_data, _f.name))
+                            "ij->", 1 * (_conc_test & getattr(_upp_tests_data, _f))
                         )
-                        for _f in fields(_upp_tests_data)
+                        for _f in _upp_tests_data.__dataclass_fields__
                     ],
                 ]),
             ))
@@ -283,14 +297,19 @@ def sim_invres_cnts(
 
 
 def gen_upp_arrays(
-    _upp_test_parms: gbl.HMGThresholds,
     _market_data: MarketDataSample,
+    _upp_test_parms: gbl.HMGThresholds,
     _sim_test_regime: UPPTestRegime,
     /,
     *,
     saved_array_name_suffix: str = "",
     save_data_to_file: SaveData = False,
 ) -> UPPTestsRaw:
+    """
+    Generate UPP tests arrays for given configuration and market sample
+
+    Given a standards vector, market
+    """
     _g_bar, _divr_bar, _cmcr_bar, _ipr_bar = (
         getattr(_upp_test_parms, _f) for _f in ("guppi", "divr", "cmcr", "ipr")
     )
@@ -426,10 +445,7 @@ def initialize_hd5(
     _save_data_to_file: tuple[Literal[True], ptb.File, str] = (True, _h5_file, "/")
     _next_subgroup_name = "invres_{}_{}_{}_{}".format(
         _hmg_pub_year,
-        *(
-            getattr(_test_regime, _f.name).name
-            for _f in attrs_fields(type(_test_regime))
-        ),
+        *(getattr(_test_regime, _f.name).name for _f in _test_regime.__attrs_attrs__),
     )
     return _save_data_to_file, _next_subgroup_name
 
@@ -445,8 +461,7 @@ def save_data_to_hdf5(
     if save_data_to_file:
         _, _h5_file, _h5_group = save_data_to_file
         # Save market data arrays
-        for _array_field in fields(_dclass):
-            _array_name = _array_field.name
+        for _array_name in _dclass.__dataclass_fields__:
             if _array_name in _excl_attrs:
                 continue
             save_array_to_hdf5(
