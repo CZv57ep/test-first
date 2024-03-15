@@ -47,3 +47,20 @@ Documentation for this package is in the form of the API Reference. Documentatio
     import mergeron.core.data_generation as dgl
 
     help(dgl.gen_market_sample)
+
+
+.. image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
+   :alt: Poetry
+   :target: https://python-poetry.org/
+
+.. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+   :alt: Ruff
+   :target: https://github.com/astral-sh/ruff
+
+.. image:: https://www.mypy-lang.org/static/mypy_badge.svg
+   :alt: Checked with mypy
+   :target: https://mypy-lang.org/
+
+.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
+   :alt: License: MIT
+   :target: https://opensource.org/licenses/MIT
