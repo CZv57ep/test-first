@@ -166,7 +166,7 @@ def test_shrratio_boundary_max(_dhv: tuple[float, float], _tv: float) -> None:
     ),
 )
 def test_shrratio_boundary_for_min(
-    _gv: float, _mv: float, _rv: float, _recapture_spec: str
+    _gv: float, _mv: float, _rv: float, _recapture_spec: RECConstants
 ) -> None:
     _test_area = gbl.shrratio_boundary(
         UPPBoundarySpec(
@@ -226,8 +226,8 @@ def test_shrratio_boundary(_tvl: tuple[float, float, str, str, float]) -> None:
     _bdry_spec = UPPBoundarySpec(
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
         0.80,
-        agg_method=_tvl[2],
-        recapture_spec=_tvl[3],
+        agg_method=_tvl[2],  # type: ignore
+        recapture_spec=_tvl[3],  # type: ignore
     )
     _ts = gbl.shrratio_boundary(_bdry_spec).area
     print("Test gbl.shrratio_boundary_wtd_avg(): ", end="")
@@ -244,24 +244,23 @@ def test_shrratio_boundary(_tvl: tuple[float, float, str, str, float]) -> None:
     print_done()
 
 
-@pytest.mark.parametrize(
-    "_tvl",
-    (
-        (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05111),
-        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07726),
-        (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17098),
-        (0.06, 1.0, "cross-product-share", "arithmetic", "proportional", 0.00658),
-        (0.06, 0.67, "cross-product-share", "arithmetic", "proportional", 0.01409),
-        (0.06, 0.3, "cross-product-share", "arithmetic", "proportional", 0.0606),
-        # below are different from ~_avg() in 4th decimal
-        (0.06, 1.0, None, "arithmetic", "proportional", 0.0102),
-        (0.06, 0.67, None, "arithmetic", "proportional", 0.02169),
-        (0.06, 0.3, None, "arithmetic", "proportional", 0.09123),
-        (0.06, 1.0, None, "arithmetic", "inside-out", 0.01026),
-        (0.06, 0.67, None, "arithmetic", "inside-out", 0.02187),
-        (0.06, 0.3, None, "arithmetic", "inside-out", 0.09323),
-    ),
+shrratio_boundary_wtd_avg_test_values = (
+    (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05111),
+    (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07726),
+    (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17098),
+    (0.06, 1.0, "cross-product-share", "arithmetic", "proportional", 0.00658),
+    (0.06, 0.67, "cross-product-share", "arithmetic", "proportional", 0.01409),
+    (0.06, 0.3, "cross-product-share", "arithmetic", "proportional", 0.0606),
+    (0.06, 1.0, None, "arithmetic", "proportional", 0.0102),
+    (0.06, 0.67, None, "arithmetic", "proportional", 0.02169),
+    (0.06, 0.3, None, "arithmetic", "proportional", 0.09123),
+    (0.06, 1.0, None, "arithmetic", "inside-out", 0.01026),
+    (0.06, 0.67, None, "arithmetic", "inside-out", 0.02187),
+    (0.06, 0.3, None, "arithmetic", "inside-out", 0.09323),
 )
+
+
+@pytest.mark.parametrize("_tvl", shrratio_boundary_wtd_avg_test_values)
 def test_shrratio_boundary_wtd_avg(_tvl: tuple[float, float, str, str, float]) -> None:
     _ts = gbl.shrratio_boundary_wtd_avg(
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
@@ -347,23 +346,7 @@ def test_shrratio_boundary_qdtr_wtd_avg(
     print_done()
 
 
-@pytest.mark.parametrize(
-    "_tvl",
-    (
-        (0.06, 1.0, "own-share", "arithmetic", "proportional", 0.05111),
-        (0.06, 0.67, "own-share", "arithmetic", "proportional", 0.07726),
-        (0.06, 0.3, "own-share", "arithmetic", "proportional", 0.17098),
-        (0.06, 1.0, "cross-product-share", "arithmetic", "proportional", 0.00658),
-        (0.06, 0.67, "cross-product-share", "arithmetic", "proportional", 0.01409),
-        (0.06, 0.3, "cross-product-share", "arithmetic", "proportional", 0.0606),
-        (0.06, 1.0, None, "arithmetic", "proportional", 0.0102),
-        (0.06, 0.67, None, "arithmetic", "proportional", 0.02169),
-        (0.06, 0.3, None, "arithmetic", "proportional", 0.09123),
-        (0.06, 1.0, None, "arithmetic", "inside-out", 0.01026),
-        (0.06, 0.67, None, "arithmetic", "inside-out", 0.02187),
-        (0.06, 0.3, None, "arithmetic", "inside-out", 0.09323),
-    ),
-)
+@pytest.mark.parametrize("_tvl", shrratio_boundary_wtd_avg_test_values)
 def test_shrratio_boundary_distance(_tvl: tuple[float, float, str, str, float]) -> None:
     _ts = gbspl.shrratio_boundary_distance(
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
