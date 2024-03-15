@@ -60,6 +60,7 @@ autoapi_options = [
 ]
 
 autoapi_template_dir = "_autoapi_templates"
+autoapi_keep_files = True
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
