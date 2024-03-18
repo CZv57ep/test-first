@@ -61,14 +61,12 @@ def _gen_share_data(
 
     """
 
-    _recapture_spec, _dist_type_mktshr, _dist_parms_mktshr, _firm_count_prob_wts_raw = (
+    _recapture_form, _dist_type_mktshr, _dist_parms_mktshr, _firm_count_prob_wts_raw = (
         getattr(_mkt_sample_spec.share_spec, _f)
-        for _f in ("recapture_spec", "dist_type", "dist_parms", "firm_counts_weights")
+        for _f in ("recapture_form", "dist_type", "dist_parms", "firm_counts_weights")
     )
 
     _ssz = _mkt_sample_spec.sample_size
-
-    _r_bar = _mkt_sample_spec.recapture_rate or 0.80
 
     match _dist_type_mktshr:
         case SHRConstants.UNI:
@@ -84,7 +82,7 @@ def _gen_share_data(
             )
             _mkt_share_sample = _gen_market_shares_dirichlet_multisample(
                 _ssz,
-                _recapture_spec,
+                _recapture_form,
                 _dist_type_mktshr,
                 _dist_parms_mktshr,
                 _firm_count_prob_wts,
@@ -98,9 +96,10 @@ def _gen_share_data(
                 f'Unexpected type, "{_dist_type_mktshr}" for share distribution.'
             )
 
-    # If recapture_spec == "inside-out", recalculate _aggregate_purchase_prob
+    # If recapture_form == "inside-out", recalculate _aggregate_purchase_prob
     _frmshr_array = _mkt_share_sample.mktshr_array[:, :2]
-    if _recapture_spec == RECConstants.INOUT:
+    _r_bar = _mkt_sample_spec.share_spec.recapture_rate or 0.855
+    if _recapture_form == RECConstants.INOUT:
         _mkt_share_sample = ShareDataSample(
             _mkt_share_sample.mktshr_array,
             _mkt_share_sample.fcounts,
@@ -176,7 +175,7 @@ def _gen_market_shares_uniform(
 
 def _gen_market_shares_dirichlet_multisample(
     _s_size: int = 10**6,
-    _recapture_spec: RECConstants = RECConstants.INOUT,
+    _recapture_form: RECConstants = RECConstants.INOUT,
     _dist_type_dir: SHRConstants = SHRConstants.DIR_FLAT,
     _dist_parms_dir: NDArray[np.floating[TF]] | None = None,
     _firm_count_wts: NDArray[np.floating[TF]] | None = None,
@@ -202,7 +201,7 @@ def _gen_market_shares_dirichlet_multisample(
         firm count weights array for sample to be drawn
     _dist_type_dir
         Whether Dirichlet is Flat or Asymmetric
-    _recapture_spec
+    _recapture_form
         r_1 = r_2 if "proportional", otherwise MNL-consistent
     _fcount_rng_seed_seq
         seed firm count rng, for replicable results
@@ -277,7 +276,7 @@ def _gen_market_shares_dirichlet_multisample(
             _mktshr_sample_f = _gen_market_shares_dirichlet(
                 _dir_alphas_test,
                 len(_fcounts_match_rows),
-                _recapture_spec,
+                _recapture_form,
                 _f_sseq,
                 _nthreads,
             )
@@ -315,7 +314,7 @@ def _gen_market_shares_dirichlet_multisample(
 def _gen_market_shares_dirichlet(
     _dir_alphas: NDArray[np.floating[TF]],
     _s_size: int = 10**6,
-    _recapture_spec: RECConstants = RECConstants.INOUT,
+    _recapture_form: RECConstants = RECConstants.INOUT,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
     /,
@@ -330,7 +329,7 @@ def _gen_market_shares_dirichlet(
         sample size to be drawn
     _r_bar
         market recapture rate
-    _recapture_spec
+    _recapture_form
         r_1 = r_2 if RECConstants.FIXED, otherwise MNL-consistent. If
         RECConstants.OUTIN; the number of columns in the output share array
         is len(_dir_alphas) - 1.
@@ -348,7 +347,7 @@ def _gen_market_shares_dirichlet(
     if not isinstance(_dir_alphas, np.ndarray):
         _dir_alphas = np.array(_dir_alphas)
 
-    if _recapture_spec == RECConstants.OUTIN:
+    if _recapture_form == RECConstants.OUTIN:
         _dir_alphas = np.concatenate((_dir_alphas, _dir_alphas[-1:]))
 
     _mktshr_seed_seq_ch = (
@@ -380,9 +379,9 @@ def _gen_market_shares_dirichlet(
             )
         )
 
-    # If recapture_spec == 'inside_out', further calculations downstream
+    # If recapture_form == 'inside_out', further calculations downstream
     _aggregate_purchase_prob = np.nan * np.empty((_s_size, 1))
-    if _recapture_spec == RECConstants.OUTIN:
+    if _recapture_form == RECConstants.OUTIN:
         _aggregate_purchase_prob = 1 - _mktshr_array[:, [-1]]
         _mktshr_array = _mktshr_array[:, :-1] / _aggregate_purchase_prob
 
@@ -394,7 +393,7 @@ def _gen_market_shares_dirichlet(
     )
 
 
-def _gen_pr_data(
+def _gen_price_data(
     _frmshr_array: NDArray[np.float64],
     _nth_firm_share: NDArray[np.float64],
     _mkt_sample_spec: MarketSampleSpec,
@@ -412,7 +411,7 @@ def _gen_pr_data(
     )
 
     _pr_max_ratio = 5.0
-    match _mkt_sample_spec.pr_sym_spec:
+    match _mkt_sample_spec.price_spec:
         case PRIConstants.SYM:
             _nth_firm_price = np.ones((_ssz, 1))
         case PRIConstants.POS:
@@ -434,9 +433,8 @@ def _gen_pr_data(
         case _:
             raise ValueError(
                 f"Condition regarding price symmetry"
-                f' "{_mkt_sample_spec.pr_sym_spec.value}" is invalid.'
+                f' "{_mkt_sample_spec.price_spec.value}" is invalid.'
             )
-    # del _pr_max_ratio
 
     _price_array = _price_array.astype(np.float64)
     _rev_array = _price_array * _frmshr_array
@@ -444,7 +442,7 @@ def _gen_pr_data(
 
     # Although `_test_rev_ratio_inv` is not fixed at 10%,
     # the ratio has not changed since inception of the HSR filing test,
-    # so we treat it as a constant of merger policy.
+    # so we treat it as a constant of merger enforcement policy.
     _test_rev_ratio, _test_rev_ratio_inv = 10, 1 / 10
 
     match _hsr_filing_test_type:
@@ -493,7 +491,7 @@ def _gen_pcm_data(
     _nthreads: int = 16,
     /,
 ) -> MarginDataSample:
-    _recapture_spec = _mkt_sample_spec.share_spec.recapture_spec
+    _recapture_form = _mkt_sample_spec.share_spec.recapture_form
     _dist_type_pcm, _dist_firm2_pcm, _dist_parms_pcm = (
         getattr(_mkt_sample_spec.pcm_spec, _f)
         for _f in ("dist_type", "firm2_pcm_constraint", "dist_parms")

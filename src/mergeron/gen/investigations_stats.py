@@ -1,5 +1,5 @@
 """
-Routines to format and print summary data on merger enforcement patterns.
+Methods to format and print summary data on merger enforcement patterns.
 
 """
 

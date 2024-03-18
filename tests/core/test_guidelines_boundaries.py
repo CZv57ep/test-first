@@ -158,7 +158,7 @@ def test_shrratio_boundary_max(_dhv: tuple[float, float], _tv: float) -> None:
 
 
 @pytest.mark.parametrize(
-    "_gv, _mv, _rv, _recapture_spec",
+    "_gv, _mv, _rv, _recapture_form",
     (
         (0.06, 1.00, 0.8, RECConstants.FIXED),
         (0.06, 0.67, 0.8, RECConstants.FIXED),
@@ -166,14 +166,14 @@ def test_shrratio_boundary_max(_dhv: tuple[float, float], _tv: float) -> None:
     ),
 )
 def test_shrratio_boundary_for_min(
-    _gv: float, _mv: float, _rv: float, _recapture_spec: RECConstants
+    _gv: float, _mv: float, _rv: float, _recapture_form: RECConstants
 ) -> None:
     _test_area = gbl.shrratio_boundary(
         UPPBoundarySpec(
             gbl.critical_shrratio(_gv, m_star=_mv, r_bar=_rv),
             _rv,
             agg_method=UPPAggrSelector.MIN,
-            recapture_spec=_recapture_spec,
+            recapture_form=_recapture_form,
             precision=10,
         )
     ).area
@@ -183,7 +183,7 @@ def test_shrratio_boundary_for_min(
 
 
 @pytest.mark.parametrize(
-    "_gv, _mv, _rv, _recapture_spec",
+    "_gv, _mv, _rv, _recapture_form",
     (
         (0.06, 1.00, 0.8, "proportional"),
         (0.06, 0.67, 0.8, "proportional"),
@@ -191,14 +191,14 @@ def test_shrratio_boundary_for_min(
     ),
 )
 def test_shrratio_boundary_min(
-    _gv: float, _mv: float, _rv: float, _recapture_spec: str
+    _gv: float, _mv: float, _rv: float, _recapture_form: str
 ) -> None:
     assert_equal(
         gbl.round_cust(
             gbl.shrratio_boundary_min(
                 gbl.critical_shrratio(_gv, m_star=_mv, r_bar=_rv),
                 _rv,
-                recapture_spec=_recapture_spec,
+                recapture_form=_recapture_form,
             ).area
         ),
         gbl.shr_from_gbd(_gv, m_star=_mv, r_bar=_rv),
@@ -227,7 +227,7 @@ def test_shrratio_boundary(_tvl: tuple[float, float, str, str, float]) -> None:
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
         0.80,
         agg_method=_tvl[2],  # type: ignore
-        recapture_spec=_tvl[3],  # type: ignore
+        recapture_form=_tvl[3],  # type: ignore
     )
     _ts = gbl.shrratio_boundary(_bdry_spec).area
     print("Test gbl.shrratio_boundary_wtd_avg(): ", end="")
@@ -266,7 +266,7 @@ def test_shrratio_boundary_wtd_avg(_tvl: tuple[float, float, str, str, float]) -
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         weighting=_tvl[2],  # type: ignore
         agg_method=_tvl[3],  # type: ignore
-        recapture_spec=_tvl[4],  # type: ignore
+        recapture_form=_tvl[4],  # type: ignore
     ).area
     print("Test gbl.shrratio_boundary_wtd_avg(): ", end="")
     try:
@@ -296,7 +296,7 @@ def test_shrratio_boundary_wtd_avg(_tvl: tuple[float, float, str, str, float]) -
 def test_shrratio_boundary_xact_avg(_tvl: tuple[float, float, str, float]) -> None:
     _ts = gbl.shrratio_boundary_xact_avg(
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
-        recapture_spec=_tvl[2],  # type: ignore
+        recapture_form=_tvl[2],  # type: ignore
     ).area
     print("Test gbl.gen_xact_avg_shrratio_mgnsym_boundary(): ", end="")
     try:
@@ -330,7 +330,7 @@ def test_shrratio_boundary_qdtr_wtd_avg(
     _ts = gbspl.shrratio_boundary_qdtr_wtd_avg(
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
         weighting=_tvl[2],  # type: ignore
-        recapture_spec=_tvl[3],  # type: ignore
+        recapture_form=_tvl[3],  # type: ignore
     ).area
     print("Test gbspl.shrratio_boundary_qdtr_wtd_avg(): ", end="")
     try:
@@ -352,7 +352,7 @@ def test_shrratio_boundary_distance(_tvl: tuple[float, float, str, str, float]) 
         gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
         weighting=_tvl[2],  # type: ignore
         agg_method=_tvl[3],  # type: ignore
-        recapture_spec=_tvl[4],  # type: ignore
+        recapture_form=_tvl[4],  # type: ignore
     ).area
     print("Test gbspl.test_shrratio_boundary_distance(): ", end="")
     try:

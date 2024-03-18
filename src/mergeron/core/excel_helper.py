@@ -1,5 +1,5 @@
 """
-Routines for writing data from Python to fresh Excel workbooks using
+Methods for writing data from Python to fresh Excel workbooks using
 the third-party package, `xlsxwriter`.
 
 Includes a flexible system of defining cell formats.

@@ -117,7 +117,7 @@ def test_gen_market_sample(
     _tcount: int = 10**7,
     _nthreads: int = 16,
 ) -> None:
-    (_mktshr_dist_type_test, _recapture_spec_test, _pcm_dist_firm2_test) = _test_parms
+    (_mktshr_dist_type_test, _recapture_form_test, _pcm_dist_firm2_test) = _test_parms
     # Reinitialize the seed sequence for each test run
     #   (this makes the tests invariant to the order in which run)
     _rng_seed_seq_tup = rmp.gen_seed_seq_list_default(
@@ -125,9 +125,7 @@ def test_gen_market_sample(
     )
 
     _mkt_sample_spec = MarketSampleSpec(
-        _tcount,
-        None if _recapture_spec_test == RECConstants.OUTIN else 0.80,
-        pcm_spec=PCMSpec(_pcm_dist_firm2_test, PCMConstants.UNI, None),
+        _tcount, pcm_spec=PCMSpec(_pcm_dist_firm2_test, PCMConstants.UNI, None)
     )
     if _mktshr_dist_type_test == SHRConstants.UNI:
         _shr_dist_parms = None
@@ -142,7 +140,8 @@ def test_gen_market_sample(
     _mkt_sample_spec = evolve(
         _mkt_sample_spec,
         share_spec=ShareSpec(
-            _recapture_spec_test,
+            _recapture_form_test,
+            None if _recapture_form_test == RECConstants.OUTIN else 0.80,
             _mktshr_dist_type_test,
             _shr_dist_parms,
             _fcount_weights,
@@ -152,7 +151,7 @@ def test_gen_market_sample(
     _array_to_test = _test_func(_mkt_sample_spec, _rng_seed_seq_tup, _nthreads)
 
     print(
-        f"{_mktshr_dist_type_test}, {_recapture_spec_test} ({_pcm_dist_firm2_test}): {_tcount:,d}",
+        f"{_mktshr_dist_type_test}, {_recapture_form_test} ({_pcm_dist_firm2_test}): {_tcount:,d}",
         repr(_array_to_test),
         sep="\n",
     )

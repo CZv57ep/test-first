@@ -1,5 +1,5 @@
 """
-Routines to generate data for analyzing merger enforcement policy.
+Methods to generate data for analyzing merger enforcement policy.
 
 """
 
@@ -26,7 +26,7 @@ from ._data_generation_functions_nonpublic import (
     _gen_market_shares_dirichlet,  # noqa: F401 easter-egg for external modules
     _gen_market_shares_uniform,  # noqa: F401 easter-egg for external modules
     _gen_pcm_data,
-    _gen_pr_data,
+    _gen_price_data,
     _gen_share_data,
 )
 
@@ -44,7 +44,7 @@ def gen_market_sample(
     Generate share, diversion ratio, price, and margin data based on supplied parameters
 
     Diversion ratios generated assuming share-proportionality, unless
-    `recapture_spec` = "proportional", in which case both firms' recapture rate
+    `recapture_form` = "proportional", in which case both firms' recapture rate
     is set to `r_bar`.
 
     The tuple of SeedSequences, if specified, is parsed in the following order
@@ -53,7 +53,7 @@ def gen_market_sample(
     2.) price-cost margins
     3.) firm-counts, from :code:`[2, 2 + len(firm_counts_weights)]`,
     weighted by :code:`firm_counts_weights`, where relevant
-    4.) prices, if :code:`pr_sym_spec == PRIConstants.ZERO`.
+    4.) prices, if :code:`price_spec == PRIConstants.ZERO`.
 
     Parameters
     ----------
@@ -74,7 +74,8 @@ def gen_market_sample(
 
     _mkt_sample_spec = _mkt_sample_spec or MarketSampleSpec()
 
-    _recapture_spec = _mkt_sample_spec.share_spec.recapture_spec
+    _recapture_form = _mkt_sample_spec.share_spec.recapture_form
+    _recapture_rate = _mkt_sample_spec.share_spec.recapture_rate
     _dist_type_mktshr = _mkt_sample_spec.share_spec.dist_type
     _dist_firm2_pcm = _mkt_sample_spec.pcm_spec.firm2_pcm_constraint
     _hsr_filing_test_type = _mkt_sample_spec.hsr_filing_test_type
@@ -85,7 +86,7 @@ def gen_market_sample(
         _fcount_rng_seed_seq,
         _pr_rng_seed_seq,
     ) = parse_seed_seq_list(
-        seed_seq_list, _dist_type_mktshr, _mkt_sample_spec.pr_sym_spec
+        seed_seq_list, _dist_type_mktshr, _mkt_sample_spec.price_spec
     )
 
     _shr_sample_size = 1.0 * _mkt_sample_spec.sample_size
@@ -114,7 +115,7 @@ def gen_market_sample(
     )
 
     # Generate merging-firm price data
-    _price_data = _gen_pr_data(
+    _price_data = _gen_price_data(
         _mktshr_array[:, :2], _nth_firm_share, _mkt_sample_spec_here, _pr_rng_seed_seq
     )
 
@@ -131,10 +132,7 @@ def gen_market_sample(
 
     # Calculate diversion ratios
     _divr_array = gen_divr_array(
-        _mktshr_array[:, :2],
-        _mkt_sample_spec_here.recapture_rate or 0.8,
-        _recapture_spec,
-        _aggregate_purchase_prob,
+        _recapture_form, _recapture_rate, _mktshr_array[:, :2], _aggregate_purchase_prob
     )
 
     # Generate margin data
@@ -184,18 +182,18 @@ def gen_market_sample(
 
 def parse_seed_seq_list(
     _sseq_list: list[SeedSequence] | None,
-    _dist_type_mktshr: SHRConstants,
-    _pr_sym_spec: PRIConstants,
+    _mktshr_dist_type: SHRConstants,
+    _price_spec: PRIConstants,
     /,
 ) -> tuple[SeedSequence, SeedSequence, SeedSequence | None, SeedSequence | None]:
     """Initialize RNG seed sequences to ensure independence of distinct random streams."""
     _fcount_rng_seed_seq: SeedSequence | None = None
     _pr_rng_seed_seq: SeedSequence | None = None
 
-    if _pr_sym_spec == PRIConstants.ZERO:
+    if _price_spec == PRIConstants.ZERO:
         _pr_rng_seed_seq = _sseq_list.pop() if _sseq_list else SeedSequence(pool_size=8)
 
-    if _dist_type_mktshr == SHRConstants.UNI:
+    if _mktshr_dist_type == SHRConstants.UNI:
         _fcount_rng_seed_seq = None
         _seed_count = 2
         _mktshr_rng_seed_seq, _pcm_rng_seed_seq = (
@@ -220,9 +218,9 @@ def parse_seed_seq_list(
 
 
 def gen_divr_array(
+    _recapture_form: RECConstants,
+    _recapture_rate: float | None,
     _frmshr_array: NDArray[np.float64],
-    _r_bar: float,
-    _recapture_spec: RECConstants = RECConstants.INOUT,
     _aggregate_purchase_prob: NDArray[np.float64] = EMPTY_ARRAY_DEFAULT,
     /,
 ) -> NDArray[np.float64]:
@@ -234,19 +232,19 @@ def gen_divr_array(
 
     Parameters
     ----------
-    _frmshr_array
-        Merging-firm shares.
+    _recapture_form
+        Enum specifying Fixed (proportional), Inside-out, or Outside-in
 
-    _r_bar
+    _recapture_rate
         If recapture is proportional or inside-out, the recapture rate
         for the firm with the smaller share.
+
+    _frmshr_array
+        Merging-firm shares.
 
     _aggregate_purchase_prob
         1 minus probability that the outside good is chosen; converts
         market shares to choice probabilities by multiplication.
-
-    _recapture_spec
-        Enum specifying Fixed (proportional), Inside-out, or Outside-in
 
     Returns
     -------
@@ -255,8 +253,8 @@ def gen_divr_array(
     """
 
     _divr_array: NDArray[np.float64]
-    if _recapture_spec == RECConstants.FIXED:
-        _divr_array = _r_bar * _frmshr_array[:, ::-1] / (1 - _frmshr_array)
+    if _recapture_form == RECConstants.FIXED:
+        _divr_array = _recapture_rate * _frmshr_array[:, ::-1] / (1 - _frmshr_array)  # type: ignore
 
     else:
         _purchprob_array = _aggregate_purchase_prob * _frmshr_array

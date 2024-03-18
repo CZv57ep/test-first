@@ -1,5 +1,5 @@
 """
-Routines for defining and analyzing boundaries for Guidelines standards,
+Methods for defining and analyzing boundaries for Guidelines standards,
 with a canvas on which to draw boundaries for Guidelines standards.
 
 """
@@ -697,7 +697,7 @@ def shrratio_boundary(_bdry_spec: UPPBoundarySpec) -> GuidelinesBoundary:
             return shrratio_boundary_xact_avg(
                 _bdry_spec.share_ratio,
                 _bdry_spec.rec,
-                recapture_spec=_bdry_spec.recapture_spec.value,  # type: ignore
+                recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
                 prec=_bdry_spec.precision,
             )
         case UPPAggrSelector.MAX:
@@ -708,7 +708,7 @@ def shrratio_boundary(_bdry_spec: UPPBoundarySpec) -> GuidelinesBoundary:
             return shrratio_boundary_min(
                 _bdry_spec.share_ratio,
                 _bdry_spec.rec,
-                recapture_spec=_bdry_spec.recapture_spec.value,  # type: ignore
+                recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
                 prec=_bdry_spec.precision,
             )
         case UPPAggrSelector.DIS:
@@ -717,7 +717,7 @@ def shrratio_boundary(_bdry_spec: UPPBoundarySpec) -> GuidelinesBoundary:
                 _bdry_spec.rec,
                 agg_method="distance",
                 weighting=None,
-                recapture_spec=_bdry_spec.recapture_spec.value,  # type: ignore
+                recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
                 prec=_bdry_spec.precision,
             )
         case _:
@@ -738,7 +738,7 @@ def shrratio_boundary(_bdry_spec: UPPBoundarySpec) -> GuidelinesBoundary:
                 _bdry_spec.rec,
                 agg_method=_agg_method,  # type: ignore
                 weighting=_weighting,  # type: ignore
-                recapture_spec=_bdry_spec.recapture_spec.value,  # type: ignore
+                recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
                 prec=_bdry_spec.precision,
             )
 
@@ -788,7 +788,7 @@ def shrratio_boundary_min(
     _r_val: float = 0.80,
     /,
     *,
-    recapture_spec: str = "inside-out",
+    recapture_form: str = "inside-out",
     prec: int = 10,
 ) -> GuidelinesBoundary:
     """
@@ -808,7 +808,7 @@ def shrratio_boundary_min(
         Margin-adjusted benchmark share ratio.
     _r_val
         Recapture ratio.
-    recapture_spec
+    recapture_form
         Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
         value for both merging firms ("proportional").
     prec
@@ -824,7 +824,7 @@ def shrratio_boundary_min(
     _s_intcpt = mpf("1.00")
     _s_mid = _delta_star / (1 + _delta_star)
 
-    if recapture_spec == "inside-out":
+    if recapture_form == "inside-out":
         # ## Plot envelope of GUPPI boundaries with r_k = r_bar if s_k = min(_s_1, _s_2)
         # ## See (s_i, s_j) in equation~(44), or thereabouts, in paper
         _smin_nr = _delta_star * (1 - _r_val)
@@ -857,7 +857,7 @@ def shrratio_boundary_wtd_avg(
     *,
     agg_method: Literal["arithmetic", "geometric", "distance"] = "arithmetic",
     weighting: Literal["own-share", "cross-product-share"] | None = "own-share",
-    recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
+    recapture_form: Literal["inside-out", "proportional"] = "inside-out",
     prec: int = 5,
 ) -> GuidelinesBoundary:
     """
@@ -874,7 +874,7 @@ def shrratio_boundary_wtd_avg(
         Whether "arithmetic", "geometric", or "distance".
     weighting
         Whether "own-share" or "cross-product-share"  (or None for simple, unweighted average).
-    recapture_spec
+    recapture_form
         Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
         value for both merging firms ("proportional").
     prec
@@ -895,7 +895,7 @@ def shrratio_boundary_wtd_avg(
         g_val, r_val, m_val = 0.06, 0.80, 0.30
         delta_star = g_val / (r_val * m_val)
 
-        # recapture_spec == "inside-out"
+        # recapture_form == "inside-out"
         oswag = solve(
             s_1 * s_2 / (1 - s_1)
             + s_2 * s_1 / (1 - (r_val * s_2 + (1 - r_val) * s_1))
@@ -920,7 +920,7 @@ def shrratio_boundary_wtd_avg(
             ylabel=s_2
         )
 
-        # recapture_spec == "proportional"
+        # recapture_form == "proportional"
         oswag = solve(
             s_1 * s_2 / (1 - s_1)
             + s_2 * s_1 / (1 - s_2)
@@ -973,7 +973,7 @@ def shrratio_boundary_wtd_avg(
             _de_1 = _s_2 / (1 - _s_1)
             _de_2 = (
                 _s_1 / (1 - lerp(_s_1, _s_2, _r_val))
-                if recapture_spec == "inside-out"
+                if recapture_form == "inside-out"
                 else _s_1 / (1 - _s_2)
             )
 
@@ -1025,7 +1025,7 @@ def shrratio_boundary_wtd_avg(
         _s_1_pre,
         _delta_star,
         _r_val,
-        recapture_spec=recapture_spec,
+        recapture_form=recapture_form,
         agg_method=agg_method,
         weighting=weighting,
     )
@@ -1063,7 +1063,7 @@ def shrratio_boundary_xact_avg(
     _r_val: float = 0.80,
     /,
     *,
-    recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
+    recapture_form: Literal["inside-out", "proportional"] = "inside-out",
     prec: int = 5,
 ) -> GuidelinesBoundary:
     """
@@ -1082,7 +1082,7 @@ def shrratio_boundary_xact_avg(
         g_val, r_val, m_val = 0.06, 0.80, 0.30
         d_hat = g_val / (r_val * m_val)
 
-        # recapture_spec = "inside-out"
+        # recapture_form = "inside-out"
         sag = solve(
             (s_2 / (1 - s_1))
             + (s_1 / (1 - (r_val * s_2 + (1 - r_val) * s_1)))
@@ -1095,7 +1095,7 @@ def shrratio_boundary_xact_avg(
             ylabel=s_2
         )
 
-        # recapture_spec = "proportional"
+        # recapture_form = "proportional"
         sag = solve((s_2/(1 - s_1)) + (s_1/(1 - s_2)) - 2 * d_hat, s_2)[0]
         symplot(
             sag,
@@ -1109,7 +1109,7 @@ def shrratio_boundary_xact_avg(
         Margin-adjusted benchmark share ratio.
     _r_val
         Recapture ratio
-    recapture_spec
+    recapture_form
         Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
         value for both merging firms ("proportional").
     prec
@@ -1127,7 +1127,7 @@ def shrratio_boundary_xact_avg(
 
     _gbdry_points_start = np.array([(_s_mid, _s_mid)])
     _s_1 = np.array(mp.arange(_s_mid - _gbd_step_sz, 0, -_gbd_step_sz), np.float64)
-    if recapture_spec == "inside-out":
+    if recapture_form == "inside-out":
         _s_intcpt = mp.fdiv(
             mp.fsub(
                 2 * _delta_star * _r_val + 1, mp.fabs(2 * _delta_star * _r_val - 1)
@@ -1167,7 +1167,7 @@ def shrratio_boundary_xact_avg(
         ):
             raise RuntimeError(
                 "Calculation of sq. root term in exact average GUPPI"
-                f"with recapture spec, {f'"{recapture_spec}"'} is incorrect."
+                f"with recapture spec, {f'"{recapture_form}"'} is incorrect."
             )
 
         _s_2 = (_nr_t1 - np.sqrt(_nr_t2_s1)) / (2 * _r_val)
@@ -1223,7 +1223,7 @@ def _shrratio_boundary_intcpt(
     _r_val: mpf,
     /,
     *,
-    recapture_spec: Literal["inside-out", "proportional"],
+    recapture_form: Literal["inside-out", "proportional"],
     agg_method: Literal["arithmetic", "geometric", "distance"],
     weighting: Literal["cross-product-share", "own-share"] | None,
 ) -> float:
@@ -1234,7 +1234,7 @@ def _shrratio_boundary_intcpt(
             _s_intcpt = mpf("1.0")
         case None if agg_method == "distance":
             _s_intcpt = _delta_star * mp.sqrt("2")
-        case None if agg_method == "arithmetic" and recapture_spec == "inside-out":
+        case None if agg_method == "arithmetic" and recapture_form == "inside-out":
             _s_intcpt = mp.fdiv(
                 mp.fsub(
                     2 * _delta_star * _r_val + 1, mp.fabs(2 * _delta_star * _r_val - 1)

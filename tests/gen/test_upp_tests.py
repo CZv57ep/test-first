@@ -86,9 +86,9 @@ def test_clearance_rate_calcs() -> None:
 
     _mkt_sample_spec = MarketSampleSpec(
         10**8,
-        0.80,
         share_spec=ShareSpec(
             RECConstants.FIXED,
+            0.80,
             SHRConstants.DIR_FLAT,
             None,  # TODO: type-fix this, with None as default
             np.array((133, 184, 134, 52, 32, 10, 12, 4, 3)),

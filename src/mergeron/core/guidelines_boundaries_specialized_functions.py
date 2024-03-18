@@ -1,7 +1,7 @@
 """
-Specialized routines for defining and analyzing boundaries for Guidelines standards.
+Specialized methods for defining and analyzing boundaries for Guidelines standards.
 
-These routines provide improved precision or demonstrate additional methods, but tend
+These methods provide improved precision or demonstrate additional methods, but tend
 to have poor performance
 
 """
@@ -69,7 +69,7 @@ def shrratio_boundary_qdtr_wtd_avg(
     /,
     *,
     weighting: Literal["own-share", "cross-product-share"] | None = "own-share",
-    recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
+    recapture_form: Literal["inside-out", "proportional"] = "inside-out",
 ) -> GuidelinesBoundaryCallable:
     """
     Share combinations for the share-weighted average GUPPI boundary with symmetric
@@ -83,7 +83,7 @@ def shrratio_boundary_qdtr_wtd_avg(
         recapture ratio
     weighting
         Whether "own-share" or "cross-product-share" (or None for simple, unweighted average)
-    recapture_spec
+    recapture_form
         Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
         value for both merging firms ("proportional").
 
@@ -107,7 +107,7 @@ def shrratio_boundary_qdtr_wtd_avg(
                 * _s_1
                 / (
                     (1 - (_r_val * _s_2 + (1 - _r_val) * _s_1))
-                    if recapture_spec == "inside-out"
+                    if recapture_form == "inside-out"
                     else (1 - _s_2)
                 )
                 - (_s_1 + _s_2) * _delta_star
@@ -116,7 +116,7 @@ def shrratio_boundary_qdtr_wtd_avg(
             _bdry_func = solve(_bdry_eqn, _s_2)[0]  # type: ignore
             _s_naught = (
                 float(solve(simplify(_bdry_eqn.subs({_s_2: 1 - _s_1})), _s_1)[0])  # type: ignore
-                if recapture_spec == "inside-out"
+                if recapture_form == "inside-out"
                 else 0
             )
             _bdry_area = float(
@@ -137,7 +137,7 @@ def shrratio_boundary_qdtr_wtd_avg(
                 * _s_1
                 / (
                     (1 - (_r_val * _s_2 + (1 - _r_val) * _s_1))
-                    if recapture_spec == "inside-out"
+                    if recapture_form == "inside-out"
                     else (1 - _s_2)
                 )
                 - (_s_1 + _s_2) * _d_star
@@ -165,7 +165,7 @@ def shrratio_boundary_qdtr_wtd_avg(
                 * _s_1
                 / (
                     (1 - (_r_val * _s_2 + (1 - _r_val) * _s_1))
-                    if recapture_spec == "inside-out"
+                    if recapture_form == "inside-out"
                     else (1 - _s_2)
                 )
                 - _delta_star
@@ -189,7 +189,7 @@ def shrratio_boundary_distance(
     *,
     agg_method: Literal["arithmetic", "distance"] = "arithmetic",
     weighting: Literal["own-share", "cross-product-share"] | None = "own-share",
-    recapture_spec: Literal["inside-out", "proportional"] = "inside-out",
+    recapture_form: Literal["inside-out", "proportional"] = "inside-out",
     prec: int = 5,
 ) -> GuidelinesBoundary:
     """
@@ -212,7 +212,7 @@ def shrratio_boundary_distance(
         Whether "arithmetic", "geometric", or "distance".
     weighting
         Whether "own-share" or "cross-product-share".
-    recapture_spec
+    recapture_form
         Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
         value for both merging firms ("proportional").
     prec
@@ -250,7 +250,7 @@ def shrratio_boundary_distance(
             _de_1 = _s_2 / (1 - _s_1)
             _de_2 = (
                 _s_1 / (1 - lerp(_s_1, _s_2, _r_val))
-                if recapture_spec == "inside-out"
+                if recapture_form == "inside-out"
                 else _s_1 / (1 - _s_2)
             )
 
@@ -308,7 +308,7 @@ def shrratio_boundary_distance(
         _s_1_pre,
         _delta_star,
         _r_val,
-        recapture_spec=recapture_spec,
+        recapture_form=recapture_form,
         agg_method=agg_method,
         weighting=weighting,
     )

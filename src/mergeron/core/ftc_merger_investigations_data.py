@@ -1,5 +1,5 @@
 """
-Routines to parse FTC Merger Investigations Data, downloading source documents
+Methods to parse FTC Merger Investigations Data, downloading source documents
 as necessary
 
 NOTES

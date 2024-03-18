@@ -54,7 +54,7 @@ class UPPBoundarySpec:
         default=UPPAggrSelector.MAX,
         validator=validators.instance_of(UPPAggrSelector),
     )
-    recapture_spec: RECConstants | None = field(
+    recapture_form: RECConstants | None = field(
         kw_only=True,
         default=RECConstants.INOUT,
         validator=(

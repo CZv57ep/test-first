@@ -14,7 +14,7 @@ __version__ = version(_PKG_NAME)
 
 import enum
 from dataclasses import dataclass
-from typing import ClassVar, Protocol, TypeVar
+from typing import ClassVar, Literal, Protocol, TypeVar, Union
 
 import numpy as np
 from attrs import Attribute, define, field, validators
@@ -88,8 +88,27 @@ class ShareSpec:
 
     """
 
-    recapture_spec: RECConstants
+    recapture_form: RECConstants
     """see RECConstants"""
+
+    recapture_rate: float | None
+    """A value between 0 and 1.
+
+    None if market share specification requires direct generation of
+    outside good choice probabilities (RECConstants.OUTIN).
+
+    The recapture rate is usually calibrated to the numbers-equivalent of the
+    HHI threshold for the presumtion of harm from unilateral compoetitive effects
+    in published merger guidelines. Accordingly, values for the recapture rate may be:
+
+    * 0.855, **6-to-5 merger from symmetry**; US Guidelines, 1992, 2023
+    * 0.855, 6-to-5 merger from symmetry; EU Guidelines for horizontal mergers, 2004
+    * 0.82, **6-to-5 merger to symmetry**; EU Guidelines for horizontal mergers, 2004
+    * 0.80, 5-to-4 merger from symmetry; US Guidelines, 2010
+    * 0.78, **5-to-4 merger to symmetry**; US Guidelines, 2010
+
+    Highlighting indicates hypothetical mergers close to the boundary of the presumption.
+    """
 
     dist_type: SHRConstants
     """see SHRConstants"""
@@ -211,34 +230,27 @@ def _sample_size_validator(
 ) -> None:
     if _value < 10**6:
         raise ValueError(
-            f"Sample size must be not less than {10**6:,d}. Got, {_value:,d}."
-        )
-
-
-def _recapture_rate_validator(
-    _object: MarketSampleSpec,
-    _attribute: Attribute[float | None],
-    _value: float | None,
-    /,
-) -> None:
-    if _value and not (0 < _value <= 1):
-        raise ValueError("Recapture rate must lie in the interval, [0, 1).")
-
-    if _value and _object.share_spec.recapture_spec == RECConstants.OUTIN:
-        raise ValueError(
-            "Market share specification requires estimation of recapture rate from "
-            "generated data. Either delete recapture rate specification or set it to None."
+            f"Sample size must be no less than {10**6:,d}; got, {_value:,d}."
         )
 
 
 def _share_spec_validator(
     _instance: MarketSampleSpec, _attribute: Attribute[ShareSpec], _value: ShareSpec, /
 ) -> None:
-    _r_bar = _instance.recapture_rate
+    _r_bar = _value.recapture_rate
+    if _r_bar and not (0 < _r_bar <= 1):
+        raise ValueError("Recapture rate must lie in the interval, [0, 1).")
+
+    elif _r_bar and _value.recapture_form == RECConstants.OUTIN:
+        raise ValueError(
+            "Market share specification requires estimation of recapture rate from "
+            "generated data. Either delete recapture rate specification or set it to None."
+        )
+
     if _value.dist_type == SHRConstants.UNI:
-        if _value.recapture_spec == RECConstants.OUTIN:
+        if _value.recapture_form == RECConstants.OUTIN:
             raise ValueError(
-                f"Invalid recapture specification, {_value.recapture_spec!r} "
+                f"Invalid recapture specification, {_value.recapture_form!r} "
                 "for market share specification with Uniform distribution. "
                 "Redefine the market-sample specification, modifying the ."
                 "market-share specification or the recapture specification."
@@ -246,18 +258,17 @@ def _share_spec_validator(
         elif _value.firm_counts_weights is not None:
             raise ValueError(
                 "Generated data for markets with specified firm-counts or "
-                "varying firm counts are not feasible with market shares "
+                "varying firm counts are not feasible for market shares "
                 "with Uniform distribution. Consider revising the "
                 r"distribution type to {SHRConstants.DIR_FLAT}, which gives "
                 "uniformly distributed draws on the :math:`n+1` simplex "
                 "for firm-count, :math:`n`."
             )
-        #   Outside-in calibration only valid for Dir-distributed shares
-    elif _value.recapture_spec != RECConstants.OUTIN and (
+    elif _value.recapture_form != RECConstants.OUTIN and (
         _r_bar is None or not isinstance(_r_bar, float)
     ):
         raise ValueError(
-            f"Recapture specification, {_value.recapture_spec!r} requires that "
+            f"Recapture specification, {_value.recapture_form!r} requires that "
             "the market sample specification inclues a recapture rate."
         )
 
@@ -266,12 +277,12 @@ def _pcm_spec_validator(
     _instance: MarketSampleSpec, _attribute: Attribute[PCMSpec], _value: PCMSpec, /
 ) -> None:
     if (
-        _instance.share_spec.recapture_spec == RECConstants.FIXED
+        _instance.share_spec.recapture_form == RECConstants.FIXED
         and _value.firm2_pcm_constraint == FM2Constants.MNL
     ):
         raise ValueError(
             "{} {} {}".format(
-                f'Specification of "recapture_spec", "{_instance.share_spec.recapture_spec}"',
+                f'Specification of "recapture_form", "{_instance.share_spec.recapture_form}"',
                 "requires Firm 2 margin must have property, ",
                 f'"{FM2Constants.IID}" or "{FM2Constants.SYM}".',
             )
@@ -306,35 +317,26 @@ class MarketSampleSpec:
     )
     """sample size generated"""
 
-    recapture_rate: float | None = field(
-        default=None, validator=_recapture_rate_validator
-    )
-    """market recapture rate
-
-    Is None if market share specification requires generation of
-    outside good choice probabilities (RECConstants.OUTIN).
-    """
-
-    pr_sym_spec: PRIConstants = field(
-        kw_only=True,
-        default=PRIConstants.SYM,
-        validator=validators.instance_of(PRIConstants),
-    )
-    """Price specification, see PRIConstants"""
-
     share_spec: ShareSpec = field(
         kw_only=True,
-        default=ShareSpec(RECConstants.INOUT, SHRConstants.UNI, None, None),
+        default=ShareSpec(RECConstants.INOUT, 0.855, SHRConstants.UNI, None, None),
         validator=[validators.instance_of(ShareSpec), _share_spec_validator],
     )
-    """See definition of ShareSpec"""
+    """Market-share specification, see definition of ShareSpec"""
 
     pcm_spec: PCMSpec = field(
         kw_only=True,
         default=PCMSpec(FM2Constants.IID, PCMConstants.UNI, None),
         validator=[validators.instance_of(PCMSpec), _pcm_spec_validator],
     )
-    """See definition of PCMSpec"""
+    """Margin specification, see definition of PCMSpec"""
+
+    price_spec: PRIConstants = field(
+        kw_only=True,
+        default=PRIConstants.SYM,
+        validator=validators.instance_of(PRIConstants),
+    )
+    """Price specification, see PRIConstants"""
 
     hsr_filing_test_type: SSZConstants = field(
         kw_only=True,

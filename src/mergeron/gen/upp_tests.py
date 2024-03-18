@@ -1,5 +1,5 @@
 """
-Routines to estimate intrinsic clearnace rates and intrinsic enforcement rates
+Methods to estimate intrinsic clearnace rates and intrinsic enforcement rates
 from generated market data.
 
 """
@@ -44,6 +44,8 @@ SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, ptb.Group]
 
 
 class IVNRESCntsArgs(TypedDict, total=False):
+    "Keyword arguments of function, :code:`sim_invres_cnts`"
+
     sim_test_regime: UPPTestRegime
     saved_array_name_suffix: str
     save_data_to_file: SaveData
@@ -77,7 +79,7 @@ def sim_invres_cnts_ll(
         Configuration to use for generating sample data to test
 
     _sim_invres_cnts_kwargs
-        Arguments to downstream test function `sim_invres_cnts
+        Arguments to downstream test function `sim_invres_cnts`
 
     Returns
     -------
@@ -93,19 +95,14 @@ def sim_invres_cnts_ll(
     _mkt_sample_spec_here = evolve(_mkt_sample_spec, sample_size=_subsample_sz)
 
     if (
-        _mkt_sample_spec.recapture_rate is None
-        and _mkt_sample_spec.share_spec.recapture_spec != RECConstants.OUTIN
+        _mkt_sample_spec.share_spec.recapture_form != RECConstants.OUTIN
+        and _mkt_sample_spec.share_spec.recapture_rate != _invres_parm_vec.rec
     ):
-        _mkt_sample_spec_here = evolve(
-            _mkt_sample_spec_here, recapture_rate=_invres_parm_vec.rec
-        )
-    elif _mkt_sample_spec.recapture_rate != _invres_parm_vec.rec:
         raise ValueError(
-            "{} {} {} {}".format(
-                f"Value, {_mkt_sample_spec.recapture_rate}",
-                "of recapture rate in the second positional argument",
-                f"must equal its value, {_invres_parm_vec.rec}",
-                "in the first positional argument.",
+            "{} {} {}".format(
+                f"Recapture rate from market sample spec, {_mkt_sample_spec.share_spec.recapture_rate}",
+                f"must match the value, {_invres_parm_vec.rec}",
+                "the guidelines thresholds vector.",
             )
         )
 
