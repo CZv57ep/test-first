@@ -13,6 +13,11 @@
 
    license
 
+.. toctree::
+   :caption: Notes and Acknowlegements
+
+   notes
+
 Indices and tables
 ==================
 

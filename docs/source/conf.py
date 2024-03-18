@@ -27,7 +27,7 @@ version_dict = semver.parse(mergeron.__version__)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "mergeron"
-copyright = "2023--2024, S. Murthy Kambhampaty"
+copyright = "2017--2024, S. Murthy Kambhampaty"
 author = "S. Murthy Kambhampaty"
 version = "{major}.{minor}".format(**version_dict)
 release = "{major}.{minor}.{patch}".format(**version_dict)
@@ -60,7 +60,7 @@ autoapi_options = [
 ]
 
 autoapi_template_dir = "_autoapi_templates"
-autoapi_keep_files = True
+# autoapi_keep_files = True
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
