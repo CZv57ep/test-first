@@ -5,13 +5,12 @@ with a canvas on which to draw boundaries for Guidelines standards.
 """
 
 import decimal
-from collections.abc import Callable
 from dataclasses import dataclass
 from importlib.metadata import version
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
-from attrs import define, field
+from attrs import field, frozen
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
 
@@ -24,7 +23,7 @@ __version__ = version(_PKG_NAME)
 mp.prec = 80
 mp.trap_complex = True
 
-HMGPubYear: TypeAlias = Literal[1992, 2010, 2023]
+HMGPubYear: TypeAlias = Literal[1992, 2004, 2010, 2023]
 
 
 @dataclass(slots=True, frozen=True)
@@ -43,25 +42,28 @@ class GuidelinesBoundary:
     area: float
 
 
-@dataclass(slots=True, frozen=True)
-class GuidelinesBoundaryCallable:
-    boundary_function: Callable[[NDArray[np.float64]], NDArray[np.float64]]
-    area: float
-    s_naught: float = 0
-
-
-@define(slots=True, frozen=True)
+@frozen
 class GuidelinesThresholds:
     """
     Guidelines threholds by Guidelines publication year
 
     ΔHHI, Recapture Rate, GUPPI, Diversion ratio, CMCR, and IPR thresholds
-    constructed from concentration standards.
+    constructed from concentration standards in Guidelines published in
+    1992, 2004, 2010, and 2023.
+
+    The 2004 Guidelines refernced here are the EU Commission
+    guidelines on assessment of horizontal mergers. These
+    guidelines also define a presumption for mergers with
+    post-merger HHI in [1000, 2000) and ΔHHI >= 250 points,
+    whi is not modeled here.
+
+    All other Guidelines modeled here are U.S. merger guidelines.
+
     """
 
     pub_year: HMGPubYear
     """
-    Year of publication of the U.S. Horizontal Merger Guidelines (HMG)
+    Year of publication of the Guidelines
     """
 
     safeharbor: HMGThresholds = field(kw_only=True, default=None)
@@ -99,6 +101,7 @@ class GuidelinesThresholds:
         _hhi_p, _dh_s, _dh_p = {
             1992: (0.18, 0.005, 0.01),
             2010: (0.25, 0.01, 0.02),
+            2004: (0.20, 0.015, 0.015),
             2023: (0.18, 0.01, 0.01),
         }[self.pub_year]
 

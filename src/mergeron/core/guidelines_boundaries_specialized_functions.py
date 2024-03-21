@@ -6,27 +6,32 @@ to have poor performance
 
 """
 
+from collections.abc import Callable
+from dataclasses import dataclass
 from importlib.metadata import version
 from typing import Literal
 
 import numpy as np
 from mpmath import mp, mpf  # type: ignore
+from numpy.typing import NDArray
 from scipy.spatial.distance import minkowski as distance_function  # type: ignore
 from sympy import lambdify, simplify, solve, symbols
 
 from .. import _PKG_NAME  # noqa: TID252
-from .guidelines_boundaries import (
-    GuidelinesBoundary,
-    GuidelinesBoundaryCallable,
-    _shrratio_boundary_intcpt,
-    lerp,
-)
+from .guidelines_boundaries import GuidelinesBoundary, _shrratio_boundary_intcpt, lerp
 
 __version__ = version(_PKG_NAME)
 
 
 mp.prec = 80
 mp.trap_complex = True
+
+
+@dataclass(slots=True, frozen=True)
+class GuidelinesBoundaryCallable:
+    boundary_function: Callable[[NDArray[np.float64]], NDArray[np.float64]]
+    area: float
+    s_naught: float = 0
 
 
 def delta_hhi_boundary_qdtr(_dh_val: float = 0.01, /) -> GuidelinesBoundaryCallable:

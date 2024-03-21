@@ -19,6 +19,7 @@ from ..core.pseudorandom_numbers import (  # noqa: TID252
     prng,
 )
 from . import (
+    EMPTY_ARRAY_DEFAULT,
     FCOUNT_WTS_DEFAULT,
     TF,
     FM2Constants,
@@ -504,27 +505,25 @@ def _gen_pcm_data(
     _mnl_test_array = np.empty((len(_frmshr_array), 2), dtype=int)
 
     _beta_min, _beta_max = [None] * 2  # placeholder
-    _dist_parms = np.ones(2, np.float64)
     if _dist_type_pcm == PCMConstants.EMPR:
         _pcm_array = resample_mgn_data(
             _pcm_array.shape,  # type: ignore
             seed_sequence=_pcm_rng_seed_seq,
         )
     else:
-        if _dist_type_pcm == PCMConstants.UNI:
-            _dist_parms = (
-                DIST_PARMS_DEFAULT if _dist_parms_pcm is None else _dist_parms_pcm
-            )
-        elif _dist_type_pcm == PCMConstants.BETA:
-            # Error-checking (could move to validators in definition of MarketSampleSpec)
-
+        if _dist_type_pcm == PCMConstants.BETA:
             if _dist_parms_pcm is None:
-                _dist_parms_pcm = _dist_parms
+                _dist_parms_pcm = np.ones(2, np.float64)
 
         elif _dist_type_pcm == PCMConstants.BETA_BND:  # Bounded beta
             if _dist_parms_pcm is None:
                 _dist_parms_pcm = np.array([0, 1, 0, 1], np.float64)
                 _dist_parms = beta_located_bound(_dist_parms_pcm)
+        else:
+            #  _dist_type_pcm == PCMConstants.UNI
+            _dist_parms = (
+                DIST_PARMS_DEFAULT if _dist_parms_pcm is None else _dist_parms_pcm
+            )
 
         _pcm_rng = MultithreadedRNG(
             _pcm_array,
@@ -562,6 +561,66 @@ def _gen_pcm_data(
             _pcm_array[:, [1]] = _pcm_array[:, [0]]
 
     return MarginDataSample(_pcm_array, _mnl_test_array)
+
+
+def _gen_divr_array(
+    _recapture_form: RECConstants,
+    _recapture_rate: float | None,
+    _frmshr_array: NDArray[np.float64],
+    _aggregate_purchase_prob: NDArray[np.float64] = EMPTY_ARRAY_DEFAULT,
+    /,
+) -> NDArray[np.float64]:
+    """
+    Given merging-firm shares and related parameters, return diverion ratios.
+
+    If recapture is specified as "Outside-in" (RECConstants.OUTIN), then the
+    choice-probability for the outside good must be supplied.
+
+    Parameters
+    ----------
+    _recapture_form
+        Enum specifying Fixed (proportional), Inside-out, or Outside-in
+
+    _recapture_rate
+        If recapture is proportional or inside-out, the recapture rate
+        for the firm with the smaller share.
+
+    _frmshr_array
+        Merging-firm shares.
+
+    _aggregate_purchase_prob
+        1 minus probability that the outside good is chosen; converts
+        market shares to choice probabilities by multiplication.
+
+    Returns
+    -------
+        Merging-firm diversion ratios for mergers in the sample.
+
+    """
+
+    _divr_array: NDArray[np.float64]
+    if _recapture_form == RECConstants.FIXED:
+        _divr_array = _recapture_rate * _frmshr_array[:, ::-1] / (1 - _frmshr_array)  # type: ignore
+
+    else:
+        _purchprob_array = _aggregate_purchase_prob * _frmshr_array
+        _divr_array = _purchprob_array[:, ::-1] / (1 - _purchprob_array)
+
+    _divr_assert_test = (
+        (np.round(np.einsum("ij->i", _frmshr_array), 15) == 1)
+        | (np.argmin(_frmshr_array, axis=1) == np.argmax(_divr_array, axis=1))
+    )[:, None]
+    if not all(_divr_assert_test):
+        raise ValueError(
+            "{} {} {} {}".format(
+                "Data construction fails tests:",
+                "the index of min(s_1, s_2) must equal",
+                "the index of max(d_12, d_21), for all draws.",
+                "unless frmshr_array sums to 1.00.",
+            )
+        )
+
+    return _divr_array
 
 
 def _beta_located(

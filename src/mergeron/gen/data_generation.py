@@ -22,7 +22,7 @@ from . import (
     SHRConstants,
     SSZConstants,
 )
-from ._data_generation_functions_nonpublic import (
+from ._data_generation_functions import (
     _gen_market_shares_dirichlet,  # noqa: F401 easter-egg for external modules
     _gen_market_shares_uniform,  # noqa: F401 easter-egg for external modules
     _gen_pcm_data,
