@@ -5,22 +5,20 @@ Defines constants and containers for industry data generation and testing
 
 from __future__ import annotations
 
+import enum
+from dataclasses import dataclass
 from importlib.metadata import version
+from typing import ClassVar, Protocol, TypeVar
+
+import numpy as np
+from attrs import Attribute, define, field, frozen, validators
+from numpy.typing import NBitBase, NDArray
 
 from .. import _PKG_NAME, RECConstants, UPPAggrSelector  # noqa: TID252
+from ..core.pseudorandom_numbers import DIST_PARMS_DEFAULT  # noqa: TID252
 
 __version__ = version(_PKG_NAME)
 
-
-import enum
-from dataclasses import dataclass
-from typing import ClassVar, Literal, Protocol, TypeVar, Union
-
-import numpy as np
-from attrs import Attribute, define, field, validators
-from numpy.typing import NBitBase, NDArray
-
-from ..core.pseudorandom_numbers import DIST_PARMS_DEFAULT  # noqa: TID252
 
 EMPTY_ARRAY_DEFAULT = np.zeros(2)
 FCOUNT_WTS_DEFAULT = ((_nr := np.arange(1, 6)[::-1]) / _nr.sum()).astype(np.float64)
@@ -74,7 +72,7 @@ class SHRConstants(enum.StrEnum):
     """
 
 
-@define(slots=True, frozen=True)
+@frozen
 class ShareSpec:
     """Market share specification
 
@@ -152,7 +150,7 @@ class FM2Constants(enum.StrEnum):
     SYM = "symmetric"
 
 
-@define(slots=True, frozen=True)
+@frozen
 class PCMSpec:
     """Price-cost margin (PCM) specification
 
@@ -224,9 +222,9 @@ class SSZConstants(float, enum.ReprEnum):
     """When initial set of draws is not restricted in any way."""
 
 
-# Validators for selected attributes of MarketSampleSpec
+# Validators for selected attributes of MarketSpec
 def _sample_size_validator(
-    _object: MarketSampleSpec, _attribute: Attribute[int], _value: int, /
+    _object: MarketSpec, _attribute: Attribute[int], _value: int, /
 ) -> None:
     if _value < 10**6:
         raise ValueError(
@@ -235,7 +233,7 @@ def _sample_size_validator(
 
 
 def _share_spec_validator(
-    _instance: MarketSampleSpec, _attribute: Attribute[ShareSpec], _value: ShareSpec, /
+    _instance: MarketSpec, _attribute: Attribute[ShareSpec], _value: ShareSpec, /
 ) -> None:
     _r_bar = _value.recapture_rate
     if _r_bar and not (0 < _r_bar <= 1):
@@ -274,7 +272,7 @@ def _share_spec_validator(
 
 
 def _pcm_spec_validator(
-    _instance: MarketSampleSpec, _attribute: Attribute[PCMSpec], _value: PCMSpec, /
+    _instance: MarketSpec, _attribute: Attribute[PCMSpec], _value: PCMSpec, /
 ) -> None:
     if (
         _instance.share_spec.recapture_form == RECConstants.FIXED
@@ -308,14 +306,9 @@ def _pcm_spec_validator(
             )
 
 
-@define(slots=True, frozen=True)
-class MarketSampleSpec:
+@define(slots=False)
+class MarketSpec:
     """Parameter specification for market data generation."""
-
-    sample_size: int = field(
-        default=10**6, validator=(validators.instance_of(int), _sample_size_validator)
-    )
-    """sample size generated"""
 
     share_spec: ShareSpec = field(
         kw_only=True,
@@ -353,17 +346,16 @@ class INVResolution(enum.StrEnum):
     BOTH = "both"
 
 
-@define(slots=True, frozen=True)
+@frozen
 class UPPTestRegime:
     resolution: INVResolution = field(
         default=INVResolution.ENFT, validator=validators.instance_of(INVResolution)
     )
     guppi_aggregator: UPPAggrSelector = field(
-        default=UPPAggrSelector.MAX, validator=validators.instance_of(UPPAggrSelector)
+        default=UPPAggrSelector.MIN, validator=validators.instance_of(UPPAggrSelector)
     )
     divr_aggregator: UPPAggrSelector | None = field(
-        default=guppi_aggregator,
-        validator=validators.instance_of((UPPAggrSelector, type(None))),
+        default=None, validator=validators.instance_of((UPPAggrSelector, type(None)))
     )
 
 
@@ -469,7 +461,7 @@ class MarginDataSample:
 
 @dataclass(slots=True, frozen=True)
 class UPPTestsRaw:
-    """arrays marking test failures and successes
+    """Container for arrays marking test failures and successes
 
     A test success is a draw ("market") that meeets the
     specified test criterion, and a test failure is
@@ -494,9 +486,9 @@ class UPPTestsRaw:
 
 @dataclass(slots=True, frozen=True)
 class UPPTestsCounts:
-    """counts of markets resolved as specified
+    """Counts of markets resolved as specified
 
-    Resolution is specified in a UPPTestRegime object.
+    Resolution may be either "enforcement" or "clearance".
     """
 
     by_firm_count: NDArray[np.int64]

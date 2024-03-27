@@ -4,17 +4,11 @@ from datetime import datetime, timedelta
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.core.pseudorandom_numbers as rmp
 import mergeron.gen.investigations_stats as isl
-import mergeron.gen.upp_tests as utl
 import numpy as np
 import re2 as re  # type: ignore
 from mergeron import RECConstants, UPPAggrSelector
-from mergeron.gen import (
-    INVResolution,
-    MarketSampleSpec,
-    ShareSpec,
-    SHRConstants,
-    UPPTestRegime,
-)
+from mergeron.gen import INVResolution, ShareSpec, SHRConstants, UPPTestRegime
+from mergeron.gen.market_sample import MarketSample
 
 teststr_pat = re.compile(r"(?m)^ +")
 stats_sim_byfirmcount_teststr = teststr_pat.sub(
@@ -84,32 +78,38 @@ def test_clearance_rate_calcs() -> None:
         INVResolution.CLRN, UPPAggrSelector.MAX, None
     )
 
-    _mkt_sample_spec = MarketSampleSpec(
-        10**8,
+    _mkt_sample = MarketSample(
         share_spec=ShareSpec(
             RECConstants.FIXED,
             0.80,
             SHRConstants.DIR_FLAT,
             None,  # TODO: type-fix this, with None as default
             np.array((133, 184, 134, 52, 32, 10, 12, 4, 3)),
-        ),
+        )
     )
 
     _start_time = datetime.now()
-    upp_tests_counts = utl.sim_invres_cnts_ll(
-        _mkt_sample_spec,
+    _mkt_sample.estimate_invres_counts(
         gbl.GuidelinesThresholds(2010).safeharbor,
-        {
-            "seed_seq_list": rmp.gen_seed_seq_list_default(3),
-            "sim_test_regime": _test_sel,
-            "nthreads": 16,
-        },
+        _test_sel,
+        sample_size=10**8,
+        seed_seq_list=rmp.gen_seed_seq_list_default(3),
+        nthreads=16,
     )
+    # upp_tests_counts = utl.sim_invres_cnts_ll(
+    #     _mkt_sample_spec,
+    #     gbl.GuidelinesThresholds(2010).safeharbor,
+    #     seed_seq_list=rmp.gen_seed_seq_list_default(3),
+    #     sim_test_regime=_test_sel,
+    #     nthreads=16,
+    # )
     _total_duration = datetime.now() - _start_time
+
     print(
         f"Estimations completed in total duration of {_total_duration / timedelta(seconds=1):.6f} secs."
     )
 
+    upp_tests_counts = _mkt_sample.invres_counts
     _return_type_sel = isl.StatsReturnSelector.CNT
     print()
     print(

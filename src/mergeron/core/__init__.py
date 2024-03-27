@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from importlib.metadata import version
 
-from attrs import Attribute, define, field, validators
+from attrs import Attribute, field, frozen, validators
 
 from .. import _PKG_NAME, RECConstants, UPPAggrSelector  # noqa: TID252
 
@@ -38,7 +38,7 @@ def _rec_spec_validator(
         )
 
 
-@define(slots=True, frozen=True)
+@frozen
 class UPPBoundarySpec:
     share_ratio: float = field(
         kw_only=False,

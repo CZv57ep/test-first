@@ -24,7 +24,7 @@ from . import (
     TF,
     FM2Constants,
     MarginDataSample,
-    MarketSampleSpec,
+    MarketSpec,
     PCMConstants,
     PriceDataSample,
     PRIConstants,
@@ -37,7 +37,8 @@ __version__ = version(_PKG_NAME)
 
 
 def _gen_share_data(
-    _mkt_sample_spec: MarketSampleSpec,
+    _sample_size: int,
+    _mkt_sample_spec: MarketSpec,
     _fcount_rng_seed_seq: SeedSequence | None,
     _mktshr_rng_seed_seq: SeedSequence,
     _nthreads: int = 16,
@@ -67,7 +68,7 @@ def _gen_share_data(
         for _f in ("recapture_form", "dist_type", "dist_parms", "firm_counts_weights")
     )
 
-    _ssz = _mkt_sample_spec.sample_size
+    _ssz = _sample_size
 
     match _dist_type_mktshr:
         case SHRConstants.UNI:
@@ -397,24 +398,22 @@ def _gen_market_shares_dirichlet(
 def _gen_price_data(
     _frmshr_array: NDArray[np.float64],
     _nth_firm_share: NDArray[np.float64],
-    _mkt_sample_spec: MarketSampleSpec,
+    _mkt_sample_spec: MarketSpec,
     _seed_seq: SeedSequence | None = None,
     /,
 ) -> PriceDataSample:
-    _ssz = len(_frmshr_array)
-
     _hsr_filing_test_type = _mkt_sample_spec.hsr_filing_test_type
 
     _price_array, _price_ratio_array, _hsr_filing_test = (
         np.ones_like(_frmshr_array, np.float64),
         np.empty_like(_frmshr_array, np.float64),
-        np.empty(_ssz, bool),
+        np.empty(len(_frmshr_array), bool),
     )
 
     _pr_max_ratio = 5.0
     match _mkt_sample_spec.price_spec:
         case PRIConstants.SYM:
-            _nth_firm_price = np.ones((_ssz, 1))
+            _nth_firm_price = np.ones((len(_frmshr_array), 1))
         case PRIConstants.POS:
             _price_array, _nth_firm_price = (
                 np.ceil(_p * _pr_max_ratio) for _p in (_frmshr_array, _nth_firm_share)
@@ -478,14 +477,14 @@ def _gen_price_data(
             # del _nth_firm_rev, _rev_ratio_to_nth
         case _:
             # Otherwise, all draws meet the filing test
-            _hsr_filing_test = np.ones(_ssz, dtype=bool)
+            _hsr_filing_test = np.ones(len(_frmshr_array), dtype=bool)
 
     return PriceDataSample(_price_array, _hsr_filing_test)
 
 
 def _gen_pcm_data(
     _frmshr_array: NDArray[np.floating[TF]],
-    _mkt_sample_spec: MarketSampleSpec,
+    _mkt_sample_spec: MarketSpec,
     _price_array: NDArray[np.floating[TF]],
     _aggregate_purchase_prob: NDArray[np.floating[TF]],
     _pcm_rng_seed_seq: SeedSequence,

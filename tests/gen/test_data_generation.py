@@ -1,20 +1,18 @@
 import gc
 
 import mergeron.core.pseudorandom_numbers as rmp
-import mergeron.gen.data_generation as dgl
 import numpy as np
 import pytest
-from attrs import evolve
 from mergeron import RECConstants
 from mergeron.gen import (
     FCOUNT_WTS_DEFAULT,
     FM2Constants,
-    MarketSampleSpec,
     PCMConstants,
     PCMSpec,
     ShareSpec,
     SHRConstants,
 )
+from mergeron.gen.market_sample import MarketSample
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
 
@@ -124,8 +122,8 @@ def test_gen_market_sample(
         2 if _mktshr_dist_type_test == SHRConstants.UNI else 3
     )
 
-    _mkt_sample_spec = MarketSampleSpec(
-        _tcount, pcm_spec=PCMSpec(_pcm_dist_firm2_test, PCMConstants.UNI, None)
+    _mkt_sample = MarketSample(
+        pcm_spec=PCMSpec(_pcm_dist_firm2_test, PCMConstants.UNI, None)
     )
     if _mktshr_dist_type_test == SHRConstants.UNI:
         _shr_dist_parms = None
@@ -137,18 +135,14 @@ def test_gen_market_sample(
         _shr_dist_parms = None
         _test_func = _tfunc_sample_with_dirichlet_shares
 
-    _mkt_sample_spec = evolve(
-        _mkt_sample_spec,
-        share_spec=ShareSpec(
-            _recapture_form_test,
-            None if _recapture_form_test == RECConstants.OUTIN else 0.80,
-            _mktshr_dist_type_test,
-            _shr_dist_parms,
-            _fcount_weights,
-        ),
+    _mkt_sample.share_spec = ShareSpec(
+        _recapture_form_test,
+        None if _recapture_form_test == RECConstants.OUTIN else 0.80,
+        _mktshr_dist_type_test,
+        _shr_dist_parms,
+        _fcount_weights,
     )
-
-    _array_to_test = _test_func(_mkt_sample_spec, _rng_seed_seq_tup, _nthreads)
+    _array_to_test = _test_func(_tcount, _mkt_sample, _rng_seed_seq_tup, _nthreads)
 
     print(
         f"{_mktshr_dist_type_test}, {_recapture_form_test} ({_pcm_dist_firm2_test}): {_tcount:,d}",
@@ -159,43 +153,45 @@ def test_gen_market_sample(
     # assert_array_equal((0, 0), (0, 0))
     # if _pcm_dist_firm2_test != FM2Constants.MNL:
     assert_array_equal(_array_to_test, _test_array)
-    del _mkt_sample_spec
+    del _mkt_sample
     gc.collect()
 
 
 def _tfunc_sample_with_unrestricted_shares(
-    _mkt_sample_spec: MarketSampleSpec,
+    _sample_size: int,
+    _mkt_sample: MarketSample,
     _rng_seed_seq_tup: list[np.random.SeedSequence],
     _nthreads: int,
     /,
 ) -> NDArray[np.float64 | np.float64]:
-    _mkt_sample = dgl.gen_market_sample(
-        _mkt_sample_spec, seed_seq_list=_rng_seed_seq_tup, nthreads=_nthreads
+    _mkt_sample.generate_sample(
+        sample_size=_sample_size, seed_seq_list=_rng_seed_seq_tup, nthreads=_nthreads
     )
     return np.array([
-        _mkt_sample.frmshr_array.mean(),
-        _mkt_sample.divr_array.mean(),
-        _mkt_sample.hhi_delta.mean(),
+        _mkt_sample.data.frmshr_array.mean(),
+        _mkt_sample.data.divr_array.mean(),
+        _mkt_sample.data.hhi_delta.mean(),
     ])
 
 
 def _tfunc_sample_with_dirichlet_shares(
-    _mkt_sample_spec: MarketSampleSpec,
+    _sample_size: int,
+    _mkt_sample: MarketSample,
     _rng_seed_seq_tup: list[np.random.SeedSequence],
     _nthreads: int,
     /,
 ) -> NDArray[np.float64 | np.float64]:
-    _mkt_sample = dgl.gen_market_sample(
-        _mkt_sample_spec, seed_seq_list=_rng_seed_seq_tup, nthreads=_nthreads
+    _mkt_sample.generate_sample(
+        sample_size=_sample_size, seed_seq_list=_rng_seed_seq_tup, nthreads=_nthreads
     )
     return np.array((
-        _mkt_sample.frmshr_array.mean(),
-        _mkt_sample.divr_array.mean(),
-        _mkt_sample.hhi_delta.mean(),
-        _mkt_sample.hhi_post.mean(),
-        _mkt_sample.nth_firm_share.mean(),
-        _mkt_sample.fcounts.mean(),
-        _mkt_sample.fcounts.max(),
+        _mkt_sample.data.frmshr_array.mean(),
+        _mkt_sample.data.divr_array.mean(),
+        _mkt_sample.data.hhi_delta.mean(),
+        _mkt_sample.data.hhi_post.mean(),
+        _mkt_sample.data.nth_firm_share.mean(),
+        _mkt_sample.data.fcounts.mean(),
+        _mkt_sample.data.fcounts.max(),
     ))
 
 

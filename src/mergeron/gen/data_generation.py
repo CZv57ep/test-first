@@ -7,7 +7,6 @@ from __future__ import annotations
 
 from importlib.metadata import version
 
-import attrs
 import numpy as np
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
@@ -17,7 +16,7 @@ from . import (
     EMPTY_ARRAY_DEFAULT,
     FM2Constants,
     MarketDataSample,
-    MarketSampleSpec,
+    MarketSpec,
     PRIConstants,
     SHRConstants,
     SSZConstants,
@@ -34,9 +33,10 @@ __version__ = version(_PKG_NAME)
 
 
 def gen_market_sample(
-    _mkt_sample_spec: MarketSampleSpec,
+    _mkt_sample_spec: MarketSpec,
     /,
     *,
+    sample_size: int = 10**6,
     seed_seq_list: list[SeedSequence] | None = None,
     nthreads: int = 16,
 ) -> MarketDataSample:
@@ -59,6 +59,8 @@ def gen_market_sample(
     ----------
     _mkt_sample_spec
         class specifying parameters for data generation
+    sample_size
+        number of draws to generate
     seed_seq_list
         tuple of SeedSequences to ensure replicable data generation with
         appropriately independent random streams
@@ -72,7 +74,7 @@ def gen_market_sample(
 
     """
 
-    _mkt_sample_spec = _mkt_sample_spec or MarketSampleSpec()
+    _mkt_sample_spec = _mkt_sample_spec or MarketSpec()
 
     _recapture_form = _mkt_sample_spec.share_spec.recapture_form
     _recapture_rate = _mkt_sample_spec.share_spec.recapture_rate
@@ -89,19 +91,20 @@ def gen_market_sample(
         seed_seq_list, _dist_type_mktshr, _mkt_sample_spec.price_spec
     )
 
-    _shr_sample_size = 1.0 * _mkt_sample_spec.sample_size
+    _shr_sample_size = 1.0 * sample_size
     # Scale up sample size to offset discards based on specified criteria
     _shr_sample_size *= _hsr_filing_test_type
     if _dist_firm2_pcm == FM2Constants.MNL:
         _shr_sample_size *= SSZConstants.MNL_DEP
-    _mkt_sample_spec_here = attrs.evolve(
-        _mkt_sample_spec, sample_size=int(_shr_sample_size)
-    )
-    del _shr_sample_size
+    _shr_sample_size = int(_shr_sample_size)
 
     # Generate share data
     _mktshr_data = _gen_share_data(
-        _mkt_sample_spec_here, _fcount_rng_seed_seq, _mktshr_rng_seed_seq, nthreads
+        _shr_sample_size,
+        _mkt_sample_spec,
+        _fcount_rng_seed_seq,
+        _mktshr_rng_seed_seq,
+        nthreads,
     )
 
     _mktshr_array, _fcounts, _aggregate_purchase_prob, _nth_firm_share = (
@@ -116,7 +119,7 @@ def gen_market_sample(
 
     # Generate merging-firm price data
     _price_data = _gen_price_data(
-        _mktshr_array[:, :2], _nth_firm_share, _mkt_sample_spec_here, _pr_rng_seed_seq
+        _mktshr_array[:, :2], _nth_firm_share, _mkt_sample_spec, _pr_rng_seed_seq
     )
 
     _price_array, _hsr_filing_test = (
@@ -138,7 +141,7 @@ def gen_market_sample(
     # Generate margin data
     _pcm_data = _gen_pcm_data(
         _mktshr_array[:, :2],
-        _mkt_sample_spec_here,
+        _mkt_sample_spec,
         _price_array,
         _aggregate_purchase_prob,
         _pcm_rng_seed_seq,
@@ -148,7 +151,7 @@ def gen_market_sample(
         getattr(_pcm_data, _f) for _f in ("pcm_array", "mnl_test_array")
     )
 
-    _s_size = _mkt_sample_spec.sample_size  # originally-specified sample size
+    _s_size = sample_size  # originally-specified sample size
     if _dist_firm2_pcm == FM2Constants.MNL:
         _mktshr_array = _mktshr_array[_mnl_test_rows][:_s_size]
         _pcm_array = _pcm_array[_mnl_test_rows][:_s_size]
