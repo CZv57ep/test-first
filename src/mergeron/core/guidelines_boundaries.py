@@ -14,14 +14,7 @@ from mpmath import mp, mpf  # type: ignore
 
 from .. import _PKG_NAME, UPPAggrSelector  # noqa: TID252
 from . import GuidelinesBoundary, UPPBoundarySpec
-from .guidelines_boundary_functions import (
-    dh_area,
-    round_cust,
-    shrratio_boundary_max,
-    shrratio_boundary_min,
-    shrratio_boundary_wtd_avg,
-    shrratio_boundary_xact_avg,
-)
+from . import guidelines_boundary_functions as gbfn
 
 __version__ = version(_PKG_NAME)
 
@@ -112,9 +105,9 @@ class GuidelinesThresholds:
             HMGThresholds(
                 _dh_s,
                 _fc := int(np.ceil(1 / _hhi_p)),
-                _r := round_cust(_fc / (_fc + 1)),
+                _r := gbfn.round_cust(_fc / (_fc + 1)),
                 _g_s := guppi_from_delta(_dh_s, m_star=1.0, r_bar=_r),
-                _dr := round_cust(1 / (_fc + 1)),
+                _dr := gbfn.round_cust(1 / (_fc + 1)),
                 _cmcr := 0.03,  # Not strictly a Guidelines standard
                 _ipr := _g_s,  # Not strictly a Guidelines standard
             ),
@@ -128,9 +121,9 @@ class GuidelinesThresholds:
                 HMGThresholds(
                     _dh_i := 2 * (0.5 / _fc) ** 2,
                     _fc,
-                    _r_i := round_cust((_fc - 1 / 2) / (_fc + 1 / 2)),
+                    _r_i := gbfn.round_cust((_fc - 1 / 2) / (_fc + 1 / 2)),
                     _g_i := guppi_from_delta(_dh_i, m_star=1.0, r_bar=_r_i),
-                    round_cust((1 / 2) / (_fc + 1 / 2)),
+                    gbfn.round_cust((1 / 2) / (_fc + 1 / 2)),
                     _cmcr,
                     _g_i,
                 )
@@ -182,7 +175,7 @@ def guppi_from_delta(
         GUPPI bound corresponding to ∆HHI bound, at given margin and recapture rate.
 
     """
-    return round_cust(
+    return gbfn.round_cust(
         m_star * r_bar * (_s_m := np.sqrt(_delta_bound / 2)) / (1 - _s_m),
         frac=0.005,
         rounding_mode="ROUND_HALF_DOWN",
@@ -215,7 +208,7 @@ def critical_share_ratio(
         for given margin and recapture rate.
 
     """
-    return round_cust(
+    return gbfn.round_cust(
         mpf(f"{_guppi_bound}") / mp.fmul(f"{m_star}", f"{r_bar}"), frac=frac
     )
 
@@ -243,7 +236,7 @@ def share_from_guppi(
 
     """
 
-    return round_cust(
+    return gbfn.round_cust(
         (_d0 := critical_share_ratio(_guppi_bound, m_star=m_star, r_bar=r_bar))
         / (1 + _d0)
     )
@@ -289,7 +282,7 @@ def hhi_delta_boundary(
             np.array(_s_1_pts, np.float64),
             np.array(_s_2_pts, np.float64),
         )),
-        dh_area(_dh_val, prec=prec),
+        gbfn.dh_area(_dh_val, prec=prec),
     )
 
 
@@ -390,25 +383,25 @@ def diversion_ratio_boundary(_bdry_spec: UPPBoundarySpec) -> GuidelinesBoundary:
     )
     match _bdry_spec.agg_method:
         case UPPAggrSelector.AVG:
-            return shrratio_boundary_xact_avg(
+            return gbfn.shrratio_boundary_xact_avg(
                 _share_ratio,
                 _bdry_spec.rec,
                 recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
                 prec=_bdry_spec.precision,
             )
         case UPPAggrSelector.MAX:
-            return shrratio_boundary_max(
+            return gbfn.shrratio_boundary_max(
                 _share_ratio, _bdry_spec.rec, prec=_bdry_spec.precision
             )
         case UPPAggrSelector.MIN:
-            return shrratio_boundary_min(
+            return gbfn.shrratio_boundary_min(
                 _share_ratio,
                 _bdry_spec.rec,
                 recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
                 prec=_bdry_spec.precision,
             )
         case UPPAggrSelector.DIS:
-            return shrratio_boundary_wtd_avg(
+            return gbfn.shrratio_boundary_wtd_avg(
                 _share_ratio,
                 _bdry_spec.rec,
                 agg_method="distance",
@@ -429,7 +422,7 @@ def diversion_ratio_boundary(_bdry_spec: UPPBoundarySpec) -> GuidelinesBoundary:
                 else "distance"
             )
 
-            return shrratio_boundary_wtd_avg(
+            return gbfn.shrratio_boundary_wtd_avg(
                 _share_ratio,
                 _bdry_spec.rec,
                 agg_method=_agg_method,  # type: ignore
