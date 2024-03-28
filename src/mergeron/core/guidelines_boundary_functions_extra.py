@@ -1,8 +1,9 @@
 """
 Specialized methods for defining and analyzing boundaries for Guidelines standards.
 
-These methods provide improved precision or demonstrate additional methods, but tend
-to have poor performance
+These methods (functions) provide rely on scipy of sympy for core computations,
+and may provide improved precision than core functions, but tend to have
+poor performance
 
 """
 
@@ -18,7 +19,8 @@ from scipy.spatial.distance import minkowski as distance_function  # type: ignor
 from sympy import lambdify, simplify, solve, symbols
 
 from .. import _PKG_NAME  # noqa: TID252
-from .guidelines_boundaries import GuidelinesBoundary, _shrratio_boundary_intcpt, lerp
+from . import GuidelinesBoundary
+from .guidelines_boundary_functions import _shrratio_boundary_intcpt, lerp
 
 __version__ = version(_PKG_NAME)
 
@@ -34,7 +36,39 @@ class GuidelinesBoundaryCallable:
     s_naught: float = 0
 
 
-def delta_hhi_boundary_qdtr(_dh_val: float = 0.01, /) -> GuidelinesBoundaryCallable:
+def dh_area_quad(_dh_val: float = 0.01, /, *, prec: int = 9) -> float:
+    """
+    Area under the ΔHHI boundary.
+
+    When the given ΔHHI bound matches a Guidelines safeharbor,
+    the area under the boundary is half the intrinsic clearance rate
+    for the ΔHHI safeharbor.
+
+    Parameters
+    ----------
+    _dh_val
+        Merging-firms' ΔHHI bound.
+    prec
+        Specified precision in decimal places.
+
+    Returns
+    -------
+        Area under ΔHHI boundary.
+
+    """
+
+    _dh_val = mpf(f"{_dh_val}")
+    _s_naught = (1 - mp.sqrt(1 - 2 * _dh_val)) / 2
+
+    return round(
+        float(
+            _s_naught + mp.quad(lambda x: _dh_val / (2 * x), [_s_naught, 1 - _s_naught])
+        ),
+        prec,
+    )
+
+
+def hhi_delta_boundary_qdtr(_dh_val: float = 0.01, /) -> GuidelinesBoundaryCallable:
     """
     Generate the list of share combination on the ΔHHI boundary.
 

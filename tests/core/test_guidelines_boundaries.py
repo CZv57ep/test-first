@@ -2,7 +2,8 @@ import gc
 from collections.abc import Sequence
 
 import mergeron.core.guidelines_boundaries as gbl
-import mergeron.core.guidelines_boundaries_specialized_functions as gbspl
+import mergeron.core.guidelines_boundary_functions as gbfn
+import mergeron.core.guidelines_boundary_functions_extra as gbxtr
 import pytest
 from mergeron import RECConstants, UPPAggrSelector
 from mergeron.core import UPPBoundarySpec
@@ -21,18 +22,18 @@ gval_print_format_str = "g_val = {}; m_val = {}; {} =? {}"
     ),
 )
 def test_round_cust(_num: float, _frac: float, _mode: str, _test_val: float) -> None:
-    assert_equal(gbl.round_cust(_num, frac=_frac, rounding_mode=_mode), _test_val)
+    assert_equal(gbfn.round_cust(_num, frac=_frac, rounding_mode=_mode), _test_val)
 
 
 def test_round_cust_to_fp_aproximation_error() -> None:
     # Difference below is due to floating-point approx. error
     assert_almost_equal(
-        gbl.round_cust(12.35, frac=0.05, rounding_mode="ROUND_DOWN"), 12.35, decimal=12
+        gbfn.round_cust(12.35, frac=0.05, rounding_mode="ROUND_DOWN"), 12.35, decimal=12
     )
 
 
 def test_lerp() -> None:
-    assert_equal(gbl.lerp(1, 3, 0.25), 1.5)
+    assert_equal(gbfn.lerp(1, 3, 0.25), 1.5)
 
 
 @pytest.mark.parametrize(
@@ -44,15 +45,15 @@ def test_lerp() -> None:
         (0.01, 6 / 7, 0.065),
     ),
 )
-def test_gbd_from_dsf(_dhv: float, _rbar: float, _test_val: float) -> None:
-    assert_equal(gbl.gbd_from_dsf(_dhv, r_bar=_rbar), _test_val)
+def test_guppi_from_delta(_dhv: float, _rbar: float, _test_val: float) -> None:
+    assert_equal(gbl.guppi_from_delta(_dhv, r_bar=_rbar), _test_val)
 
 
 @pytest.mark.parametrize(
     "_gv, _mv, _rv, _test_val", ((0.06, 1.00, 4 / 5, 0.070), (0.09, 0.40, 0.9, 0.200))
 )
-def test_shr_from_gbd(_gv: float, _mv: float, _rv: float, _test_val: float) -> None:
-    assert_equal(gbl.shr_from_gbd(_gv, m_star=_mv, r_bar=_rv), _test_val)
+def test_share_from_guppi(_gv: float, _mv: float, _rv: float, _test_val: float) -> None:
+    assert_equal(gbl.share_from_guppi(_gv, m_star=_mv, r_bar=_rv), _test_val)
 
 
 @pytest.mark.parametrize(
@@ -62,10 +63,10 @@ def test_shr_from_gbd(_gv: float, _mv: float, _rv: float, _test_val: float) -> N
 def test_benchmark_shrratio(_test_parms: Sequence[float], _test_val: float) -> None:
     if _test_parms:
         _gv, _mv, _rv = _test_parms
-        _ts = gbl.critical_shrratio(_gv, m_star=_mv, r_bar=_rv)
+        _ts = gbl.critical_share_ratio(_gv, m_star=_mv, r_bar=_rv)
     else:
-        _ts = gbl.critical_shrratio()
-    assert_equal(gbl.round_cust(_ts), gbl.round_cust(_test_val))
+        _ts = gbl.critical_share_ratio()
+    assert_equal(gbfn.round_cust(_ts), gbfn.round_cust(_test_val))
 
 
 def print_done() -> None:
@@ -79,33 +80,33 @@ _dh_tuple = ((0.01, 0.03147), (0.02, 0.05595), (0.08, 0.16709))
 def test_dh_area(_dhv: float, _dha: float) -> None:
     print(f"Testing gbl.dh_area() with ΔHHI value of {_dhv} ... ", end="")
     try:
-        assert_equal(gbl.dh_area(_dhv), gbl.dh_area_quad(_dhv))
+        assert_equal(gbfn.dh_area(_dhv), gbxtr.dh_area_quad(_dhv))
     except AssertionError as _err:
-        print(gbl.dh_area(_dhv), "=?", gbl.dh_area_quad(_dhv), end="")
+        print(gbfn.dh_area(_dhv), "=?", gbxtr.dh_area_quad(_dhv), end="")
         raise _err
     print_done()
 
 
 @pytest.mark.parametrize("_dhv, _dha", _dh_tuple)
-def test_delta_hhi_boundary_dha(_dhv: float, _dha: float) -> None:
-    _ts = gbl.delta_hhi_boundary(_dhv).area
-    print(f"Testing gbl.delta_hhi_boundary() with ΔHHI value of {_dhv} ... ", end="")
+def test_hhi_delta_boundary_dha(_dhv: float, _dha: float) -> None:
+    _ts = gbl.hhi_delta_boundary(_dhv).area
+    print(f"Testing gbl.hhi_delta_boundary() with ΔHHI value of {_dhv} ... ", end="")
     try:
         assert_equal(_ts, _dha)
     except AssertionError as _err:
-        print(gbl.dh_area(_dhv), "=?", _ts, end="")
+        print(gbfn.dh_area(_dhv), "=?", _ts, end="")
         raise _err
     print_done()
 
 
 @pytest.mark.parametrize("_dhv", (0.01, 0.02, 0.08))
-def test_delta_hhi_boundary(_dhv: float) -> None:
-    _ts = gbl.delta_hhi_boundary(_dhv).area
-    print(f"Testing gbl.delta_hhi_boundary() with ΔHHI value of {_dhv} ... ", end="")
+def test_hhi_delta_boundary(_dhv: float) -> None:
+    _ts = gbl.hhi_delta_boundary(_dhv).area
+    print(f"Testing gbl.hhi_delta_boundary() with ΔHHI value of {_dhv} ... ", end="")
     try:
-        assert_equal(_ts, round(gbl.dh_area(_dhv), 5))
+        assert_equal(_ts, round(gbfn.dh_area(_dhv), 5))
     except AssertionError as _err:
-        print(gbl.dh_area(_dhv), "=?", _ts, end="")
+        print(gbfn.dh_area(_dhv), "=?", _ts, end="")
         raise _err
     print_done()
 
@@ -130,10 +131,10 @@ def test_hhi_pre_contrib_boundary(_dhv: float) -> None:
         strict=True,
     ),
 )
-def test_shrratio_boundary_for_max(_dhv: tuple[float, float], _tv: float) -> None:
-    _test_area = gbl.shrratio_boundary(
+def test_diversion_ratio_boundary_at_max(_dhv: tuple[float, float], _tv: float) -> None:
+    _test_area = gbl.diversion_ratio_boundary(
         UPPBoundarySpec(
-            gbl.critical_shrratio(_dhv[0], m_star=_dhv[1], r_bar=0.80),
+            gbl.critical_share_ratio(_dhv[0], m_star=_dhv[1], r_bar=1.00),
             0.80,
             agg_method=UPPAggrSelector.MAX,
             precision=10,
@@ -151,8 +152,8 @@ def test_shrratio_boundary_for_max(_dhv: tuple[float, float], _tv: float) -> Non
     ),
 )
 def test_shrratio_boundary_max(_dhv: tuple[float, float], _tv: float) -> None:
-    _test_area = gbl.shrratio_boundary_max(
-        gbl.critical_shrratio(_dhv[0], m_star=_dhv[1], r_bar=0.80)
+    _test_area = gbfn.shrratio_boundary_max(
+        gbl.critical_share_ratio(_dhv[0], m_star=_dhv[1], r_bar=0.80)
     ).area
     assert_equal(_test_area, _tv)
 
@@ -165,12 +166,12 @@ def test_shrratio_boundary_max(_dhv: tuple[float, float], _tv: float) -> None:
         (0.06, 0.30, 0.8, RECConstants.FIXED),
     ),
 )
-def test_shrratio_boundary_for_min(
+def test_shrratio_boundary_at_min(
     _gv: float, _mv: float, _rv: float, _recapture_form: RECConstants
 ) -> None:
-    _test_area = gbl.shrratio_boundary(
+    _test_area = gbl.diversion_ratio_boundary(
         UPPBoundarySpec(
-            gbl.critical_shrratio(_gv, m_star=_mv, r_bar=_rv),
+            gbl.critical_share_ratio(_gv, m_star=_mv, r_bar=1.00),
             _rv,
             agg_method=UPPAggrSelector.MIN,
             recapture_form=_recapture_form,
@@ -178,7 +179,7 @@ def test_shrratio_boundary_for_min(
         )
     ).area
     assert_equal(
-        gbl.round_cust(_test_area), gbl.shr_from_gbd(_gv, m_star=_mv, r_bar=_rv)
+        gbfn.round_cust(_test_area), gbl.share_from_guppi(_gv, m_star=_mv, r_bar=_rv)
     )
 
 
@@ -194,14 +195,14 @@ def test_shrratio_boundary_min(
     _gv: float, _mv: float, _rv: float, _recapture_form: str
 ) -> None:
     assert_equal(
-        gbl.round_cust(
-            gbl.shrratio_boundary_min(
-                gbl.critical_shrratio(_gv, m_star=_mv, r_bar=_rv),
+        gbfn.round_cust(
+            gbfn.shrratio_boundary_min(
+                gbl.critical_share_ratio(_gv, m_star=_mv, r_bar=_rv),
                 _rv,
                 recapture_form=_recapture_form,
             ).area
         ),
-        gbl.shr_from_gbd(_gv, m_star=_mv, r_bar=_rv),
+        gbl.share_from_guppi(_gv, m_star=_mv, r_bar=_rv),
     )
 
 
@@ -222,15 +223,15 @@ def test_shrratio_boundary_min(
         (0.06, 0.3, UPPAggrSelector.AVG, RECConstants.INOUT, 0.09323),
     ),
 )
-def test_shrratio_boundary(_tvl: tuple[float, float, str, str, float]) -> None:
+def test_diversion_ratio_boundary(_tvl: tuple[float, float, str, str, float]) -> None:
     _bdry_spec = UPPBoundarySpec(
-        gbl.critical_shrratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
+        gbl.critical_share_ratio(_tvl[0], m_star=_tvl[1], r_bar=1.0),
         0.80,
         agg_method=_tvl[2],  # type: ignore
         recapture_form=_tvl[3],  # type: ignore
     )
-    _ts = gbl.shrratio_boundary(_bdry_spec).area
-    print("Test gbl.shrratio_boundary_wtd_avg(): ", end="")
+    _ts = gbl.diversion_ratio_boundary(_bdry_spec).area
+    print("Test gbl.diversion_ratio_boundary_wtd_avg(): ", end="")
     try:
         assert_equal(_ts, _tvl[-1])
     except AssertionError as _err:
@@ -262,8 +263,9 @@ shrratio_boundary_wtd_avg_test_values = (
 
 @pytest.mark.parametrize("_tvl", shrratio_boundary_wtd_avg_test_values)
 def test_shrratio_boundary_wtd_avg(_tvl: tuple[float, float, str, str, float]) -> None:
-    _ts = gbl.shrratio_boundary_wtd_avg(
-        gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
+    _ts = gbfn.shrratio_boundary_wtd_avg(
+        gbl.critical_share_ratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
+        0.80,
         weighting=_tvl[2],  # type: ignore
         agg_method=_tvl[3],  # type: ignore
         recapture_form=_tvl[4],  # type: ignore
@@ -294,8 +296,9 @@ def test_shrratio_boundary_wtd_avg(_tvl: tuple[float, float, str, str, float]) -
     ),
 )
 def test_shrratio_boundary_xact_avg(_tvl: tuple[float, float, str, float]) -> None:
-    _ts = gbl.shrratio_boundary_xact_avg(
-        gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
+    _ts = gbfn.shrratio_boundary_xact_avg(
+        gbl.critical_share_ratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
+        0.80,
         recapture_form=_tvl[2],  # type: ignore
     ).area
     print("Test gbl.gen_xact_avg_shrratio_mgnsym_boundary(): ", end="")
@@ -327,12 +330,13 @@ def test_shrratio_boundary_xact_avg(_tvl: tuple[float, float, str, float]) -> No
 def test_shrratio_boundary_qdtr_wtd_avg(
     _tvl: tuple[float, float, str, str, float],
 ) -> None:
-    _ts = gbspl.shrratio_boundary_qdtr_wtd_avg(
-        gbl.critical_shrratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
+    _ts = gbxtr.shrratio_boundary_qdtr_wtd_avg(
+        gbl.critical_share_ratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
+        0.80,
         weighting=_tvl[2],  # type: ignore
         recapture_form=_tvl[3],  # type: ignore
     ).area
-    print("Test gbspl.shrratio_boundary_qdtr_wtd_avg(): ", end="")
+    print("Test gbxtr.shrratio_boundary_qdtr_wtd_avg(): ", end="")
     try:
         assert_equal(float(_ts), _tvl[-1])
     except AssertionError as _err:
@@ -348,13 +352,14 @@ def test_shrratio_boundary_qdtr_wtd_avg(
 
 @pytest.mark.parametrize("_tvl", shrratio_boundary_wtd_avg_test_values)
 def test_shrratio_boundary_distance(_tvl: tuple[float, float, str, str, float]) -> None:
-    _ts = gbspl.shrratio_boundary_distance(
-        gbl.critical_shrratio(_tvl[0], m_star=_tvl[1]),
+    _ts = gbxtr.shrratio_boundary_distance(
+        gbl.critical_share_ratio(_tvl[0], m_star=_tvl[1], r_bar=0.80),
+        0.80,
         weighting=_tvl[2],  # type: ignore
         agg_method=_tvl[3],  # type: ignore
         recapture_form=_tvl[4],  # type: ignore
     ).area
-    print("Test gbspl.test_shrratio_boundary_distance(): ", end="")
+    print("Test gbxtr.test_shrratio_boundary_distance(): ", end="")
     try:
         assert_equal(_ts, _tvl[-1])
     except AssertionError as _err:

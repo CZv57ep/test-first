@@ -1,15 +1,24 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from importlib.metadata import version
 
+import numpy as np
 from attrs import Attribute, field, frozen, validators
+from numpy.typing import NDArray
 
 from .. import _PKG_NAME, RECConstants, UPPAggrSelector  # noqa: TID252
 
 __version__ = version(_PKG_NAME)
 
 
-def _delta_value_validator(
+@dataclass(frozen=True)
+class GuidelinesBoundary:
+    coordinates: NDArray[np.float64]
+    area: float
+
+
+def _divr_value_validator(
     _instance: UPPBoundarySpec, _attribute: Attribute[float], _value: float, /
 ) -> None:
     if not 0 <= _value <= 1:
@@ -40,13 +49,13 @@ def _rec_spec_validator(
 
 @frozen
 class UPPBoundarySpec:
-    share_ratio: float = field(
+    diversion_ratio: float = field(
         kw_only=False,
-        default=0.075,
-        validator=(validators.instance_of(float), _delta_value_validator),
+        default=0.045,
+        validator=(validators.instance_of(float), _divr_value_validator),
     )
     rec: float = field(
-        kw_only=False, default=0.80, validator=validators.instance_of(float)
+        kw_only=False, default=0.855, validator=validators.instance_of(float)
     )
 
     agg_method: UPPAggrSelector = field(
@@ -54,11 +63,12 @@ class UPPBoundarySpec:
         default=UPPAggrSelector.MAX,
         validator=validators.instance_of(UPPAggrSelector),
     )
+
     recapture_form: RECConstants | None = field(
         kw_only=True,
         default=RECConstants.INOUT,
         validator=(
-            validators.optional(validators.instance_of(RECConstants)),  # type: ignore
+            validators.instance_of((type(None), RECConstants)),
             _rec_spec_validator,
         ),
     )

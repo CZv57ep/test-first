@@ -223,15 +223,6 @@ class SSZConstants(float, enum.ReprEnum):
 
 
 # Validators for selected attributes of MarketSpec
-def _sample_size_validator(
-    _object: MarketSpec, _attribute: Attribute[int], _value: int, /
-) -> None:
-    if _value < 10**6:
-        raise ValueError(
-            f"Sample size must be no less than {10**6:,d}; got, {_value:,d}."
-        )
-
-
 def _share_spec_validator(
     _instance: MarketSpec, _attribute: Attribute[ShareSpec], _value: ShareSpec, /
 ) -> None:
