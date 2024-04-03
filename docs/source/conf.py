@@ -13,6 +13,7 @@ and extensions.
 import sys
 from pathlib import Path
 
+import jinja2
 import mergeron
 import semver
 
@@ -36,6 +37,7 @@ release = "{major}.{minor}.{patch}".format(**version_dict)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
@@ -56,8 +58,8 @@ autoapi_options = [
     "undoc-members",
     "show-inheritance",
     "show-module-summary",
-    "imported-members",
 ]
+
 
 autoapi_template_dir = "_autoapi_templates"
 # autoapi_keep_files = True

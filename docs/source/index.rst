@@ -1,4 +1,4 @@
-.. include:: ../../README.rst
+.. include:: ../../README.md
 
 .. toctree::
    :caption: Contents
@@ -18,9 +18,3 @@
 
    notes
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
