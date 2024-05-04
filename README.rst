@@ -5,20 +5,19 @@ Download and analyze merger investigations data published by the U.S. Federal Tr
 
 Intrinsic clearance and enforcement rates are distinguished from *observed* clearance and enforcement rates in that the former do not reflect the effects of screening and deterrence as do the latter.
 
+
 Modules of primary interest
 ---------------------------
 
+Methods for plotting boundaries of (sets of mergers falling within) specified concentration and diversion-ratio boundaries are in :mod:`mergeron.core.guidelines_boundaries`. This module also includes functions for calibrating GUPPI thresholds to concentration (ΔHHI) thresholds, and vice-versa.
 
+Methods for generating industry data under various distributions of shares, prices, and margins are included in, :mod:`mergeron.gen.data_generation`. The user can specify recapture rates as, "proportional", "inside-out" (i.e., consistent with merging-firms' in-market shares and a default recapture rate), or "outside-in", (i.e., purchase probabilities are drawn at random for :math:`n+1` goods, from which are derived market shares and recapture rates for the :math:`n` goods in the putative market). Price-cost-margins may be specified as symmetric, i.i.d, or consistent with equilibrium conditions for (profit-mazimization in) Bertrand-Nash oligopoly with MNL demand. Prices may be specified as symmetric or asymmetric, and in the latter case, the direction of correlation between merging firm prices, if any, can also be specified. Two alternative approaches for modeling statutory filing requirements (HSR filing thresholds) are implemented.
 
-Methods for plotting boundaries of (sets of mergers falling within) specified concentration and share-ratio boundaries, are in :code:`mergeron.core.guidelines_boundaries`, where share-ratio, :math:`\delta_{ij}` is defined as :math:`\delta_{ij} = d_{ij} / r_i` with :math:`d_{ij}, r_i` a diversion ratio and recapture rate. This module also includes functions for calibrating GUPPI thresholds to concentration (ΔHHI) thresholds, and vice-versa.
+Methods for testing generated industry data against criteria for gross upward pricing pressure ("GUPPI") with and without a diversion ratio limit, critical marginal cost reduction ("CMCR"), and indicative price rise ("IPR")/partial merger simulation are included in the module, :mod:`mergeron.gen.upp_tests`. Test data are constructed in parallel and the user can specify the number of `threads` and sub-sample size for each thread to manage CPU and memory utilization.
 
-Methods for generating industry data under various distributions of shares, prices, and margins are included in, :code:`mergeron.gen.data_generation`. The user can specify whether rates are specified as, "proportional", "inside-out" (i.e., consistent with merging-firms' in-market shares and a default recapture rate), or "outside-in", (i.e., purchase probabilities are drawn at random for :math:`n+1` goods, from which are derived market shares and recapture rates for the :math:`n` goods in the putative market). Price-cost-margins may be specified as symmetric, i.i.d, or consistent with equilibrium conditions for (profit-mazimization in) Bertrand-Nash oligopoly with MNL demand. Prices may be specified as symmetric or asymmetric, and in the latter case, the direction of correlation between merging firm prices, if any, can also be specified. Two alternative approaches for modeling statutory filing requirements (HSR filing thresholds) are implemented.
+FTC investigations data and test data are printed to screen or rendered to LaTex files (for processing into publication-quality tables) using methods provided in :mod:`mergeron.gen.investigations_stats`.
 
-Methods for testing generated industry data against criteria on diversion ratio, gross upward pricing pressure ("GUPPI"), critical marginal cost reduction ("CMCR"), and indicative price rise ("IPR")/partial merger simulation are included in the module, :code:`mergeron.gen.guidelines_tests`. Test data are constructed in parallel and the user can specify number of `threads` and sub-sample size for each thread to manage CPU and memory utilization.
-
-FTC investigations data and test data are printed to screen or rendered in LaTex to text files (for processing into publication-quality tables) using methods provided in :code:`mergeron.gen.investigations_stats`.
-
-Programs demonstrating the analysis and reporting facilites provided by the sub-package, :code:`mergeron.examples`.
+Programs demonstrating the analysis and reporting facilites provided by the sub-package, :mod:`mergeron.examples`.
 
 This package exposes methods employed for generating random numbers with selected continuous distribution over specified parameters, and with CPU multithreading on machines with multiple virtual, logical, or physical CPU cores. To access these directly:
 
@@ -26,13 +25,13 @@ This package exposes methods employed for generating random numbers with selecte
 
     import mergeron.core.pseudorandom_numbers as prng
 
-Also included are methods for estimating confidence intervals for proportions and for contrasts (differences) in proportions. (Although coded from scratch using the source literature, the APIs implemented in the module included here are designed for consistency with the APIs in, :code:`statsmodels.stats.proportion` from the package, :code:`statsmodels` (https://pypi.org/project/statsmodels/).) To access these directly:
+Also included are methods for estimating confidence intervals for proportions and for contrasts (differences) in proportions. (Although coded from scratch using the source literature, the APIs implemented in the module included here are designed for consistency with the APIs in, :mod:`statsmodels.stats.proportion` from the package, :mod:`statsmodels` (https://pypi.org/project/statsmodels/).) To access these directly:
 
 .. code-block:: python
 
     import mergeron.core.proportions_tests as prci
 
-A recent version of Paul Tol's python module, :code:`tol_colors.py` is redistributed within this package. Other than re-formatting and type annotation, the :code:`tol_colors` module is re-distributed as downloaded from, https://personal.sron.nl/~pault/data/tol_colors.py. The tol_colors.py module is distributed under the Standard 3-clause BSD license. To access the tol_colors module directly:
+A recent version of Paul Tol's python module, :mod:`tol_colors.py` is redistributed within this package. Other than re-formatting and type annotation, the :mod:`tol_colors` module is re-distributed as downloaded from, https://personal.sron.nl/~pault/data/tol_colors.py. The tol_colors.py module is distributed under the Standard 3-clause BSD license. To access the tol_colors module directly:
 
 .. code-block:: python
 
