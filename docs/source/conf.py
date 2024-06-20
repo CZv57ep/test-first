@@ -13,7 +13,6 @@ and extensions.
 import sys
 from pathlib import Path
 
-import jinja2
 import mergeron
 import semver
 
@@ -52,16 +51,11 @@ autodoc_typehints_description_target = "documented"
 autoapi_python_class_content = "class"
 autoapi_add_toctree_entry = False
 autoapi_member_order = "source"
-autoapi_options = [
-    "members",
-    "undoc-members",
-    "show-inheritance",
-    "show-module-summary",
-]
+autoapi_options = ["members", "undoc-members", "show-inheritance"]
 
 
 autoapi_template_dir = "_autoapi_templates"
-# autoapi_keep_files = True
+autoapi_keep_files = False
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

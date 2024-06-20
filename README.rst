@@ -9,11 +9,9 @@ Intrinsic clearance and enforcement rates are distinguished from *observed* clea
 Modules of primary interest
 ---------------------------
 
-Methods for plotting boundaries of (sets of mergers falling within) specified concentration and diversion-ratio boundaries are in :mod:`mergeron.core.guidelines_boundaries`. This module also includes functions for calibrating GUPPI thresholds to concentration (ΔHHI) thresholds, and vice-versa.
+Classes for specifying concentration standards (:class:`mergeron.core.guidelines_boundaries.ConcentrationBoundary`) and diversion-ratio standards (:class:`mergeron.core.guidelines_boundaries.DiversionRatioBoundary`), with automatic generation of boundary (as an array of share-pairs) and area, are provided in :mod:`mergeron.core.guidelines_boundaries`. This module also includes a function for generating plots of concentation and diversion-ratio boudaries; and functions for mapping GUPPI standards to concentration (ΔHHI) standards, and vice-versa.
 
-Methods for generating industry data under various distributions of shares, prices, and margins are included in, :mod:`mergeron.gen.data_generation`. The user can specify recapture rates as, "proportional", "inside-out" (i.e., consistent with merging-firms' in-market shares and a default recapture rate), or "outside-in", (i.e., purchase probabilities are drawn at random for :math:`n+1` goods, from which are derived market shares and recapture rates for the :math:`n` goods in the putative market). Price-cost-margins may be specified as symmetric, i.i.d, or consistent with equilibrium conditions for (profit-mazimization in) Bertrand-Nash oligopoly with MNL demand. Prices may be specified as symmetric or asymmetric, and in the latter case, the direction of correlation between merging firm prices, if any, can also be specified. Two alternative approaches for modeling statutory filing requirements (HSR filing thresholds) are implemented.
-
-Methods for testing generated industry data against criteria for gross upward pricing pressure ("GUPPI") with and without a diversion ratio limit, critical marginal cost reduction ("CMCR"), and indicative price rise ("IPR")/partial merger simulation are included in the module, :mod:`mergeron.gen.upp_tests`. Test data are constructed in parallel and the user can specify the number of `threads` and sub-sample size for each thread to manage CPU and memory utilization.
+Methods for generating industry data under various distributions of shares, margins, and prices are included in, :mod:`mergeron.gen.data_generation`. Shares are drawn with uniform distribution with :math:`s_1 + s_2 \leqslant 1` and an unspecified number of firms; or from the Dirichlet distribution. When drawing shares from the Dirichlet distribution, the user can specify a fixed number for firms or provide a vector of weights specifying the distribution over sequential firm counts, e.g., :code:`[133, 184, 134, 52, 32, 10, 12, 4, 3]` to specify shares drawn from Dirichlet distributions with 2 to 10 pre-merger firms distributed as in data for FTC merger investigations during 1996--2003 (See Table 4.1 of `FTC, Horizontal Merger Investigations Data, Fiscal Years 1996--2003 (Revised: August 31, 2004) <"https://www.ftc.gov/sites/default/files/documents/reports/horizontal-merger-investigation-data-fiscal-years-1996-2003/040831horizmergersdata96-03.pdf>`_). The user can specify recapture rates as, "proportional", "inside-out" (i.e., consistent with merging-firms' in-market shares and a default recapture rate), or "outside-in", (i.e., purchase probabilities are drawn at random for :math:`n+1` goods, from which are derived market shares and recapture rates for the :math:`n` goods in the putative market). Documentation on spcifying the sampling strategy for market shares is at :class:`mergeron.gen.ShareSpec`. Price-cost-margins may be specified as symmetric, i.i.d., or from  equilibrium conditions for (profit-mazimization in) Bertrand-Nash oligopoly with MNL demand (see, :class:`mergeron.gen.PCMSpec`). Prices may be specified as symmetric or asymmetric, and in the latter case, the direction of correlation between merging firm prices, if any, can also be specified (see, :class:`mergeron.gen.PriceSpec`). Two alternative approaches for modeling statutory filing requirements (HSR filing thresholds) are implemented  (see, :class:`mergeron.gen.SSZConstants`). The full specification of a market sample is given in a :class:`mergeron.gen.market_sample.MarketSample` object. Data are drawn by invoking :meth:`mergeron.gen.market_sample.MarketSample.generate_sample` which adds a :attr:`data` property of class, :class:`mergeron.gen.MarketDataSample`. Enforcement or clearance counts are computed by invoking :meth:`mergeron.gen.market_sample.MarketSample.estimate_invres_counts`, which adds an :attr:`invres_counts` property of class :class:`mergeron.gen.UPPTestsCounts`. (For fast, parallel generation of enforcement or clearance counts over large market data samples, the user can invoke the method :meth:`estimate_invres_counts` on a :class:`mergeron.gen.market_sample.MarketSample` object without first invoking :meth:`generate_sample`.)
 
 FTC investigations data and test data are printed to screen or rendered to LaTex files (for processing into publication-quality tables) using methods provided in :mod:`mergeron.gen.investigations_stats`.
 
@@ -31,19 +29,19 @@ Also included are methods for estimating confidence intervals for proportions an
 
     import mergeron.core.proportions_tests as prci
 
-A recent version of Paul Tol's python module, :mod:`tol_colors.py` is redistributed within this package. Other than re-formatting and type annotation, the :mod:`tol_colors` module is re-distributed as downloaded from, https://personal.sron.nl/~pault/data/tol_colors.py. The tol_colors.py module is distributed under the Standard 3-clause BSD license. To access the tol_colors module directly:
+A recent version of Paul Tol's python module, :mod:`tol_colors.py` is redistributed within this package. Other than re-formatting and type annotation, the :mod:`mergeron.ext.tol_colors` module is re-distributed as downloaded from, https://personal.sron.nl/~pault/data/tol_colors.py. The :mod:`tol_colors.py` module is distributed under the Standard 3-clause BSD license. To access the :mod:`mergeron.ext.tol_colors` module directly:
 
 .. code-block:: python
 
-    import mergeron.ext.tol_colors
+    import mergeron.ext.tol_colors as ptc
 
 Documentation for this package is in the form of the API Reference. Documentation for individual functions and classes is accessible within a python shell. For example:
 
 .. code-block:: python
 
-    import mergeron.core.data_generation as dgl
+    import mergeron.core.market_sample as market_sample
 
-    help(dgl.gen_market_sample)
+    help(market_sample.MarketSample)
 
 
 .. image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
