@@ -1,8 +1,7 @@
 import mergeron.core.ftc_merger_investigations_data as fid
-import mergeron.gen.investigations_stats as isl
+import mergeron.gen.enforcement_stats as esl
 import numpy as np
 import pytest
-from mergeron.core.pseudorandom_numbers import TI
 from mergeron.gen import INVResolution
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
@@ -17,20 +16,20 @@ invdata_array_dict = fid.construct_data(
 @pytest.mark.parametrize(
     "_stats_group, _test_val",
     zip(
-        (isl.StatsGrpSelector.FC, isl.StatsGrpSelector.DL),
+        (esl.StatsGrpSelector.FC, esl.StatsGrpSelector.DL),
         np.array([[573, 132], [780, 173]]),
         strict=True,
     ),
 )
 def test_invres_stats(
-    _stats_group: isl.StatsGrpSelector, _test_val: NDArray[np.integer[TI]]
+    _stats_group: esl.StatsGrpSelector, _test_val: NDArray[np.int64]
 ) -> None:
     _invres_spec = INVResolution.CLRN
-    _invres_stats_cnts = isl.invres_stats_cnts_by_group(
+    _invres_stats_cnts = esl.invres_stats_cnts_by_group(
         invdata_array_dict,
         "1996-2003",
-        isl.INDGRPConstants.ALL,
-        isl.EVIDENConstants.UR,
+        esl.INDGRPConstants.ALL,
+        esl.EVIDENConstants.UR,
         _stats_group,
         _invres_spec,
     )[:, -2:]
@@ -41,25 +40,25 @@ def test_invres_stats(
 invres_spec = INVResolution.CLRN
 # Test print functionality:
 for data_period in "1996-2003", "2004-2011":
-    for evid_class in isl.EVIDENConstants.UR, isl.EVIDENConstants.ED:
-        for stats_group in isl.StatsGrpSelector:
-            if stats_group == isl.StatsGrpSelector.HD:
+    for evid_class in esl.EVIDENConstants.UR, esl.EVIDENConstants.ED:
+        for stats_group in esl.StatsGrpSelector:
+            if stats_group == esl.StatsGrpSelector.HD:
                 continue
 
-            for return_type in isl.StatsReturnSelector:
+            for return_type in esl.StatsReturnSelector:
                 (invres_stats_hdr_list, invres_stats_dat_list) = (
-                    isl.invres_stats_output(
+                    esl.invres_stats_output(
                         invdata_array_dict,
                         data_period,
-                        isl.INDGRPConstants.ALL,
+                        esl.INDGRPConstants.ALL,
                         evid_class,
                         stats_group,
                         invres_spec,
                         return_type_sel=return_type,
                         sort_order=(
-                            isl.SortSelector.UCH
-                            if stats_group == isl.StatsGrpSelector.FC
-                            else isl.SortSelector.REV
+                            esl.SortSelector.UCH
+                            if stats_group == esl.StatsGrpSelector.FC
+                            else esl.SortSelector.REV
                         ),
                     )
                 )

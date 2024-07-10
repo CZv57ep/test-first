@@ -1,5 +1,5 @@
 """
-Methods to format and print summary data on merger enforcement patterns.
+Methods to format and print summary statistics on merger enforcement patterns.
 
 """
 
@@ -7,7 +7,6 @@ import enum
 import shutil
 import subprocess
 from collections.abc import Mapping, Sequence
-from importlib.metadata import version
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -17,12 +16,12 @@ from jinja2 import Environment, FileSystemLoader, Template, select_autoescape
 from numpy.typing import NDArray
 from scipy.interpolate import interp1d  # type: ignore
 
-from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
+from .. import _PKG_NAME, DATA_DIR, VERSION  # noqa: TID252
 from ..core import ftc_merger_investigations_data as fid  # noqa: TID252
 from ..core.proportions_tests import propn_ci  # noqa: TID252
-from . import TF, TI, INVResolution
+from . import INVResolution
 
-__version__ = version(_PKG_NAME)
+__version__ = VERSION
 
 
 @enum.unique
@@ -172,7 +171,7 @@ HMG_PRESUMPTION_ZONE_DICT = {
 }
 
 ZONE_VALS = np.unique(
-    np.row_stack([
+    np.vstack([
         tuple(HMG_PRESUMPTION_ZONE_DICT[_k].values())
         for _k in HMG_PRESUMPTION_ZONE_DICT
     ]),
@@ -375,7 +374,7 @@ def table_no_lku(
     /,
 ) -> str:
     if _table_ind_group not in (
-        _igl := [_data_array_dict_sub[_v].ind_grp for _v in _data_array_dict_sub]
+        _igl := [_data_array_dict_sub[_v].industry_group for _v in _data_array_dict_sub]
     ):
         raise ValueError(
             f"Invalid value for industry group, {f'"{_table_ind_group}"'}."
@@ -386,19 +385,17 @@ def table_no_lku(
         _t
         for _t in _data_array_dict_sub
         if all((
-            _data_array_dict_sub[_t].ind_grp == _table_ind_group,
-            _data_array_dict_sub[_t].evid_cond == _table_evid_cond,
+            _data_array_dict_sub[_t].industry_group == _table_ind_group,
+            _data_array_dict_sub[_t].additional_evidence == _table_evid_cond,
         ))
     )
 
     return _tno
 
 
-def invres_cnts_byfirmcount(
-    _cnts_array: NDArray[np.integer[TI]], /
-) -> NDArray[np.int64]:
+def invres_cnts_byfirmcount(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
     _ndim_in = 1
-    return np.row_stack([
+    return np.vstack([
         np.concatenate([
             (f,),
             np.einsum("ij->j", _cnts_array[_cnts_array[:, 0] == f][:, _ndim_in:]),
@@ -407,9 +404,9 @@ def invres_cnts_byfirmcount(
     ])
 
 
-def invres_cnts_bydelta(_cnts_array: NDArray[np.integer[TI]], /) -> NDArray[np.int64]:
+def invres_cnts_bydelta(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
     _ndim_in = 2
-    return np.row_stack([
+    return np.vstack([
         np.concatenate([
             (f,),
             np.einsum("ij->j", _cnts_array[_cnts_array[:, 1] == f][:, _ndim_in:]),
@@ -418,9 +415,7 @@ def invres_cnts_bydelta(_cnts_array: NDArray[np.integer[TI]], /) -> NDArray[np.i
     ])
 
 
-def invres_cnts_byconczone(
-    _cnts_array: NDArray[np.integer[TI]], /
-) -> NDArray[np.int64]:
+def invres_cnts_byconczone(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
     # Prepare to tag clearance stats by presumption zone
     _hhi_zone_post_ranged = hhi_zone_post_ranger(_cnts_array[:, 0] / 1e4)
     _hhi_delta_ranged = hhi_delta_ranger(_cnts_array[:, 1] / 1e4)
@@ -453,7 +448,7 @@ def invres_cnts_byconczone(
 
             _conc_test = _level_test & _delta_test
 
-            _cnts_byhhipostanddelta = np.row_stack((
+            _cnts_byhhipostanddelta = np.vstack((
                 _cnts_byhhipostanddelta,
                 np.array(
                     (
@@ -475,7 +470,7 @@ def invres_cnts_byconczone(
             ])
         ).prod(axis=1) == 1
 
-        _cnts_byconczone = np.row_stack((
+        _cnts_byconczone = np.vstack((
             _cnts_byconczone,
             np.concatenate(
                 (
@@ -492,7 +487,7 @@ def invres_cnts_byconczone(
 
 
 def latex_tbl_invres_stats_1dim(
-    _inparr: NDArray[np.floating[TF] | np.integer[TI]],
+    _inparr: NDArray[np.float64 | np.int64],
     _totals_row: int | None = None,
     /,
     *,
@@ -527,7 +522,7 @@ def latex_tbl_invres_stats_1dim(
     if sort_order == SortSelector.REV:
         _inparr = _inparr[::-1]
 
-    _inparr = np.row_stack((_inparr, _in_totals_row))
+    _inparr = np.vstack((_inparr, _in_totals_row))
 
     _stats_hdr_list, _stats_dat_list = [], []
     for _stats_row in _inparr:
@@ -544,7 +539,7 @@ def latex_tbl_invres_stats_1dim(
 
 
 def latex_tbl_invres_stats_byzone(
-    _inparr: NDArray[np.floating[TF] | np.integer[TI]],
+    _inparr: NDArray[np.float64 | np.int64],
     _totals_row: int | None = None,
     /,
     *,
@@ -559,7 +554,7 @@ def latex_tbl_invres_stats_byzone(
         _zone_str_keys = _zone_str_keys[:-1][::-1] + [_zone_str_keys[-1]]
 
     if _totals_row is None:
-        _inparr = np.row_stack((
+        _inparr = np.vstack((
             _inparr,
             np.concatenate((
                 [fid.TTL_KEY, -1, -1],
@@ -611,8 +606,8 @@ def latex_tbl_invres_stats_byzone(
 
 
 def _stats_formatted_row(
-    _stats_row_cnt: NDArray[np.integer[TI]],
-    _stats_row_tot: NDArray[np.integer[TI]],
+    _stats_row_cnt: NDArray[np.int64],
+    _stats_row_tot: NDArray[np.int64],
     _return_type_sel: StatsReturnSelector,
     /,
 ) -> list[list[str]]:
@@ -706,4 +701,10 @@ def render_table_pdf(
 
     print(
         f"Tables rendered to path, {f"{Path(DATA_DIR / _table_coll_path).with_suffix(".pdf")}"}"
+    )
+
+
+if __name__ == "__main__":
+    print(
+        "This module provides methods to format and print summary statistics on merger enforcement patterns.."
     )
