@@ -12,11 +12,13 @@ and extensions.
 
 import sys
 from pathlib import Path
+from subprocess import run
 
-import mergeron
 import semver
 
-version_dict = semver.parse(mergeron.__version__)
+version_dict = semver.parse(
+    run(["poetry", "version", "-s"], capture_output=True, text=True, check=True).stdout.strip()
+)
 
 # Configuration file for the Sphinx documentation builder.
 #

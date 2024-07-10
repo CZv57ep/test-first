@@ -1,8 +1,7 @@
 [tool.poetry]
 name = "mergeron"
-# See ./get_version_str.py
 version = "2024.738973.0"
-description = "Analysis of standards defined in Horizontal Merger Guidelines"
+description = "Merger Policy Analysis using Python"
 keywords = [
     "merger policy analysis",
     "merger guidelines",
@@ -45,7 +44,6 @@ mpmath = ">=1.3"
 msgpack = ">=1.0"
 msgpack-numpy = ">=0.4"
 numpy = ">=1.26, <2.0"
-openpyxl = ">=3.1.2"
 python = "^3.12"
 requests = ">=2.31"
 scipy = ">=1.12"
@@ -55,19 +53,23 @@ xlrd = ">=2.0"
 xlsxwriter = ">=3.1"
 certifi = ">=2023.11.17"
 requests-toolbelt = ">=1.0.0"
-importlib-metadata = ">=7.0.1"
+types-requests = ">=2.31.0"
+types-beautifulsoup4 = ">=4.11.2"
+icecream = ">=2.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
 semver = ">=3.0"
-pytest = ">=8.0"
 mypy = ">=1.8"
 ruff = ">=0.2"
+pytest = ">=8.0"
+openpyxl = ">=3.1.2"
 sphinx = ">=7.2"
 sphinx-autodoc-typehints = ">=2.0.0"
 sphinx-autoapi = ">=3.0"
 sphinx-immaterial = ">=0.11"
 pipdeptree = ">=2.15.1"
+types-openpyxl = ">=3.0.0"
 
 [build-system]
 requires = ["poetry-core"]

@@ -32,9 +32,8 @@ if not re.search("nothing to commit, working tree clean", rc.stdout):
     )
 
 
-def _get_pkg_version(_toml_path: str = "pyproject.toml") -> str:
-    _toml_dict = parse(Path(_toml_path).read_text())
-    return _toml_dict["tool"]["poetry"]["version"]  # type: ignore
+def _get_pkg_version() -> str:
+    return run(["poetry", "version", "-s"], check=True, capture_output=True, text=True).stdout.strip()
 
 
 sem_ver = f"{tsn.year}.{tsn.toordinal()}.0"
