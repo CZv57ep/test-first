@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
 import argparse
-from datetime import datetime
 from pathlib import Path
-from subprocess import run
+from subprocess import PIPE, STDOUT, run
 
+import pendulum
 import re2 as re  # type: ignore
 from semver import compare
-from tomlkit import parse
 
 # Set up the argument parser
 parser = argparse.ArgumentParser(
@@ -22,10 +21,9 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-tsn = datetime.now()
+tsn = pendulum.today()
 
-
-rc = run("git status".split(), check=True, capture_output=True, text=True)  # noqa: S603
+rc = run(["git", "status"], check=True, stdout=PIPE, stderr=STDOUT, text=True)  # noqa: S603, S607
 if not re.search("nothing to commit, working tree clean", rc.stdout):
     raise RuntimeError(
         "Repository has uncommitted changes. Commit changes before updating package version."
@@ -33,17 +31,23 @@ if not re.search("nothing to commit, working tree clean", rc.stdout):
 
 
 def _get_pkg_version() -> str:
-    return run(["poetry", "version", "-s"], check=True, capture_output=True, text=True).stdout.strip()
+    return run(  # noqa: S603
+        ["poetry", "version", "-s"],  # noqa: S607
+        stdout=PIPE,
+        text=True,
+        check=True,
+    ).stdout.strip()
 
 
+pkg_ver = _get_pkg_version()
 sem_ver = f"{tsn.year}.{tsn.toordinal()}.0"
+
+# Update pyproject.toml
 match args.update_level:
     case "patch":
-        run(["poetry", "version", "patch"], check=True)  # noqa: S603, S607
+        run(["poetry", "version", "patch"], check=True)  # noqa: S607
         sem_ver = _get_pkg_version()
     case "full":
-        pkg_ver = _get_pkg_version()
-
         if compare(sem_ver, pkg_ver) <= 0:
             raise ValueError(
                 f"Package version, {pkg_ver} at or above version, {sem_ver}. Perhaps update patch-level."
@@ -51,8 +55,25 @@ match args.update_level:
 
         run(["poetry", "version", sem_ver], check=True)  # noqa: S603, S607
 
+# Update package's main __init__.py
+pkg_init_path = (_p := Path(__file__).parent) / "src" / _p.name / "__init__.py"
+pkg_init_path.write_text(
+    re.sub(
+        rf'(?m)^VERSION = "{pkg_ver}"$',
+        f'VERSION "{sem_ver}"',
+        pkg_init_path.read_text(),
+    )
+)
+
 run(["git", "tag", f"{sem_ver}"], check=True)  # noqa: S603, S607
-run(
-    ["git", "commit", "pyproject.toml", "-m", '"chore: bump version number"'],  # noqa: S603, S607
+run(  # noqa: S603
+    [  # noqa: S607
+        "git",
+        "commit",
+        "pyproject.toml",
+        f"{pkg_init_path}",
+        "-m",
+        '"chore: bump version number"',
+    ],
     check=True,
 )

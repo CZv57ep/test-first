@@ -12,13 +12,21 @@ and extensions.
 
 import sys
 from pathlib import Path
-from subprocess import run
+from subprocess import PIPE, run
 
+import pendulum
 import semver
 
-version_dict = semver.parse(
-    run(["poetry", "version", "-s"], capture_output=True, text=True, check=True).stdout.strip()
-)
+version_str = run(  # noqa: S603
+    ["poetry", "version"],  # noqa: S607
+    stdout=PIPE,
+    text=True,
+    check=True,
+).stdout.strip()
+
+project_name, project_version = version_str.split()
+
+version_dict = semver.parse(project_version)
 
 # Configuration file for the Sphinx documentation builder.
 #
@@ -28,8 +36,8 @@ version_dict = semver.parse(
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "mergeron"
-copyright = "2017--2024, S. Murthy Kambhampaty"
+project = project_name
+copyright = f"2017--{pendulum.today().year}, S. Murthy Kambhampaty"
 author = "S. Murthy Kambhampaty"
 version = "{major}.{minor}".format(**version_dict)
 release = "{major}.{minor}.{patch}".format(**version_dict)
