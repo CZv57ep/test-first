@@ -7,6 +7,7 @@ import enum
 import shutil
 import subprocess
 from collections.abc import Mapping, Sequence
+from importlib import resources
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -119,14 +120,15 @@ latex_jinja_env = Environment(
     trim_blocks=True,
     lstrip_blocks=True,
     autoescape=select_autoescape(disabled_extensions=("tex.jinja2",)),
-    loader=FileSystemLoader(Path(__file__).parents[1] / "jinja_LaTex_templates"),
+    loader=FileSystemLoader(
+        Path(__file__).parents[1] / "data" / "jinja2_LaTeX_templates"
+    ),
 )
 
 # Place files related to rendering latex in output data directory
 if not (_out_path := DATA_DIR.joinpath(f"{_PKG_NAME}.cls")).is_file():
-    shutil.copy(
-        Path(__file__).parents[1].joinpath("jinja_LaTex_templates", "mergeron.cls"),
-        _out_path,
+    shutil.copyfileobj(
+        resources("data", "jinja2_LaTeX_templates", "mergeron.cls"), _out_path, -1
     )
 
 
@@ -687,16 +689,12 @@ def render_table_pdf(
         print("\n", file=_table_coll_file)
 
     _run_rc = subprocess.run(
-        f"latexmk -f -quiet -synctex=0 -interaction=nonstopmode -file-line-error -pdflua {_table_coll_path}".split(),  # noqa: S603
+        f"latexmk -f -quiet -synctex=0 -interaction=nonstopmode -file-line-error -pdflua {_table_coll_path}".split(),
         check=True,
         cwd=DATA_DIR,
     )
     if _run_rc:
-        subprocess.run(
-            "latexmk -quiet -c".split(),  # noqa: S603
-            check=True,
-            cwd=DATA_DIR,
-        )
+        subprocess.run("latexmk -quiet -c".split(), check=True, cwd=DATA_DIR)
     del _run_rc
 
     print(

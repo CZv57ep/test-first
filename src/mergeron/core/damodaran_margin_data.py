@@ -35,6 +35,7 @@ price-cost margins fall in the interval :math:`[0, 1]`.
 
 import shutil
 from collections.abc import Mapping
+from importlib import resources
 from pathlib import Path
 from types import MappingProxyType
 
@@ -101,7 +102,11 @@ def mgn_data_getter(
                 "Using bundled copy."
             )
             if not _mgn_path.is_file():
-                shutil.copy2(Path(__file__).parent / _mgn_path.name, _mgn_path)
+                _mgn_data_archive = (
+                    resources.files("data") / "damodaran_margin_data.xls"
+                )
+                with resources.as_file(_mgn_data_archive) as _mgn_data_archive_path:
+                    shutil.copy2(_mgn_data_archive_path, _mgn_path)
         else:
             raise _err
 
