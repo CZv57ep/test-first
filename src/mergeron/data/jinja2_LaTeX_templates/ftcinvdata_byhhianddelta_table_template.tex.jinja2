@@ -1,0 +1,82 @@
+\begin{table}[bt]
+((* set obs_period_last = tmpl_data.obs_period|last *))
+((* if tmpl_data.obs_merger_class == 'Entry Difficult' *))
+	((* set table_ref, obs_merger_class_desc = "9.2", "Markets with Strong Entry Barriers (``" + tmpl_data.obs_merger_class + "'')" *))
+((* else *))
+	((* set table_ref, obs_merger_class_desc = "3.1", tmpl_data.obs_merger_class *))
+((* endif *))
+
+((* if obs_period_last == "2003" *))
+	((* set data_pub_year = "2004" *))
+((* elif obs_period_last == "2011" *))
+	((* set data_pub_year = "2013" *))
+((* else *))
+	((* set data_pub_year = "" *))
+((* endif *))
+
+	\centering
+	\caption{FTC Merger Investigations Data, Fiscal Years \JINVAR{ tmpl_data.obs_period|join('--') }}\label{tbl:FTCInvData_ByConc_\JINVAR{ tmpl_data.obs_merger_class|replace(" ", "") -}_\JINVAR{ obs_period_last -}}
+
+	{\footnotesize
+		Odds ratio --- Enforced to Closed, by Post-Merger HHI and Change in Concentration \\
+		\JINVAR{ obs_merger_class_desc } \\[0.5\baselineskip]
+		}
+	\begin{tikzpicture}[font = \sffamily]
+		\matrix[datatable, nodes = {align = center, inner xsep = 0pt, text width = 40pt,}] (datamtrx) {
+			\JINVAR{ tmpl_data.invdata_byhhianddelta -}
+			};
+	   % Demarcate totals row (#9) and totals column (#9)
+	   \draw[color = OBSHDRFill, line width = 1pt,] (datamtrx-1-9.north west) -- (datamtrx-9-9.south west);
+	   \draw[color = OBSHDRFill, line width = 1pt,] (datamtrx-9-1.north west) -- (datamtrx-9-9.north east);
+		% Header row - column heads
+		\matrix[hrow, above = 0pt of datamtrx, nodes = {minimum height = 36pt}] (hdrrow) {
+			{0 -- \\ 99} & {100 -- \\ 199} & {200 -- \\ 299} & {300 -- \\ 499} & {500 -- \\ 799} & {800 -- \\ 1,199} & {1,200 -- \\ 2,499} & 2,500 -- 5,000 & TOTAL \\
+			};
+		% Header column - row headings
+		\matrix[hcol, left = 0pt of datamtrx] (hdrcol) {
+				0 -- 1,799 \\
+				1,800 -- 1,999 \\
+				2,000 -- 2,399 \\
+				2,400 -- 2,999 \\
+				3,000 -- 3,999 \\
+				4,000 -- 4,999 \\
+				5,000 -- 6,999 \\
+				7,000 -- 10,000 \\
+				TOTAL \\
+				};
+		% Notes below table
+		\matrix[anytable, below right = 4pt and -4pt of hdrcol.south west, nodes = {notetext, minimum height = 10pt, text width = 0.92*\linewidth,},] (notestext) {%
+			\JINVAR{ tmpl_data.invdata_notestr -}
+			SOURCES: \\
+			\JINVAR{ tmpl_data.invdata_sourcestr -}
+			\(\cdot\) Guidelines standards from (a.) \fullcite{USHMG1992} and (b.) \fullcite{USHMG2010} \\
+			};
+
+		% Demarcate the yellow(?) and red zones in 1992 Guidelines standards
+		\draw[draw = VibrRed, line width = 1.25pt]
+			(datamtrx-9-1.south east)
+			-- (datamtrx-1-1.south east)
+			-- (datamtrx-1-9.south east)
+			;
+		\draw[draw = VibrRed, line width = 1.25pt, dashed]
+			(datamtrx-9-2.south east)
+			-- (datamtrx-3-2.south east)
+			-- (datamtrx-3-9.south east)
+			;
+
+		% Text height for descriptive titles is defined as 12pt (at two places below, one for each descriptor)
+		% Header (first) row - description of column heads
+		\draw[hdrtext, draw = OBSHDRFill]  %
+			($(hdrrow.north west) + (0pt, +12pt)$) node (hdrrowdescNW) {}
+			rectangle
+			(hdrrow.north east) node[pos=0.5, anchor = north] {Change in Concentration (\Deltah{})};
+		% Header (first) colum - description of row heads
+		\draw[hdrtext, draw = OBSHDRFill]
+			($(hdrcol.north west) + (-12pt, 0pt)$)  node (hdrcoldescNW) {}
+			rectangle
+			(hdrcol.south west) node[pos=0.5, rotate = 90] {Post-merger HHI \(\left(\mathrm{HHI}_{post}\right)\)};
+
+		% Fill top left corner, with more or fewer header/descriptor rows, only the top-left coordinates change
+		\draw[hdrtext, draw = OBSHDRFill] (hdrcoldescNW |- hdrrowdescNW) rectangle (datamtrx.north west); % (x1, y2); -| gives (x2, y1)
+	\end{tikzpicture}
+\end{table}
