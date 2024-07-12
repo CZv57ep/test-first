@@ -9,20 +9,22 @@ poor performance
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from importlib.metadata import version
 from typing import Literal
 
 import numpy as np
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
 from scipy.spatial.distance import minkowski as distance_function  # type: ignore
-from sympy import lambdify, simplify, solve, symbols
+from sympy import lambdify, simplify, solve, symbols  # type: ignore
 
-from .. import _PKG_NAME  # noqa: TID252
-from . import GuidelinesBoundary
-from .guidelines_boundary_functions import _shrratio_boundary_intcpt, lerp
+from .. import VERSION  # noqa: TID252
+from .guidelines_boundary_functions import (
+    GuidelinesBoundary,
+    _shrratio_boundary_intcpt,
+    lerp,
+)
 
-__version__ = version(_PKG_NAME)
+__version__ = VERSION
 
 
 mp.prec = 80
@@ -104,7 +106,7 @@ def hhi_delta_boundary_qdtr(_dh_val: float = 0.01, /) -> GuidelinesBoundaryCalla
 
 def shrratio_boundary_qdtr_wtd_avg(
     _delta_star: float = 0.075,
-    _r_val: float = 0.80,
+    _r_val: float = 0.85,
     /,
     *,
     weighting: Literal["own-share", "cross-product-share"] | None = "own-share",
@@ -223,10 +225,10 @@ def shrratio_boundary_qdtr_wtd_avg(
 
 def shrratio_boundary_distance(
     _delta_star: float = 0.075,
-    _r_val: float = 0.80,
+    _r_val: float = 0.85,
     /,
     *,
-    agg_method: Literal["arithmetic", "distance"] = "arithmetic",
+    agg_method: Literal["arithmetic mean", "distance"] = "arithmetic mean",
     weighting: Literal["own-share", "cross-product-share"] | None = "own-share",
     recapture_form: Literal["inside-out", "proportional"] = "inside-out",
     prec: int = 5,
@@ -236,7 +238,7 @@ def shrratio_boundary_distance(
     symmetric merging-firm margins.
 
     Reimplements the arithmetic-averages and distance estimations from function,
-    `shrratio_boundary_wtd_avg`but uses the Minkowski-distance function,
+    `shrratio_boundary_wtd_avg` but uses the Minkowski-distance function,
     `scipy.spatial.distance.minkowski` for all aggregators. This reimplementation
     is useful for testing the output of `shrratio_boundary_wtd_avg`
     but runs considerably slower.
@@ -248,7 +250,7 @@ def shrratio_boundary_distance(
     _r_val
         recapture ratio
     agg_method
-        Whether "arithmetic", "geometric", or "distance".
+        Whether "arithmetic mean" or "distance".
     weighting
         Whether "own-share" or "cross-product-share".
     recapture_form
@@ -306,7 +308,7 @@ def shrratio_boundary_distance(
             )
 
             match agg_method:
-                case "arithmetic":
+                case "arithmetic mean":
                     _delta_test = distance_function(
                         (_de_1, _de_2), (0.0, 0.0), p=1, w=_weights_i
                     )
@@ -368,11 +370,12 @@ def shrratio_boundary_distance(
         # Area under boundary
         _gbdry_area_total = 2 * _gbd_prtlarea - mp.power(_s_mid, "2")
 
-    _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
+    _gbdry_points = np.vstack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
         np.float64
     )
     # Points defining boundary to point-of-symmetry
     return GuidelinesBoundary(
-        np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
+        np.vstack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbdry_area_total), prec),
     )
+

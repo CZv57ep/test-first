@@ -4,19 +4,20 @@ with a canvas on which to draw boundaries for Guidelines standards.
 
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from importlib.metadata import version
 from typing import Literal, TypeAlias
 
 import numpy as np
-from attrs import field, frozen
+from attrs import Attribute, field, frozen, validators
 from mpmath import mp, mpf  # type: ignore
+from numpy.typing import NDArray
 
-from .. import _PKG_NAME, UPPAggrSelector  # noqa: TID252
-from . import GuidelinesBoundary, UPPBoundarySpec
+from .. import VERSION, RECConstants, UPPAggrSelector  # noqa: TID252
 from . import guidelines_boundary_functions as gbfn
 
-__version__ = version(_PKG_NAME)
+__version__ = VERSION
 
 
 mp.prec = 80
@@ -68,6 +69,14 @@ class GuidelinesThresholds:
     diversion ratio limit, CMCR, and IPR
     """
 
+    presumption: HMGThresholds = field(kw_only=True, default=None)
+    """
+    Presumption of harm defined in HMG
+
+    ΔHHI bound and corresponding default recapture rate, GUPPI bound,
+    diversion ratio limit, CMCR, and IPR
+    """
+
     imputed_presumption: HMGThresholds = field(kw_only=True, default=None)
     """
     Presumption of harm imputed from guidelines
@@ -75,14 +84,6 @@ class GuidelinesThresholds:
     ΔHHI bound inferred from strict numbers-equivalent
     of (post-merger) HHI presumption, and corresponding default recapture rate,
     GUPPI bound, diversion ratio limit, CMCR, and IPR
-    """
-
-    presumption: HMGThresholds = field(kw_only=True, default=None)
-    """
-    Presumption of harm defined in HMG
-
-    ΔHHI bound and corresponding default recapture rate, GUPPI bound,
-    diversion ratio limit, CMCR, and IPR
     """
 
     def __attrs_post_init__(self, /) -> None:
@@ -95,7 +96,7 @@ class GuidelinesThresholds:
         _hhi_p, _dh_s, _dh_p = {
             1992: (0.18, 0.005, 0.01),
             2010: (0.25, 0.01, 0.02),
-            2004: (0.20, 0.015, 0.015),
+            2004: (0.20, 0.015, 0.025),
             2023: (0.18, 0.01, 0.01),
         }[self.pub_year]
 
@@ -105,38 +106,11 @@ class GuidelinesThresholds:
             HMGThresholds(
                 _dh_s,
                 _fc := int(np.ceil(1 / _hhi_p)),
-                _r := gbfn.round_cust(_fc / (_fc + 1)),
+                _r := gbfn.round_cust(_fc / (_fc + 1), frac=0.05),
                 _g_s := guppi_from_delta(_dh_s, m_star=1.0, r_bar=_r),
-                _dr := gbfn.round_cust(1 / (_fc + 1)),
+                _dr := (1 - _r),
                 _cmcr := 0.03,  # Not strictly a Guidelines standard
                 _ipr := _g_s,  # Not strictly a Guidelines standard
-            ),
-        )
-
-        # imputed_presumption is relevant for 2010 Guidelines
-        object.__setattr__(
-            self,
-            "imputed_presumption",
-            (
-                HMGThresholds(
-                    _dh_i := 2 * (0.5 / _fc) ** 2,
-                    _fc,
-                    _r_i := gbfn.round_cust((_fc - 1 / 2) / (_fc + 1 / 2)),
-                    _g_i := guppi_from_delta(_dh_i, m_star=1.0, r_bar=_r_i),
-                    gbfn.round_cust((1 / 2) / (_fc + 1 / 2)),
-                    _cmcr,
-                    _g_i,
-                )
-                if self.pub_year == 2010
-                else HMGThresholds(
-                    _dh_i := 2 * (1 / (_fc + 1)) ** 2,
-                    _fc,
-                    _r,
-                    _g_i := guppi_from_delta(_dh_i, m_star=1.0, r_bar=_r),
-                    _dr,
-                    _cmcr,
-                    _g_i,
-                )
             ),
         )
 
@@ -154,16 +128,260 @@ class GuidelinesThresholds:
             ),
         )
 
+        # imputed_presumption is relevant for 2010 Guidelines
+        # merger to symmettry in numbers-equivalent of post-merger HHI
+        object.__setattr__(
+            self,
+            "imputed_presumption",
+            (
+                HMGThresholds(
+                    _dh_i := 2 * (0.5 / _fc) ** 2,
+                    _fc,
+                    _r_i := gbfn.round_cust((_fc - 1 / 2) / (_fc + 1 / 2), frac=0.05),
+                    _g_i := guppi_from_delta(_dh_p, m_star=1.0, r_bar=_r_i),
+                    1 / 2 * (1 - _r_i),
+                    _cmcr,
+                    _g_i,
+                )
+                if self.pub_year in (2004, 2010)
+                else HMGThresholds(
+                    _dh_i := 2 * (1 / (_fc + 1)) ** 2,
+                    _fc,
+                    _r,
+                    _g_i := guppi_from_delta(_dh_p, m_star=1.0, r_bar=_r),
+                    _dr,
+                    _cmcr,
+                    _g_i,
+                )
+            ),
+        )
+
+
+def _concentration_threshold_validator(
+    _instance: ConcentrationBoundary, _attribute: Attribute[float], _value: float, /
+) -> None:
+    if not 0 <= _value <= 1:
+        raise ValueError("Concentration threshold must lie between 0 and 1.")
+
+
+def _concentration_measure_name_validator(
+    _instance: ConcentrationBoundary, _attribute: Attribute[str], _value: str, /
+) -> None:
+    if _value not in ("ΔHHI", "Combined share", "Pre-merger HHI", "Post-merger HHI"):
+        raise ValueError(f"Invalid name for a concentration measure, {_value!r}.")
+
+
+@frozen
+class ConcentrationBoundary:
+    """Concentration parameters, boundary coordinates, and area under concentration boundary."""
+
+    threshold: float = field(
+        kw_only=False,
+        default=0.01,
+        validator=(validators.instance_of(float), _concentration_threshold_validator),
+    )
+    precision: int = field(
+        kw_only=False, default=5, validator=validators.instance_of(int)
+    )
+    measure_name: Literal[
+        "ΔHHI", "Combined share", "Pre-merger HHI", "Post-merger HHI"
+    ] = field(
+        kw_only=False,
+        default="ΔHHI",
+        validator=(validators.instance_of(str), _concentration_measure_name_validator),
+    )
+
+    coordinates: NDArray[np.float64] = field(init=False, kw_only=True)
+    """Market-share pairs as Cartesian coordinates of points on the concentration boundary."""
+
+    area: float = field(init=False, kw_only=True)
+    """Area under the concentration boundary."""
+
+    def __attrs_post_init__(self, /) -> None:
+        match self.measure_name:
+            case "ΔHHI":
+                _conc_fn = gbfn.hhi_delta_boundary
+            case "Combined share":
+                _conc_fn = gbfn.combined_share_boundary
+            case "Pre-merger HHI":
+                _conc_fn = gbfn.hhi_pre_contrib_boundary
+            case "Post-merger HHI":
+                _conc_fn = gbfn.hhi_post_contrib_boundary
+
+        _boundary = _conc_fn(self.threshold, prec=self.precision)
+        object.__setattr__(self, "coordinates", _boundary.coordinates)
+        object.__setattr__(self, "area", _boundary.area)
+
+
+def _divr_value_validator(
+    _instance: DiversionRatioBoundary, _attribute: Attribute[float], _value: float, /
+) -> None:
+    if not 0 <= _value <= 1:
+        raise ValueError(
+            "Margin-adjusted benchmark share ratio must lie between 0 and 1."
+        )
+
+
+def _rec_spec_validator(
+    _instance: DiversionRatioBoundary,
+    _attribute: Attribute[RECConstants],
+    _value: RECConstants,
+    /,
+) -> None:
+    if _value == RECConstants.OUTIN and _instance.recapture_rate:
+        raise ValueError(
+            f"Invalid recapture specification, {_value!r}. "
+            "You may consider specifying `mergeron.RECConstants.INOUT` here, and "
+            'assigning the default recapture rate as attribute, "recapture_rate" of '
+            "this `DiversionRatioBoundarySpec` object."
+        )
+    if _value is None and _instance.agg_method != UPPAggrSelector.MAX:
+        raise ValueError(
+            f"Specified aggregation method, {_instance.agg_method} requires a recapture specification."
+        )
+
+
+@frozen
+class DiversionRatioBoundary:
+    """
+    Diversion ratio specification, boundary coordinates, and area under boundary.
+
+    Along with the default diversion ratio and recapture rate,
+    a diversion ratio boundary specification includes the recapture form --
+    whether fixed for both merging firms' products ("proportional") or
+    consistent with share-proportionality, i.e., "inside-out";
+    the method of aggregating diversion ratios for the two products, and
+    the precision for the estimate of area under the divertion ratio boundary
+    (also defines the number of points on the boundary).
+
+    """
+
+    diversion_ratio: float = field(
+        kw_only=False,
+        default=0.065,
+        validator=(validators.instance_of(float), _divr_value_validator),
+    )
+
+    recapture_rate: float = field(
+        kw_only=False, default=0.85, validator=validators.instance_of(float)
+    )
+
+    recapture_form: RECConstants | None = field(
+        kw_only=True,
+        default=RECConstants.INOUT,
+        validator=(
+            validators.instance_of((type(None), RECConstants)),
+            _rec_spec_validator,
+        ),
+    )
+    """
+    The form of the recapture rate.
+
+    When :attr:`mergeron.RECConstants.INOUT`, the recapture rate for
+    he product having the smaller market-share is assumed to equal the default,
+    and the recapture rate for the product with the larger market-share is
+    computed assuming MNL demand. Fixed recapture rates are specified as
+    :attr:`mergeron.RECConstants.FIXED`. (To specify that recapture rates be
+    constructed from the generated purchase-probabilities for products in
+    the market and for the outside good, specify :attr:`mergeron.RECConstants.OUTIN`.)
+
+    The GUPPI boundary is a continuum of diversion ratio boundaries conditional on
+    price-cost margins, :math:`d_{ij} = g_i * p_i / (m_j * p_j)`,
+    with :math:`d_{ij}` the diverion ratio from product :math:`i` to product :math:`j`;
+    :math:`g_i` the GUPPI for product :math:`i`;
+    :math:`m_j` the margin for product :math:`j`; and
+    :math:`p_i, p_j` the prices of goods :math:`i, j`, respectively.
+
+    """
+
+    agg_method: UPPAggrSelector = field(
+        kw_only=True,
+        default=UPPAggrSelector.MAX,
+        validator=validators.instance_of(UPPAggrSelector),
+    )
+    """
+    Method for aggregating the distinct diversion ratio measures for the two products.
+
+    Distinct diversion ratio or GUPPI measures for the two merging-firms' products are
+    aggregated using the method specified by the `agg_method` attribute, which is specified
+    using the enum :class:`mergeron.UPPAggrSelector`.
+
+    """
+
+    precision: int = field(
+        kw_only=False, default=5, validator=validators.instance_of(int)
+    )
+    """
+    The number of decimal places of precision for the estimated area under the UPP boundary.
+
+    Leaving this attribute unspecified will result in the default precision,
+    which varies based on the `agg_method` attribute, reflecting
+    the limit of precision available from the underlying functions. The number of
+    boundary points generated is also defined based on this attribute.
+
+    """
+
+    coordinates: NDArray[np.float64] = field(init=False, kw_only=True)
+    """Market-share pairs as Cartesian coordinates of points on the diversion ratio boundary."""
+
+    area: float = field(init=False, kw_only=True)
+    """Area under the diversion ratio boundary."""
+
+    def __attrs_post_init__(self, /) -> None:
+        _share_ratio = critical_share_ratio(
+            self.diversion_ratio, r_bar=self.recapture_rate
+        )
+        _upp_agg_kwargs: gbfn.ShareRatioBoundaryKeywords = {
+            "recapture_form": getattr(self.recapture_form, "value", "inside-out"),
+            "prec": self.precision,
+        }
+        match self.agg_method:
+            case UPPAggrSelector.DIS:
+                _upp_agg_fn = gbfn.shrratio_boundary_wtd_avg
+                _upp_agg_kwargs |= {"agg_method": "distance", "weighting": None}
+            case UPPAggrSelector.AVG:
+                _upp_agg_fn = gbfn.shrratio_boundary_xact_avg  # type: ignore
+            case UPPAggrSelector.MAX:
+                _upp_agg_fn = gbfn.shrratio_boundary_max  # type: ignore
+                _upp_agg_kwargs = {"prec": 10}  # replace here
+            case UPPAggrSelector.MIN:
+                _upp_agg_fn = gbfn.shrratio_boundary_min  # type: ignore
+                _upp_agg_kwargs |= {"prec": 10}  # update here
+            case _:
+                _upp_agg_fn = gbfn.shrratio_boundary_wtd_avg
+
+                _aggregator: Literal["arithmetic mean", "geometric mean", "distance"]
+                if self.agg_method.value.endswith("average"):
+                    _aggregator = "arithmetic mean"
+                elif self.agg_method.value.endswith("geometric mean"):
+                    _aggregator = "geometric mean"
+                else:
+                    _aggregator = "distance"
+
+                _wgt_type: Literal["cross-product-share", "own-share", None]
+                if self.agg_method.value.startswith("cross-product-share"):
+                    _wgt_type = "cross-product-share"
+                elif self.agg_method.value.startswith("own-share"):
+                    _wgt_type = "own-share"
+                else:
+                    _wgt_type = None
+
+                _upp_agg_kwargs |= {"agg_method": _aggregator, "weighting": _wgt_type}
+
+        _boundary = _upp_agg_fn(_share_ratio, self.recapture_rate, **_upp_agg_kwargs)
+        object.__setattr__(self, "coordinates", _boundary.coordinates)
+        object.__setattr__(self, "area", _boundary.area)
+
 
 def guppi_from_delta(
-    _delta_bound: float = 0.01, /, *, m_star: float = 1.00, r_bar: float = 0.855
+    _delta_bound: float = 0.01, /, *, m_star: float = 1.00, r_bar: float = 0.8
 ) -> float:
     """
     Translate ∆HHI bound to GUPPI bound.
 
     Parameters
     ----------
-    _deltasf
+    _delta_bound
         Specified ∆HHI bound.
     m_star
         Parametric price-cost margin.
@@ -214,7 +432,7 @@ def critical_share_ratio(
 
 
 def share_from_guppi(
-    _guppi_bound: float = 0.065, /, *, m_star: float = 1.00, r_bar: float = 0.855
+    _guppi_bound: float = 0.065, /, *, m_star: float = 1.00, r_bar: float = 0.8
 ) -> float:
     """
     Symmetric-firm share for given GUPPI, margin, and recapture rate.
@@ -242,191 +460,7 @@ def share_from_guppi(
     )
 
 
-def hhi_delta_boundary(
-    _dh_val: float = 0.01, /, *, prec: int = 5
-) -> GuidelinesBoundary:
-    """
-    Generate the list of share combination on the ΔHHI boundary.
-
-    Parameters
-    ----------
-    _dh_val:
-        Merging-firms' ΔHHI bound.
-    prec
-        Number of decimal places for rounding reported shares.
-
-    Returns
-    -------
-        Array of share-pairs, area under boundary.
-
-    """
-
-    _dh_val = mpf(f"{_dh_val}")
-    _s_naught = 1 / 2 * (1 - mp.sqrt(1 - 2 * _dh_val))
-    _s_mid = mp.sqrt(_dh_val / 2)
-
-    _dh_step_sz = mp.power(10, -6)
-    _s_1 = np.array(mp.arange(_s_mid, _s_naught - mp.eps, -_dh_step_sz))
-    _s_2 = _dh_val / (2 * _s_1)
-
-    # Boundary points
-    _dh_half = np.row_stack((
-        np.column_stack((_s_1, _s_2)),
-        np.array([(mpf("0.0"), mpf("1.0"))]),
-    ))
-    _dh_bdry_pts = np.row_stack((np.flip(_dh_half, 0), np.flip(_dh_half[1:], 1)))
-
-    _s_1_pts, _s_2_pts = np.split(_dh_bdry_pts, 2, axis=1)
-    return GuidelinesBoundary(
-        np.column_stack((
-            np.array(_s_1_pts, np.float64),
-            np.array(_s_2_pts, np.float64),
-        )),
-        gbfn.dh_area(_dh_val, prec=prec),
+if __name__ == "__main__":
+    print(
+        "This module defines classes with methods for generating boundaries for concentration and diversion-ratio screens."
     )
-
-
-def combined_share_boundary(
-    _s_intcpt: float = 0.0625, /, *, bdry_dps: int = 10
-) -> GuidelinesBoundary:
-    """
-    Share combinations on the merging-firms' combined share boundary.
-
-    Assumes symmetric merging-firm margins. The combined-share is
-    congruent to the post-merger HHI contribution boundary, as the
-    post-merger HHI bound is the square of the combined-share bound.
-
-    Parameters
-    ----------
-    _s_intcpt:
-        Merging-firms' combined share.
-    bdry_dps
-        Number of decimal places for rounding reported shares.
-
-    Returns
-    -------
-        Array of share-pairs, area under boundary.
-
-    """
-    _s_intcpt = mpf(f"{_s_intcpt}")
-    _s_mid = _s_intcpt / 2
-
-    _s1_pts = (0, _s_mid, _s_intcpt)
-    return GuidelinesBoundary(
-        np.column_stack((
-            np.array(_s1_pts, np.float64),
-            np.array(_s1_pts[::-1], np.float64),
-        )),
-        round(float(_s_intcpt * _s_mid), bdry_dps),
-    )
-
-
-def hhi_pre_contrib_boundary(
-    _hhi_contrib: float = 0.03125, /, *, bdry_dps: int = 5
-) -> GuidelinesBoundary:
-    """
-    Share combinations on the premerger HHI contribution boundary.
-
-    Parameters
-    ----------
-    _hhi_contrib:
-        Merging-firms' pre-merger HHI contribution bound.
-    bdry_dps
-        Number of decimal places for rounding reported shares.
-
-    Returns
-    -------
-        Array of share-pairs, area under boundary.
-
-    """
-    _hhi_contrib = mpf(f"{_hhi_contrib}")
-    _s_mid = mp.sqrt(_hhi_contrib / 2)
-
-    _bdry_step_sz = mp.power(10, -bdry_dps)
-    # Range-limit is 0 less a step, which is -1 * step-size
-    _s_1 = np.array(mp.arange(_s_mid, -_bdry_step_sz, -_bdry_step_sz), np.float64)
-    _s_2 = np.sqrt(_hhi_contrib - _s_1**2).astype(np.float64)
-    _bdry_pts_mid = np.column_stack((_s_1, _s_2))
-    return GuidelinesBoundary(
-        np.row_stack((np.flip(_bdry_pts_mid, 0), np.flip(_bdry_pts_mid[1:], 1))),
-        round(float(mp.pi * _hhi_contrib / 4), bdry_dps),
-    )
-
-
-def hhi_post_contrib_boundary(
-    _hhi_contrib: float = 0.800, /, *, bdry_dps: int = 10
-) -> GuidelinesBoundary:
-    """
-    Share combinations on the postmerger HHI contribution boundary.
-
-    The post-merger HHI contribution boundary is identical to the
-    combined-share boundary.
-
-    Parameters
-    ----------
-    _hhi_contrib:
-        Merging-firms' pre-merger HHI contribution bound.
-    bdry_dps
-        Number of decimal places for rounding reported shares.
-
-    Returns
-    -------
-        Array of share-pairs, area under boundary.
-
-    """
-    return combined_share_boundary(np.sqrt(_hhi_contrib), bdry_dps=bdry_dps)
-
-
-def diversion_ratio_boundary(_bdry_spec: UPPBoundarySpec) -> GuidelinesBoundary:
-    _share_ratio = critical_share_ratio(
-        _bdry_spec.diversion_ratio, r_bar=_bdry_spec.rec
-    )
-    match _bdry_spec.agg_method:
-        case UPPAggrSelector.AVG:
-            return gbfn.shrratio_boundary_xact_avg(
-                _share_ratio,
-                _bdry_spec.rec,
-                recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
-                prec=_bdry_spec.precision,
-            )
-        case UPPAggrSelector.MAX:
-            return gbfn.shrratio_boundary_max(
-                _share_ratio, _bdry_spec.rec, prec=_bdry_spec.precision
-            )
-        case UPPAggrSelector.MIN:
-            return gbfn.shrratio_boundary_min(
-                _share_ratio,
-                _bdry_spec.rec,
-                recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
-                prec=_bdry_spec.precision,
-            )
-        case UPPAggrSelector.DIS:
-            return gbfn.shrratio_boundary_wtd_avg(
-                _share_ratio,
-                _bdry_spec.rec,
-                agg_method="distance",
-                weighting=None,
-                recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
-                prec=_bdry_spec.precision,
-            )
-        case _:
-            _weighting = (
-                "cross-product-share"
-                if _bdry_spec.agg_method.value.startswith("cross-product-share")
-                else "own-share"
-            )
-
-            _agg_method = (
-                "arithmetic"
-                if _bdry_spec.agg_method.value.endswith("average")
-                else "distance"
-            )
-
-            return gbfn.shrratio_boundary_wtd_avg(
-                _share_ratio,
-                _bdry_spec.rec,
-                agg_method=_agg_method,  # type: ignore
-                weighting=_weighting,  # type: ignore
-                recapture_form=_bdry_spec.recapture_form.value,  # type: ignore
-                prec=_bdry_spec.precision,
-            )

@@ -1,19 +1,37 @@
 import decimal
-from importlib.metadata import version
-from typing import Any, Literal
+from dataclasses import dataclass
+from typing import Any, Literal, TypedDict
 
 import numpy as np
 from mpmath import mp, mpf  # type: ignore
 from numpy.typing import NDArray
 
-from .. import _PKG_NAME  # noqa: TID252
-from . import GuidelinesBoundary
+from .. import VERSION  # noqa: TID252
 
-__version__ = version(_PKG_NAME)
-
+__version__ = VERSION
 
 mp.prec = 80
 mp.trap_complex = True
+
+
+class ShareRatioBoundaryKeywords(TypedDict, total=False):
+    """Keyword arguments for functions generating share ratio boundaries."""
+
+    recapture_form: Literal["inside-out", "proportional"]
+    prec: int
+    agg_method: Literal["arithmetic mean", "geometric mean", "distance"]
+    weighting: Literal["own-share", "cross-product-share", None]
+
+
+@dataclass(frozen=True)
+class GuidelinesBoundary:
+    """Output of a Guidelines boundary function."""
+
+    coordinates: NDArray[np.float64]
+    """Market-share pairs as Cartesian coordinates of points on the boundary."""
+
+    area: float
+    """Area under the boundary."""
 
 
 def dh_area(_dh_val: float = 0.01, /, *, prec: int = 9) -> float:
@@ -57,13 +75,150 @@ def dh_area(_dh_val: float = 0.01, /, *, prec: int = 9) -> float:
     )
 
 
+def hhi_delta_boundary(
+    _dh_val: float = 0.01, /, *, prec: int = 5
+) -> GuidelinesBoundary:
+    """
+    Generate the list of share combination on the ΔHHI boundary.
+
+    Parameters
+    ----------
+    _dh_val:
+        Merging-firms' ΔHHI bound.
+    prec
+        Number of decimal places for rounding reported shares.
+
+    Returns
+    -------
+        Array of share-pairs, area under boundary.
+
+    """
+
+    _dh_val = mpf(f"{_dh_val}")
+    _s_naught = 1 / 2 * (1 - mp.sqrt(1 - 2 * _dh_val))
+    _s_mid = mp.sqrt(_dh_val / 2)
+
+    _dh_step_sz = mp.power(10, -6)
+    _s_1 = np.array(mp.arange(_s_mid, _s_naught - mp.eps, -_dh_step_sz))
+    _s_2 = _dh_val / (2 * _s_1)
+
+    # Boundary points
+    _dh_half = np.vstack((
+        np.column_stack((_s_1, _s_2)),
+        np.array([(mpf("0.0"), mpf("1.0"))]),
+    ))
+    _dh_bdry_pts = np.vstack((np.flip(_dh_half, 0), np.flip(_dh_half[1:], 1)))
+
+    _s_1_pts, _s_2_pts = np.split(_dh_bdry_pts, 2, axis=1)
+    return GuidelinesBoundary(
+        np.column_stack((
+            np.array(_s_1_pts, np.float64),
+            np.array(_s_2_pts, np.float64),
+        )),
+        dh_area(_dh_val, prec=prec),
+    )
+
+
+def hhi_pre_contrib_boundary(
+    _hhi_contrib: float = 0.03125, /, *, prec: int = 5
+) -> GuidelinesBoundary:
+    """
+    Share combinations on the premerger HHI contribution boundary.
+
+    Parameters
+    ----------
+    _hhi_contrib:
+        Merging-firms' pre-merger HHI contribution bound.
+    prec
+        Number of decimal places for rounding reported shares.
+
+    Returns
+    -------
+        Array of share-pairs, area under boundary.
+
+    """
+    _hhi_contrib = mpf(f"{_hhi_contrib}")
+    _s_mid = mp.sqrt(_hhi_contrib / 2)
+
+    _bdry_step_sz = mp.power(10, -prec)
+    # Range-limit is 0 less a step, which is -1 * step-size
+    _s_1 = np.array(mp.arange(_s_mid, -_bdry_step_sz, -_bdry_step_sz), np.float64)
+    _s_2 = np.sqrt(_hhi_contrib - _s_1**2).astype(np.float64)
+    _bdry_pts_mid = np.column_stack((_s_1, _s_2))
+    return GuidelinesBoundary(
+        np.vstack((np.flip(_bdry_pts_mid, 0), np.flip(_bdry_pts_mid[1:], 1))),
+        round(float(mp.pi * _hhi_contrib / 4), prec),
+    )
+
+
+def combined_share_boundary(
+    _s_intcpt: float = 0.0625, /, *, prec: int = 10
+) -> GuidelinesBoundary:
+    """
+    Share combinations on the merging-firms' combined share boundary.
+
+    Assumes symmetric merging-firm margins. The combined-share is
+    congruent to the post-merger HHI contribution boundary, as the
+    post-merger HHI bound is the square of the combined-share bound.
+
+    Parameters
+    ----------
+    _s_intcpt:
+        Merging-firms' combined share.
+    prec
+        Number of decimal places for rounding reported shares.
+
+    Returns
+    -------
+        Array of share-pairs, area under boundary.
+
+    """
+    _s_intcpt = mpf(f"{_s_intcpt}")
+    _s_mid = _s_intcpt / 2
+
+    _s1_pts = (0, _s_mid, _s_intcpt)
+    return GuidelinesBoundary(
+        np.column_stack((
+            np.array(_s1_pts, np.float64),
+            np.array(_s1_pts[::-1], np.float64),
+        )),
+        round(float(_s_intcpt * _s_mid), prec),
+    )
+
+
+def hhi_post_contrib_boundary(
+    _hhi_contrib: float = 0.800, /, *, prec: int = 10
+) -> GuidelinesBoundary:
+    """
+    Share combinations on the postmerger HHI contribution boundary.
+
+    The post-merger HHI contribution boundary is identical to the
+    combined-share boundary.
+
+    Parameters
+    ----------
+    _hhi_contrib:
+        Merging-firms' pre-merger HHI contribution bound.
+    prec
+        Number of decimal places for rounding reported shares.
+
+    Returns
+    -------
+        Array of share-pairs, area under boundary.
+
+    """
+    return combined_share_boundary(np.sqrt(_hhi_contrib), prec=prec)
+
+
 def shrratio_boundary_wtd_avg(
     _delta_star: float = 0.075,
-    _r_val: float = 0.855,
+    _r_val: float = 0.85,
     /,
     *,
-    agg_method: Literal["arithmetic", "geometric", "distance"] = "arithmetic",
-    weighting: Literal["own-share", "cross-product-share"] | None = "own-share",
+    agg_method: Literal[
+        "arithmetic mean", "geometric mean", "distance"
+    ] = "arithmetic mean",
+    weighting: Literal["own-share", "cross-product-share", None] = "own-share",
     recapture_form: Literal["inside-out", "proportional"] = "inside-out",
     prec: int = 5,
 ) -> GuidelinesBoundary:
@@ -77,7 +232,7 @@ def shrratio_boundary_wtd_avg(
     _r_val
         recapture ratio
     agg_method
-        Whether "arithmetic", "geometric", or "distance".
+        Whether "arithmetic mean", "geometric mean", or "distance".
     weighting
         Whether "own-share" or "cross-product-share"  (or None for simple, unweighted average).
     recapture_form
@@ -253,20 +408,20 @@ def shrratio_boundary_wtd_avg(
         # Area under boundary
         _gbdry_area_total = float(2 * _gbd_prtlarea - mp.power(_s_mid, "2"))
 
-    _gbdry_points = np.row_stack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
+    _gbdry_points = np.vstack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
         np.float64
     )
 
     # Points defining boundary to point-of-symmetry
     return GuidelinesBoundary(
-        np.row_stack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
+        np.vstack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbdry_area_total), prec),
     )
 
 
 def shrratio_boundary_xact_avg(
     _delta_star: float = 0.075,
-    _r_val: float = 0.855,
+    _r_val: float = 0.85,
     /,
     *,
     recapture_form: Literal["inside-out", "proportional"] = "inside-out",
@@ -396,7 +551,7 @@ def shrratio_boundary_xact_avg(
     _gbdry_points_inner = np.column_stack((_s_1, _s_2))
     _gbdry_points_end = np.array([(mpf("0.0"), _s_intcpt)], np.float64)
 
-    _gbdry_points = np.row_stack((
+    _gbdry_points = np.vstack((
         _gbdry_points_end,
         np.flip(_gbdry_points_inner, 0),
         _gbdry_points_start,
@@ -425,7 +580,7 @@ def shrratio_boundary_xact_avg(
 
 def shrratio_boundary_min(
     _delta_star: float = 0.075,
-    _r_val: float = 0.855,
+    _r_val: float = 0.85,
     /,
     *,
     recapture_form: str = "inside-out",
@@ -491,7 +646,7 @@ def shrratio_boundary_min(
 
 
 def shrratio_boundary_max(
-    _delta_star: float = 0.075, _r_val: float = 0.855, /, *, prec: int = 10
+    _delta_star: float = 0.075, _r_val: float = 0.85, /, *, prec: int = 10
 ) -> GuidelinesBoundary:
     """
     Share combinations on the minimum GUPPI boundary with symmetric
@@ -537,8 +692,8 @@ def _shrratio_boundary_intcpt(
     /,
     *,
     recapture_form: Literal["inside-out", "proportional"],
-    agg_method: Literal["arithmetic", "geometric", "distance"],
-    weighting: Literal["cross-product-share", "own-share"] | None,
+    agg_method: Literal["arithmetic mean", "geometric mean", "distance"],
+    weighting: Literal["cross-product-share", "own-share", None],
 ) -> float:
     match weighting:
         case "cross-product-share":
@@ -547,14 +702,14 @@ def _shrratio_boundary_intcpt(
             _s_intcpt = mpf("1.0")
         case None if agg_method == "distance":
             _s_intcpt = _delta_star * mp.sqrt("2")
-        case None if agg_method == "arithmetic" and recapture_form == "inside-out":
+        case None if agg_method == "arithmetic mean" and recapture_form == "inside-out":
             _s_intcpt = mp.fdiv(
                 mp.fsub(
                     2 * _delta_star * _r_val + 1, mp.fabs(2 * _delta_star * _r_val - 1)
                 ),
                 2 * mpf(f"{_r_val}"),
             )
-        case None if agg_method == "arithmetic":
+        case None if agg_method == "arithmetic mean" and recapture_form == "proportional":
             _s_intcpt = mp.fsub(_delta_star + 1 / 2, mp.fabs(_delta_star - 1 / 2))
         case _:
             _s_intcpt = _s_2_pre
@@ -678,9 +833,9 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
     import matplotlib.ticker as mpt
 
     mpl.use("pgf")
-    import matplotlib.pyplot as plt
+    import matplotlib.pyplot as _plt  # noqa: ICN001
 
-    plt.rcParams.update({
+    _plt.rcParams.update({
         "pgf.rcfonts": False,
         "pgf.texsystem": "lualatex",
         "pgf.preamble": "\n".join([
@@ -719,7 +874,7 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
     })
 
     # Initialize a canvas with a single figure (set of axes)
-    _fig = plt.figure(figsize=(5, 5), dpi=600)
+    _fig = _plt.figure(figsize=(5, 5), dpi=600)
     _ax_out = _fig.add_subplot()
 
     def _set_axis_def(
@@ -747,14 +902,14 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
 
         # Tick marks skip, size, and rotation
         # x-axis
-        plt.setp(
+        _plt.setp(
             _ax1.xaxis.get_majorticklabels(),
             horizontalalignment="right",
             fontsize=6,
             rotation=45,
         )
         # y-axis
-        plt.setp(
+        _plt.setp(
             _ax1.yaxis.get_majorticklabels(), horizontalalignment="right", fontsize=6
         )
 
@@ -817,10 +972,10 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
 
             # Hide every other tick-label
             for _axl in _ax1.get_xticklabels(), _ax1.get_yticklabels():
-                plt.setp(_axl[::2], visible=False)
+                _plt.setp(_axl[::2], visible=False)
 
         return _ax1
 
     _ax_out = _set_axis_def(_ax_out, mktshares_plot_flag=mktshares_plot_flag)
 
-    return plt, _fig, _ax_out, _set_axis_def
+    return _plt, _fig, _ax_out, _set_axis_def
