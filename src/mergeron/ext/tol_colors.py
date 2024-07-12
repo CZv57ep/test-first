@@ -796,7 +796,7 @@ def main() -> None:
     schemes: Sequence[str] = tol_cset()
     fig, axes = plt.subplots(ncols=len(schemes), figsize=(9, 3))
     fig.subplots_adjust(top=0.9, bottom=0.02, left=0.02, right=0.92)
-    for ax, scheme in zip(axes, schemes):
+    for ax, scheme in zip(axes, schemes):  # type: ignore
         cset = tol_cset(scheme)
         names = cset._fields  # type: ignore
         colors = list(cset)
@@ -813,7 +813,7 @@ def main() -> None:
     gradient = np.vstack((gradient, gradient))
     fig, axes = plt.subplots(nrows=len(schemes))
     fig.subplots_adjust(top=0.98, bottom=0.02, left=0.2, right=0.99)
-    for ax, scheme in zip(axes, schemes):
+    for ax, scheme in zip(axes, schemes):  # type: ignore
         pos = list(ax.get_position().bounds)
         ax.set_axis_off()
         ax.imshow(gradient, aspect=4, cmap=tol_cmap(scheme))
@@ -832,7 +832,7 @@ def main() -> None:
     gradient = np.vstack((gradient, gradient))
     fig, axes = plt.subplots(nrows=23)
     fig.subplots_adjust(top=0.98, bottom=0.02, left=0.25, right=0.99)
-    for lut, ax in enumerate(axes, start=1):
+    for lut, ax in enumerate(axes, start=1):  # type: ignore
         pos = list(ax.get_position().bounds)
         ax.set_axis_off()
         ax.imshow(gradient, aspect=4, cmap=tol_cmap("rainbow_discrete", lut))
