@@ -7,7 +7,8 @@ Data are downloaded or reused from a local copy, on demand.
 For terms of use of Prof. Damodaran's data, please see:
 https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datahistory.html
 
-Important caveats:
+NOTES
+-----
 
 Prof. Damodaran notes that the data construction may not be
 consistent from iteration to iteration. He also notes that,
@@ -32,29 +33,29 @@ price-cost margins fall in the interval :math:`[0, 1]`.
 
 """
 
+import shutil
 from collections.abc import Mapping
-from importlib.metadata import version
 from pathlib import Path
 from types import MappingProxyType
 
 import msgpack  # type:ignore
 import numpy as np
-import requests
+import urllib3
 from numpy.random import PCG64DXSM, Generator, SeedSequence
 from numpy.typing import NDArray
-from requests_toolbelt.downloadutils import stream  # type: ignore
 from scipy import stats  # type: ignore
 from xlrd import open_workbook  # type: ignore
 
-from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
+from .. import DATA_DIR, VERSION  # noqa: TID252
 
-__version__ = version(_PKG_NAME)
-
+__version__ = VERSION
 
 MGNDATA_ARCHIVE_PATH = DATA_DIR / "damodaran_margin_data_dict.msgpack"
 
+u3pm = urllib3.PoolManager()
 
-def scrape_data_table(
+
+def mgn_data_getter(
     _table_name: str = "margin",
     *,
     data_archive_path: Path | None = None,
@@ -68,32 +69,41 @@ def scrape_data_table(
     _data_archive_path = data_archive_path or MGNDATA_ARCHIVE_PATH
 
     _mgn_urlstr = f"https://pages.stern.nyu.edu/~adamodar/pc/datasets/{_table_name}.xls"
-    _mgn_path = _data_archive_path.parent.joinpath(f"damodaran_{_table_name}_data.xls")
+    _mgn_path = _data_archive_path.parent / f"damodaran_{_table_name}_data.xls"
     if _data_archive_path.is_file() and not data_download_flag:
         return MappingProxyType(msgpack.unpackb(_data_archive_path.read_bytes()))
     elif _mgn_path.is_file():
         _mgn_path.unlink()
-        _data_archive_path.unlink()
+        if _data_archive_path.is_file():
+            _data_archive_path.unlink()
 
     _REQ_TIMEOUT = (9.05, 27)
-    # NYU will eventually updates its server certificate, to one signed with
-    #   "InCommon RSA Server CA 2.pem", the step below will be obsolete. In
-    #   the interim, it is necessary to provide the certificate chain to the
-    #   root CA, so that the obsolete CA certificate is validated.
-    _INCOMMON_2014_CERT_CHAIN_PATH = (
-        Path(__file__).parent / "InCommon RSA Server CA cert chain.pem"
-    )
     try:
-        _urlopen_handle = requests.get(_mgn_urlstr, timeout=_REQ_TIMEOUT, stream=True)
-    except requests.exceptions.SSLError:
-        _urlopen_handle = requests.get(
-            _mgn_urlstr,
-            timeout=_REQ_TIMEOUT,
-            stream=True,
-            verify=str(_INCOMMON_2014_CERT_CHAIN_PATH),
-        )
+        _chunk_size = 1024 * 1024
+        with (
+            u3pm.request("GET", _mgn_urlstr, preload_content=False) as _urlopen_handle,
+            _mgn_path.open("wb") as _mgn_file,
+        ):
+            while True:
+                _data = _urlopen_handle.read(_chunk_size)
+                if not _data:
+                    break
+                _mgn_file.write(_data)
 
-    _mgn_filename = stream.stream_response_to_file(_urlopen_handle, path=_mgn_path)
+        print(f"Downloaded {_mgn_urlstr} to {_mgn_path}.")
+
+    except urllib3.exceptions.MaxRetryError as _err:
+        if isinstance(_err.__cause__, urllib3.exceptions.SSLError):
+            # Works fine with other sites secured with Internet2 certificates,
+            # such as, https://snap.stanford.edu/data/web-Stanford.txt.gz
+            print(
+                f"WARNING: Could not establish secure connection to, {_mgn_urlstr}."
+                "Using bundled copy."
+            )
+            if not _mgn_path.is_file():
+                shutil.copyfile(Path(__file__).parent / _mgn_path.name, _mgn_path)
+        else:
+            raise _err
 
     _xl_book = open_workbook(_mgn_path, ragged_rows=True, on_demand=True)
     _xl_sheet = _xl_book.sheet_by_name("Industry Averages")
@@ -123,7 +133,7 @@ def mgn_data_builder(
     _mgn_tbl_dict: Mapping[str, Mapping[str, float | int]] | None = None, /
 ) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
     if _mgn_tbl_dict is None:
-        _mgn_tbl_dict = scrape_data_table()
+        _mgn_tbl_dict = mgn_data_getter()
 
     _mgn_data_wts, _mgn_data_obs = (
         _f.flatten()
@@ -169,17 +179,19 @@ def mgn_data_builder(
     )
 
 
-def resample_mgn_data(
+def mgn_data_resampler(
     _sample_size: int | tuple[int, int] = (10**6, 2),
     /,
     *,
     seed_sequence: SeedSequence | None = None,
 ) -> NDArray[np.float64]:
     """
-    Generate the specified number of draws from the empirical distribution
-    for Prof. Damodaran's margin data using the estimated Gaussian KDE.
-    Margins for firms in finance, investment, insurance, reinsurance, and REITs
-    are excluded from the sample used to estimate the Gaussian KDE.
+    Generate draws from the empirical distribution bassed on Prof. Damodaran's margin data.
+
+    The empirical distribution is estimated using a Gaussian KDE; the bandwidth
+    selected using Silverman's rule is narrowed to reflect that the margin data
+    are multimodal. Margins for firms in finance, investment, insurance, reinsurance, and
+    REITs are excluded from the sample used to estimate the empirical distribution.
 
     Parameters
     ----------
@@ -198,28 +210,24 @@ def resample_mgn_data(
 
     _seed_sequence = seed_sequence or SeedSequence(pool_size=8)
 
-    _x, _w, _ = mgn_data_builder(scrape_data_table())
+    _x, _w, _ = mgn_data_builder(mgn_data_getter())
 
-    _mgn_kde = stats.gaussian_kde(_x, weights=_w)
-
-    def _generate_draws(
-        _mgn_kde: stats.gaussian_kde, _ssz: int, _seed_seq: SeedSequence
-    ) -> NDArray[np.float64]:
-        _seed = Generator(PCG64DXSM(_seed_sequence))
-
-        # We enlarge the sample, then truncate to
-        # the range between [0.0, 1.0)
-        ssz_up = int(_ssz / (_mgn_kde.integrate_box_1d(0.0, 1.0) ** 2))
-        sample_1 = _mgn_kde.resample(ssz_up, seed=_seed)[0]
-        return np.array(
-            sample_1[(sample_1 >= 0.0) & (sample_1 <= 1)][:_ssz], np.float64
-        )
+    _mgn_kde = stats.gaussian_kde(_x, weights=_w, bw_method="silverman")
+    _mgn_kde.set_bandwidth(bw_method=_mgn_kde.factor / 3.0)
 
     if isinstance(_sample_size, int):
-        return _generate_draws(_mgn_kde, _sample_size, _seed_sequence)
-    else:
+        return np.array(
+            _mgn_kde.resample(_sample_size, seed=Generator(PCG64DXSM(_seed_sequence)))[
+                0
+            ]
+        )
+    elif isinstance(_sample_size, tuple) and len(_sample_size) == 2:
         _ssz, _num_cols = _sample_size
         _ret_array = np.empty(_sample_size, np.float64)
         for _idx, _seed_seq in enumerate(_seed_sequence.spawn(_num_cols)):
-            _ret_array[:, _idx] = _generate_draws(_mgn_kde, _ssz, _seed_seq)
+            _ret_array[:, _idx] = _mgn_kde.resample(
+                _ssz, seed=Generator(PCG64DXSM(_seed_seq))
+            )[0]
         return _ret_array
+    else:
+        raise ValueError(f"Invalid sample size: {_sample_size!r}")

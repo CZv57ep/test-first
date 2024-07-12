@@ -9,6 +9,15 @@ This package relies heavily on the Python packages, :code:`numpy` and :code:`mat
 
 Thanks go to Paul Tol, SRON Netherlands Institute for Space Research for permission to bundle :code:`tol_colors.py` within this package.
 
-Thanks also to Prof. Ashwath Damodaran, New York University for his compilation of financial data, particularly gross margins, to which this package callibrates an empirical margin distribution for potential merging firms.
+Thanks also to Prof. Ashwath Damodaran, New York University for his compilation of financial data, particularly gross margins, which are used to estimate an empirical margin distribution for potential merging firms.
 
+On first attempt to specify data generation with empirical margin distribution, you may see the following message:
+
+``WARNING: Could not establish secure connection to, https://pages.stern.nyu.edu/~adamodar/pc/datasets/margin.xls. Using bundled copy.``
+
+If you wish to use use the latest data from Prof. Damodaran, please do the following:
+
+#. download the file at the above URL to ~/mergeron/damodaran_margin_data.xls
+#. delete the file ~/mergeron/damodaran_margin_data_dict.msgpack
+#. rerun your code
 
