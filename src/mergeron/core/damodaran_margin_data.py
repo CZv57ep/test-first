@@ -103,7 +103,7 @@ def mgn_data_getter(
             )
             if not _mgn_path.is_file():
                 _mgn_data_archive = (
-                    resources.files("data") / "damodaran_margin_data.xls"
+                    resources.files("mergeron.data") / "damodaran_margin_data.xls"
                 )
                 with resources.as_file(_mgn_data_archive) as _mgn_data_archive_path:
                     shutil.copy2(_mgn_data_archive_path, _mgn_path)
