@@ -1,4 +1,5 @@
 import numpy as np
+from icecream import ic  # type: ignore
 from mergeron.core.pseudorandom_numbers import (
     MultithreadedRNG,
     gen_seed_seq_list_default,
@@ -10,13 +11,11 @@ from numpy.testing import (
     assert_equal,
 )
 
-np.set_printoptions(precision=18)
-
 
 def test_mrng_dirichlet(_tcount: int = 10**8, _fcount: int = 5) -> None:
     """Test multithreaded generation of Dirichlet variates"""
 
-    print("Test multithreaded generation of Dirichlet variates")
+    ic("Test multithreaded generation of Dirichlet variates")
     _test_out = np.empty((_tcount, _fcount), dtype=np.float64)
     _mrng = MultithreadedRNG(
         _test_out,
@@ -26,7 +25,8 @@ def test_mrng_dirichlet(_tcount: int = 10**8, _fcount: int = 5) -> None:
         nthreads=16,
     )
     _mrng.fill()
-    print(repr(_test_out.mean(axis=0)))
+    ic(_test_out)
+    ic(_test_out.mean(axis=0))
     assert_array_equal(
         _test_out.mean(axis=0),
         np.array([
@@ -43,15 +43,14 @@ def test_mrng_dirichlet(_tcount: int = 10**8, _fcount: int = 5) -> None:
         decimal=int(np.log10(_tcount) / 2),
     )
     assert_array_equal(_test_out.shape, (_tcount, _fcount))
-    np.testing.assert_equal(np.round(_test_out.sum()), _tcount)
+    assert_equal(np.round(_test_out.sum()), _tcount)
     del _test_out, _mrng
-    print()
 
 
 def test_mrng_beta(_tcount: int = 10**8, _fcount: int = 5) -> None:
     """Test multithreaded generation of Beta variates"""
 
-    print("Test multithreaded generation of Beta variates")
+    ic("Test multithreaded generation of Beta variates")
     _test_out = np.empty((_tcount, _fcount), dtype=np.float64)
     _mrng = MultithreadedRNG(
         _test_out,
@@ -61,7 +60,7 @@ def test_mrng_beta(_tcount: int = 10**8, _fcount: int = 5) -> None:
         nthreads=16,
     )
     _mrng.fill()
-    print(repr(_test_out.mean(axis=0)))
+    ic(_test_out.mean(axis=0))
     assert_array_equal(
         _test_out.mean(axis=0),
         np.array([
@@ -79,9 +78,8 @@ def test_mrng_beta(_tcount: int = 10**8, _fcount: int = 5) -> None:
     )
     assert_array_equal(_test_out.shape, (_tcount, _fcount))
     del _test_out, _mrng
-    print()
 
-    print("Test multithreaded generation of Scaled Beta variates")
+    ic("Test multithreaded generation of Scaled Beta variates")
     _test_out = np.empty((_tcount, 1), dtype=np.float64)
     _beta_mu, _beta_sigma = [0.5, 0.28867513459481287]
     _mul = np.divide(_beta_mu - _beta_mu**2 - _beta_sigma**2, _beta_sigma**2)
@@ -96,7 +94,7 @@ def test_mrng_beta(_tcount: int = 10**8, _fcount: int = 5) -> None:
         nthreads=16,
     )
     _mrng.fill()
-    print(_test_out.mean())
+    ic(_test_out.mean())
     assert_equal(_test_out.mean(), 0.5000134457423757)
     assert_almost_equal(_test_out.mean(), 0.500, decimal=int(np.log10(_tcount) / 2))
     del _test_out, _mrng

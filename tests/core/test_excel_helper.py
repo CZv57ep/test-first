@@ -59,7 +59,7 @@ def test_excel(excel_file_path: Path) -> None:
     _xl_book.close()
 
     try:
-        assert all((
+        assert all((  # noqa: S101
             _xl_sheet_vals[0] == _hdr_val,
             np.array_equal(np.array(_xl_sheet_vals[1:]), _data_val),
         ))

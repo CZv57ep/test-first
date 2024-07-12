@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 import mergeron.core.guidelines_boundaries as gbl
 import mergeron.core.pseudorandom_numbers as rmp
-import mergeron.gen.investigations_stats as isl
+import mergeron.gen.enforcement_stats as esl
 import numpy as np
 import re2 as re  # type: ignore
 from mergeron import RECConstants, UPPAggrSelector
@@ -110,18 +110,18 @@ def test_clearance_rate_calcs() -> None:
     )
 
     upp_tests_counts = _mkt_sample.invres_counts
-    _return_type_sel = isl.StatsReturnSelector.CNT
+    _return_type_sel = esl.StatsReturnSelector.CNT
     print()
     print(
         f"Simulated {_test_sel.resolution.capitalize()} stats by number of significant competitors:"
     )
-    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_1dim(
+    _stats_hdr_list, _stats_dat_list = esl.latex_tbl_invres_stats_1dim(
         upp_tests_counts.by_firm_count[:, :-1], return_type_sel=_return_type_sel
     )
 
     _stats_byfirmcount_teststr_val = "".join([
         "{} & {} {}".format(
-            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), isl.LTX_ARRAY_LINEEND
+            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), esl.LTX_ARRAY_LINEEND
         )
         for g in range(len(_stats_hdr_list))
     ])
@@ -130,15 +130,15 @@ def test_clearance_rate_calcs() -> None:
 
     print()
     print(f"Simulated {_test_sel.resolution.capitalize()} stats by range of ∆HHI")
-    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_1dim(
+    _stats_hdr_list, _stats_dat_list = esl.latex_tbl_invres_stats_1dim(
         upp_tests_counts.by_delta[:, :-1],
         return_type_sel=_return_type_sel,
-        sort_order=isl.SortSelector.REV,
+        sort_order=esl.SortSelector.REV,
     )
 
     _stats_bydelta_teststr_val = "".join([
         "{} & {} {}".format(
-            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), isl.LTX_ARRAY_LINEEND
+            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), esl.LTX_ARRAY_LINEEND
         )
         for g in range(len(_stats_hdr_list))
     ])
@@ -149,14 +149,14 @@ def test_clearance_rate_calcs() -> None:
     print(
         f"Merger {_test_sel.resolution.capitalize()} stats by Merger Guidelines concentration presumptions"
     )
-    _stats_hdr_list, _stats_dat_list = isl.latex_tbl_invres_stats_byzone(
+    _stats_hdr_list, _stats_dat_list = esl.latex_tbl_invres_stats_byzone(
         upp_tests_counts.by_conczone[:, :-1],
         return_type_sel=_return_type_sel,
-        sort_order=isl.SortSelector.REV,
+        sort_order=esl.SortSelector.REV,
     )
     _stats_byzone_teststr_val = "".join([
         "{} & {} {}".format(
-            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), isl.LTX_ARRAY_LINEEND
+            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), esl.LTX_ARRAY_LINEEND
         )
         for g in range(len(_stats_hdr_list))
     ])
