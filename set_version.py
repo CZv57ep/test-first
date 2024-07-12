@@ -59,7 +59,7 @@ match args.update_level:
 pkg_init_path = (_p := Path(__file__).parent) / "src" / _p.name / "__init__.py"
 pkg_init_path.write_text(
     re.sub(
-        rf'(?m)^VERSION = "{pkg_ver}"$',
+        rf'(?m)^VERSION = "\d{4}\.\d+\.\d"$',
         f'VERSION = "{sem_ver}"',
         pkg_init_path.read_text(),
     )
