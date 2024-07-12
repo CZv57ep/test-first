@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import enum
 from collections.abc import Mapping, Sequence
-from importlib.metadata import version
 from types import MappingProxyType
 from typing import Any
 
@@ -18,16 +17,14 @@ import numpy as np
 import numpy.typing as npt
 import xlsxwriter  # type: ignore
 
-from .. import _PKG_NAME  # noqa: TID252
+from .. import VERSION  # noqa: TID252
 
-__version__ = version(_PKG_NAME)
+__version__ = VERSION
 
 
 @enum.unique
 class CFmtParent(dict[str, Any], enum.ReprEnum):  # type: ignore
     """Unique mappings defining xlsxwirter Workbook formats"""
-
-    ...
 
 
 class CFmt(CFmtParent):
@@ -55,6 +52,7 @@ class CFmt(CFmtParent):
     ULINE = MappingProxyType({"underline": True})
 
     TEXT_WRAP = MappingProxyType({"text_wrap": True})
+    TEXT_ROTATE = MappingProxyType({"rotation": 90})
     IND_1 = MappingProxyType({"indent": 1})
 
     DOLLAR_NUM = MappingProxyType({"num_format": "[$$-409]#,##0.00"})
