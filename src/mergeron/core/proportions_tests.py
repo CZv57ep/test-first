@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from importlib.metadata import version
 from typing import Literal, TypeVar
 
 import numpy as np
@@ -17,10 +16,9 @@ from numpy.typing import NBitBase, NDArray
 from scipy.optimize import OptimizeResult, root  # type: ignore
 from scipy.stats import beta, chi2, norm  # type: ignore
 
-from .. import _PKG_NAME  # noqa: TID252
+from .. import VERSION  # noqa: TID252
 
-__version__ = version(_PKG_NAME)
-
+__version__ = VERSION
 
 TI = TypeVar("TI", bound=NBitBase)
 

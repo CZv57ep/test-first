@@ -4,13 +4,12 @@ as necessary
 
 NOTES
 -----
-We drop reported row and column totals from source data for reducing stored data.
+Reported row and column totals from source data are not stored.
 
 """
 
 import shutil
 from collections.abc import Mapping, Sequence
-from importlib.metadata import version
 from operator import itemgetter
 from pathlib import Path
 from types import MappingProxyType
@@ -22,12 +21,13 @@ import numpy as np
 import re2 as re  # type: ignore
 import requests
 from bs4 import BeautifulSoup
+from icecream import ic  # type: ignore
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
 
-from .. import _PKG_NAME, DATA_DIR  # noqa: TID252
+from .. import DATA_DIR, VERSION  # noqa: TID252
 
-__version__ = version(_PKG_NAME)
+__version__ = VERSION
 
 m.patch()
 
@@ -36,11 +36,13 @@ if not FTCDATA_DIR.is_dir():
     FTCDATA_DIR.mkdir(parents=True)
 
 INVDATA_ARCHIVE_PATH = DATA_DIR / "ftc_invdata.msgpack"
-if not INVDATA_ARCHIVE_PATH.is_file():
-    if (
+if (
+    not INVDATA_ARCHIVE_PATH.is_file()
+    and (
         _bundled_copy := Path(__file__).parent.joinpath(INVDATA_ARCHIVE_PATH.name)
-    ).is_file():
-        shutil.copyfile(_bundled_copy, INVDATA_ARCHIVE_PATH)
+    ).is_file()
+):
+    shutil.copyfile(_bundled_copy, INVDATA_ARCHIVE_PATH)
 
 TABLE_NO_RE = re.compile(r"Table \d+\.\d+")
 TABLE_TYPES = ("ByHHIandDelta", "ByFirmCount")
@@ -86,8 +88,8 @@ CNT_FCOUNT_DICT = {
 
 
 class INVTableData(NamedTuple):
-    ind_grp: str
-    evid_cond: str
+    industry_group: str
+    additional_evidence: str
     data_array: NDArray[np.int64]
 
 
@@ -181,7 +183,9 @@ def construct_data(
             _aggr_tables_list = [
                 _t
                 for _t in _invdata["1996-2003"][_table_type]
-                if re.sub(r"\W", "", _invdata["1996-2003"][_table_type][_t].ind_grp)
+                if re.sub(
+                    r"\W", "", _invdata["1996-2003"][_table_type][_t].industry_group
+                )
                 not in _industry_exclusion_list
             ]
 
@@ -254,8 +258,8 @@ def _construct_new_period_data(
         for _table_no in _invdata_cuml[_table_type]:
             _invdata_cuml_sub_table = _invdata_cuml[_table_type][_table_no]
             _invdata_ind_group, _invdata_evid_cond, _invdata_cuml_array = (
-                _invdata_cuml_sub_table.ind_grp,
-                _invdata_cuml_sub_table.evid_cond,
+                _invdata_cuml_sub_table.industry_group,
+                _invdata_cuml_sub_table.additional_evidence,
                 _invdata_cuml_sub_table.data_array,
             )
 
@@ -337,7 +341,7 @@ def _construct_new_period_data(
                 #   _invdata_array_bld_enfcls < 0, _invdata_array_bld_enfcls, 0
                 # )
                 # if np.einsum('ij->', invdata_array_bld_tbc):
-                #     print(
+                #     ic(
                 #       f"{_data_period}, {_table_no}, {_invdata_ind_group}:",
                 #       abs(np.einsum('ij->', invdata_array_bld_tbc))
                 #       )
@@ -395,22 +399,23 @@ def _parse_invdata() -> INVData:
         by range of HHI and ∆HHI.
 
     """
-    import fitz  # type: ignore
-    # user must install pymupdf to make this function operable
-
-    _invdata_docnames: Sequence[str] = (
-        "040831horizmergersdata96-03.pdf",
-        "p035603horizmergerinvestigationdata1996-2005.pdf",
-        "081201hsrmergerdata.pdf",
-        "130104horizontalmergerreport.pdf",
+    raise ValueError(
+        "This function is defined here as documentation.\n"
+        "NOTE: License for `pymupdf`, upon which this function depends,"
+        " may be incompatible with the MIT license,"
+        " under which this pacakge is distributed."
+        " Making this fumction operable requires the user to modify"
+        " the source code as well as to install an additional package"
+        " not distributed with this package or included in its dependencies."
     )
+    import fitz  # type: ignore
+
+    _invdata_docnames = _download_invdata(FTCDATA_DIR)
 
     _invdata: dict[str, dict[str, dict[str, INVTableData]]] = {}
 
     for _invdata_docname in _invdata_docnames:
         _invdata_pdf_path = FTCDATA_DIR.joinpath(_invdata_docname)
-        if not _invdata_pdf_path.is_file():
-            _download_invdata(FTCDATA_DIR)
 
         _invdata_fitz = fitz.open(_invdata_pdf_path)
         _invdata_meta = _invdata_fitz.metadata
@@ -542,7 +547,7 @@ def _parse_table_blocks(
         _invdata_evid_cond = "Unrestricted on additional evidence"
 
     else:
-        # print(_table_blocks)
+        # ic(_table_blocks)
         _invdata_evid_cond = (
             _table_blocks[1][-3].strip()
             if _table_ser == 9
@@ -561,8 +566,8 @@ def _parse_table_blocks(
 
     _table_array = process_table_func(_table_blocks)
     if not isinstance(_table_array, np.ndarray) or _table_array.dtype != np.int64:
-        print(_table_num)
-        print(_table_blocks)
+        ic(_table_num)
+        ic(_table_blocks)
         raise ValueError
 
     _table_data = INVTableData(_invdata_ind_group, _invdata_evid_cond, _table_array)
@@ -610,7 +615,7 @@ def _process_table_blks_conc_type(
                 _col_totals = _row_array
             else:
                 _invdata_array = (
-                    np.row_stack((_invdata_array, _row_array))
+                    np.vstack((_invdata_array, _row_array))
                     if _invdata_array.shape
                     else _row_array
                 )
@@ -657,7 +662,7 @@ def _process_table_blks_cnt_type(
                 _col_totals = _row_list
             else:
                 _invdata_array = (
-                    np.row_stack((_invdata_array, _row_list))
+                    np.vstack((_invdata_array, _row_list))
                     if _invdata_array.shape
                     else _row_list
                 )
@@ -673,27 +678,43 @@ def _process_table_blks_cnt_type(
     return _invdata_array[np.argsort(_invdata_array[:, 0])]
 
 
-def _download_invdata(_dl_path: Path) -> list[Any]:
+def _download_invdata(_dl_path: Path = FTCDATA_DIR) -> tuple[str, ...]:
+    if not _dl_path.is_dir():
+        _dl_path.mkdir(parents=True)
+
     _invdata_homepage_urls = (
         "https://www.ftc.gov/reports/horizontal-merger-investigation-data-fiscal-years-1996-2003",
         "https://www.ftc.gov/reports/horizontal-merger-investigation-data-fiscal-years-1996-2005-0",
         "https://www.ftc.gov/reports/horizontal-merger-investigation-data-fiscal-years-1996-2007-0",
         "https://www.ftc.gov/reports/horizontal-merger-investigation-data-fiscal-years-1996-2011",
     )
-    _invdata_docnames = []
+    _invdata_docnames = (
+        "040831horizmergersdata96-03.pdf",
+        "p035603horizmergerinvestigationdata1996-2005.pdf",
+        "081201hsrmergerdata.pdf",
+        "130104horizontalmergerreport.pdf",
+    )
+
+    if all(
+        _dl_path.joinpath(_invdata_docname).is_file()
+        for _invdata_docname in _invdata_docnames
+    ):
+        return _invdata_docnames
+
+    _invdata_docnames_dl: tuple[str, ...] = ()
     for _invdata_homepage_url in _invdata_homepage_urls:
         _invdata_soup = BeautifulSoup(
             requests.get(_invdata_homepage_url, verify=True, timeout=60).text,
             "html.parser",
         )
         _invdata_attrs = [
-            (_g.get("href", ""), _g.get("title", ""))
+            (_g.get("title", ""), _g.get("href", ""))
             for _g in _invdata_soup.find_all("a")
             if _g.get("title", "") and _g.get("href", "").endswith(".pdf")
         ]
         for _invdata_attr in _invdata_attrs:
-            _invdata_link, _invdata_docname = _invdata_attr
-            _invdata_docnames += [_invdata_docname]
+            _invdata_docname, _invdata_link = _invdata_attr
+            _invdata_docnames_dl += (_invdata_docname,)
             with _dl_path.joinpath(_invdata_docname).open("wb") as _invdata_fh:
                 _invdata_fh.write(
                     requests.get(
@@ -701,4 +722,10 @@ def _download_invdata(_dl_path: Path) -> list[Any]:
                     ).content
                 )
 
-    return _invdata_docnames
+    return _invdata_docnames_dl
+
+
+if __name__ == "__main__":
+    print(
+        "This module defines functions for downloading and preparing FTC merger investigations data for further analysis."
+    )
