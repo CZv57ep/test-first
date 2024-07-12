@@ -5,31 +5,32 @@ Methods to generate data for analyzing merger enforcement policy.
 
 from __future__ import annotations
 
-from importlib.metadata import version
+from typing import NamedTuple
 
 import numpy as np
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from .. import _PKG_NAME, RECConstants  # noqa: TID252
+from .. import VERSION, RECConstants  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
     FM2Constants,
     MarketDataSample,
     MarketSpec,
-    PRIConstants,
+    PriceConstants,
     SHRConstants,
     SSZConstants,
 )
-from ._data_generation_functions import (
-    _gen_market_shares_dirichlet,  # noqa: F401 easter-egg for external modules
-    _gen_market_shares_uniform,  # noqa: F401 easter-egg for external modules
-    _gen_pcm_data,
-    _gen_price_data,
-    _gen_share_data,
-)
+from ._data_generation_functions import _gen_pcm_data, _gen_price_data, _gen_share_data
 
-__version__ = version(_PKG_NAME)
+__version__ = VERSION
+
+
+class SeedSequenceData(NamedTuple):
+    mktshr_rng_seed_seq: SeedSequence
+    pcm_rng_seed_seq: SeedSequence
+    fcount_rng_seed_seq: SeedSequence | None
+    pr_rng_seed_seq: SeedSequence | None
 
 
 def gen_market_sample(
@@ -53,7 +54,7 @@ def gen_market_sample(
     2.) price-cost margins
     3.) firm-counts, from :code:`[2, 2 + len(firm_counts_weights)]`,
     weighted by :code:`firm_counts_weights`, where relevant
-    4.) prices, if :code:`price_spec == PRIConstants.ZERO`.
+    4.) prices, if :code:`price_spec == PriceConstants.ZERO`.
 
     Parameters
     ----------
@@ -73,8 +74,6 @@ def gen_market_sample(
         in the sample
 
     """
-
-    _mkt_sample_spec = _mkt_sample_spec or MarketSpec()
 
     _recapture_form = _mkt_sample_spec.share_spec.recapture_form
     _recapture_rate = _mkt_sample_spec.share_spec.recapture_rate
@@ -141,9 +140,9 @@ def gen_market_sample(
     # Generate margin data
     _pcm_data = _gen_pcm_data(
         _mktshr_array[:, :2],
-        _mkt_sample_spec,
         _price_array,
         _aggregate_purchase_prob,
+        _mkt_sample_spec,
         _pcm_rng_seed_seq,
         nthreads,
     )
@@ -186,14 +185,14 @@ def gen_market_sample(
 def parse_seed_seq_list(
     _sseq_list: list[SeedSequence] | None,
     _mktshr_dist_type: SHRConstants,
-    _price_spec: PRIConstants,
+    _price_spec: PriceConstants,
     /,
-) -> tuple[SeedSequence, SeedSequence, SeedSequence | None, SeedSequence | None]:
+) -> SeedSequenceData:
     """Initialize RNG seed sequences to ensure independence of distinct random streams."""
     _fcount_rng_seed_seq: SeedSequence | None = None
     _pr_rng_seed_seq: SeedSequence | None = None
 
-    if _price_spec == PRIConstants.ZERO:
+    if _price_spec == PriceConstants.ZERO:
         _pr_rng_seed_seq = _sseq_list.pop() if _sseq_list else SeedSequence(pool_size=8)
 
     if _mktshr_dist_type == SHRConstants.UNI:
@@ -212,11 +211,8 @@ def parse_seed_seq_list(
             else (SeedSequence(pool_size=8) for _ in range(_seed_count))
         )
 
-    return (
-        _mktshr_rng_seed_seq,
-        _pcm_rng_seed_seq,
-        _fcount_rng_seed_seq,
-        _pr_rng_seed_seq,
+    return SeedSequenceData(
+        _mktshr_rng_seed_seq, _pcm_rng_seed_seq, _fcount_rng_seed_seq, _pr_rng_seed_seq
     )
 
 
@@ -230,7 +226,7 @@ def gen_divr_array(
     """
     Given merging-firm shares and related parameters, return diverion ratios.
 
-    If recapture is specified as "Outside-in" (RECConstants.OUTIN), then the
+    If recapture is specified as :attr:`mergeron.RECConstants.OUTIN`, then the
     choice-probability for the outside good must be supplied.
 
     Parameters

@@ -7,28 +7,26 @@ from __future__ import annotations
 
 import enum
 from dataclasses import dataclass
-from importlib.metadata import version
-from typing import ClassVar, Protocol, TypeVar
+from typing import ClassVar, Protocol
 
 import numpy as np
-from attrs import Attribute, define, field, frozen, validators
-from numpy.typing import NBitBase, NDArray
+from attrs import Attribute, cmp_using, define, field, frozen, validators
+from numpy.typing import NDArray
 
-from .. import _PKG_NAME, RECConstants, UPPAggrSelector  # noqa: TID252
+from .. import VERSION, RECConstants, UPPAggrSelector  # noqa: TID252
 from ..core.pseudorandom_numbers import DIST_PARMS_DEFAULT  # noqa: TID252
 
-__version__ = version(_PKG_NAME)
+__version__ = VERSION
 
 
 EMPTY_ARRAY_DEFAULT = np.zeros(2)
-FCOUNT_WTS_DEFAULT = ((_nr := np.arange(1, 6)[::-1]) / _nr.sum()).astype(np.float64)
-
-TF = TypeVar("TF", bound=NBitBase)
-TI = TypeVar("TI", bound=NBitBase)
+FCOUNT_WTS_DEFAULT = np.divide(
+    (_nr := np.arange(1, 6)[::-1]), _nr.sum(), dtype=np.float64
+)
 
 
 @enum.unique
-class PRIConstants(tuple[bool, str | None], enum.ReprEnum):
+class PriceConstants(tuple[bool, str | None], enum.ReprEnum):
     """Price specification.
 
     Whether prices are symmetric and, if not, the direction of correlation, if any.
@@ -38,7 +36,7 @@ class PRIConstants(tuple[bool, str | None], enum.ReprEnum):
     ZERO = (False, None)
     NEG = (False, "negative share-correlation")
     POS = (False, "positive share-correlation")
-    CSY = (False, "market-wide cost-symmetry")
+    # TODO: CSY = (False, "market-wide cost-symmetry")
 
 
 @enum.unique
@@ -46,7 +44,7 @@ class SHRConstants(enum.StrEnum):
     """Market share distributions."""
 
     UNI = "Uniform"
-    """Uniform distribution over the 3-simplex"""
+    R"""Uniform distribution over :math:`s_1 + s_2 \leqslant 1`"""
 
     DIR_FLAT = "Flat Dirichlet"
     """Shape parameter for all merging-firm-shares is unity (1)"""
@@ -87,48 +85,56 @@ class ShareSpec:
     """
 
     recapture_form: RECConstants
-    """see RECConstants"""
+    """See :class:`mergeron.RECConstants`"""
 
     recapture_rate: float | None
-    """A value between 0 and 1.
+    """A value between 0 and 1, typically 0.8.
 
-    None if market share specification requires direct generation of
-    outside good choice probabilities (RECConstants.OUTIN).
+    :code:`None` if market share specification requires direct generation of
+    outside good choice probabilities (:attr:`mergeron.RECConstants.OUTIN`).
 
     The recapture rate is usually calibrated to the numbers-equivalent of the
-    HHI threshold for the presumtion of harm from unilateral compoetitive effects
-    in published merger guidelines. Accordingly, values for the recapture rate may be:
+    HHI threshold for the presumtion of harm from unilateral competitive effects
+    in published merger guidelines. Accordingly, the recapture rate rounded to
+    the nearest 5% is:
 
-    * 0.855, **6-to-5 merger from symmetry**; US Guidelines, 1992, 2023
-    * 0.855, 6-to-5 merger from symmetry; EU Guidelines for horizontal mergers, 2004
-    * 0.82, **6-to-5 merger to symmetry**; EU Guidelines for horizontal mergers, 2004
-    * 0.80, 5-to-4 merger from symmetry; US Guidelines, 2010
-    * 0.78, **5-to-4 merger to symmetry**; US Guidelines, 2010
+    * 0.85, **7-to-6 merger from symmetry**; US Guidelines, 1992, 2023
+    * 0.80, **6-to-5 merger to symmetry**; EU Guidelines for horizontal mergers, 2004
+    * 0.80, 5-to-4 merger from symmetry
+    * 0.80, **5-to-4 merger to symmetry**; US Guidelines, 2010
 
-    Highlighting indicates hypothetical mergers close to the boundary of the presumption.
+    Highlighting indicates hypothetical mergers in the neighborhood of (the boundary of)
+    the Guidelines presumption of harm. (In the EU Guidelines, concentration measures serve as
+    screens for further investigation, rather than as the basis for presumptions of harm or
+    presumptions no harm.)
+
     """
 
     dist_type: SHRConstants
-    """see SHRConstants"""
+    """See :class:`mergeron.gen.SHRConstants`"""
 
-    dist_parms: NDArray[np.float64] | None
+    dist_parms: NDArray[np.float64] | None = field(
+        default=None, eq=cmp_using(eq=np.array_equal)
+    )
     """Parameters for tailoring market-share distribution
 
     For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
-    for Beta distribution, shape parameters, defaults to `(1, 1)`;
-    for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;
     for Dirichlet-type distributions, a vector of shape parameters of length
     no less than the length of firm-count weights below; defaults depend on
     type of Dirichlet-distribution specified.
 
     """
-    firm_counts_weights: NDArray[np.float64 | np.int64] | None
-    """relative or absolute frequencies of firm counts
+    firm_counts_weights: NDArray[np.float64 | np.int64] | None = field(
+        default=None, eq=cmp_using(eq=np.array_equal)
+    )
+    """Relative or absolute frequencies of firm counts
 
 
     Given frequencies are exogenous to generated market data sample;
-    defaults to FCOUNT_WTS_DEFAULT, which specifies firm-counts of 2 to 6
-    with weights in descending order from 5 to 1."""
+    for Dirichlet-type distributions, defaults to FCOUNT_WTS_DEFAULT, which specifies
+    firm-counts of 2 to 6 with weights in descending order from 5 to 1.
+
+    """
 
 
 @enum.unique
@@ -167,10 +173,10 @@ class PCMSpec:
     """
 
     firm2_pcm_constraint: FM2Constants
-    """See FM2Constants"""
+    """See :class:`mergeron.gen.FM2Constants`"""
 
     dist_type: PCMConstants
-    """See PCMConstants"""
+    """See :class:`mergeron.gen.PCMConstants`"""
 
     dist_parms: NDArray[np.float64] | None
     """Parameter specification for tailoring PCM distribution
@@ -179,6 +185,7 @@ class PCMSpec:
     for Beta distribution, shape parameters, defaults to `(1, 1)`;
     for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;
     for empirical distribution based on Damodaran margin data, optional, ignored
+
     """
 
 
@@ -303,31 +310,31 @@ class MarketSpec:
 
     share_spec: ShareSpec = field(
         kw_only=True,
-        default=ShareSpec(RECConstants.INOUT, 0.855, SHRConstants.UNI, None, None),
+        default=ShareSpec(RECConstants.INOUT, 0.85, SHRConstants.UNI, None, None),
         validator=[validators.instance_of(ShareSpec), _share_spec_validator],
     )
-    """Market-share specification, see definition of ShareSpec"""
+    """Market-share specification, see :class:`mergeron.gen.ShareSpec`"""
 
     pcm_spec: PCMSpec = field(
         kw_only=True,
         default=PCMSpec(FM2Constants.IID, PCMConstants.UNI, None),
         validator=[validators.instance_of(PCMSpec), _pcm_spec_validator],
     )
-    """Margin specification, see definition of PCMSpec"""
+    """Margin specification, see :class:`mergeron.gen.PCMSpec`"""
 
-    price_spec: PRIConstants = field(
+    price_spec: PriceConstants = field(
         kw_only=True,
-        default=PRIConstants.SYM,
-        validator=validators.instance_of(PRIConstants),
+        default=PriceConstants.SYM,
+        validator=validators.instance_of(PriceConstants),
     )
-    """Price specification, see PRIConstants"""
+    """Price specification, see :class:`mergeron.gen.PriceConstants`"""
 
     hsr_filing_test_type: SSZConstants = field(
         kw_only=True,
         default=SSZConstants.ONE,
         validator=validators.instance_of(SSZConstants),
     )
-    """Method for modeling HSR filing threholds, see SSZConstants"""
+    """Method for modeling HSR filing threholds, see :class:`mergeron.gen.SSZConstants`"""
 
 
 @enum.unique
@@ -456,8 +463,8 @@ class UPPTestsRaw:
 
     A test success is a draw ("market") that meeets the
     specified test criterion, and a test failure is
-    one that does not; test criteria are defined and
-    evaluated in:code:`guidelines_stats.gen_upp_arrays`.
+    one that does not; test criteria are evaluated in
+    :func:`enforcement_stats.gen_upp_arrays`.
     """
 
     guppi_test_simple: NDArray[np.bool_]
@@ -479,7 +486,7 @@ class UPPTestsRaw:
 class UPPTestsCounts:
     """Counts of markets resolved as specified
 
-    Resolution may be either "enforcement" or "clearance".
+    Resolution may be either :attr:`INVResolution.ENFT` or :attr:`INVResolution.CLRN`.
     """
 
     by_firm_count: NDArray[np.int64]

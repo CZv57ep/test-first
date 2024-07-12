@@ -5,18 +5,16 @@ Methods to generate data for analyzing merger enforcement policy.
 
 from __future__ import annotations
 
-from importlib.metadata import version
-
 from attrs import define
 from numpy.random import SeedSequence
 
-from .. import _PKG_NAME  # noqa: TID252
-from ..core import guidelines_boundaries as gbl  # noqa: TID252
+from .. import VERSION  # noqa: TID252
+from ..core.guidelines_boundaries import HMGThresholds  # noqa: TID252
 from . import MarketSpec, UPPTestRegime
 from .data_generation import gen_market_sample
 from .upp_tests import SaveData, invres_cnts, save_data_to_hdf5, sim_invres_cnts_ll
 
-__version__ = version(_PKG_NAME)
+__version__ = VERSION
 
 
 @define(slots=False)
@@ -50,7 +48,7 @@ class MarketSample(MarketSpec):
 
     def estimate_invres_counts(
         self,
-        _invres_parm_vec: gbl.HMGThresholds,
+        _invres_parm_vec: HMGThresholds,
         _upp_test_regime: UPPTestRegime,
         /,
         *,
@@ -73,7 +71,5 @@ class MarketSample(MarketSpec):
             self.invres_counts = invres_cnts(
                 self.data, _invres_parm_vec, _upp_test_regime
             )
-            if save_data_to_file:
-                save_data_to_hdf5(
-                    self.invres_counts, save_data_to_file=save_data_to_file
-                )
+        if save_data_to_file:
+            save_data_to_hdf5(self.invres_counts, save_data_to_file=save_data_to_file)

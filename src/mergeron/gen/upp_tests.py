@@ -1,24 +1,22 @@
 """
-Methods to estimate intrinsic clearnace rates and intrinsic enforcement rates
+Methods to compute intrinsic clearance rates and intrinsic enforcement rates
 from generated market data.
 
 """
 
 from collections.abc import Sequence
 from contextlib import suppress
-from importlib.metadata import version
 from pathlib import Path
 from typing import Literal, TypeAlias, TypedDict
 
 import numpy as np
 import tables as ptb  # type: ignore
+from icecream import ic  # type: ignore
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
-from mergeron.core.pseudorandom_numbers import TF, TI
-
-from .. import _PKG_NAME, RECConstants, UPPAggrSelector  # noqa: TID252
+from .. import VERSION, RECConstants, UPPAggrSelector  # noqa: TID252
 from ..core import guidelines_boundaries as gbl  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
@@ -31,10 +29,9 @@ from . import (
     UPPTestsRaw,
 )
 from . import data_generation as dgl
-from . import investigations_stats as isl
+from . import enforcement_stats as esl
 
-__version__ = version(_PKG_NAME)
-
+__version__ = VERSION
 
 ptb.parameters.MAX_NUMEXPR_THREADS = 8
 ptb.parameters.MAX_BLOSC_THREADS = 4
@@ -45,11 +42,11 @@ SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, ptb.Group]
 class INVRESCntsArgs(TypedDict, total=False):
     "Keyword arguments of function, :code:`sim_invres_cnts`"
 
-    saved_array_name_suffix: str
-    save_data_to_file: SaveData
     sample_size: int
     seed_seq_list: list[SeedSequence] | None
     nthreads: int
+    save_data_to_file: SaveData
+    saved_array_name_suffix: str
 
 
 def sim_invres_cnts_ll(
@@ -58,11 +55,11 @@ def sim_invres_cnts_ll(
     _sim_test_regime: UPPTestRegime,
     /,
     *,
-    saved_array_name_suffix: str = "",
-    save_data_to_file: SaveData = False,
     sample_size: int = 10**6,
     seed_seq_list: list[SeedSequence] | None = None,
     nthreads: int = 16,
+    save_data_to_file: SaveData = False,
+    saved_array_name_suffix: str = "",
 ) -> UPPTestsCounts:
     """A function to parallelize data-generation and testing
 
@@ -171,11 +168,11 @@ def sim_invres_cnts(
     _sim_test_regime: UPPTestRegime,
     /,
     *,
-    saved_array_name_suffix: str = "",
-    save_data_to_file: SaveData = False,
     sample_size: int = 10**6,
     seed_seq_list: list[SeedSequence] | None = None,
     nthreads: int = 16,
+    save_data_to_file: SaveData = False,
+    saved_array_name_suffix: str = "",
 ) -> UPPTestsCounts:
     # Generate market data
     _market_data_sample = dgl.gen_market_sample(
@@ -235,7 +232,7 @@ def invres_cnts(
         for _firm_cnt in 2 + np.arange(_max_firm_count):
             _firm_count_test = _fcounts == _firm_cnt
 
-            _invres_cnts_sim_byfirmcount_array = np.row_stack((
+            _invres_cnts_sim_byfirmcount_array = np.vstack((
                 _invres_cnts_sim_byfirmcount_array,
                 np.array([
                     _firm_cnt,
@@ -257,12 +254,12 @@ def invres_cnts(
         _invres_cnts_sim_byfirmcount_array[0] = 2
 
     # Clearance/enfrocement counts --- by delta
-    _hhi_delta_ranged = isl.hhi_delta_ranger(_hhi_delta)
+    _hhi_delta_ranged = esl.hhi_delta_ranger(_hhi_delta)
     _invres_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int64)
-    for _hhi_delta_lim in isl.HHI_DELTA_KNOTS[:-1]:
+    for _hhi_delta_lim in esl.HHI_DELTA_KNOTS[:-1]:
         _hhi_delta_test = _hhi_delta_ranged == _hhi_delta_lim
 
-        _invres_cnts_sim_bydelta_array = np.row_stack((
+        _invres_cnts_sim_bydelta_array = np.vstack((
             _invres_cnts_sim_bydelta_array,
             np.array([
                 _hhi_delta_lim,
@@ -280,13 +277,13 @@ def invres_cnts(
 
     # Clearance/enfrocement counts --- by zone
     try:
-        _hhi_zone_post_ranged = isl.hhi_zone_post_ranger(_hhi_post)
+        _hhi_zone_post_ranged = esl.hhi_zone_post_ranger(_hhi_post)
     except ValueError as _err:
-        print(_hhi_post)
+        ic(_hhi_post)
         raise _err
 
     _stats_byconczone_sim = -1 * np.ones(_stats_rowlen + 1, np.int64)
-    for _hhi_zone_post_knot in isl.HHI_POST_ZONE_KNOTS[:-1]:
+    for _hhi_zone_post_knot in esl.HHI_POST_ZONE_KNOTS[:-1]:
         _level_test = _hhi_zone_post_ranged == _hhi_zone_post_knot
 
         for _hhi_zone_delta_knot in [0, 100, 200]:
@@ -298,7 +295,7 @@ def invres_cnts(
 
             _conc_test = _level_test & _delta_test
 
-            _stats_byconczone_sim = np.row_stack((
+            _stats_byconczone_sim = np.vstack((
                 _stats_byconczone_sim,
                 np.array([
                     _hhi_zone_post_knot,
@@ -313,7 +310,7 @@ def invres_cnts(
                 ]),
             ))
 
-    _invres_cnts_sim_byconczone_array = isl.invres_cnts_byconczone(
+    _invres_cnts_sim_byconczone_array = esl.invres_cnts_byconczone(
         _stats_byconczone_sim[1:]
     )
     del _stats_byconczone_sim
@@ -472,11 +469,11 @@ def initialize_hd5(
         _h5_path.unlink()
     _h5_file = ptb.open_file(_h5_path, mode="w", title=_h5_title)
     _save_data_to_file: tuple[Literal[True], ptb.File, str] = (True, _h5_file, "/")
-    _next_subgroup_name = "invres_{}_{}_{}_{}".format(
+    _next_subgroup_name_root = "invres_{}_{}_{}_{}".format(
         _hmg_pub_year,
         *(getattr(_test_regime, _f.name).name for _f in _test_regime.__attrs_attrs__),
     )
-    return _save_data_to_file, _next_subgroup_name
+    return _save_data_to_file, _next_subgroup_name_root
 
 
 def save_data_to_hdf5(
@@ -504,7 +501,7 @@ def save_data_to_hdf5(
 
 
 def save_array_to_hdf5(
-    _array_obj: NDArray[np.floating[TF] | np.integer[TI] | np.bool_],
+    _array_obj: NDArray[np.float64 | np.int64 | np.bool_],
     _array_name: str,
     _h5_group: ptb.Group,
     _h5_file: ptb.File,
@@ -525,3 +522,9 @@ def save_array_to_hdf5(
         filters=ptb.Filters(complevel=3, complib="blosc:lz4hc", fletcher32=True),
     )
     _h5_array[:] = _array_obj
+
+
+if __name__ == "__main__":
+    print(
+        "This module defines classes with methods for generating UPP test arrays and UPP test-counts arrays on given data."
+    )
