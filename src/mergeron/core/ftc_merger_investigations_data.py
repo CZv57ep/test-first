@@ -10,6 +10,7 @@ Reported row and column totals from source data are not stored.
 
 import shutil
 from collections.abc import Mapping, Sequence
+from importlib import resources
 from operator import itemgetter
 from pathlib import Path
 from types import MappingProxyType
@@ -25,7 +26,7 @@ from icecream import ic  # type: ignore
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
 
-from .. import DATA_DIR, VERSION  # noqa: TID252
+from .. import _PKG_NAME, DATA_DIR, VERSION  # noqa: TID252
 
 __version__ = VERSION
 
@@ -39,10 +40,13 @@ INVDATA_ARCHIVE_PATH = DATA_DIR / "ftc_invdata.msgpack"
 if (
     not INVDATA_ARCHIVE_PATH.is_file()
     and (
-        _bundled_copy := Path(__file__).parent.joinpath(INVDATA_ARCHIVE_PATH.name)
+        _bundled_copy := resources.files(f"{_PKG_NAME}.data").joinpath(
+            INVDATA_ARCHIVE_PATH.name
+        )
     ).is_file()
 ):
-    shutil.copy2(_bundled_copy, INVDATA_ARCHIVE_PATH)
+    with resources.as_file(_bundled_copy) as _bundled_copy_path:
+        shutil.copy2(_bundled_copy_path, INVDATA_ARCHIVE_PATH)
 
 TABLE_NO_RE = re.compile(r"Table \d+\.\d+")
 TABLE_TYPES = ("ByHHIandDelta", "ByFirmCount")

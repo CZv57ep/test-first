@@ -109,7 +109,7 @@ class StatsContainer(SimpleNamespace):
 # Define the latex jinja environment
 # http://eosrei.net/articles/2015/11/latex-templates-python-and-jinja2-generate-pdfs
 with resources.as_file(
-    resources.files("mergeron.data.jinja2_LaTeX_templates")
+    resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates")
 ) as _tmpl_folder:
     latex_jinja_env = Environment(
         block_start_string=R"((*",
