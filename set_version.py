@@ -23,8 +23,8 @@ args = parser.parse_args()
 
 tsn = pendulum.today()
 
-rc = run(["git", "status"], check=True, stdout=PIPE, stderr=STDOUT, text=True)  # noqa: S603, S607
-if not re.search("nothing to commit, working tree clean", rc.stdout):
+rc = run(["git", "status", "-uno"], check=True, stdout=PIPE, stderr=STDOUT, text=True)  # noqa: S603, S607
+if not re.search("nothing to commit", rc.stdout):
     raise RuntimeError(
         "Repository has uncommitted changes. Commit changes before updating package version."
     )
