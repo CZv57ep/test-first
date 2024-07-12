@@ -47,7 +47,7 @@ from numpy.typing import NDArray
 from scipy import stats  # type: ignore
 from xlrd import open_workbook  # type: ignore
 
-from .. import DATA_DIR, VERSION  # noqa: TID252
+from .. import _PKG_NAME, DATA_DIR, VERSION  # noqa: TID252
 
 __version__ = VERSION
 
@@ -102,10 +102,11 @@ def mgn_data_getter(
                 "Using bundled copy."
             )
             if not _mgn_path.is_file():
-                _mgn_data_archive = (
-                    resources.files("mergeron.data") / "damodaran_margin_data.xls"
-                )
-                with resources.as_file(_mgn_data_archive) as _mgn_data_archive_path:
+                with resources.as_file(
+                    resources.files(f"{_PKG_NAME}.data").joinpath(
+                        "damodaran_margin_data.xls"
+                    )
+                ) as _mgn_data_archive_path:
                     shutil.copy2(_mgn_data_archive_path, _mgn_path)
         else:
             raise _err

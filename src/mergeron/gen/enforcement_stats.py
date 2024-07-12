@@ -108,39 +108,42 @@ class StatsContainer(SimpleNamespace):
 
 # Define the latex jinja environment
 # http://eosrei.net/articles/2015/11/latex-templates-python-and-jinja2-generate-pdfs
-latex_jinja_env = Environment(
-    block_start_string=R"((*",
-    block_end_string="*))",
-    variable_start_string=R"\JINVAR{",
-    variable_end_string="}",
-    comment_start_string=R"((#",  # r'#{',
-    comment_end_string=R"#))",  # '}',
-    line_statement_prefix="##",
-    line_comment_prefix="%#",
-    trim_blocks=True,
-    lstrip_blocks=True,
-    autoescape=select_autoescape(disabled_extensions=("tex.jinja2",)),
-    loader=FileSystemLoader(
-        Path(__file__).parents[1] / "data" / "jinja2_LaTeX_templates"
-    ),
-)
+with resources.as_file(
+    resources.files("mergeron.data.jinja2_LaTeX_templates")
+) as _tmpl_folder:
+    latex_jinja_env = Environment(
+        block_start_string=R"((*",
+        block_end_string="*))",
+        variable_start_string=R"\JINVAR{",
+        variable_end_string="}",
+        comment_start_string=R"((#",  # r'#{',
+        comment_end_string=R"#))",  # '}',
+        line_statement_prefix="##",
+        line_comment_prefix="%#",
+        trim_blocks=True,
+        lstrip_blocks=True,
+        autoescape=select_autoescape(disabled_extensions=("tex.jinja2",)),
+        loader=FileSystemLoader(_tmpl_folder),
+    )
 
 # Place files related to rendering latex in output data directory
 if not (_out_path := DATA_DIR.joinpath(f"{_PKG_NAME}.cls")).is_file():
-    shutil.copyfileobj(
-        resources("data", "jinja2_LaTeX_templates", "mergeron.cls"), _out_path, -1
-    )
+    with resources.as_file(
+        resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates").joinpath(
+            "{_PKG_NAME}.cls"
+        )
+    ) as _in_path:
+        shutil.copy2(_in_path, _out_path)
 
 
 if not (_DOTTEX := DATA_DIR / Rf"{_PKG_NAME}_TikZTableSettings.tex").is_file():
     # Write to dottex
-    with _DOTTEX.open("w", encoding="UTF-8") as _table_helper_dottex:
-        _table_helper_dottex.write(
-            latex_jinja_env.get_template("setup_tikz_tables.tex.jinja2").render(
-                tmpl_data=StatsContainer()
-            )
+    with resources.as_file(
+        resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates").joinpath(
+            "setup_tikz_tables.tex"
         )
-        print("\n", file=_table_helper_dottex)
+    ) as _tex_path:
+        shutil.copy2(_tex_path, _DOTTEX)
 
 
 # Parameters and functions to interpolate selected HHI and ΔHHI values
@@ -688,13 +691,13 @@ def render_table_pdf(
         )
         print("\n", file=_table_coll_file)
 
-    _run_rc = subprocess.run(
+    _run_rc = subprocess.run(  # noqa: S603
         f"latexmk -f -quiet -synctex=0 -interaction=nonstopmode -file-line-error -pdflua {_table_coll_path}".split(),
         check=True,
         cwd=DATA_DIR,
     )
     if _run_rc:
-        subprocess.run("latexmk -quiet -c".split(), check=True, cwd=DATA_DIR)
+        subprocess.run("latexmk -quiet -c".split(), check=True, cwd=DATA_DIR)  # noqa: S603
     del _run_rc
 
     print(

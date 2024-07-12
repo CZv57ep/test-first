@@ -1,11 +1,7 @@
-((# We force some color defintions here. These could be set in package code. #))
-((* set obs_header_color = "0a6c97" *))
-((* set sim_header_color = "646464" *))
-((* set data_fill_color = "dfeadf" *))
 % Tables in tikz, but first we need to define some colors for nonwhite text backgrounds
-\definecolor{OBSHDRFill}{HTML}{\JINVAR{- obs_header_color -}}
-\definecolor{SIMHDRFill}{HTML}{\JINVAR{- sim_header_color -}}
-\definecolor{DataFill}{HTML}{\JINVAR{- data_fill_color -}}
+\definecolor{OBSHDRFill}{HTML}{0a6c97}
+\definecolor{SIMHDRFill}{HTML}{646464}
+\definecolor{DataFill}{HTML}{dfeadf}
 % The below are definition's from Paul Tol's website, https://personal.sron.nl/~pault/
 \definecolor{VibrBlue}{HTML}{0077bb}
 \definecolor{BrightGreen}{HTML}{228833}
@@ -24,61 +20,60 @@
 \tikzset{
     % If you only have numbers, text depth = 0ex; if text, text depth = 0.25ex, (may need tweaking for alignment across cells)
     anytext/.style = {
-        align = center, 
-        font = \sffamily\scriptsize, 
-        inner sep = 0pt, 
-        text depth = 0pt, 
-        },  % 
+            align = center,
+            font = \sffamily\scriptsize,
+            inner sep = 0pt,
+            text depth = 0pt,
+        },  %
     hdrtext/.style = {
-        anytext,
-        text = white, 
-        fill = OBSHDRFill,
-        }, % 
+            anytext,
+            text = white,
+            fill = OBSHDRFill,
+        }, %
     notetext/.style = {
-        anytext,
-        font = \sffamily\tiny, 
-        align = left,
+            anytext,
+            font = \sffamily\tiny,
+            align = left,
         },
     anytable/.style = {
-        matrix of nodes,
-        nodes in empty cells,
-        column sep = -1.0\pgflinewidth,
-        row sep = -1.0\pgflinewidth,
-        inner sep = -0.25\pgflinewidth, 
-        outer sep = -0.25\pgflinewidth,
-        nodes = {anchor = center, minimum height = 12.5pt,}
+            matrix of nodes,
+            nodes in empty cells,
+            column sep = -1.0\pgflinewidth,
+            row sep = -1.0\pgflinewidth,
+            inner sep = -0.25\pgflinewidth,
+            outer sep = -0.25\pgflinewidth,
+            nodes = {anchor = center, minimum height = 12.5pt,}
         },
     datatable/.style = {
-        anytable,
-        nodes = {
-            font = \sffamily\scriptsize\addfontfeatures{Numbers={Monospaced,Lining}},
-            align = right,
-            inner xsep = 3pt,
-            inner ysep = 0pt,
-            text depth = 0pt,
-            draw = none,
-            fill = none,
-            },
-        every even row/.style = {
-            nodes = {fill = DataFill}
-            },
+            anytable,
+            nodes = {
+                    font = \sffamily\scriptsize\addfontfeatures{Numbers={Monospaced,Lining}},
+                    align = right,
+                    inner xsep = 3pt,
+                    inner ysep = 0pt,
+                    text depth = 0pt,
+                    draw = none,
+                    fill = none,
+                },
+            every even row/.style = {
+                    nodes = {fill = DataFill}
+                },
         },
     hrow/.style = {
-        anytable,
-        nodes = {
-            hdrtext, 
-            draw = none, 
-            fill = OBSHDRFill, 
-            text width = 40pt,
-            },
+            anytable,
+            nodes = {
+                    hdrtext,
+                    draw = none,
+                    fill = OBSHDRFill,
+                    text width = 40pt,
+                },
         },
     hcol/.style = {
-        hrow, 
-        nodes = {text width = 60pt,},
+            hrow,
+            nodes = {text width = 60pt,},
         },
-    }
+}
 % Define layers for later reference
 % https://tex.stackexchange.com/questions/40840/put-a-node-behind-another-in-a-tikz-diagram
 \pgfdeclarelayer{background}
 \pgfsetlayers{background,main}
-    
