@@ -77,7 +77,6 @@ def mgn_data_getter(
         if _data_archive_path.is_file():
             _data_archive_path.unlink()
 
-    _REQ_TIMEOUT = (9.05, 27)
     try:
         _chunk_size = 1024 * 1024
         with (
@@ -94,14 +93,15 @@ def mgn_data_getter(
 
     except urllib3.exceptions.MaxRetryError as _err:
         if isinstance(_err.__cause__, urllib3.exceptions.SSLError):
-            # Works fine with other sites secured with Internet2 certificates,
-            # such as, https://snap.stanford.edu/data/web-Stanford.txt.gz
+            # Works fine with other sites secured with certificates
+            # from the Internet2 CA, such as,
+            # https://snap.stanford.edu/data/web-Stanford.txt.gz
             print(
                 f"WARNING: Could not establish secure connection to, {_mgn_urlstr}."
                 "Using bundled copy."
             )
             if not _mgn_path.is_file():
-                shutil.copyfile(Path(__file__).parent / _mgn_path.name, _mgn_path)
+                shutil.copy2(Path(__file__).parent / _mgn_path.name, _mgn_path)
         else:
             raise _err
 

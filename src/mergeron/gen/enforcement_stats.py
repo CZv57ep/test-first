@@ -124,7 +124,7 @@ latex_jinja_env = Environment(
 
 # Place files related to rendering latex in output data directory
 if not (_out_path := DATA_DIR.joinpath(f"{_PKG_NAME}.cls")).is_file():
-    shutil.copyfile(
+    shutil.copy(
         Path(__file__).parents[1].joinpath("jinja_LaTex_templates", "mergeron.cls"),
         _out_path,
     )

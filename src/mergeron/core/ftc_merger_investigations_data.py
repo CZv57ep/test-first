@@ -42,7 +42,7 @@ if (
         _bundled_copy := Path(__file__).parent.joinpath(INVDATA_ARCHIVE_PATH.name)
     ).is_file()
 ):
-    shutil.copyfile(_bundled_copy, INVDATA_ARCHIVE_PATH)
+    shutil.copy2(_bundled_copy, INVDATA_ARCHIVE_PATH)
 
 TABLE_NO_RE = re.compile(r"Table \d+\.\d+")
 TABLE_TYPES = ("ByHHIandDelta", "ByFirmCount")
