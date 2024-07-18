@@ -71,10 +71,10 @@ class CFmt(dict, Enum):  # type: ignore
     HDR_BORDER: ClassVar = TOP_BORDER | BOT_BORDER
 
 
-def matrix_to_sheet(
+def array_to_sheet(
     _xl_book: xlsxwriter.workbook.Workbook,
     _xl_sheet: xlsxwriter.worksheet.Worksheet,
-    _data_table: npt.ArrayLike,
+    _data_table: Sequence[Any] | npt.NDArray[Any],
     _row_id: int,
     _col_id: int = 0,
     /,
@@ -116,45 +116,34 @@ def matrix_to_sheet(
         Tuple giving address of cell (at left) below range written
 
     """
-    _data_array: npt.NDArray[Any] = np.array(_data_table)
-    del _data_table
-
-    if not len(_data_array.shape) == 2:
-        raise ValueError(
-            "Array to write must be a 2-D array, but"
-            f"the given array has shape, {_data_array.shape}."
-        )
 
     # Get the array dimensions and row and column numbers for Excel
-    _bottom_row_id: int = _row_id + _data_array.shape[0]
-    _right_column_id: int = _col_id + _data_array.shape[1]
+    _num_rows = len(_data_table[0])
+    _bottom_row_id: int = _row_id + _num_rows
+    _right_column_id: int = 0
 
     if isinstance(cell_format, tuple):
         ensure_cell_format_spec_tuple(cell_format)
-        if not len(cell_format) == len(_data_array[0]):
+        if not len(cell_format) == len(_data_table[0]):
             raise ValueError("Format tuple does not match data in length.")
         _cell_format: Sequence[CFmt] = cell_format
     elif isinstance(cell_format, CFmt):
-        _cell_format = (cell_format,) * len(_data_array[0])
+        _cell_format = (cell_format,) * len(_data_table[0])
     else:
-        _cell_format = (CFmt.XL_DEFAULT,) * len(_data_array[0])
+        _cell_format = (CFmt.XL_DEFAULT,) * len(_data_table[0])
 
-    for _cell_row in range(_row_id, _bottom_row_id):
-        for _cell_col in range(_col_id, _right_column_id):
+    for _ri, _rv in enumerate(_data_table):
+        for _ci, _cv in enumerate(_rv):
             _cell_fmt = (
-                (_cell_format[_cell_col - _col_id], CFmt.BAR_FILL)
-                if green_bar_flag and (_cell_row - _row_id) % 2
-                else _cell_format[_cell_col - _col_id]
+                (_cell_format[_ci], CFmt.BAR_FILL)
+                if green_bar_flag and _ri % 2
+                else _cell_format[_ci]
             )
 
             scalar_to_sheet(
-                _xl_book,
-                _xl_sheet,
-                _cell_row,
-                _cell_col,
-                _data_array[_cell_row - _row_id, _cell_col - _col_id],
-                _cell_fmt,
+                _xl_book, _xl_sheet, _row_id + _ri, _col_id + _ci, _cv, _cell_fmt
             )
+        _right_column_id = _ci + 1 if _ci > _right_column_id else _right_column_id
 
     return _bottom_row_id, _right_column_id
 
@@ -203,7 +192,12 @@ def scalar_to_sheet(
     else:
         raise ValueError("Incorrect specification for Excel cell data.")
 
-    _xl_sheet.write(*_cell_addr, _cell_val, xl_fmt(_xl_book, _cell_fmt))
+    if isinstance(_cell_val, str):
+        _xl_sheet.write_string(*_cell_addr, _cell_val, xl_fmt(_xl_book, _cell_fmt))
+    else:
+        _xl_sheet.write(
+            *_cell_addr, repr(_cell_val) if np.ndim(_cell_val) else _cell_val
+        )
 
 
 def xl_fmt(

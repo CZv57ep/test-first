@@ -40,7 +40,7 @@ def test_excel(excel_file_path: Path) -> None:
             (xlh.CFmt.HDR_BORDER, xlh.CFmt.A_RIGHT),
         )
 
-    xlh.matrix_to_sheet(
+    xlh.array_to_sheet(
         _xl_book,
         _xl_sheet,
         _data_val,
