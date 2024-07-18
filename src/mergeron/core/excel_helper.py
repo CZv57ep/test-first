@@ -8,26 +8,21 @@ Includes a flexible system of defining cell formats.
 
 from __future__ import annotations
 
-import enum
 from collections.abc import Mapping, Sequence
-from types import MappingProxyType
-from typing import Any
+from typing import Any, ClassVar
 
 import numpy as np
 import numpy.typing as npt
 import xlsxwriter  # type: ignore
+from aenum import Enum, unique  # type: ignore
 
 from .. import VERSION  # noqa: TID252
 
 __version__ = VERSION
 
 
-@enum.unique
-class CFmtParent(dict[str, Any], enum.ReprEnum):  # type: ignore
-    """Unique mappings defining xlsxwirter Workbook formats"""
-
-
-class CFmt(CFmtParent):
+@unique
+class CFmt(Enum):  # type: ignore
     """
     Initialize cell formats for xlsxwriter.
 
@@ -39,32 +34,34 @@ class CFmt(CFmtParent):
     See, https://xlsxwriter.readthedocs.io/format.html
     """
 
-    XL_DEFAULT = MappingProxyType({"font_name": "Calibri", "font_size": 11})
-    XL_DEFAULT_2003 = MappingProxyType({"font_name": "Arial", "font_size": 10})
+    XL_DEFAULT: ClassVar = {"font_name": "Calibri", "font_size": 11}
+    XL_DEFAULT_2003: ClassVar = {"font_name": "Arial", "font_size": 10}
 
-    A_CTR = MappingProxyType({"align": "center"})
-    A_CTR_ACROSS = MappingProxyType({"align": "center_across"})
-    A_LEFT = MappingProxyType({"align": "left"})
-    A_RIGHT = MappingProxyType({"align": "right"})
+    A_CTR: ClassVar = {"align": "center"}
+    A_CTR_ACROSS: ClassVar = {"align": "center_across"}
+    A_LEFT: ClassVar = {"align": "left"}
+    A_RIGHT: ClassVar = {"align": "right"}
 
-    BOLD = MappingProxyType({"bold": True})
-    ITALIC = MappingProxyType({"italic": True})
-    ULINE = MappingProxyType({"underline": True})
+    BOLD: ClassVar = {"bold": True}
+    ITALIC: ClassVar = {"italic": True}
+    ULINE: ClassVar = {"underline": True}
 
-    TEXT_WRAP = MappingProxyType({"text_wrap": True})
-    TEXT_ROTATE = MappingProxyType({"rotation": 90})
-    IND_1 = MappingProxyType({"indent": 1})
+    TEXT_WRAP: ClassVar = {"text_wrap": True}
+    TEXT_ROTATE: ClassVar = {"rotation": 90}
+    IND_1: ClassVar = {"indent": 1}
 
-    DOLLAR_NUM = MappingProxyType({"num_format": "[$$-409]#,##0.00"})
-    DT_NUM = MappingProxyType({"num_format": "mm/dd/yyyy"})
-    QTY_NUM = MappingProxyType({"num_format": "#,##0.0"})
-    PCT_NUM = MappingProxyType({"num_format": "##0.000000%"})
-    AREA_NUM = MappingProxyType({"num_format": "0.00000000"})
+    DOLLAR_NUM: ClassVar = {"num_format": "[$$-409]#,##0.00"}
+    DT_NUM: ClassVar = {"num_format": "mm/dd/yyyy"}
+    QTY_NUM: ClassVar = {"num_format": "#,##0.0"}
+    PCT_NUM: ClassVar = {"num_format": "##0.000000%"}
+    AREA_NUM: ClassVar = {"num_format": "0.00000000"}
 
-    BAR_FILL = MappingProxyType({"pattern": 1, "bg_color": "dfeadf"})
-    BOT_BORDER = MappingProxyType({"bottom": 1, "bottom_color": "000000"})
-    TOP_BORDER = MappingProxyType({"top": 1, "top_color": "000000"})
-    HDR_BORDER = TOP_BORDER | BOT_BORDER
+    BAR_FILL: ClassVar = {"pattern": 1, "bg_color": "dfeadf"}
+    HDR_FILL: ClassVar = {"pattern": 1, "bg_color": "999999"}
+
+    BOT_BORDER: ClassVar = {"bottom": 1, "bottom_color": "000000"}
+    TOP_BORDER: ClassVar = {"top": 1, "top_color": "000000"}
+    HDR_BORDER: ClassVar = TOP_BORDER | BOT_BORDER
 
 
 def matrix_to_sheet(
@@ -206,7 +203,7 @@ def xl_fmt(
     _xl_book: xlsxwriter.Workbook, _cell_fmt: Sequence[CFmt] | CFmt | None, /
 ) -> xlsxwriter.format.Format:
     """
-    Return :code:`xlsxwriter` `Format` object given a CFmt enum, or tuple thereof.
+    Return :code:`xlsxwriter` `Format` object given a CFmt aenum, or tuple thereof.
 
     Parameters
     ----------
@@ -214,14 +211,14 @@ def xl_fmt(
         :code:`xlsxwriter.Workbook` object
 
     _cell_fmt
-        :code:`CFmt` enum object, or tuple thereof
+        :code:`CFmt` aenum object, or tuple thereof
 
     Returns
     -------
         :code:`xlsxwriter` `Format`  object
 
     """
-    _cell_fmt_dict: Mapping[str, Any] = MappingProxyType({})
+    _cell_fmt_dict: Mapping[str, Any] = {}
     if isinstance(_cell_fmt, tuple):
         ensure_cell_format_spec_tuple(_cell_fmt)
         for _cf in _cell_fmt:
