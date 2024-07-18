@@ -22,7 +22,7 @@ __version__ = VERSION
 
 
 @unique
-class CFmt(Enum):  # type: ignore
+class CFmt(dict, Enum):  # type: ignore
     """
     Initialize cell formats for xlsxwriter.
 
