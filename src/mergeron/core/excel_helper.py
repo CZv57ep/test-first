@@ -43,6 +43,7 @@ class CFmt(Enum):  # type: ignore
     A_RIGHT: ClassVar = {"align": "right"}
 
     BOLD: ClassVar = {"bold": True}
+    BOLD_ITALIC: ClassVar = {"bold": True, "italic": True}
     ITALIC: ClassVar = {"italic": True}
     ULINE: ClassVar = {"underline": True}
 
@@ -53,12 +54,18 @@ class CFmt(Enum):  # type: ignore
     DOLLAR_NUM: ClassVar = {"num_format": "[$$-409]#,##0.00"}
     DT_NUM: ClassVar = {"num_format": "mm/dd/yyyy"}
     QTY_NUM: ClassVar = {"num_format": "#,##0.0"}
-    PCT_NUM: ClassVar = {"num_format": "##0.000000%"}
+    PCT_NUM: ClassVar = {"num_format": "##0%"}
+    PCT2_NUM: ClassVar = {"num_format": "##0.00%"}
+    PCT4_NUM: ClassVar = {"num_format": "##0.0000%"}
+    PCT6_NUM: ClassVar = {"num_format": "##0.000000%"}
+    PCT8_NUM: ClassVar = {"num_format": "##0.00000000%"}
     AREA_NUM: ClassVar = {"num_format": "0.00000000"}
 
     BAR_FILL: ClassVar = {"pattern": 1, "bg_color": "dfeadf"}
     HDR_FILL: ClassVar = {"pattern": 1, "bg_color": "999999"}
 
+    LEFT_BORDER: ClassVar = {"left": 1, "left_color": "000000"}
+    RIGHT_BORDER: ClassVar = {"right": 1, "right_color": "000000"}
     BOT_BORDER: ClassVar = {"bottom": 1, "bottom_color": "000000"}
     TOP_BORDER: ClassVar = {"top": 1, "top_color": "000000"}
     HDR_BORDER: ClassVar = TOP_BORDER | BOT_BORDER
