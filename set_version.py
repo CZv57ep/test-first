@@ -29,6 +29,9 @@ if not re.search("nothing to commit", rc.stdout):
         "Repository has uncommitted changes. Commit changes before updating package version."
     )
 
+# Update README.rst from the docs version
+strip_sphinx_pat = re.compile(r":(attr|class|meth|mod):")
+Path("./README.rst").write_text(strip_sphinx_pat.sub("", Path("./docs/source/README.rst").read_text()))
 
 def _get_pkg_version() -> str:
     return run(  # noqa: S603
