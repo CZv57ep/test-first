@@ -196,7 +196,9 @@ def scalar_to_sheet(
         _xl_sheet.write_string(*_cell_addr, _cell_val, xl_fmt(_xl_book, _cell_fmt))
     else:
         _xl_sheet.write(
-            *_cell_addr, repr(_cell_val) if np.ndim(_cell_val) else _cell_val
+            *_cell_addr,
+            repr(_cell_val) if np.ndim(_cell_val) else _cell_val,
+            xl_fmt(_xl_book, _cell_fmt),
         )
 
 
