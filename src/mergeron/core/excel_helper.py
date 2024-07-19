@@ -118,7 +118,7 @@ def write_header(
         "".join([
             f"&L{left_header}" if left_header else "",
             f"&C{center_header}" if center_header else "",
-            f"&{right_header}" if right_header else "",
+            f"&R{right_header}" if right_header else "",
         ])
     )
 
@@ -161,7 +161,7 @@ def write_footer(
         "".join([
             f"&L{left_footer}" if left_footer else "",
             f"&C{center_footer}" if center_footer else "",
-            f"&{right_footer}" if right_footer else "",
+            f"&R{right_footer}" if right_footer else "",
         ])
     )
 
