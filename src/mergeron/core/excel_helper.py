@@ -4,6 +4,13 @@ the third-party package, `xlsxwriter`.
 
 Includes a flexible system of defining cell formats.
 
+NOTES
+-----
+
+This module is desinged for producing formatted summary output. For
+writing bulk data to Excel, facilities provided in third-party packages
+such as `polars` likely provide better performance.
+
 """
 
 from __future__ import annotations
@@ -31,7 +38,11 @@ class CFmt(dict, Enum):  # type: ignore
     as xlsxWriter.Workbook.Format objects for writing
     cell values to formatted cells in a spreadsheet.
 
-    See, https://xlsxwriter.readthedocs.io/format.html
+    NOTES
+    -----
+
+    For more information about xlsxwriter's cell formats,
+    see, https://xlsxwriter.readthedocs.io/format.html
     """
 
     XL_DEFAULT: ClassVar = {"font_name": "Calibri", "font_size": 11}
@@ -71,6 +82,90 @@ class CFmt(dict, Enum):  # type: ignore
     HDR_BORDER: ClassVar = TOP_BORDER | BOT_BORDER
 
 
+def write_header(
+    _xl_sheet: xlsxwriter.worksheet.Worksheet,
+    /,
+    *,
+    center_header: str | None = None,
+    left_header: str | None = None,
+    right_header: str | None = None,
+) -> None:
+    """Write header text to given worksheet.
+
+    Parameters
+    ----------
+    _xl_sheet
+        Worksheet object
+    center_header
+        Text for center header
+    left_header
+        Text for left header
+    right_header
+        Text for right header
+
+    Raises
+    ------
+    ValueError
+        Must specify at least one header
+
+    Returns
+    -------
+    None
+    """
+    if not any((center_header, left_header, right_header)):
+        raise ValueError("must specify at least one header")
+    _xl_sheet.set_footer(
+        "".join([
+            f"&L{left_header}" if left_header else "",
+            f"&C{center_header}" if center_header else "",
+            f"&{right_header}" if right_header else "",
+        ])
+    )
+
+
+def write_footer(
+    _xl_sheet: xlsxwriter.worksheet.Worksheet,
+    /,
+    *,
+    center_footer: str | None = None,
+    left_footer: str | None = None,
+    right_footer: str | None = None,
+) -> None:
+    """Write footer text to given worksheet.
+
+    Parameters
+    ----------
+    _xl_sheet
+        Worksheet object
+    center_footer
+        Text for center footer
+    left_footer
+        Text for left footer
+    right_footer
+        Text for right footer
+
+    Raises
+    ------
+    ValueError
+        Must specify at least one footer
+
+    Returns
+    -------
+    None
+    """
+
+    if not any((center_footer, left_footer, right_footer)):
+        raise ValueError("must specify at least one footer")
+
+    _xl_sheet.set_footer(
+        "".join([
+            f"&L{left_footer}" if left_footer else "",
+            f"&C{center_footer}" if center_footer else "",
+            f"&{right_footer}" if right_footer else "",
+        ])
+    )
+
+
 def array_to_sheet(
     _xl_book: xlsxwriter.workbook.Workbook,
     _xl_sheet: xlsxwriter.worksheet.Worksheet,
@@ -81,6 +176,7 @@ def array_to_sheet(
     *,
     cell_format: Sequence[CFmt] | CFmt | None = None,
     green_bar_flag: bool = True,
+    ragged_flag: bool = True,
 ) -> tuple[int, int]:
     """
     Write a 2-D array to a worksheet.
@@ -111,16 +207,22 @@ def array_to_sheet(
     green_bar_flag
         Whether to highlight alternating rows as in green bar paper
 
+    Raises
+    ------
+    ValueError
+        If format tuple does not match data in length
+
     Returns
     -------
-        Tuple giving address of cell (at left) below range written
+        Tuple giving address of cell at right below and after range written
 
     """
 
     # Get the array dimensions and row and column numbers for Excel
-    _num_rows = len(_data_table[0])
-    _bottom_row_id: int = _row_id + _num_rows
-    _right_column_id: int = 0
+    _num_rows = len(_data_table)
+    _bottom_row_id = _row_id + _num_rows
+    _num_cols = len(_data_table[0])
+    _right_column_id = _col_id + _num_cols
 
     if isinstance(cell_format, tuple):
         ensure_cell_format_spec_tuple(cell_format)
@@ -134,16 +236,14 @@ def array_to_sheet(
 
     for _ri, _rv in enumerate(_data_table):
         for _ci, _cv in enumerate(_rv):
-            _cell_fmt = (
-                (_cell_format[_ci], CFmt.BAR_FILL)
-                if green_bar_flag and _ri % 2
-                else _cell_format[_ci]
+            _cell_fmt = _cell_format[_ci] | (
+                CFmt.BAR_FILL if green_bar_flag and _ri % 2 else {}
             )
-
             scalar_to_sheet(
                 _xl_book, _xl_sheet, _row_id + _ri, _col_id + _ci, _cv, _cell_fmt
             )
-        _right_column_id = _ci + 1 if _ci > _right_column_id else _right_column_id
+
+        _right_column_id = _col_id + _ci + 1 if _ci > _num_cols else _right_column_id
 
     return _bottom_row_id, _right_column_id
 
@@ -175,6 +275,17 @@ def scalar_to_sheet(
         cell format, or the column-part of the 'R1,C1' address along with
         cell value and cell format.
 
+    Raises
+    ------
+    ValueError
+        If too many or too few arguments
+    ValueError
+        If incorrect/incomplete specification for Excel cell data
+
+    Returns
+    -------
+        None
+
     """
 
     if isinstance(_cell_addr_0, str):
@@ -190,7 +301,7 @@ def scalar_to_sheet(
         _cell_val = _s2s_args[1]
         _cell_fmt = _s2s_args[2] if len(_s2s_args) == 3 else None  # type: ignore
     else:
-        raise ValueError("Incorrect specification for Excel cell data.")
+        raise ValueError("Incorrect/incomplete specification for Excel cell data.")
 
     if isinstance(_cell_val, str):
         _xl_sheet.write_string(*_cell_addr, _cell_val, xl_fmt(_xl_book, _cell_fmt))
@@ -242,6 +353,11 @@ def ensure_cell_format_spec_tuple(_cell_formats: Sequence[CFmt], /) -> None:
     ----------
     _cell_formats
         Format specification
+
+    Raises
+    ------
+    ValueError
+        If format specification is not tuple of CFmt aenums
 
     Returns
     -------
