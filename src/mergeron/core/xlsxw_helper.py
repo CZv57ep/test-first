@@ -112,15 +112,17 @@ def write_header(
     -------
     None
     """
-    if not any((center_header, left_header, right_header)):
+    if any((center_header, left_header, right_header)):
+        _xl_sheet.set_header(
+            "".join([
+                f"&L{left_header}" if left_header else "",
+                f"&C{center_header}" if center_header else "",
+                f"&R{right_header}" if right_header else "",
+            ])
+        )
+
+    else:
         raise ValueError("must specify at least one header")
-    _xl_sheet.set_footer(
-        "".join([
-            f"&L{left_header}" if left_header else "",
-            f"&C{center_header}" if center_header else "",
-            f"&R{right_header}" if right_header else "",
-        ])
-    )
 
 
 def write_footer(
@@ -155,15 +157,16 @@ def write_footer(
     """
 
     if not any((center_footer, left_footer, right_footer)):
-        raise ValueError("must specify at least one footer")
+        _xl_sheet.set_footer(
+            "".join([
+                f"&L{left_footer}" if left_footer else "",
+                f"&C{center_footer}" if center_footer else "",
+                f"&R{right_footer}" if right_footer else "",
+            ])
+        )
 
-    _xl_sheet.set_footer(
-        "".join([
-            f"&L{left_footer}" if left_footer else "",
-            f"&C{center_footer}" if center_footer else "",
-            f"&R{right_footer}" if right_footer else "",
-        ])
-    )
+    else:
+        raise ValueError("must specify at least one footer")
 
 
 def array_to_sheet(
@@ -174,7 +177,7 @@ def array_to_sheet(
     _col_id: int = 0,
     /,
     *,
-    cell_format: Sequence[CFmt] | CFmt | None = None,
+    cell_format: Sequence[CFmt | Sequence[CFmt]] | CFmt | None = None,
     green_bar_flag: bool = True,
     ragged_flag: bool = True,
 ) -> tuple[int, int]:
@@ -183,6 +186,7 @@ def array_to_sheet(
 
     The given array is required be a two-dimensional array, whether
     a nested list, nested tuple, or a 2-D numpy ndarray.
+
 
     Parameters
     ----------
@@ -207,10 +211,25 @@ def array_to_sheet(
     green_bar_flag
         Whether to highlight alternating rows as in green bar paper
 
+    ragged_flag
+        Whether to write ragged array, i.e. rows not all the same length
+        or not all cells are scalar-valued
+
+
     Raises
     ------
     ValueError
-        If format tuple does not match data in length
+        If array is not two-dimensional
+
+    ValueError
+        If ragged_flag is False and array is not rectangular
+
+    ValueError
+        If array is not rectangular and cell_format is a Sequence
+
+    ValueError
+        If array is rectangular format tuple does not match data in length
+
 
     Returns
     -------
@@ -218,27 +237,57 @@ def array_to_sheet(
 
     """
 
+    if not ragged_flag:
+        try:
+            if np.ndim(_data_table) != 2:
+                raise ValueError("Given array must be two-dimensional.")
+        except ValueError as _err:
+            raise ValueError(
+                "Given array must be rectangular and homogenous, with scalar members."
+                " Alternatively, try with ragged_flag=True."
+            )
+            raise _err
+    elif not (
+        isinstance(_data_table, Sequence | np.ndarray)
+        and hasattr(_data_table[0], "__len__")
+    ):
+        raise ValueError("Given array must be two-dimensional array.")
+
     # Get the array dimensions and row and column numbers for Excel
     _num_rows = len(_data_table)
     _bottom_row_id = _row_id + _num_rows
     _num_cols = len(_data_table[0])
     _right_column_id = _col_id + _num_cols
 
-    if isinstance(cell_format, tuple):
-        ensure_cell_format_spec_tuple(cell_format)
-        if not len(cell_format) == len(_data_table[0]):
+    if isinstance(cell_format, Sequence):
+        if ragged_flag:
+            raise ValueError(
+                "It is not clear whether the sequence of formats applies to all cells,"
+                " or to each cell respectively. Please provide a single-valued cell_format."
+                " Alternatively, you can iterate over the array using scalar_to_sheet()."
+            )
+        elif not len(cell_format) == len(_data_table[0]):
             raise ValueError("Format tuple does not match data in length.")
-        _cell_format: Sequence[CFmt] = cell_format
+        ensure_cell_format_spec_tuple(cell_format)
+        _cell_format: Sequence[CFmt | Sequence[CFmt]] = cell_format
     elif isinstance(cell_format, CFmt):
         _cell_format = (cell_format,) * len(_data_table[0])
     else:
         _cell_format = (CFmt.XL_DEFAULT,) * len(_data_table[0])
 
+    # construct vector of xlslwrter.format.Format objects
+    _wbk_formats = tuple(xl_fmt(_xl_book, _cf) for _cf in _cell_format)
+    if _num_rows > 1:
+        _wbk_formats_greened = (
+            tuple(xl_fmt(_xl_book, (_cf, CFmt.BAR_FILL)) for _cf in _cell_format)
+            if green_bar_flag
+            else _wbk_formats
+        )
+
     for _ri, _rv in enumerate(_data_table):
+        _fmt_tuple = _wbk_formats_greened if _ri % 2 else _wbk_formats
         for _ci, _cv in enumerate(_rv):
-            _cell_fmt = _cell_format[_ci] | (
-                CFmt.BAR_FILL if green_bar_flag and _ri % 2 else {}
-            )
+            _cell_fmt = _fmt_tuple[_ci]
             scalar_to_sheet(
                 _xl_book, _xl_sheet, _row_id + _ri, _col_id + _ci, _cv, _cell_fmt
             )
@@ -303,18 +352,19 @@ def scalar_to_sheet(
     else:
         raise ValueError("Incorrect/incomplete specification for Excel cell data.")
 
+    _xl_fmt = xl_fmt(_xl_book, _cell_fmt)
     if isinstance(_cell_val, str):
-        _xl_sheet.write_string(*_cell_addr, _cell_val, xl_fmt(_xl_book, _cell_fmt))
+        _xl_sheet.write_string(*_cell_addr, _cell_val, _xl_fmt)
     else:
         _xl_sheet.write(
-            *_cell_addr,
-            repr(_cell_val) if np.ndim(_cell_val) else _cell_val,
-            xl_fmt(_xl_book, _cell_fmt),
+            *_cell_addr, repr(_cell_val) if np.ndim(_cell_val) else _cell_val, _xl_fmt
         )
 
 
 def xl_fmt(
-    _xl_book: xlsxwriter.Workbook, _cell_fmt: Sequence[CFmt] | CFmt | None, /
+    _xl_book: xlsxwriter.Workbook,
+    _cell_fmt: Sequence[CFmt | Sequence[CFmt]] | CFmt | None,
+    /,
 ) -> xlsxwriter.format.Format:
     """
     Return :code:`xlsxwriter` `Format` object given a CFmt aenum, or tuple thereof.
@@ -327,25 +377,39 @@ def xl_fmt(
     _cell_fmt
         :code:`CFmt` aenum object, or tuple thereof
 
+    Raises
+    ------
+    ValueError
+        If format specification is not one of None, a CFmt aenum, or
+        a xlsxwriter.format.Format object
+
     Returns
     -------
         :code:`xlsxwriter` `Format`  object
 
     """
+
+    if isinstance(_cell_fmt, xlsxwriter.format.Format):
+        return _cell_fmt
+    elif _cell_fmt is None:
+        return _xl_book.add_format(CFmt.XL_DEFAULT.value)
+
     _cell_fmt_dict: Mapping[str, Any] = {}
-    if isinstance(_cell_fmt, tuple):
+    if isinstance(_cell_fmt, Sequence):
         ensure_cell_format_spec_tuple(_cell_fmt)
         for _cf in _cell_fmt:
             _cell_fmt_dict = _cell_fmt_dict | _cf.value
     elif isinstance(_cell_fmt, CFmt):
         _cell_fmt_dict = _cell_fmt.value
     else:
-        _cell_fmt_dict = CFmt.XL_DEFAULT.value
+        raise ValueError("Improperly specified format specification.")
 
     return _xl_book.add_format(_cell_fmt_dict)
 
 
-def ensure_cell_format_spec_tuple(_cell_formats: Sequence[CFmt], /) -> None:
+def ensure_cell_format_spec_tuple(
+    _cell_formats: Sequence[CFmt | Sequence[CFmt]], /
+) -> None:
     """
     Test that a given format specification is tuple of CFmt enums
 
@@ -357,7 +421,7 @@ def ensure_cell_format_spec_tuple(_cell_formats: Sequence[CFmt], /) -> None:
     Raises
     ------
     ValueError
-        If format specification is not tuple of CFmt aenums
+        If format specification is not tuple of CFmt enums
 
     Returns
     -------
@@ -370,4 +434,7 @@ def ensure_cell_format_spec_tuple(_cell_formats: Sequence[CFmt], /) -> None:
             ensure_cell_format_spec_tuple(_cell_format)
 
         if not (isinstance(_cell_format, CFmt),):
-            raise ValueError("Improperly specified format tuple.")
+            raise ValueError(
+                "Improperly specified format tuple for writing array."
+                "  Must be tuple of CFmt enums."
+            )

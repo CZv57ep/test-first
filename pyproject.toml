@@ -184,6 +184,7 @@ allow_redefinition = true
 plugins = "numpy.typing.mypy_plugin"
 
 [tool.pytest.ini_options]
+log_auto_indent = 4
 minversion = "8.0"
 testpaths = ["tests"]
 addopts = ["--import-mode=importlib"]
