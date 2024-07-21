@@ -275,7 +275,7 @@ def write_footer(
     None
     """
 
-    if not any((center_footer, left_footer, right_footer)):
+    if any((center_footer, left_footer, right_footer)):
         _xl_sheet.set_footer(
             "".join([
                 f"&L{left_footer}" if left_footer else "",
@@ -445,9 +445,6 @@ def scalar_to_sheet(
 
     Parameters
     ----------
-    _xl_book
-        Workbook object
-
     _xl_sheet
         Worksheet object to which to write the give array
 
