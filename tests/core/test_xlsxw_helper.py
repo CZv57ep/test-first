@@ -9,7 +9,6 @@ import pytest
 from numpy.typing import NDArray
 from openpyxl import load_workbook
 from pytest import TempPathFactory
-from xlsxwriter import Workbook  # type: ignore
 
 
 @pytest.fixture(scope="session")
@@ -28,7 +27,7 @@ def excel_file_path(request: Any, tmp_path_factory: TempPathFactory) -> Path:
         (
             np.arange(16).reshape(8, 2),
             False,
-            (xlh.CFmt.PCT_NUM, xlh.CFmt.A_RIGHT),
+            (xlh.CFmt.A_RIGHT, (xlh.CFmt.QTY_NUM, xlh.CFmt.A_RIGHT)),
             "workbook_0.xlsx",
         ),
         (
@@ -62,18 +61,18 @@ def test_excel(
     _excel_file_path = excel_file_path / _wbk_name
     _hdr_val = ("col1", "col2")
 
-    with Workbook(_excel_file_path) as _xl_book:
+    with xlh.Workbook(_excel_file_path) as _xl_book:
         _xl_sheet = _xl_book.add_worksheet()
 
         for _col_idx, _col_val in enumerate(_hdr_val):
             xlh.scalar_to_sheet(
-                _xl_book,
                 _xl_sheet,
                 0,
                 _col_idx,
                 _col_val,
-                (xlh.CFmt.HDR_BORDER, xlh.CFmt.A_RIGHT),
+                xlh.CFmt.xl_fmt(_xl_book, (xlh.CFmt.HDR_BORDER, xlh.CFmt.A_RIGHT)),
             )
+        _xl_sheet.set_row(0, 128)
 
         xlh.array_to_sheet(
             _xl_book,
@@ -115,3 +114,14 @@ def test_excel(
         raise _aer
 
     gc.collect()
+
+
+def test_new_format() -> None:
+    CFmt = xlh.CFmt
+    _ = CFmt.add_new("FILLED_HDR", xlh.CFmt.HDR_BORDER | xlh.CFmt.HDR_FILL)
+    if (
+        not isinstance(CFmt.FILLED_HDR, CFmt)
+        or CFmt.FILLED_HDR != CFmt.HDR_BORDER | CFmt.HDR_FILL
+    ):
+        print(type(CFmt.FILLED_HDR))
+        raise ValueError("Failed to properly create new format")
