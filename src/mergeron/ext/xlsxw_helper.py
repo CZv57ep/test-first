@@ -83,7 +83,7 @@ class CFmt(dict, Enum):  # type: ignore
     QTY_NUM: ClassVar = {"num_format": "#,##0.0"}
 
     BAR_FILL: ClassVar = {"pattern": 1, "bg_color": "dfeadf"}
-    HDR_FILL: ClassVar = {"pattern": 1, "bg_color": "e9e9e9"}
+    HDR_FILL: ClassVar = {"pattern": 1, "bg_color": "bfbfbf"}
 
     LEFT_BORDER: ClassVar = {"left": 1, "left_color": "000000"}
     RIGHT_BORDER: ClassVar = {"right": 1, "right_color": "000000"}
