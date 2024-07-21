@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-import mergeron.core.xlsxw_helper as xlh
+import mergeron.ext.xlsxw_helper as xlh
 import numpy as np
 import pytest
 from numpy.typing import NDArray
