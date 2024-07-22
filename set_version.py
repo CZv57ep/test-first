@@ -76,7 +76,7 @@ run(  # noqa: S603
         "pyproject.toml",
         f"{pkg_init_path}",
         "-m",
-        '"chore: bump version number"',
+        '"chore: update version"',
     ],
     check=True,
 )
