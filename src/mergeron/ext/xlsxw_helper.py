@@ -473,7 +473,7 @@ def array_to_sheet(
     _right_column_id = _col_id + _num_cols
 
     if isinstance(cell_format, Sequence):
-        if ragged_flag:
+        if _num_rows > 1 and ragged_flag:
             raise ValueError(
                 "It is not clear whether the sequence of formats applies to all cells,"
                 " or to each cell respectively. Please provide a single-valued cell_format."
