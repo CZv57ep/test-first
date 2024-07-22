@@ -10,6 +10,7 @@ from collections.abc import Mapping, Sequence
 from importlib import resources
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Literal
 
 import numpy as np
 import re2 as re  # type: ignore
@@ -82,8 +83,48 @@ moe_tmpl = Template(R"""
     {% endif %}
     """)
 
+# Define the LaTeX jinja environment
+# http://eosrei.net/articles/2015/11/LaTeX-templates-python-and-jinja2-generate-pdfs
+with resources.as_file(
+    resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates")
+) as _tmpl_folder:
+    LaTeX_jinja_env = Environment(
+        block_start_string=R"((*",
+        block_end_string="*))",
+        variable_start_string=R"\JINVAR{",
+        variable_end_string="}",
+        comment_start_string=R"((#",  # r'#{',
+        comment_end_string=R"#))",  # '}',
+        line_statement_prefix="##",
+        line_comment_prefix="%#",
+        trim_blocks=True,
+        lstrip_blocks=True,
+        autoescape=select_autoescape(disabled_extensions=("tex.jinja2",)),
+        loader=FileSystemLoader(_tmpl_folder),
+    )
+
+# Place files related to rendering LaTeX in output data directory
+if not (_out_path := DATA_DIR.joinpath(f"{_PKG_NAME}.cls")).is_file():
+    with resources.as_file(
+        resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates").joinpath(
+            "{_PKG_NAME}.cls"
+        )
+    ) as _in_path:
+        shutil.copy2(_in_path, _out_path)
+
+
+if not (_DOTTEX := DATA_DIR / Rf"{_PKG_NAME}_TikZTableSettings.tex").is_file():
+    # Write to dottex
+    with resources.as_file(
+        resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates").joinpath(
+            "setup_tikz_tables.tex"
+        )
+    ) as _tex_path:
+        shutil.copy2(_tex_path, _DOTTEX)
+
+
 LTX_ARRAY_LINEEND = R"\\" "\n"
-latex_hrdcoldesc_format_str = "{}\n{}\n{}".format(
+LaTeX_hrdcoldesc_format_str = "{}\n{}\n{}".format(
     "".join((
         R"\matrix[hcol, above=0pt of {}, nodes = {{",
         R"text width={}, text depth=10pt, inner sep=3pt, minimum height=25pt,",
@@ -104,46 +145,6 @@ class StatsContainer(SimpleNamespace):
 
     invdata_hdrstr: str
     invdata_datstr: str
-
-
-# Define the latex jinja environment
-# http://eosrei.net/articles/2015/11/latex-templates-python-and-jinja2-generate-pdfs
-with resources.as_file(
-    resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates")
-) as _tmpl_folder:
-    latex_jinja_env = Environment(
-        block_start_string=R"((*",
-        block_end_string="*))",
-        variable_start_string=R"\JINVAR{",
-        variable_end_string="}",
-        comment_start_string=R"((#",  # r'#{',
-        comment_end_string=R"#))",  # '}',
-        line_statement_prefix="##",
-        line_comment_prefix="%#",
-        trim_blocks=True,
-        lstrip_blocks=True,
-        autoescape=select_autoescape(disabled_extensions=("tex.jinja2",)),
-        loader=FileSystemLoader(_tmpl_folder),
-    )
-
-# Place files related to rendering latex in output data directory
-if not (_out_path := DATA_DIR.joinpath(f"{_PKG_NAME}.cls")).is_file():
-    with resources.as_file(
-        resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates").joinpath(
-            "{_PKG_NAME}.cls"
-        )
-    ) as _in_path:
-        shutil.copy2(_in_path, _out_path)
-
-
-if not (_DOTTEX := DATA_DIR / Rf"{_PKG_NAME}_TikZTableSettings.tex").is_file():
-    # Write to dottex
-    with resources.as_file(
-        resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates").joinpath(
-            "setup_tikz_tables.tex"
-        )
-    ) as _tex_path:
-        shutil.copy2(_tex_path, _DOTTEX)
 
 
 # Parameters and functions to interpolate selected HHI and ΔHHI values
@@ -184,21 +185,39 @@ ZONE_VALS = np.unique(
 )
 
 ZONE_STRINGS = {
+    0: R"Green Zone (Safeharbor)",
+    1: R"Yellow Zone",
+    2: R"Red Zone (SLC Presumption)",
+    fid.TTL_KEY: R"\node[align = left, fill=OBSHDRFill] {TOTAL};",
+}
+ZONE_DETAIL_STRINGS_HHI = {
+    0: Rf"HHI < {HHI_POST_ZONE_KNOTS[1]} pts.",
+    1: R"HHI ∈ [{}, {}) pts. and ".format(*HHI_POST_ZONE_KNOTS[1:3]),
+    2: Rf"HHI ≥ {HHI_POST_ZONE_KNOTS[2]} pts. and ",
+}
+
+ZONE_DETAIL_STRINGS_DELTA = {
+    0: "",
+    1: Rf"ΔHHI < \text{{{HHI_DELTA_KNOTS[1]} pts.}}",
+    2: Rf"ΔHHI ≥ \text{{{HHI_DELTA_KNOTS[1]} pts.}}",
+    3: R"ΔHHI ∈ \text{{[{}, {}) pts.}}".format(*HHI_DELTA_KNOTS[1:3]),
+    4: Rf"ΔHHI ≥ \text{{{HHI_DELTA_KNOTS[2]} pts.}}",
+}
+
+ZONE_STRINGS_LATEX = {
     0: R"\node[align = left, fill=BrightGreen] {Green Zone (Safeharbor)};",
     1: R"\node[align = left, fill=HiCoYellow] {Yellow Zone};",
     2: R"\node[align = left, fill=VibrRed] {Red Zone (SLC Presumption)};",
     fid.TTL_KEY: R"\node[align = left, fill=OBSHDRFill] {TOTAL};",
 }
 
-ZONE_DETAIL_STRINGS_HHI = {
+ZONE_DETAIL_STRINGS_HHI_LATEX = {
     0: Rf"HHI_{{post}} < \text{{{HHI_POST_ZONE_KNOTS[1]} pts.}}",
-    1: R"HHI_{{post}} \in \text{{[{}, {}) pts. and }} ".format(
-        *HHI_POST_ZONE_KNOTS[1:3]
-    ),
+    1: R"HHI_{{post}} ∈ \text{{[{}, {}) pts. and }} ".format(*HHI_POST_ZONE_KNOTS[1:3]),
     2: Rf"HHI_{{post}} \geqslant \text{{{HHI_POST_ZONE_KNOTS[2]} pts. and }} ",
 }
 
-ZONE_DETAIL_STRINGS_DELTA = {
+ZONE_DETAIL_STRINGS_DELTA_LATEX = {
     0: "",
     1: Rf"\Delta HHI < \text{{{HHI_DELTA_KNOTS[1]} pts.}}",
     2: Rf"\Delta HHI \geqslant \text{{{HHI_DELTA_KNOTS[1]} pts.}}",
@@ -207,13 +226,13 @@ ZONE_DETAIL_STRINGS_DELTA = {
 }
 
 
-def invres_stats_output(
+def enf_stats_output(
     _data_array_dict: fid.INVData,
     _data_period: str = "1996-2003",
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
     _stats_group: StatsGrpSelector = StatsGrpSelector.FC,
-    _invres_spec: INVResolution = INVResolution.CLRN,
+    _enf_spec: INVResolution = INVResolution.CLRN,
     /,
     *,
     return_type_sel: StatsReturnSelector = StatsReturnSelector.RPT,
@@ -228,49 +247,49 @@ def invres_stats_output(
 
     match _stats_group:
         case StatsGrpSelector.ZN:
-            _latex_tbl_invres_stats_func = latex_tbl_invres_stats_byzone
+            _enf_stats_table_func = enf_stats_table_byzone
         case StatsGrpSelector.FC:
-            _latex_tbl_invres_stats_func = latex_tbl_invres_stats_1dim
+            _enf_stats_table_func = enf_stats_table_1dim
         case StatsGrpSelector.DL:
-            _latex_tbl_invres_stats_func = latex_tbl_invres_stats_1dim
+            _enf_stats_table_func = enf_stats_table_1dim
         case _:
             raise ValueError(
                 'Statistics formatted, "{_stats_group}" not available here.'
             )
 
-    _invres_stats_cnts = invres_stats_cnts_by_group(
+    _enf_stats_cnts = enf_stats_listing_by_group(
         _data_array_dict,
         _data_period,
         _table_ind_group,
         _table_evid_cond,
         _stats_group,
-        _invres_spec,
+        _enf_spec,
     )
 
-    _invres_stats_hdr_list, _invres_stats_dat_list = _latex_tbl_invres_stats_func(
-        _invres_stats_cnts, None, return_type_sel=return_type_sel, sort_order=sort_order
+    _enf_stats_hdr_list, _enf_stats_dat_list = _enf_stats_table_func(
+        _enf_stats_cnts, None, return_type_sel=return_type_sel, sort_order=sort_order
     )
 
     if print_to_screen:
         print(
-            f"{_invres_spec.capitalize()} stats ({return_type_sel})",
+            f"{_enf_spec.capitalize()} stats ({return_type_sel})",
             f"for Period: {_data_period}",
             "\u2014",
             f"{_table_ind_group};",
             _table_evid_cond,
         )
-        stats_print_rows(_invres_stats_hdr_list, _invres_stats_dat_list)
+        stats_print_rows(_enf_stats_hdr_list, _enf_stats_dat_list)
 
-    return _invres_stats_hdr_list, _invres_stats_dat_list
+    return _enf_stats_hdr_list, _enf_stats_dat_list
 
 
-def invres_stats_cnts_by_group(
+def enf_stats_listing_by_group(
     _invdata_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVTableData]]],
     _study_period: str,
     _table_ind_grp: INDGRPConstants,
     _table_evid_cond: EVIDENConstants,
     _stats_group: StatsGrpSelector,
-    _invres_spec: INVResolution,
+    _enf_spec: INVResolution,
     /,
 ) -> NDArray[np.int64]:
     if _stats_group == StatsGrpSelector.HD:
@@ -280,14 +299,14 @@ def invres_stats_cnts_by_group(
 
     match _stats_group:
         case StatsGrpSelector.FC:
-            _cnts_func = invres_cnts_byfirmcount
-            _cnts_listing_func = invres_cnts_listing_byfirmcount
+            _cnts_func = enf_cnts_byfirmcount
+            _cnts_listing_func = enf_cnts_listing_byfirmcount
         case StatsGrpSelector.DL:
-            _cnts_func = invres_cnts_bydelta
-            _cnts_listing_func = invres_cnts_listing_byhhianddelta
+            _cnts_func = enf_cnts_bydelta
+            _cnts_listing_func = enf_cnts_listing_byhhianddelta
         case StatsGrpSelector.ZN:
-            _cnts_func = invres_cnts_byconczone
-            _cnts_listing_func = invres_cnts_listing_byhhianddelta
+            _cnts_func = enf_cnts_byconczone
+            _cnts_listing_func = enf_cnts_listing_byhhianddelta
 
     return _cnts_func(
         _cnts_listing_func(
@@ -295,17 +314,17 @@ def invres_stats_cnts_by_group(
             _study_period,
             _table_ind_grp,
             _table_evid_cond,
-            _invres_spec,
+            _enf_spec,
         )
     )
 
 
-def invres_cnts_listing_byfirmcount(
+def enf_cnts_listing_byfirmcount(
     _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVTableData]]],
     _data_period: str = "1996-2003",
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
-    _invres_spec: INVResolution = INVResolution.CLRN,
+    _enf_spec: INVResolution = INVResolution.CLRN,
     /,
 ) -> NDArray[np.int64]:
     if _data_period not in _data_array_dict:
@@ -322,7 +341,7 @@ def invres_cnts_listing_byfirmcount(
 
     _ndim_in = 1
     _stats_kept_indxs = []
-    match _invres_spec:
+    match _enf_spec:
         case INVResolution.CLRN:
             _stats_kept_indxs = [-1, -2]
         case INVResolution.ENFT:
@@ -336,12 +355,12 @@ def invres_cnts_listing_byfirmcount(
     ])
 
 
-def invres_cnts_listing_byhhianddelta(
+def enf_cnts_listing_byhhianddelta(
     _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVTableData]]],
     _data_period: str = "1996-2003",
     _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
-    _invres_spec: INVResolution = INVResolution.CLRN,
+    _enf_spec: INVResolution = INVResolution.CLRN,
     /,
 ) -> NDArray[np.int64]:
     if _data_period not in _data_array_dict:
@@ -358,7 +377,7 @@ def invres_cnts_listing_byhhianddelta(
 
     _ndim_in = 2
     _stats_kept_indxs = []
-    match _invres_spec:
+    match _enf_spec:
         case INVResolution.CLRN:
             _stats_kept_indxs = [-1, -2]
         case INVResolution.ENFT:
@@ -398,7 +417,7 @@ def table_no_lku(
     return _tno
 
 
-def invres_cnts_byfirmcount(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
+def enf_cnts_byfirmcount(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
     _ndim_in = 1
     return np.vstack([
         np.concatenate([
@@ -409,7 +428,7 @@ def invres_cnts_byfirmcount(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int
     ])
 
 
-def invres_cnts_bydelta(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
+def enf_cnts_bydelta(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
     _ndim_in = 2
     return np.vstack([
         np.concatenate([
@@ -420,7 +439,7 @@ def invres_cnts_bydelta(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
     ])
 
 
-def invres_cnts_byconczone(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
+def enf_cnts_byconczone(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
     # Prepare to tag clearance stats by presumption zone
     _hhi_zone_post_ranged = hhi_zone_post_ranger(_cnts_array[:, 0] / 1e4)
     _hhi_delta_ranged = hhi_delta_ranger(_cnts_array[:, 1] / 1e4)
@@ -491,23 +510,23 @@ def invres_cnts_byconczone(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int6
     return _cnts_byconczone[1:]
 
 
-def latex_tbl_invres_stats_1dim(
+def enf_stats_table_1dim(
     _inparr: NDArray[np.float64 | np.int64],
     _totals_row: int | None = None,
     /,
     *,
     return_type_sel: StatsReturnSelector = StatsReturnSelector.CNT,
     sort_order: SortSelector = SortSelector.UCH,
+    print_format: Literal["text", "LaTeX"] = "text",
 ) -> tuple[list[str], list[list[str]]]:
     _ndim_in: int = 1
     _dim_hdr_dict = {
-        _v: (_k if _k == "TOTAL" else f"{{{_k}}}")
-        for _k, _v in fid.CNT_FCOUNT_DICT.items()
+        _v: (_k if _k == "TOTAL" else f"{_k}") for _k, _v in fid.CNT_FCOUNT_DICT.items()
     } | {
         _v: (
-            "{[2500, 5000]}"
+            "[2500, 5000]"
             if _k == "2,500 +"
-            else f"{{[{_k.replace(",", "").replace(" - ", ", ")})}}"
+            else f"[{_k.replace(",", "").replace(" - ", ", ")})"
         )
         for _k, _v in fid.CONC_DELTA_DICT.items()
         if _k != "TOTAL"
@@ -531,7 +550,10 @@ def latex_tbl_invres_stats_1dim(
 
     _stats_hdr_list, _stats_dat_list = [], []
     for _stats_row in _inparr:
-        _stats_hdr_list += [_dim_hdr_dict[_stats_row[0]]]
+        _stats_hdr_str = _dim_hdr_dict[_stats_row[0]]
+        _stats_hdr_list += [
+            f"{{{_stats_hdr_str}}}" if print_format == "LaTeX" else _stats_hdr_str
+        ]
 
         _stats_cnt = _stats_row[_ndim_in:]
         _stats_tot = np.concatenate((
@@ -543,17 +565,20 @@ def latex_tbl_invres_stats_1dim(
     return _stats_hdr_list, _stats_dat_list
 
 
-def latex_tbl_invres_stats_byzone(
+def enf_stats_table_byzone(
     _inparr: NDArray[np.float64 | np.int64],
     _totals_row: int | None = None,
     /,
     *,
     return_type_sel: StatsReturnSelector = StatsReturnSelector.CNT,
     sort_order: SortSelector = SortSelector.UCH,
+    print_format: Literal["text", "LaTeX"] = "text",
 ) -> tuple[list[str], list[list[str]]]:
     _ndim_in: int = ZONE_VALS.shape[1]
 
-    _zone_str_keys = list(ZONE_STRINGS)
+    _zone_str_dict = ZONE_STRINGS_LATEX if print_format == "LaTeX" else ZONE_STRINGS
+    _zone_str_keys = list(_zone_str_dict)
+
     if sort_order == SortSelector.REV:
         _inparr = _inparr[::-1]
         _zone_str_keys = _zone_str_keys[:-1][::-1] + [_zone_str_keys[-1]]
@@ -570,7 +595,7 @@ def latex_tbl_invres_stats_byzone(
     _stats_hdr_list, _stats_dat_list = ([], [])
     for _conc_zone in _zone_str_keys:
         _stats_byzone_it = _inparr[_inparr[:, 0] == _conc_zone]
-        _stats_hdr_list += [ZONE_STRINGS[_conc_zone]]
+        _stats_hdr_list += [_zone_str_dict[_conc_zone]]
 
         _stats_cnt = np.einsum("ij->j", _stats_byzone_it[:, _ndim_in:])
         _stats_tot = np.concatenate((
@@ -585,18 +610,30 @@ def latex_tbl_invres_stats_byzone(
         for _stats_byzone_detail in _stats_byzone_it:
             # Only two sets of subtotals detail, so
             # a conditional expression will do here
-            _stats_text_color = "HiCoYellow" if _conc_zone == 1 else "BrightGreen"
-            _stats_hdr_list += [
-                R"{} {{ \({}{}\) }};".format(
-                    rf"\node[text = {_stats_text_color}, fill = white, align = right]",
-                    ZONE_DETAIL_STRINGS_HHI[_stats_byzone_detail[1]],
-                    (
-                        ""
-                        if _stats_byzone_detail[2] == 0
-                        else Rf"{ZONE_DETAIL_STRINGS_DELTA[_stats_byzone_detail[2]]}"
-                    ),
-                )
-            ]
+            if print_format == "LaTeX":
+                _stats_text_color = "HiCoYellow" if _conc_zone == 1 else "BrightGreen"
+                _stats_hdr_list += [
+                    R"{} {{ \({}{}\) }};".format(
+                        rf"\node[text = {_stats_text_color}, fill = white, align = right]",
+                        ZONE_DETAIL_STRINGS_HHI_LATEX[_stats_byzone_detail[1]],
+                        (
+                            ""
+                            if _stats_byzone_detail[2] == 0
+                            else Rf"{ZONE_DETAIL_STRINGS_DELTA_LATEX[_stats_byzone_detail[2]]}"
+                        ),
+                    )
+                ]
+            else:
+                _stats_hdr_list += [
+                    R"{}{};".format(
+                        ZONE_DETAIL_STRINGS_HHI[_stats_byzone_detail[1]],
+                        (
+                            ""
+                            if _stats_byzone_detail[2] == 0
+                            else Rf"{ZONE_DETAIL_STRINGS_DELTA[_stats_byzone_detail[2]]}"
+                        ),
+                    )
+                ]
 
             _stats_cnt = _stats_byzone_detail[_ndim_in:]
             _stats_tot = np.concatenate((
@@ -652,31 +689,34 @@ def _stats_formatted_row(
 
 
 def stats_print_rows(
-    _invres_stats_hdr_list: list[str], _invres_stats_dat_list: list[list[str]]
+    _enf_stats_hdr_list: list[str],
+    _enf_stats_dat_list: list[list[str]],
+    print_format: Literal["text", "LaTeX"] = "text",
 ) -> None:
-    for _idx, _hdr in enumerate(_invres_stats_hdr_list):
-        # _hv = (
-        #     re.match(r"^\\node.*?(\{.*\});?", _hdr)[1]
-        #     if _hdr.startswith(R"\node")
-        #     else _hdr
-        # )
-        _hdr_str = (
-            _hdr if _hdr == "TOTAL" else re.fullmatch(r".*?\{(.*)\};?", _hdr)[1].strip()
-        )
-        print(
-            _hdr_str,
-            "&",
-            " & ".join(_invres_stats_dat_list[_idx]),
-            LTX_ARRAY_LINEEND,
-            end="",
-        )
+    for _idx, _hdr in enumerate(_enf_stats_hdr_list):
+        if print_format == "LaTeX":
+            _hdr_str = (
+                _hdr
+                if _hdr == "TOTAL"
+                else re.fullmatch(r".*?\{(.*)\};?", _hdr)[1].strip()
+            )
+            print(
+                _hdr_str,
+                " & ",
+                " & ".join(_enf_stats_dat_list[_idx]),
+                LTX_ARRAY_LINEEND,
+                end="",
+            )
+        else:
+            print(_hdr, " | ", " | ".join(_enf_stats_dat_list[_idx]))
+
     print()
 
 
 def render_table_pdf(
     _table_dottex_pathlist: Sequence[str], _table_coll_path: str, /
 ) -> None:
-    _table_collection_design = latex_jinja_env.get_template(
+    _table_collection_design = LaTeX_jinja_env.get_template(
         "mergeron_table_collection_template.tex.jinja2"
     )
     _table_collection_content = StatsContainer()
@@ -692,12 +732,12 @@ def render_table_pdf(
         print("\n", file=_table_coll_file)
 
     _run_rc = subprocess.run(  # noqa: S603
-        f"latexmk -f -quiet -synctex=0 -interaction=nonstopmode -file-line-error -pdflua {_table_coll_path}".split(),
+        f"LaTeXmk -f -quiet -synctex=0 -interaction=nonstopmode -file-line-error -pdflua {_table_coll_path}".split(),
         check=True,
         cwd=DATA_DIR,
     )
     if _run_rc:
-        subprocess.run("latexmk -quiet -c".split(), check=True, cwd=DATA_DIR)  # noqa: S603
+        subprocess.run("LaTeXmk -quiet -c".split(), check=True, cwd=DATA_DIR)  # noqa: S603
     del _run_rc
 
     print(

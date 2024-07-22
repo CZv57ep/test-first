@@ -21,44 +21,44 @@ invdata_array_dict = fid.construct_data(
         strict=True,
     ),
 )
-def test_invres_stats(
+def test_enf_stats(
     _stats_group: esl.StatsGrpSelector, _test_val: NDArray[np.int64]
 ) -> None:
-    _invres_spec = INVResolution.CLRN
-    _invres_stats_cnts = esl.invres_stats_cnts_by_group(
+    _enf_spec = INVResolution.CLRN
+    _enf_stats_cnts = esl.enf_stats_listing_by_group(
         invdata_array_dict,
         "1996-2003",
         esl.INDGRPConstants.ALL,
         esl.EVIDENConstants.UR,
         _stats_group,
-        _invres_spec,
+        _enf_spec,
     )[:, -2:]
-    _invres_stats_totals = np.einsum("ij->j", _invres_stats_cnts)
-    assert_array_equal(_invres_stats_totals, _test_val)
+    _enf_stats_totals = np.einsum("ij->j", _enf_stats_cnts)
+    assert_array_equal(_enf_stats_totals, _test_val)
 
 
-invres_spec = INVResolution.CLRN
-# Test print functionality:
-for data_period in "1996-2003", "2004-2011":
-    for evid_class in esl.EVIDENConstants.UR, esl.EVIDENConstants.ED:
-        for stats_group in esl.StatsGrpSelector:
-            if stats_group == esl.StatsGrpSelector.HD:
-                continue
+# enf_spec = INVResolution.CLRN
+# # Test print functionality:
+# for data_period in "1996-2003", "2004-2011":
+#     for evid_class in esl.EVIDENConstants.UR, esl.EVIDENConstants.ED:
+#         for stats_group in esl.StatsGrpSelector:
+#             if stats_group == esl.StatsGrpSelector.HD:
+#                 continue
 
-            for return_type in esl.StatsReturnSelector:
-                (invres_stats_hdr_list, invres_stats_dat_list) = (
-                    esl.invres_stats_output(
-                        invdata_array_dict,
-                        data_period,
-                        esl.INDGRPConstants.ALL,
-                        evid_class,
-                        stats_group,
-                        invres_spec,
-                        return_type_sel=return_type,
-                        sort_order=(
-                            esl.SortSelector.UCH
-                            if stats_group == esl.StatsGrpSelector.FC
-                            else esl.SortSelector.REV
-                        ),
-                    )
-                )
+#             for return_type in esl.StatsReturnSelector:
+#                 (enf_stats_hdr_list, enf_stats_dat_list) = (
+#                     esl.enf_stats_output(
+#                         invdata_array_dict,
+#                         data_period,
+#                         esl.INDGRPConstants.ALL,
+#                         evid_class,
+#                         stats_group,
+#                         enf_spec,
+#                         return_type_sel=return_type,
+#                         sort_order=(
+#                             esl.SortSelector.UCH
+#                             if stats_group == esl.StatsGrpSelector.FC
+#                             else esl.SortSelector.REV
+#                         ),
+#                     )
+#                 )

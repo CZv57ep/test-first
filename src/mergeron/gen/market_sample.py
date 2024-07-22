@@ -12,7 +12,7 @@ from .. import VERSION  # noqa: TID252
 from ..core.guidelines_boundaries import HMGThresholds  # noqa: TID252
 from . import MarketSpec, UPPTestRegime
 from .data_generation import gen_market_sample
-from .upp_tests import SaveData, invres_cnts, save_data_to_hdf5, sim_invres_cnts_ll
+from .upp_tests import SaveData, enf_cnts, save_data_to_hdf5, sim_enf_cnts_ll
 
 __version__ = VERSION
 
@@ -46,9 +46,9 @@ class MarketSample(MarketSpec):
                 save_data_to_file=save_data_to_file,
             )
 
-    def estimate_invres_counts(
+    def estimate_enf_counts(
         self,
-        _invres_parm_vec: HMGThresholds,
+        _enf_parm_vec: HMGThresholds,
         _upp_test_regime: UPPTestRegime,
         /,
         *,
@@ -58,9 +58,9 @@ class MarketSample(MarketSpec):
         save_data_to_file: SaveData = False,
     ) -> None:
         if getattr(self, "market_data_sample", None) is None:
-            self.invres_counts = sim_invres_cnts_ll(
+            self.enf_counts = sim_enf_cnts_ll(
                 self,
-                _invres_parm_vec,
+                _enf_parm_vec,
                 _upp_test_regime,
                 save_data_to_file=save_data_to_file,
                 sample_size=sample_size,
@@ -68,8 +68,8 @@ class MarketSample(MarketSpec):
                 nthreads=nthreads,
             )
         else:
-            self.invres_counts = invres_cnts(
-                self.data, _invres_parm_vec, _upp_test_regime
+            self.enf_counts = enf_cnts(
+                self.data, _enf_parm_vec, _upp_test_regime
             )
         if save_data_to_file:
-            save_data_to_hdf5(self.invres_counts, save_data_to_file=save_data_to_file)
+            save_data_to_hdf5(self.enf_counts, save_data_to_file=save_data_to_file)

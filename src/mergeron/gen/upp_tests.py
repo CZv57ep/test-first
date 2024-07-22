@@ -40,7 +40,7 @@ SaveData: TypeAlias = Literal[False] | tuple[Literal[True], ptb.File, ptb.Group]
 
 
 class INVRESCntsArgs(TypedDict, total=False):
-    "Keyword arguments of function, :code:`sim_invres_cnts`"
+    "Keyword arguments of function, :code:`sim_enf_cnts`"
 
     sample_size: int
     seed_seq_list: list[SeedSequence] | None
@@ -49,9 +49,9 @@ class INVRESCntsArgs(TypedDict, total=False):
     saved_array_name_suffix: str
 
 
-def sim_invres_cnts_ll(
+def sim_enf_cnts_ll(
     _mkt_sample_spec: MarketSpec,
-    _invres_parm_vec: gbl.HMGThresholds,
+    _enf_parm_vec: gbl.HMGThresholds,
     _sim_test_regime: UPPTestRegime,
     /,
     *,
@@ -63,8 +63,8 @@ def sim_invres_cnts_ll(
 ) -> UPPTestsCounts:
     """A function to parallelize data-generation and testing
 
-    The parameters `_sim_invres_cnts_kwargs` are passed unaltered to
-    the parent function, `sim_invres_cnts()`, except that, if provided,
+    The parameters `_sim_enf_cnts_kwargs` are passed unaltered to
+    the parent function, `sim_enf_cnts()`, except that, if provided,
     `seed_seq_list` is used to spawn a seed sequence for each thread,
     to assure independent samples in each thread, and `nthreads` defines
     the number of parallel processes used. The number of draws in
@@ -74,7 +74,7 @@ def sim_invres_cnts_ll(
     Parameters
     ----------
 
-    _invres_parm_vec
+    _enf_parm_vec
         Guidelines thresholds to test against
 
     _mkt_sample_spec
@@ -110,12 +110,12 @@ def sim_invres_cnts_ll(
 
     if (
         _mkt_sample_spec.share_spec.recapture_form != RECConstants.OUTIN
-        and _mkt_sample_spec.share_spec.recapture_rate != _invres_parm_vec.rec
+        and _mkt_sample_spec.share_spec.recapture_rate != _enf_parm_vec.rec
     ):
         raise ValueError(
             "{} {} {}".format(
                 f"Recapture rate from market sample spec, {_mkt_sample_spec.share_spec.recapture_rate}",
-                f"must match the value, {_invres_parm_vec.rec}",
+                f"must match the value, {_enf_parm_vec.rec}",
                 "the guidelines thresholds vector.",
             )
         )
@@ -126,18 +126,18 @@ def sim_invres_cnts_ll(
             zip(*[g.spawn(_iter_count) for g in seed_seq_list], strict=True)  # type: ignore
         )
 
-    _sim_invres_cnts_kwargs: INVRESCntsArgs = INVRESCntsArgs({
+    _sim_enf_cnts_kwargs: INVRESCntsArgs = INVRESCntsArgs({
         "sample_size": _subsample_sz,
         "save_data_to_file": save_data_to_file,
         "nthreads": nthreads,
     })
 
     _res_list = Parallel(n_jobs=_thread_count, prefer="threads")(
-        delayed(sim_invres_cnts)(
+        delayed(sim_enf_cnts)(
             _mkt_sample_spec,
-            _invres_parm_vec,
+            _enf_parm_vec,
             _sim_test_regime,
-            **_sim_invres_cnts_kwargs,
+            **_sim_enf_cnts_kwargs,
             saved_array_name_suffix=f"{saved_array_name_suffix}_{_iter_id:0{2 + int(np.ceil(np.log10(_iter_count)))}d}",
             seed_seq_list=_rng_seed_seq_list_ch,
         )
@@ -162,7 +162,7 @@ def sim_invres_cnts_ll(
     return upp_test_results
 
 
-def sim_invres_cnts(
+def sim_enf_cnts(
     _mkt_sample_spec: MarketSpec,
     _upp_test_parms: gbl.HMGThresholds,
     _sim_test_regime: UPPTestRegime,
@@ -195,7 +195,7 @@ def sim_invres_cnts(
         save_data_to_file=save_data_to_file,
     )
 
-    _upp_test_arrays = invres_cnts(
+    _upp_test_arrays = enf_cnts(
         _market_data_sample, _upp_test_parms, _sim_test_regime
     )
 
@@ -208,7 +208,7 @@ def sim_invres_cnts(
     return _upp_test_arrays
 
 
-def invres_cnts(
+def enf_cnts(
     _market_data_sample: MarketDataSample,
     _upp_test_parms: gbl.HMGThresholds,
     _upp_test_regime: UPPTestRegime,
@@ -228,12 +228,12 @@ def invres_cnts(
     if _firm_counts_weights is not None and np.all(_firm_counts_weights >= 0):
         _max_firm_count = len(_firm_counts_weights)
 
-        _invres_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
+        _enf_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
         for _firm_cnt in 2 + np.arange(_max_firm_count):
             _firm_count_test = _fcounts == _firm_cnt
 
-            _invres_cnts_sim_byfirmcount_array = np.vstack((
-                _invres_cnts_sim_byfirmcount_array,
+            _enf_cnts_sim_byfirmcount_array = np.vstack((
+                _enf_cnts_sim_byfirmcount_array,
                 np.array([
                     _firm_cnt,
                     np.einsum("ij->", 1 * _firm_count_test),
@@ -246,21 +246,21 @@ def invres_cnts(
                     ],
                 ]),
             ))
-        _invres_cnts_sim_byfirmcount_array = _invres_cnts_sim_byfirmcount_array[1:]
+        _enf_cnts_sim_byfirmcount_array = _enf_cnts_sim_byfirmcount_array[1:]
     else:
-        _invres_cnts_sim_byfirmcount_array = np.array(
+        _enf_cnts_sim_byfirmcount_array = np.array(
             np.nan * np.empty((1, _stats_rowlen)), np.int64
         )
-        _invres_cnts_sim_byfirmcount_array[0] = 2
+        _enf_cnts_sim_byfirmcount_array[0] = 2
 
     # Clearance/enfrocement counts --- by delta
     _hhi_delta_ranged = esl.hhi_delta_ranger(_hhi_delta)
-    _invres_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int64)
+    _enf_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int64)
     for _hhi_delta_lim in esl.HHI_DELTA_KNOTS[:-1]:
         _hhi_delta_test = _hhi_delta_ranged == _hhi_delta_lim
 
-        _invres_cnts_sim_bydelta_array = np.vstack((
-            _invres_cnts_sim_bydelta_array,
+        _enf_cnts_sim_bydelta_array = np.vstack((
+            _enf_cnts_sim_bydelta_array,
             np.array([
                 _hhi_delta_lim,
                 np.einsum("ij->", 1 * _hhi_delta_test),
@@ -273,7 +273,7 @@ def invres_cnts(
             ]),
         ))
 
-    _invres_cnts_sim_bydelta_array = _invres_cnts_sim_bydelta_array[1:]
+    _enf_cnts_sim_bydelta_array = _enf_cnts_sim_bydelta_array[1:]
 
     # Clearance/enfrocement counts --- by zone
     try:
@@ -310,16 +310,16 @@ def invres_cnts(
                 ]),
             ))
 
-    _invres_cnts_sim_byconczone_array = esl.invres_cnts_byconczone(
+    _enf_cnts_sim_byconczone_array = esl.enf_cnts_byconczone(
         _stats_byconczone_sim[1:]
     )
     del _stats_byconczone_sim
     del _hhi_delta, _hhi_post, _fcounts
 
     return UPPTestsCounts(
-        _invres_cnts_sim_byfirmcount_array,
-        _invres_cnts_sim_bydelta_array,
-        _invres_cnts_sim_byconczone_array,
+        _enf_cnts_sim_byfirmcount_array,
+        _enf_cnts_sim_bydelta_array,
+        _enf_cnts_sim_byconczone_array,
     )
 
 
@@ -348,7 +348,7 @@ def gen_upp_test_arrays(
         getattr(_upp_test_parms, _f) for _f in ("guppi", "divr", "cmcr", "ipr")
     )
 
-    _invres_resolution, _guppi_aggregator, _divr_aggregator = (
+    _enf_resolution, _guppi_aggregator, _divr_aggregator = (
         getattr(_sim_test_regime, _f)
         for _f in ("resolution", "guppi_aggregator", "divr_aggregator")
     )
@@ -443,7 +443,7 @@ def gen_upp_test_arrays(
     if _divr_aggregator == UPPAggrSelector.MAX:
         _divr_test_vector = _market_data.divr_array.max(axis=1, keepdims=True)
 
-    if _invres_resolution == INVResolution.ENFT:
+    if _enf_resolution == INVResolution.ENFT:
         _upp_test_arrays = UPPTestsRaw(
             _guppi_test_vector >= _g_bar,
             (_guppi_test_vector >= _g_bar) | (_divr_test_vector >= _divr_bar),
@@ -469,7 +469,7 @@ def initialize_hd5(
         _h5_path.unlink()
     _h5_file = ptb.open_file(_h5_path, mode="w", title=_h5_title)
     _save_data_to_file: tuple[Literal[True], ptb.File, str] = (True, _h5_file, "/")
-    _next_subgroup_name_root = "invres_{}_{}_{}_{}".format(
+    _next_subgroup_name_root = "enf_{}_{}_{}_{}".format(
         _hmg_pub_year,
         *(getattr(_test_regime, _f.name).name for _f in _test_regime.__attrs_attrs__),
     )

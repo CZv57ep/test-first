@@ -37,24 +37,21 @@ def discretemap(colormap: str, hexclrs: Sequence[str]) -> LinearSegmentedColorma
 
 
 class TOLcmaps:
-    """
-    Class TOLcmaps definition.
-
-    Attributes
-    ----------
-    cmap
-        A matploltib colormap
-
-    cname
-        Colormap name
-
-    namelist
-        A list of colormap names
-
-    """
-
     def __init__(self) -> None:
-        """ """
+        """
+        Class TOLcmaps definition.
+
+        Attributes
+        ----------
+        cmap
+            A matploltib colormap
+
+        cname
+            Colormap name
+
+        namelist
+            A list of colormap names
+        """
         # self.cmap: LinearSegmentedColormap | None = None
         self.cname: str = ""
         self.namelist: Sequence[str] = (

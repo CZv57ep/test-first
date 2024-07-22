@@ -89,14 +89,14 @@ def test_clearance_rate_calcs() -> None:
     )
 
     _start_time = datetime.now()
-    _mkt_sample.estimate_invres_counts(
+    _mkt_sample.estimate_enf_counts(
         gbl.GuidelinesThresholds(2010).safeharbor,
         _test_sel,
         sample_size=10**8,
         seed_seq_list=rmp.gen_seed_seq_list_default(3),
         nthreads=16,
     )
-    # upp_tests_counts = utl.sim_invres_cnts_ll(
+    # upp_tests_counts = utl.sim_enf_cnts_ll(
     #     _mkt_sample_spec,
     #     gbl.GuidelinesThresholds(2010).safeharbor,
     #     seed_seq_list=rmp.gen_seed_seq_list_default(3),
@@ -109,13 +109,13 @@ def test_clearance_rate_calcs() -> None:
         f"Estimations completed in total duration of {_total_duration / timedelta(seconds=1):.6f} secs."
     )
 
-    upp_tests_counts = _mkt_sample.invres_counts
+    upp_tests_counts = _mkt_sample.enf_counts
     _return_type_sel = esl.StatsReturnSelector.CNT
     print()
     print(
         f"Simulated {_test_sel.resolution.capitalize()} stats by number of significant competitors:"
     )
-    _stats_hdr_list, _stats_dat_list = esl.latex_tbl_invres_stats_1dim(
+    _stats_hdr_list, _stats_dat_list = esl.latex_tbl_enf_stats_1dim(
         upp_tests_counts.by_firm_count[:, :-1], return_type_sel=_return_type_sel
     )
 
@@ -130,7 +130,7 @@ def test_clearance_rate_calcs() -> None:
 
     print()
     print(f"Simulated {_test_sel.resolution.capitalize()} stats by range of ∆HHI")
-    _stats_hdr_list, _stats_dat_list = esl.latex_tbl_invres_stats_1dim(
+    _stats_hdr_list, _stats_dat_list = esl.latex_tbl_enf_stats_1dim(
         upp_tests_counts.by_delta[:, :-1],
         return_type_sel=_return_type_sel,
         sort_order=esl.SortSelector.REV,
@@ -149,7 +149,7 @@ def test_clearance_rate_calcs() -> None:
     print(
         f"Merger {_test_sel.resolution.capitalize()} stats by Merger Guidelines concentration presumptions"
     )
-    _stats_hdr_list, _stats_dat_list = esl.latex_tbl_invres_stats_byzone(
+    _stats_hdr_list, _stats_dat_list = esl.latex_tbl_enf_stats_byzone(
         upp_tests_counts.by_conczone[:, :-1],
         return_type_sel=_return_type_sel,
         sort_order=esl.SortSelector.REV,
