@@ -11,7 +11,7 @@ from numpy.typing import NDArray
 
 _PKG_NAME: str = Path(__file__).parent.stem
 
-VERSION = "2024.739089.0"
+VERSION = "2024.739089.1"
 
 __version__ = VERSION
 
