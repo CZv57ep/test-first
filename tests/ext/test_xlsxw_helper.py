@@ -70,7 +70,9 @@ def test_excel(
                 0,
                 _col_idx,
                 _col_val,
-                xlh.CFmt.xl_fmt(_xl_book, (xlh.CFmt.HDR_BORDER, xlh.CFmt.A_RIGHT)),
+                xlh.CFmt.xl_fmt(
+                    _xl_book, (xlh.CFmt.HDR_BORDER, xlh.CFmt.A_RIGHT, xlh.CFmt.ULINE)
+                ),
             )
         _xl_sheet.set_row(0, 128)
 

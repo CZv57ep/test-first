@@ -16,7 +16,7 @@ such as `polars` likely provide better performance.
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Literal, TypeAlias, TypedDict
 
 import numpy as np
 import numpy.typing as npt
@@ -28,6 +28,88 @@ from .. import VERSION  # noqa: TID252
 __version__ = VERSION
 
 Workbook = xlsxwriter.Workbook
+
+xl_border_type: TypeAlias = Literal[
+    "none",
+    "thin",
+    "medium",
+    "dashed",
+    "dotted",
+    "thick",
+    "double",
+    "hair",
+    "medium_dashed",
+    "dash_dot",
+    "medium_dash_dot",
+    "dash_dot_dot",
+    "medium_dash_dot_dot",
+    "slant_dash_dot",
+    True,
+    False,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+]
+
+
+class CFmtVal(TypedDict, total=False):
+    """Keys for xlsxwriter Format objects.
+
+    This is a partial list based on formats defined below.
+    """
+
+    font_name: str
+    font_size: int
+    font_color: str
+    bg_color: str  # html color string, no #
+    align: Literal[
+        "left", "center", "right", "center_across", "top", "bottom", "vcenter"
+    ]
+    text_wrap: bool
+    rotation: int  # integer, 0-360
+    indent: int
+    shrink: bool
+    bold: bool
+    italic: bool
+    underline: Literal[
+        True,
+        False,
+        1,
+        2,
+        33,
+        34,
+        "single",
+        "double",
+        "accountingSingle",
+        "accountingDouble",
+    ]
+    font_strikeout: bool
+    font_script: Literal[1, 2]
+
+    num_format: str
+
+    pattern: int
+
+    border: xl_border_type
+    bottom: xl_border_type
+    left: xl_border_type
+    right: xl_border_type
+    top: xl_border_type
+    bottom_color: str  # html color string, no #
+    left_color: str  # html color string, no #
+    right_color: str  # html color string, no #
+    top_color: str  # html color string, no #
 
 
 @unique
@@ -48,51 +130,51 @@ class CFmt(dict, Enum):  # type: ignore
 
     """
 
-    XL_DEFAULT: ClassVar = {"font_name": "Calibri", "font_size": 11}
-    XL_DEFAULT_2003: ClassVar = {"font_name": "Arial", "font_size": 10}
+    XL_DEFAULT: ClassVar[CFmtVal] = {"font_name": "Calibri", "font_size": 11}
+    XL_DEFAULT_2003: ClassVar[CFmtVal] = {"font_name": "Arial", "font_size": 10}
 
-    A_CTR: ClassVar = {"align": "center"}
-    A_CTR_ACROSS: ClassVar = {"align": "center_across"}
-    A_LEFT: ClassVar = {"align": "left"}
-    A_RIGHT: ClassVar = {"align": "right"}
-    V_TOP: ClassVar = {"align": "top"}
-    V_BOTTOM: ClassVar = {"align": "bottom"}
-    V_CTR: ClassVar = {"align": "vcenter"}
+    A_CTR: ClassVar[CFmtVal] = {"align": "center"}
+    A_CTR_ACROSS: ClassVar[CFmtVal] = {"align": "center_across"}
+    A_LEFT: ClassVar[CFmtVal] = {"align": "left"}
+    A_RIGHT: ClassVar[CFmtVal] = {"align": "right"}
+    V_TOP: ClassVar[CFmtVal] = {"align": "top"}
+    V_BOTTOM: ClassVar[CFmtVal] = {"align": "bottom"}
+    V_CTR: ClassVar[CFmtVal] = {"align": "vcenter"}
 
-    TEXT_WRAP: ClassVar = {"text_wrap": True}
-    TEXT_ROTATE: ClassVar = {"rotation": 90}
-    IND_1: ClassVar = {"indent": 1}
+    TEXT_WRAP: ClassVar[CFmtVal] = {"text_wrap": True}
+    TEXT_ROTATE: ClassVar[CFmtVal] = {"rotation": 90}
+    IND_1: ClassVar[CFmtVal] = {"indent": 1}
 
-    BOLD: ClassVar = {"bold": True}
-    BOLD_ITALIC: ClassVar = {"bold": True, "italic": True}
-    ITALIC: ClassVar = {"italic": True}
-    ULINE: ClassVar = {"underline": True}
-    SOUT: ClassVar = {"font_strikeout": True}
+    BOLD: ClassVar[CFmtVal] = {"bold": True}
+    BOLD_ITALIC: ClassVar[CFmtVal] = {"bold": True, "italic": True}
+    ITALIC: ClassVar[CFmtVal] = {"italic": True}
+    ULINE: ClassVar[CFmtVal] = {"underline": "single"}
+    SOUT: ClassVar[CFmtVal] = {"font_strikeout": True}
     # Useful with write_rich_text()
-    SUPERSCRIPT: ClassVar = {"font_script": 1}
-    SUBSCRIPT: ClassVar = {"font_script": 2}
+    SUPERSCRIPT: ClassVar[CFmtVal] = {"font_script": 1}
+    SUBSCRIPT: ClassVar[CFmtVal] = {"font_script": 2}
 
-    AREA_NUM: ClassVar = ({"num_format": "0.00000000"},)
-    DOLLAR_NUM: ClassVar = {"num_format": "[$$-409]#,##0.00"}
-    DT_NUM: ClassVar = {"num_format": "mm/dd/yyyy"}
-    PCT_NUM: ClassVar = {"num_format": "##0%"}
-    PCT2_NUM: ClassVar = {"num_format": "##0.00%"}
-    PCT4_NUM: ClassVar = {"num_format": "##0.0000%"}
-    PCT6_NUM: ClassVar = {"num_format": "##0.000000%"}
-    PCT8_NUM: ClassVar = {"num_format": "##0.00000000%"}
-    QTY_NUM: ClassVar = {"num_format": "#,##0.0"}
+    AREA_NUM: ClassVar[CFmtVal] = {"num_format": "0.00000000"}
+    DOLLAR_NUM: ClassVar[CFmtVal] = {"num_format": "[$$-409]#,##0.00"}
+    DT_NUM: ClassVar[CFmtVal] = {"num_format": "mm/dd/yyyy"}
+    PCT_NUM: ClassVar[CFmtVal] = {"num_format": "##0%"}
+    PCT2_NUM: ClassVar[CFmtVal] = {"num_format": "##0.00%"}
+    PCT4_NUM: ClassVar[CFmtVal] = {"num_format": "##0.0000%"}
+    PCT6_NUM: ClassVar[CFmtVal] = {"num_format": "##0.000000%"}
+    PCT8_NUM: ClassVar[CFmtVal] = {"num_format": "##0.00000000%"}
+    QTY_NUM: ClassVar[CFmtVal] = {"num_format": "#,##0.0"}
 
-    BAR_FILL: ClassVar = {"pattern": 1, "bg_color": "dfeadf"}
-    HDR_FILL: ClassVar = {"pattern": 1, "bg_color": "bfbfbf"}
+    BAR_FILL: ClassVar[CFmtVal] = {"pattern": 1, "bg_color": "dfeadf"}
+    HDR_FILL: ClassVar[CFmtVal] = {"pattern": 1, "bg_color": "bfbfbf"}
 
-    LEFT_BORDER: ClassVar = {"left": 1, "left_color": "000000"}
-    RIGHT_BORDER: ClassVar = {"right": 1, "right_color": "000000"}
-    BOT_BORDER: ClassVar = {"bottom": 1, "bottom_color": "000000"}
-    TOP_BORDER: ClassVar = {"top": 1, "top_color": "000000"}
-    HDR_BORDER: ClassVar = TOP_BORDER | BOT_BORDER
+    LEFT_BORDER: ClassVar[CFmtVal] = {"left": 1, "left_color": "000000"}
+    RIGHT_BORDER: ClassVar[CFmtVal] = {"right": 1, "right_color": "000000"}
+    BOT_BORDER: ClassVar[CFmtVal] = {"bottom": 1, "bottom_color": "000000"}
+    TOP_BORDER: ClassVar[CFmtVal] = {"top": 1, "top_color": "000000"}
+    HDR_BORDER: ClassVar[CFmtVal] = TOP_BORDER | BOT_BORDER
 
     @classmethod
-    def add_new(self, _fmt_name: str, _xlsx_fmt_dict: dict[str, Any], /) -> CFmt:
+    def add_new(self, _fmt_name: str, _xlsx_fmt_dict: CFmtVal, /) -> CFmt:
         """
         Add new CFmt object to instance.
 
@@ -297,6 +379,7 @@ def array_to_sheet(
     /,
     *,
     cell_format: Sequence[CFmt | Sequence[CFmt]] | CFmt | None = None,
+    empty_as_blank: bool = True,
     green_bar_flag: bool = True,
     ragged_flag: bool = True,
 ) -> tuple[int, int]:
@@ -426,7 +509,14 @@ def array_to_sheet(
         _wbk_fmt_tuple = _wbk_formats_greened if _ri % 2 else _wbk_formats
         for _ci, _cv in enumerate(_rv):
             _cf = _wbk_fmt_tuple[_ci]
-            scalar_to_sheet(_xl_sheet, _row_id + _ri, _col_id + _ci, _cv, _cf)
+            scalar_to_sheet(
+                _xl_sheet,
+                _row_id + _ri,
+                _col_id + _ci,
+                _cv,
+                _cf,
+                empty_as_blank=empty_as_blank,
+            )
 
         _right_column_id = _col_id + _ci + 1 if _ci > _num_cols else _right_column_id
 
