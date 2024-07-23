@@ -169,9 +169,9 @@ class CFmt(dict, Enum):  # type: ignore
 
     LEFT_BORDER: ClassVar[CFmtVal] = {"left": 1, "left_color": "000000"}
     RIGHT_BORDER: ClassVar[CFmtVal] = {"right": 1, "right_color": "000000"}
-    BOT_BORDER: ClassVar[CFmtVal] = {"bottom": 1, "bottom_color": "000000"}
+    BOTTOM_BORDER: ClassVar[CFmtVal] = {"bottom": 1, "bottom_color": "000000"}
     TOP_BORDER: ClassVar[CFmtVal] = {"top": 1, "top_color": "000000"}
-    HDR_BORDER: ClassVar[CFmtVal] = TOP_BORDER | BOT_BORDER
+    HDR_BORDER: ClassVar[CFmtVal] = TOP_BORDER | BOTTOM_BORDER
 
     @classmethod
     def add_new(self, _fmt_name: str, _xlsx_fmt_dict: CFmtVal, /) -> CFmt:
