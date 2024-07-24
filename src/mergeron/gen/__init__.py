@@ -111,7 +111,7 @@ class ShareSpec:
     """
 
     dist_type: SHRConstants
-    """See :class:`mergeron.gen.SHRConstants`"""
+    """See :class:`SHRConstants`"""
 
     dist_parms: NDArray[np.float64] | None = field(
         default=None, eq=cmp_using(eq=np.array_equal)
@@ -173,10 +173,10 @@ class PCMSpec:
     """
 
     firm2_pcm_constraint: FM2Constants
-    """See :class:`mergeron.gen.FM2Constants`"""
+    """See :class:`FM2Constants`"""
 
     dist_type: PCMConstants
-    """See :class:`mergeron.gen.PCMConstants`"""
+    """See :class:`PCMConstants`"""
 
     dist_parms: NDArray[np.float64] | None
     """Parameter specification for tailoring PCM distribution
@@ -313,55 +313,28 @@ class MarketSpec:
         default=ShareSpec(RECConstants.INOUT, 0.85, SHRConstants.UNI, None, None),
         validator=[validators.instance_of(ShareSpec), _share_spec_validator],
     )
-    """Market-share specification, see :class:`mergeron.gen.ShareSpec`"""
+    """Market-share specification, see :class:`ShareSpec`"""
 
     pcm_spec: PCMSpec = field(
         kw_only=True,
         default=PCMSpec(FM2Constants.IID, PCMConstants.UNI, None),
         validator=[validators.instance_of(PCMSpec), _pcm_spec_validator],
     )
-    """Margin specification, see :class:`mergeron.gen.PCMSpec`"""
+    """Margin specification, see :class:`PCMSpec`"""
 
     price_spec: PriceConstants = field(
         kw_only=True,
         default=PriceConstants.SYM,
         validator=validators.instance_of(PriceConstants),
     )
-    """Price specification, see :class:`mergeron.gen.PriceConstants`"""
+    """Price specification, see :class:`PriceConstants`"""
 
     hsr_filing_test_type: SSZConstants = field(
         kw_only=True,
         default=SSZConstants.ONE,
         validator=validators.instance_of(SSZConstants),
     )
-    """Method for modeling HSR filing threholds, see :class:`mergeron.gen.SSZConstants`"""
-
-
-@enum.unique
-class INVResolution(enum.StrEnum):
-    CLRN = "clearance"
-    ENFT = "enforcement"
-    BOTH = "both"
-
-
-@frozen
-class UPPTestRegime:
-    resolution: INVResolution = field(
-        default=INVResolution.ENFT, validator=validators.instance_of(INVResolution)
-    )
-    guppi_aggregator: UPPAggrSelector = field(
-        default=UPPAggrSelector.MIN, validator=validators.instance_of(UPPAggrSelector)
-    )
-    divr_aggregator: UPPAggrSelector | None = field(
-        default=None, validator=validators.instance_of((UPPAggrSelector, type(None)))
-    )
-
-
-# https://stackoverflow.com/questions/54668000
-class DataclassInstance(Protocol):
-    """Generic dataclass-instance"""
-
-    __dataclass_fields__: ClassVar
+    """Method for modeling HSR filing threholds, see :class:`SSZConstants`"""
 
 
 @dataclass(slots=True, frozen=True)
@@ -457,6 +430,26 @@ class MarginDataSample:
     """
 
 
+@enum.unique
+class INVResolution(enum.StrEnum):
+    CLRN = "clearance"
+    ENFT = "enforcement"
+    BOTH = "both"
+
+
+@frozen
+class UPPTestRegime:
+    resolution: INVResolution = field(
+        default=INVResolution.ENFT, validator=validators.instance_of(INVResolution)
+    )
+    guppi_aggregator: UPPAggrSelector = field(
+        default=UPPAggrSelector.MIN, validator=validators.instance_of(UPPAggrSelector)
+    )
+    divr_aggregator: UPPAggrSelector | None = field(
+        default=None, validator=validators.instance_of((UPPAggrSelector, type(None)))
+    )
+
+
 @dataclass(slots=True, frozen=True)
 class UPPTestsRaw:
     """Container for arrays marking test failures and successes
@@ -494,3 +487,10 @@ class UPPTestsCounts:
     by_conczone: NDArray[np.int64]
     """Zones are "unoncentrated", "moderately concentrated", and "highly concentrated"
     """
+
+
+# https://stackoverflow.com/questions/54668000
+class DataclassInstance(Protocol):
+    """Generic dataclass-instance"""
+
+    __dataclass_fields__: ClassVar
