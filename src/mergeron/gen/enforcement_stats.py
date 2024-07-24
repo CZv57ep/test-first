@@ -188,7 +188,7 @@ ZONE_STRINGS = {
     0: R"Green Zone (Safeharbor)",
     1: R"Yellow Zone",
     2: R"Red Zone (SLC Presumption)",
-    fid.TTL_KEY: R"\node[align = left, fill=OBSHDRFill] {TOTAL};",
+    fid.TTL_KEY: "TOTAL",
 }
 ZONE_DETAIL_STRINGS_HHI = {
     0: Rf"HHI < {HHI_POST_ZONE_KNOTS[1]} pts.",
@@ -213,7 +213,9 @@ ZONE_STRINGS_LATEX = {
 
 ZONE_DETAIL_STRINGS_HHI_LATEX = {
     0: Rf"HHI_{{post}} < \text{{{HHI_POST_ZONE_KNOTS[1]} pts.}}",
-    1: R"HHI_{{post}} ∈ \text{{[{}, {}) pts. and }} ".format(*HHI_POST_ZONE_KNOTS[1:3]),
+    1: R"HHI_{{post}} \in \text{{[{}, {}) pts. and }} ".format(
+        *HHI_POST_ZONE_KNOTS[1:3]
+    ),
     2: Rf"HHI_{{post}} \geqslant \text{{{HHI_POST_ZONE_KNOTS[2]} pts. and }} ",
 }
 
@@ -249,9 +251,9 @@ def enf_stats_output(
         case StatsGrpSelector.ZN:
             _enf_stats_table_func = enf_stats_table_byzone
         case StatsGrpSelector.FC:
-            _enf_stats_table_func = enf_stats_table_1dim
+            _enf_stats_table_func = enf_stats_table_onedim
         case StatsGrpSelector.DL:
-            _enf_stats_table_func = enf_stats_table_1dim
+            _enf_stats_table_func = enf_stats_table_onedim
         case _:
             raise ValueError(
                 'Statistics formatted, "{_stats_group}" not available here.'
@@ -510,7 +512,7 @@ def enf_cnts_byconczone(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
     return _cnts_byconczone[1:]
 
 
-def enf_stats_table_1dim(
+def enf_stats_table_onedim(
     _inparr: NDArray[np.float64 | np.int64],
     _totals_row: int | None = None,
     /,
