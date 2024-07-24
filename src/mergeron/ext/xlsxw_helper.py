@@ -7,15 +7,15 @@ Includes a flexible system of defining cell formats.
 NOTES
 -----
 
-This module is desinged for producing formatted summary output. For
+This module is designed for producing formatted summary output. For
 writing bulk data to Excel, facilities provided in third-party packages
-such as `polars` likely provide better performance.
+such as `polars <https://pola.rs/>`_ likely provide better performance.
 
 """
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
 from typing import Any, ClassVar, Literal, TypeAlias, TypedDict
 
 import numpy as np
@@ -29,7 +29,7 @@ __version__ = VERSION
 
 Workbook = xlsxwriter.Workbook
 
-xl_border_type: TypeAlias = Literal[
+XLBorderType: TypeAlias = Literal[
     "none",
     "thin",
     "medium",
@@ -66,13 +66,12 @@ xl_border_type: TypeAlias = Literal[
 class CFmtVal(TypedDict, total=False):
     """Keys for xlsxwriter Format objects.
 
-    This is a partial list based on formats defined below.
+    This is a partial list based on formats of interest.
     """
 
     font_name: str
     font_size: int
     font_color: str
-    bg_color: str  # html color string, no #
     align: Literal[
         "left", "center", "right", "center_across", "top", "bottom", "vcenter"
     ]
@@ -100,93 +99,106 @@ class CFmtVal(TypedDict, total=False):
     num_format: str
 
     pattern: int
+    fg_color: str  # html color string, no #
+    bg_color: str  # html color string, no #
 
-    border: xl_border_type
-    bottom: xl_border_type
-    left: xl_border_type
-    right: xl_border_type
-    top: xl_border_type
+    hidden: bool
+    locked: bool
+
+    border: XLBorderType
+    bottom: XLBorderType
+    left: XLBorderType
+    right: XLBorderType
+    top: XLBorderType
+    border_color: str  # html color string, no #
     bottom_color: str  # html color string, no #
     left_color: str  # html color string, no #
     right_color: str  # html color string, no #
     top_color: str  # html color string, no #
 
+    diag_border: XLBorderType
+    diag_border_color: str  # html color string, no #
+    diag_type: Literal[
+        1, 2, 3, "up", "down", "left", "right", "cross", "diagonalUp", "diagonalDown"
+    ]
+
 
 @unique
 class CFmt(dict, Enum):  # type: ignore
     """
-    Initialize cell formats for xlsxwriter.
+    Cell format enums for xlsxwriter Format objects.
 
-    The mappings included here, and unions, etc. of them
-    and any others added at runtime, are rendered
-    as xlsxWriter.Workbook.Format objects for writing
-    cell values to formatted cells in a spreadsheet.
+    The enums defined here, or sequences of (any of) them
+    and any added with :meth:`CFmt.add_new`, are
+    rendered as :code:`xlsxWriter.Workbook.Format` objects
+    with :meth:`CFmt.xl_fmt`.
 
     NOTES
     -----
 
-    For more information about xlsxwriter's cell formats,
+    For more information about xlsxwriter cell formats,
     see, https://xlsxwriter.readthedocs.io/format.html
 
     """
 
-    XL_DEFAULT: ClassVar[CFmtVal] = {"font_name": "Calibri", "font_size": 11}
-    XL_DEFAULT_2003: ClassVar[CFmtVal] = {"font_name": "Arial", "font_size": 10}
+    XL_DEFAULT: ClassVar = {"font_name": "Calibri", "font_size": 11}
+    XL_DEFAULT_2003: ClassVar = {"font_name": "Arial", "font_size": 10}
 
-    A_CTR: ClassVar[CFmtVal] = {"align": "center"}
-    A_CTR_ACROSS: ClassVar[CFmtVal] = {"align": "center_across"}
-    A_LEFT: ClassVar[CFmtVal] = {"align": "left"}
-    A_RIGHT: ClassVar[CFmtVal] = {"align": "right"}
-    V_TOP: ClassVar[CFmtVal] = {"align": "top"}
-    V_BOTTOM: ClassVar[CFmtVal] = {"align": "bottom"}
-    V_CTR: ClassVar[CFmtVal] = {"align": "vcenter"}
+    A_CTR: ClassVar = {"align": "center"}
+    A_CTR_ACROSS: ClassVar = {"align": "center_across"}
+    A_LEFT: ClassVar = {"align": "left"}
+    A_RIGHT: ClassVar = {"align": "right"}
+    V_TOP: ClassVar = {"align": "top"}
+    V_BOTTOM: ClassVar = {"align": "bottom"}
+    V_CTR: ClassVar = {"align": "vcenter"}
 
-    TEXT_WRAP: ClassVar[CFmtVal] = {"text_wrap": True}
-    TEXT_ROTATE: ClassVar[CFmtVal] = {"rotation": 90}
-    IND_1: ClassVar[CFmtVal] = {"indent": 1}
+    TEXT_WRAP: ClassVar = {"text_wrap": True}
+    TEXT_ROTATE: ClassVar = {"rotation": 90}
+    IND_1: ClassVar = {"indent": 1}
 
-    BOLD: ClassVar[CFmtVal] = {"bold": True}
-    BOLD_ITALIC: ClassVar[CFmtVal] = {"bold": True, "italic": True}
-    ITALIC: ClassVar[CFmtVal] = {"italic": True}
-    ULINE: ClassVar[CFmtVal] = {"underline": "single"}
-    SOUT: ClassVar[CFmtVal] = {"font_strikeout": True}
+    BOLD: ClassVar = {"bold": True}
+    BOLD_ITALIC: ClassVar = {"bold": True, "italic": True}
+    ITALIC: ClassVar = {"italic": True}
+    ULINE: ClassVar = {"underline": "single"}
+    SOUT: ClassVar = {"font_strikeout": True}
     # Useful with write_rich_text()
-    SUPERSCRIPT: ClassVar[CFmtVal] = {"font_script": 1}
-    SUBSCRIPT: ClassVar[CFmtVal] = {"font_script": 2}
+    SUPERSCRIPT: ClassVar = {"font_script": 1}
+    SUBSCRIPT: ClassVar = {"font_script": 2}
 
-    AREA_NUM: ClassVar[CFmtVal] = {"num_format": "0.00000000"}
-    DOLLAR_NUM: ClassVar[CFmtVal] = {"num_format": "[$$-409]#,##0.00"}
-    DT_NUM: ClassVar[CFmtVal] = {"num_format": "mm/dd/yyyy"}
-    PCT_NUM: ClassVar[CFmtVal] = {"num_format": "##0%"}
-    PCT2_NUM: ClassVar[CFmtVal] = {"num_format": "##0.00%"}
-    PCT4_NUM: ClassVar[CFmtVal] = {"num_format": "##0.0000%"}
-    PCT6_NUM: ClassVar[CFmtVal] = {"num_format": "##0.000000%"}
-    PCT8_NUM: ClassVar[CFmtVal] = {"num_format": "##0.00000000%"}
-    QTY_NUM: ClassVar[CFmtVal] = {"num_format": "#,##0.0"}
+    AREA_NUM: ClassVar = {"num_format": "0.00000000"}
+    DOLLAR_NUM: ClassVar = {"num_format": "[$$-409]#,##0.00"}
+    DT_NUM: ClassVar = {"num_format": "mm/dd/yyyy"}
+    PCT_NUM: ClassVar = {"num_format": "##0%"}
+    PCT2_NUM: ClassVar = {"num_format": "##0.00%"}
+    PCT4_NUM: ClassVar = {"num_format": "##0.0000%"}
+    PCT6_NUM: ClassVar = {"num_format": "##0.000000%"}
+    PCT8_NUM: ClassVar = {"num_format": "##0.00000000%"}
+    QTY_NUM: ClassVar = {"num_format": "#,##0.0"}
 
-    BAR_FILL: ClassVar[CFmtVal] = {"pattern": 1, "bg_color": "dfeadf"}
-    HDR_FILL: ClassVar[CFmtVal] = {"pattern": 1, "bg_color": "bfbfbf"}
+    BAR_FILL: ClassVar = {"pattern": 1, "bg_color": "dfeadf"}
+    HDR_FILL: ClassVar = {"pattern": 1, "bg_color": "bfbfbf"}
 
-    LEFT_BORDER: ClassVar[CFmtVal] = {"left": 1, "left_color": "000000"}
-    RIGHT_BORDER: ClassVar[CFmtVal] = {"right": 1, "right_color": "000000"}
-    BOTTOM_BORDER: ClassVar[CFmtVal] = {"bottom": 1, "bottom_color": "000000"}
-    TOP_BORDER: ClassVar[CFmtVal] = {"top": 1, "top_color": "000000"}
-    HDR_BORDER: ClassVar[CFmtVal] = TOP_BORDER | BOTTOM_BORDER
+    FULL_BORDER: ClassVar = {"border": 1, "border_color": "000000"}
+    BOTTOM_BORDER: ClassVar = {"bottom": 1, "bottom_color": "000000"}
+    LEFT_BORDER: ClassVar = {"left": 1, "left_color": "000000"}
+    RIGHT_BORDER: ClassVar = {"right": 1, "right_color": "000000"}
+    TOP_BORDER: ClassVar = {"top": 1, "top_color": "000000"}
+    HDR_BORDER: ClassVar = TOP_BORDER | BOTTOM_BORDER
 
     @classmethod
     def add_new(self, _fmt_name: str, _xlsx_fmt_dict: CFmtVal, /) -> CFmt:
         """
-        Add new CFmt object to instance.
+        Add new :class:`CFmt` object to instance.
 
         Parameters
         ----------
         _fmt_name
-            Name of new member to be added to CFmt
+            Name of new member to be added to :class:`CFmt`
         _xlsx_fmt_dict
-            Any valid argument to xlsxwriter.Workbook.add_format(), or union of
-            same with one or more CFmt objects with same, e.g.,
-            CFmt.HDR_BORDER | CFmt.HDR_FILL  or
-            CFmt.HDR_BORDER | {"pattern": 1, "bg_color": "f2f2f2"}
+            Any valid argument to :code:`xlsxwriter.Workbook.add_format()`, or union of
+            same with one or more :class:`CFmt` objects, e.g.,
+            :code:`CFmt.HDR_BORDER | CFmt.HDR_FILL`  or
+            :code:`CFmt.HDR_BORDER | {"pattern": 1, "bg_color": "f2f2f2"}`
 
         Returns
         -------
@@ -198,20 +210,21 @@ class CFmt(dict, Enum):  # type: ignore
 
     @classmethod
     def ensure_cell_format_spec_tuple(
-        self, _cell_formats: Sequence[CFmt | Sequence[CFmt]], /
+        self, _cell_format: Sequence[CFmt | Sequence[CFmt]], /
     ) -> bool:
         """
-        Test that a given format specification is a tuple of CFmt enums
+        Test that a given format specification is a tuple of :class:`CFmt` enums
 
         Parameters
         ----------
-        _cell_formats
+        _cell_format
             Format specification
 
         Raises
         ------
         ValueError
-            If format specification is not tuple of CFmt enums
+            If format specification is not a sequence  of (sequences of)
+            :class:`CFmt` enums
 
         Returns
         -------
@@ -219,14 +232,14 @@ class CFmt(dict, Enum):  # type: ignore
 
         """
 
-        for _cell_format in _cell_formats:
-            if isinstance(_cell_format, tuple):
-                self.ensure_cell_format_spec_tuple(_cell_format)
+        for _cf in _cell_format:
+            if isinstance(_cf, tuple):
+                self.ensure_cell_format_spec_tuple(_cf)
 
-            if not (isinstance(_cell_format, CFmt),):
+            if not (isinstance(_cf, CFmt),):
                 raise ValueError(
                     "Improperly specified format tuple for writing array."
-                    "  Must be tuple of CFmt enums."
+                    "  Must be tuple of :class:`CFmt` enums."
                 )
 
         return True
@@ -239,7 +252,7 @@ class CFmt(dict, Enum):  # type: ignore
         /,
     ) -> xlsxwriter.format.Format:
         """
-        Return :code:`xlsxwriter` `Format` object given a CFmt aenum, or tuple thereof.
+        Return :code:`xlsxwriter` :code:`Format` object given a :class:`CFmt` enum, or tuple thereof.
 
         Parameters
         ----------
@@ -247,17 +260,17 @@ class CFmt(dict, Enum):  # type: ignore
             :code:`xlsxwriter.Workbook` object
 
         _cell_fmt
-            :code:`CFmt` aenum object, or tuple thereof
+            :class:`CFmt` enum object, or tuple thereof
 
         Raises
         ------
         ValueError
-            If format specification is not one of None, a CFmt aenum, or
-            a xlsxwriter.format.Format object
+            If format specification is not one of None, a :class:`CFmt` enum, or
+            a :code:`xlsxwriter.format.Format` object
 
         Returns
         -------
-            :code:`xlsxwriter` `Format`  object
+            :code:`xlsxwriter` :code:`Format`  object
 
         """
 
@@ -266,7 +279,7 @@ class CFmt(dict, Enum):  # type: ignore
         elif _cell_fmt is None:
             return _xl_book.add_format(CFmt.XL_DEFAULT.value)
 
-        _cell_fmt_dict: Mapping[str, Any] = {}
+        _cell_fmt_dict: CFmtVal = {}
         if isinstance(_cell_fmt, Sequence):
             self.ensure_cell_format_spec_tuple(_cell_fmt)
             for _cf in _cell_fmt:
@@ -387,7 +400,11 @@ def array_to_sheet(
     Write a 2-D array to a worksheet.
 
     The given array is required be a two-dimensional array, whether
-    a nested list, nested tuple, or a 2-D numpy ndarray.
+    a nested list, nested tuple, or a 2-D numpy ndarray. The array is assumed
+    to be ragged by default, i.e. not all rows are the same length, and some
+    cells may contain lists, etc. For rectangular arrays, set `ragged_flag` to
+    false if you wish to provide a format tuple with distinct formats for each
+    column in the rectangular array.
 
 
     Parameters
@@ -430,7 +447,8 @@ def array_to_sheet(
         If array is not rectangular and cell_format is a Sequence
 
     ValueError
-        If array is rectangular format tuple does not match data in length
+        If array is rectangular but length of format tuple does not
+        match row-length
 
 
     Returns
@@ -441,12 +459,12 @@ def array_to_sheet(
     Notes
     -----
 
-    The keyword argument cell_format may be passed a tuple of CFmt enums,
+    The keyword argument cell_format may be passed a tuple of :class:`CFmt` enums,
     if, and only if, ragged_flag is False. If cell_format is a tuple, it must
-    have length equal to the number of cells in the range to be written. Further,
-    members of cell_format must each be a CFmt enum or a tuple of CFmt enums; in
-    other words, `CFmt.ensure_cell_format_spec_tuple(_c)` must return True for
-    any tuple `_c` passed as `cell_format`.
+    have length equal to the number of cells in each row of the passed array.
+    Further, members of cell_format must each be a :class:`CFmt` enum or a
+    tuple of :class:`CFmt` enums; in other words, :meth:`CFmt.ensure_cell_format_spec_tuple`
+    must return True for any tuple `_c` passed as `cell_format`.
 
     """
 
@@ -540,11 +558,11 @@ def scalar_to_sheet(
 
     _cell_addr_0
         First element of a cell address, which may be the entire address
-        in 'A1' format or the row-part in 'R1,C1' format
+        in 'A1' format or the row-part in 'Row-column' format
 
     _s2s_args
         Other arguments, which may be just the cell value to be written and the
-        cell format, or the column-part of the 'R1,C1' address along with
+        cell format, or the column-part of the 'Row-column' address along with
         cell value and cell format.
 
     Raises
@@ -557,6 +575,11 @@ def scalar_to_sheet(
     Returns
     -------
         None
+
+    Notes
+    -----
+    For more information on xlsxwriter cell-address notation, see:
+    https://xlsxwriter.readthedocs.io/working_with_cell_notation.html
 
     """
 
