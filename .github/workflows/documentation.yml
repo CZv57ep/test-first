@@ -25,7 +25,7 @@ jobs:
           sphinx-build -a docs/source/ _build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: html-docs
           path: _build
