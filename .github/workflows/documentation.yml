@@ -24,11 +24,6 @@ jobs:
         run: |
           sphinx-build -a docs/source/ _build
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: html-docs
-          path: _build
 
     #   - name: Deploy
     #     uses: peaceiris/actions-gh-pages@v4
@@ -49,12 +44,17 @@ jobs:
 
     # Deploy to the github-pages environment
     environment:
-      name: github-pages
+      name: html-docs
       url: ${{ steps.deployment.outputs.page_url }}
 
     # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-docs
+          path: _build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
