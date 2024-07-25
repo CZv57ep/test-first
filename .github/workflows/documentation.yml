@@ -22,7 +22,12 @@ jobs:
           pip install -r docs/source/requirements.txt
       - name: Sphinx build
         run: |
-          sphinx-build -a docs/source/ _build
+          sphinx-build -a docs/source/ docs/build/html
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-docs
+          path: docs/build/html
 
 
     #   - name: Deploy
@@ -50,11 +55,6 @@ jobs:
     # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: html-docs
-          path: _build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
