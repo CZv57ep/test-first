@@ -144,7 +144,7 @@ class PCMConstants(enum.StrEnum):
     UNI = "Uniform"
     BETA = "Beta"
     BETA_BND = "Bounded Beta"
-    EMPR = "Damodaran margin data"
+    EMPR = "Damodaran margin data, resampled"
 
 
 @enum.unique
