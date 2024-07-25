@@ -1,0 +1,104 @@
+\begin{table}[bt]
+((* if tmpl_data.obs_merger_class_0 == 'All Markets' *))
+	((* set obs_merger_class_0 = tmpl_data.obs_merger_class_0 *))
+((* else *))
+	((* set obs_merger_class_0 = "Markets with, ``" + tmpl_data.obs_merger_class_0 + "''" *))
+((* endif *))
+
+((* if tmpl_data.test_res == 'Enforcement' *))
+	((* set prop_title = "Proportion Enforced" *))
+((* else *))
+	((* set prop_title = "Proportion Cleared" *))
+((* endif *))
+
+((* set obs_merger_class_1 = "Markets with, ``" + tmpl_data.obs_merger_class_1 + "''" *))
+
+	\centering
+	\caption{FTC Merger Investigations Data}\label{tbl:FTCInvData_\JINVAR{ tmpl_data.obs_summary_type|replace(" ", "") -}}
+	{\footnotesize \JINVAR{ tmpl_data.obs_summary_type_title } \\
+		Grouped by Entry Conditions and Reporting Period \\[0.5\baselineskip]}
+	\begin{tikzpicture}[auto, font = \sffamily]
+		\begin{pgfonlayer}{background}
+			\matrix[datatable, nodes = {text width = 27pt,},] (enf_rate_raw) {
+				\JINVAR{ tmpl_data.invdata_datstr -}
+				};
+			% Horizontal scoring for totals
+			\draw[color = OBSHDRFill, line width = 1pt] (enf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-1.north west) -- (enf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-8.north east);
+			% Vertical scoring for column groups
+			\draw[color = OBSHDRFill, line width = 1pt] (enf_rate_raw-1-2.north east) -- (enf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-2.south east);
+			\draw[color = OBSHDRFill, line width = 1pt] (enf_rate_raw-1-4.north east) -- (enf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-4.south east);
+			\draw[color = OBSHDRFill, line width = 1pt] (enf_rate_raw-1-6.north east) -- (enf_rate_raw-\JINVAR{- tmpl_data.invdata_numrows -}-6.south east);
+		\end{pgfonlayer}
+
+		\matrix[hrow,
+			above = 0 pt of enf_rate_raw,
+			nodes = {minimum height = 33pt, text depth = 10pt, text width = 60pt, align = left, inner sep = 3pt,},
+			] (hdrrow_raw) {
+			\node[rotate = 90] {Relative \\ Frequency \\}; &
+			\node[rotate = 90] {\JINVAR{ prop_title|replace(" ", "\\\\") } \\}; &
+			\node[rotate = 90] {Relative \\ Frequency \\}; &
+			\node[rotate = 90] {\JINVAR{ prop_title|replace(" ", "\\\\") } \\}; &
+			\node[rotate = 90] {Relative \\ Frequency \\}; &
+			\node[rotate = 90] {\JINVAR{ prop_title|replace(" ", "\\\\") } \\}; &
+			\node[rotate = 90] {Relative \\ Frequency \\}; &
+			\node[rotate = 90] {\JINVAR{ prop_title|replace(" ", "\\\\") } \\}; \\
+			};
+		% Header row - columns description -- Markets 0 - period 1-2
+		\matrix[hrow, above left = 0pt of hdrrow_raw.north, nodes = {minimum height = 12.5pt, text width = 65.6pt,},] (descrow_raw_pds1) {
+			\JINVAR{ tmpl_data.obs_periods_str }
+			\JINVAR{ tmpl_data.mkt_counts_str_class_0 }
+			};
+		% Header row - columns description -- Markets 1 - period 1-2
+		\matrix[hrow, above right = 0pt of hdrrow_raw.north, nodes = {minimum height = 12.5pt, text width = 65.6pt,},] (descrow_raw_pds2) {
+			\JINVAR{ tmpl_data.obs_periods_str }
+			\JINVAR{ tmpl_data.mkt_counts_str_class_1 }
+			};
+		% Header row - columns description
+		\matrix[hrow, above left = 0pt of descrow_raw_pds1.north east, nodes = {minimum height = 12.5pt, text width = 130.8pt},] (descrow_raw_mkt1) { \JINVAR{ obs_merger_class_0 } \\
+			};
+		% Header row - columns description
+		\matrix[hrow, above right = 0pt of descrow_raw_pds2.north west, nodes = {minimum height = 12.5pt, text width = 130.8pt},] (descrow_raw_mkt2) { \JINVAR{ obs_merger_class_1 } \\
+			};
+		% Header row - columns description
+		\matrix[hrow, above left = 0pt of descrow_raw_mkt2.north east, nodes = {minimum height = 12.5pt, text width = 261.2pt},] (descrow_raw_top) {
+			Observed Data \\
+			};
+		% Vertical scoring for column groups
+		\draw[color = white, line width = 1pt] (descrow_raw_pds1-1-1.north east) -- (enf_rate_raw-1-2.north east);
+		\draw[color = white, line width = 1pt] (descrow_raw_mkt1-1-1.north east) -- (enf_rate_raw-1-4.north east);
+		\draw[color = white, line width = 1pt] (descrow_raw_pds2-1-1.north east) -- (enf_rate_raw-1-6.north east);
+
+		% Header column - row heads
+		\matrix[hcol, left = 0pt of enf_rate_raw, nodes = {
+				text width = \JINVAR{ tmpl_data.hdrcol_raw_width -},
+				inner xsep = 3 pt,
+				},] (hdrcol_raw) {
+			\JINVAR{ tmpl_data.invdata_hdrstr -}
+			};
+		% Header column - row heads - description
+		\JINVAR{ tmpl_data.invdata_hdrcoldescstr }
+
+		% Fill along header
+		\draw[color = OBSHDRFill, fill = OBSHDRFill,]
+		(hdrcoldesc_raw.north west |- descrow_raw_top.north west)
+		rectangle
+		(hdrcoldesc_raw.north east)
+		;
+		((# % Separator for header column
+		\draw[color = white, line width = 1pt] (descrow_raw_mkt1-1-1.north west) -- (enf_rate_raw-1-1.north west); #))
+
+		% Notes below table
+		\matrix[anytable,
+			below right = 4pt and 4pt of hdrcol_raw.south west,
+			nodes = {notetext, minimum height = 8pt, text width = \JINVAR{ tmpl_data.invdata_notewidth -}\linewidth,},
+			] (notestext) {%
+				\JINVAR{ tmpl_data.invdata_notestr -}
+				SOURCES: \\
+				% TODO: Table numbers need updating
+				% \(\cdot\) \fullcite{FTCInvData2003}, Table~4.1 and Table~10.2 \\
+				\JINVAR{ tmpl_data.invdata_sourcestr -}
+				% \(\cdot\) \fullcite{FTCInvData2011}, Table~4.1 and Table~10.2 \\
+			};
+	\end{tikzpicture}
+\end{table}
+

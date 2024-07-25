@@ -1,0 +1,57 @@
+\begin{table}[bt]
+%# jinja2 code blocks for creating variables here
+%# Spurious blank lines don't matter?
+((* if tmpl_data.obs_merger_class == 'Entry Difficult' *))
+	((* set table_ref, obs_merger_class_desc = "9.2", "Markets with Strong Entry Barriers (``" + tmpl_data.obs_merger_class + "'')" *))
+((* else *))
+	((* set table_ref, obs_merger_class_desc = "3.1", tmpl_data.obs_merger_class *))
+((* endif *))
+
+	\centering
+	\caption{FTC Merger Investigations Data}\label{tbl:FTCInvData_\JINVAR{ tmpl_data.obs_summary_type|replace(" ", "") -}_\JINVAR{ tmpl_data.obs_merger_class|replace(" ", "") -}}
+	{\footnotesize \JINVAR{ tmpl_data.obs_summary_type_title } \\
+		\JINVAR{ obs_merger_class_desc } \\[0.5\baselineskip]}
+	\begin{tikzpicture}[auto, font = \sffamily]
+		\begin{pgfonlayer}{background}
+			\matrix[datatable, nodes = {text width = 42pt,},] (clr_rate_raw) {
+				\JINVAR{ tmpl_data.invdata_datstr|replace("nan\%", "---") -}
+				};
+			\draw[color = OBSHDRFill, line width = 1pt] (clr_rate_raw-11-1.north west) -- (clr_rate_raw-11-4.north east);
+			\draw[color = OBSHDRFill, line width = 1pt] (clr_rate_raw-1-2.north east) -- (clr_rate_raw-11-2.south east);
+		\end{pgfonlayer}
+
+		% Header row - column heads
+		\matrix[hrow, above = 0 pt of clr_rate_raw, nodes = {align = right, inner xsep = 3pt, minimum height = 12.5pt, text width = 42pt},] (hdrrow_raw) {
+			Relative & Proportion & Relative & Proportion \\
+			Frequency & Cleared & Frequency & Cleared \\
+			};
+		% Header row - columns description -- period 1
+		\matrix[hrow, above right = 0pt of hdrrow_raw.north west, nodes = {minimum height = 12.5pt, text width = 95.6pt,},] (descrow_raw_pd1) {
+			1996--2003 \\
+			};
+		% Header row - columns description -- period 2
+		\matrix[hrow, above left = 0pt of hdrrow_raw.north east, nodes = {minimum height = 12.5pt, text width = 95.6pt,},] (descrow_raw_pd2) {
+			2004--2011 \\
+			};
+		% Header row - columns description
+		\matrix[hrow, above left = 0pt of descrow_raw_pd2.north east, nodes = {minimum height = 12.5pt, text width = 190.8pt},] (descrow_raw) {
+			Observed Data \\
+			};
+		% Header column - row heads
+		\matrix[hcol, left = 0pt of clr_rate_raw, nodes = {text width = 108pt},] (hdrcol_raw) {
+			 \JINVAR{ tmpl_data.invdata_hdrstr -}
+			};
+		% Header column - row heads - description
+		\JINVAR{ tmpl_data.invdata_hdrcoldescstr }
+
+		% Notes below table
+		\matrix[anytable, below right = 4pt and 4pt of hdrcol_raw.south west, nodes = {notetext, minimum height = 10pt, text width = 0.72*\linewidth,},] (notestext) {
+				\JINVAR{ tmpl_data.invdata_notestr }
+				SOURCES: \\
+				% \(\cdot\) Fed. Trade Comm'n (2004), \textit{supra} note~\ref{fn:FTCInvData1996to2003}, Table~4.1 and Table~10.2 \\
+				\JINVAR{ tmpl_data.invdata_sourcestr }
+				% \(\cdot\) Fed. Trade Comm'n (2013), \textit{supra} note~\ref{fn:FTCInvData1996to2011}, Table~4.1 and Table~10.2 \\
+			};
+	\end{tikzpicture}
+\end{table}
+

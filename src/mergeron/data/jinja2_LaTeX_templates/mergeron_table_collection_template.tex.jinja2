@@ -1,0 +1,90 @@
+\documentclass{mergeron}
+
+\usepackage{luacode}
+\begin{luacode}
+    local function embedfull(tfmdata)
+        tfmdata.embedding = "full"
+    end
+
+    luatexbase.add_to_callback(
+    "luaotfload.patch_font", embedfull, "embedfull"
+    )
+\end{luacode}
+
+%  Specify location for includegraphics files:
+\graphicspath{{~/mergeron}}
+
+%% Define some symbols
+\newcommand{\mktshr}[1]{\emph{s}\textsubscript{#1}}
+\newcommand{\safeharb}[1]{\ensuremath{\overline{#1}}}
+\newcommand{\Conc}[0]{HHI}
+\newcommand{\Deltah}[0]{ΔHHI}
+% \newcommand{\Deltah}[0]{\ensuremath{\Delta HHI}}
+
+%% A square-root symbol that scales with the arguments (varies with font, sadly)
+%% https://www.pgdp.net/wiki/LaTeX_formatting_tips_and_tricks
+%% https://mirrors.ibiblio.org/CTAN/fonts/stix2-type1/stix2.pdf
+%% If you need bigger surds, you can also use {largesymbols}{"75} or {"76}
+\DeclareMathDelimiter{\bigsurd}{\mathopen}{largesymbols}{"F9}{largesymbols}{"74}
+\NewDocumentCommand\FlexSurd{m}{\ensuremath{\left\bigsurd #1\right.}}
+\NewDocumentCommand\ExpSqRoot{m}{\ensuremath{#1^{1/2}}}
+
+%% Define colors for tables
+\definecolor{table_bar_green}{HTML}{dfeadf}
+
+%% BibLaTex/APA style citation
+\usepackage[
+    sorting=nyt,
+    style=apa,
+    natbib,
+    maxcitenames=2,
+]{biblatex}
+\addbibresource{HorizontalMergerAnalysis.bib}
+\AtBeginDocument{%
+    \SetCiteCommand{\parencite}%
+}
+
+\NewDocumentCommand\casecitefull{m m m}{%
+    \ifblank{#1}{}{#1~}%
+    \citefield{#3}[mkbibemph]{title},~%
+    \citelist{#3}{citation}%
+    \ifblank{#2}{~}{,~#2~}%
+    (\citelist{#3}{organization} \citefield{#3}{year})%
+}
+\NewDocumentCommand\casecitetitle{m m m}{%
+    \ifblank{#1}{}{#1~}%
+    \citefield{#3}[mkbibemph]{shorttitle}%
+    \ifblank{#2}{}{ at~#2}%
+}
+\NewDocumentCommand\casecite{O{} O{} m}{%
+    \ifentryseen{#3}%
+    {\casecitetitle{#1}{#2}{#3}}%
+    {\casecitefull{#1}{#2}{#3}}%
+}
+
+
+%% Set some page typesetting parameters, recalculate the type area, and go
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\tolerance 1414
+\hbadness 1414
+\emergencystretch 1.5em
+\hfuzz 0.3pt
+\vfuzz
+\hfuzz
+\raggedbottom{}
+\recalctypearea{}
+
+% -----------------------------------------------------------------------------
+\begin{document}
+
+\include{mergeron_TikZTableSettings.tex}
+((* for item in tmpl_data.path_list *))
+    \include{ \JINVAR{ item } }
+((* endfor *))
+
+
+% -----------------------------------------------------------------------------
+\end{document}
+

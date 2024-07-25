@@ -1,0 +1,201 @@
+[tool.poetry]
+name = "mergeron"
+authors = ["Murthy Kambhampaty <smk@capeconomics.com>"]
+description = "Merger Policy Analysis using Python"
+readme = "README.rst"
+license = "MIT"
+keywords = [
+    "merger policy analysis",
+    "merger guidelines",
+    "merger screening",
+    "policy presumptions",
+    "concentration standards",
+    "upward pricing pressure",
+    "GUPPI",
+]
+version = "2024.739091.2"
+
+# Classifiers list: https://pypi.org/classifiers/
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+
+[tool.poetry.dependencies]
+# You may need to apply the fixes in, https://github.com/python-poetry/poetry/issues/3365
+# if poetry dependency resolution appears to hang (read the page at link to the end)
+aenum = "^3.1.15"
+attrs = ">=23.2"
+bs4 = ">=0.0.1"
+google-re2 = ">=1.1"
+icecream = ">=2.1.0"
+jinja2 = ">=3.1"
+joblib = ">=1.3"
+lxml = ">=5.0"
+matplotlib = ">=3.8"
+mpmath = ">=1.3"
+msgpack = ">=1.0"
+msgpack-numpy = ">=0.4"
+numpy = ">=1.26, <2.0"
+openpyxl = ">=3.1.2"
+pendulum = ">=3.0.0"
+python = "^3.12"
+requests = ">=2.31"
+scipy = ">=1.12"
+sympy = ">=1.12"
+tables = ">=3.8"
+xlsxwriter = ">=3.1"
+certifi = ">=2023.11.17"
+requests-toolbelt = ">=1.0.0"
+types-requests = ">=2.31.0"
+types-beautifulsoup4 = ">=4.11.2"
+xlrd = "^2.0.1"                   # Needed to read margin data
+poetry-plugin-export = "^1.8.0"
+
+
+[tool.poetry.group.dev.dependencies]
+semver = ">=3.0"
+mypy = ">=1.8"
+ruff = ">=0.5"
+pytest = ">=8.0"
+sphinx = ">=7.2"
+sphinx-autodoc-typehints = ">=2.0.0"
+sphinx-autoapi = ">=3.0"
+sphinx-immaterial = ">=0.11"
+pipdeptree = ">=2.15.1"
+types-openpyxl = ">=3.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+target-version = "py312"
+fix = true
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+
+[tool.ruff.lint]
+# From, https://github.com/sphinx-doc/sphinx/blob/master/pyproject.toml
+select = [
+    "E", # pycodestyle
+    "F", # Pyflakes
+    "I", # isort
+    "W", # pycodestyle
+    # plugins:
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "FURB", # refurb
+    "ICN",  # flake8-import-conventions
+    "NPY",  # NumPy-specific rules
+    "PIE",  # flake8-pie
+    "PL",   # pylint
+    "PTH",  # flake8-use-pathlib
+    "S",    # flake8-bandit
+    "SIM",  # flake8-simplify
+    "TID",  # flake8-tidy-imports
+    "TCH",  # flake8-type-checking
+    "UP",   # pyupgrade
+    "RUF",  # ruff-specific
+]
+
+ignore = [
+    # flake-8 line length
+    "E501",
+    # pycodestyle
+    'E741',
+    # flake8-bugbear
+    'B006',
+    'B023',
+    # flake8-bugbear opinionated (disabled by default in flake8)
+    'B904',
+    'B905',
+    "PLR2004", # avoid magic values
+    # flake8-type-checking
+    "TCH001", # move application import into a type-checking block
+    "TCH002", # move third-party import into a type-checking block
+    "TCH003", # move third-party import into a type-checking block
+    # Use typing.TypeAlias for now:
+    # mypy yet to implements PEP 695 type aliases;
+    # sphinx (as setup here) gives different results with TypeAlias and typing statement
+    "UP040",
+]
+isort.split-on-trailing-comma = false
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = true
+line-ending = "lf"
+preview = true
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = false
+strict = true
+
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+
+no_implicit_optional = true
+no_implicit_reexport = true
+
+allow_redefinition = true
+
+plugins = "numpy.typing.mypy_plugin"
+
+[tool.pytest.ini_options]
+log_auto_indent = 4
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = ["--import-mode=importlib"]
+filterwarnings = [
+    "all",
+    "ignore::DeprecationWarning:dateutil.tz.tz",
+    "ignore::DeprecationWarning:jinja2.lexer",
+    "ignore::DeprecationWarning:joblib._utils",
+    "ignore::DeprecationWarning:openpyxl.packaging.core",
+    "ignore::RuntimeWarning:mergeron.gen.enforcement_stats",
+    "ignore::RuntimeWarning:mergeron.core.proportions_tests",
+]
+tmp_path_retention_policy = "failed"
