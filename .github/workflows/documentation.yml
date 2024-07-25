@@ -29,34 +29,34 @@ jobs:
           name: html-docs
           path: docs/build/html
 
-
-    #   - name: Deploy
-    #     uses: peaceiris/actions-gh-pages@v4
-    #     with:
-    #       github_token: ${{ secrets.GITHUB_TOKEN }}
-    #       publish_dir: _build
-
-  # Push the generated docs to the gh-pages branch
-  # Deploy job
-  deploy:
-    # Add a dependency to the build job
-    needs: docs
-
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-    permissions:
-      pages: write # to deploy to Pages
-      id-token: write # to verify the deployment originates from an appropriate source
-
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    # Specify runner + deployment step
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
         with:
-            artifact_name: html-docs
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build/html
+
+#   # Push the generated docs to the gh-pages branch
+#   # Deploy job
+#   deploy:
+#     # Add a dependency to the build job
+#     needs: docs
+
+#     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+#     permissions:
+#       pages: write # to deploy to Pages
+#       id-token: write # to verify the deployment originates from an appropriate source
+
+#     # Deploy to the github-pages environment
+#     environment:
+#       name: github-pages
+#       url: ${{ steps.deployment.outputs.page_url }}
+
+#     # Specify runner + deployment step
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Deploy to GitHub Pages
+#         id: deployment
+#         uses: actions/deploy-pages@v4
+#         with:
+#             artifact_name: html-docs
+#             token: ${{ github.token }}
