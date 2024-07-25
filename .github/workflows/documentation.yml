@@ -1,6 +1,10 @@
 name: documentation
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches:
+      - trunk
+
 
 permissions:
   contents: write
@@ -19,6 +23,12 @@ jobs:
       - name: Sphinx build
         run: |
           sphinx-build -a docs/source/ _build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          name: html-docs
+          path: _build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
