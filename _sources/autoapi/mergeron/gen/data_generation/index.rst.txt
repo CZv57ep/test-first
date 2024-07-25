@@ -1,0 +1,87 @@
+mergeron.gen.data_generation
+============================
+
+.. py:module:: mergeron.gen.data_generation
+
+.. autoapi-nested-parse::
+
+   Methods to generate data for analyzing merger enforcement policy.
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: SeedSequenceData
+
+   Bases: :py:obj:`NamedTuple`
+
+
+   .. py:attribute:: mktshr_rng_seed_seq
+      :type:  numpy.random.SeedSequence
+
+
+   .. py:attribute:: pcm_rng_seed_seq
+      :type:  numpy.random.SeedSequence
+
+
+   .. py:attribute:: fcount_rng_seed_seq
+      :type:  numpy.random.SeedSequence | None
+
+
+   .. py:attribute:: pr_rng_seed_seq
+      :type:  numpy.random.SeedSequence | None
+
+
+.. py:function:: gen_market_sample(_mkt_sample_spec, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16)
+
+   Generate share, diversion ratio, price, and margin data based on supplied parameters
+
+   Diversion ratios generated assuming share-proportionality, unless
+   `recapture_form` = "proportional", in which case both firms' recapture rate
+   is set to `r_bar`.
+
+   The tuple of SeedSequences, if specified, is parsed in the following order
+   for generating the relevant random variates:
+   1.) quantity shares
+   2.) price-cost margins
+   3.) firm-counts, from :code:`[2, 2 + len(firm_counts_weights)]`,
+   weighted by :code:`firm_counts_weights`, where relevant
+   4.) prices, if :code:`price_spec == PriceConstants.ZERO`.
+
+   :param _mkt_sample_spec: class specifying parameters for data generation
+   :param sample_size: number of draws to generate
+   :param seed_seq_list: tuple of SeedSequences to ensure replicable data generation with
+                         appropriately independent random streams
+   :param nthreads: optionally specify the number of CPU threads for the PRNG
+
+   :returns: Merging firms' shares, margins, etc. for each hypothetical  merger
+             in the sample
+
+
+.. py:function:: parse_seed_seq_list(_sseq_list, _mktshr_dist_type, _price_spec, /)
+
+   Initialize RNG seed sequences to ensure independence of distinct random streams.
+
+
+.. py:function:: gen_divr_array(_recapture_form, _recapture_rate, _frmshr_array, _aggregate_purchase_prob = EMPTY_ARRAY_DEFAULT, /)
+
+   Given merging-firm shares and related parameters, return diverion ratios.
+
+   If recapture is specified as :attr:`mergeron.RECConstants.OUTIN`, then the
+   choice-probability for the outside good must be supplied.
+
+   :param _recapture_form: Enum specifying Fixed (proportional), Inside-out, or Outside-in
+   :param _recapture_rate: If recapture is proportional or inside-out, the recapture rate
+                           for the firm with the smaller share.
+   :param _frmshr_array: Merging-firm shares.
+   :param _aggregate_purchase_prob: 1 minus probability that the outside good is chosen; converts
+                                    market shares to choice probabilities by multiplication.
+
+   :returns: Merging-firm diversion ratios for mergers in the sample.
+
+

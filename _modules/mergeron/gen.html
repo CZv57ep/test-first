@@ -1,0 +1,1168 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.gen - mergeron 2024.739091.2</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.gen
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739091.2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../autoapi/mergeron/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1>Source code for mergeron.gen</h1><div class="highlight"><pre>
+<span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Defines constants and containers for industry data generation and testing</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Protocol</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">Attribute</span><span class="p">,</span> <span class="n">cmp_using</span><span class="p">,</span> <span class="n">define</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">frozen</span><span class="p">,</span> <span class="n">validators</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">RECConstants</span><span class="p">,</span> <span class="n">UPPAggrSelector</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..core.pseudorandom_numbers</span> <span class="kn">import</span> <span class="n">DIST_PARMS_DEFAULT</span>  <span class="c1"># noqa: TID252</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
+
+
+<div class="viewcode-block" id="EMPTY_ARRAY_DEFAULT">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.EMPTY_ARRAY_DEFAULT">[docs]</a>
+<span class="n">EMPTY_ARRAY_DEFAULT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FCOUNT_WTS_DEFAULT">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.FCOUNT_WTS_DEFAULT">[docs]</a>
+<span class="n">FCOUNT_WTS_DEFAULT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">_nr</span> <span class="o">:=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">_nr</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+<span class="p">)</span></div>
+
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="PriceConstants">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants">[docs]</a>
+<span class="k">class</span> <span class="nc">PriceConstants</span><span class="p">(</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="n">enum</span><span class="o">.</span><span class="n">ReprEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Price specification.</span>
+
+<span class="sd">    Whether prices are symmetric and, if not, the direction of correlation, if any.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PriceConstants.SYM">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.SYM">[docs]</a>
+    <span class="n">SYM</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PriceConstants.ZERO">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.ZERO">[docs]</a>
+    <span class="n">ZERO</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PriceConstants.NEG">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.NEG">[docs]</a>
+    <span class="n">NEG</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;negative share-correlation&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PriceConstants.POS">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.POS">[docs]</a>
+    <span class="n">POS</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;positive share-correlation&quot;</span><span class="p">)</span></div>
+</div>
+
+    <span class="c1"># TODO: CSY = (False, &quot;market-wide cost-symmetry&quot;)</span>
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="SHRConstants">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants">[docs]</a>
+<span class="k">class</span> <span class="nc">SHRConstants</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Market share distributions.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SHRConstants.UNI">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.UNI">[docs]</a>
+    <span class="n">UNI</span> <span class="o">=</span> <span class="s2">&quot;Uniform&quot;</span></div>
+
+<span class="w">    </span><span class="sa">R</span><span class="sd">&quot;&quot;&quot;Uniform distribution over :math:`s_1 + s_2 \leqslant 1`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SHRConstants.DIR_FLAT">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_FLAT">[docs]</a>
+    <span class="n">DIR_FLAT</span> <span class="o">=</span> <span class="s2">&quot;Flat Dirichlet&quot;</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shape parameter for all merging-firm-shares is unity (1)&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SHRConstants.DIR_FLAT_CONSTR">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_FLAT_CONSTR">[docs]</a>
+    <span class="n">DIR_FLAT_CONSTR</span> <span class="o">=</span> <span class="s2">&quot;Flat Dirichlet - Constrained&quot;</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Impose minimum probablility weight on each firm-count</span>
+
+<span class="sd">    Only firm-counts with probability weight of no less than 3%</span>
+<span class="sd">    are included for data generation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SHRConstants.DIR_ASYM">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_ASYM">[docs]</a>
+    <span class="n">DIR_ASYM</span> <span class="o">=</span> <span class="s2">&quot;Asymmetric Dirichlet&quot;</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Share distribution for merging-firm shares has a higher peak share</span>
+
+<span class="sd">    Shape parameter for merging-firm-share is 2.5, and 1.0 for all others.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SHRConstants.DIR_COND">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_COND">[docs]</a>
+    <span class="n">DIR_COND</span> <span class="o">=</span> <span class="s2">&quot;Conditional Dirichlet&quot;</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shape parameters for non-merging firms is proportional</span>
+
+<span class="sd">    Shape parameters for merging-firm-share are 2.0 each; and</span>
+<span class="sd">    are equiproportional and add to 2.0 for all non-merging-firm-shares.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<span class="nd">@frozen</span>
+<div class="viewcode-block" id="ShareSpec">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec">[docs]</a>
+<span class="k">class</span> <span class="nc">ShareSpec</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Market share specification</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If recapture is determined &quot;outside-in&quot;, market shares cannot have</span>
+<span class="sd">    Uniform distribution.</span>
+
+<span class="sd">    If sample with varying firm counts is required, market shares must</span>
+<span class="sd">    be specified as having a supported Dirichlet distribution.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShareSpec.recapture_form">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.recapture_form">[docs]</a>
+    <span class="n">recapture_form</span><span class="p">:</span> <span class="n">RECConstants</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`mergeron.RECConstants`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShareSpec.recapture_rate">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.recapture_rate">[docs]</a>
+    <span class="n">recapture_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A value between 0 and 1, typically 0.8.</span>
+
+<span class="sd">    :code:`None` if market share specification requires direct generation of</span>
+<span class="sd">    outside good choice probabilities (:attr:`mergeron.RECConstants.OUTIN`).</span>
+
+<span class="sd">    The recapture rate is usually calibrated to the numbers-equivalent of the</span>
+<span class="sd">    HHI threshold for the presumtion of harm from unilateral competitive effects</span>
+<span class="sd">    in published merger guidelines. Accordingly, the recapture rate rounded to</span>
+<span class="sd">    the nearest 5% is:</span>
+
+<span class="sd">    * 0.85, **7-to-6 merger from symmetry**; US Guidelines, 1992, 2023</span>
+<span class="sd">    * 0.80, **6-to-5 merger to symmetry**; EU Guidelines for horizontal mergers, 2004</span>
+<span class="sd">    * 0.80, 5-to-4 merger from symmetry</span>
+<span class="sd">    * 0.80, **5-to-4 merger to symmetry**; US Guidelines, 2010</span>
+
+<span class="sd">    Highlighting indicates hypothetical mergers in the neighborhood of (the boundary of)</span>
+<span class="sd">    the Guidelines presumption of harm. (In the EU Guidelines, concentration measures serve as</span>
+<span class="sd">    screens for further investigation, rather than as the basis for presumptions of harm or</span>
+<span class="sd">    presumptions no harm.)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShareSpec.dist_type">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.dist_type">[docs]</a>
+    <span class="n">dist_type</span><span class="p">:</span> <span class="n">SHRConstants</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`SHRConstants`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShareSpec.dist_parms">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.dist_parms">[docs]</a>
+    <span class="n">dist_parms</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="n">cmp_using</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters for tailoring market-share distribution</span>
+
+<span class="sd">    For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;</span>
+<span class="sd">    for Dirichlet-type distributions, a vector of shape parameters of length</span>
+<span class="sd">    no less than the length of firm-count weights below; defaults depend on</span>
+<span class="sd">    type of Dirichlet-distribution specified.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ShareSpec.firm_counts_weights">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.firm_counts_weights">[docs]</a>
+    <span class="n">firm_counts_weights</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="n">cmp_using</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Relative or absolute frequencies of firm counts</span>
+
+
+<span class="sd">    Given frequencies are exogenous to generated market data sample;</span>
+<span class="sd">    for Dirichlet-type distributions, defaults to FCOUNT_WTS_DEFAULT, which specifies</span>
+<span class="sd">    firm-counts of 2 to 6 with weights in descending order from 5 to 1.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="PCMConstants">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants">[docs]</a>
+<span class="k">class</span> <span class="nc">PCMConstants</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Margin distributions.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PCMConstants.UNI">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.UNI">[docs]</a>
+    <span class="n">UNI</span> <span class="o">=</span> <span class="s2">&quot;Uniform&quot;</span></div>
+
+<div class="viewcode-block" id="PCMConstants.BETA">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.BETA">[docs]</a>
+    <span class="n">BETA</span> <span class="o">=</span> <span class="s2">&quot;Beta&quot;</span></div>
+
+<div class="viewcode-block" id="PCMConstants.BETA_BND">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.BETA_BND">[docs]</a>
+    <span class="n">BETA_BND</span> <span class="o">=</span> <span class="s2">&quot;Bounded Beta&quot;</span></div>
+
+<div class="viewcode-block" id="PCMConstants.EMPR">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.EMPR">[docs]</a>
+    <span class="n">EMPR</span> <span class="o">=</span> <span class="s2">&quot;Damodaran margin data, resampled&quot;</span></div>
+</div>
+
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="FM2Constants">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.FM2Constants">[docs]</a>
+<span class="k">class</span> <span class="nc">FM2Constants</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Firm 2 margins - derivation methods.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FM2Constants.IID">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.FM2Constants.IID">[docs]</a>
+    <span class="n">IID</span> <span class="o">=</span> <span class="s2">&quot;i.i.d&quot;</span></div>
+
+<div class="viewcode-block" id="FM2Constants.MNL">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.FM2Constants.MNL">[docs]</a>
+    <span class="n">MNL</span> <span class="o">=</span> <span class="s2">&quot;MNL-dep&quot;</span></div>
+
+<div class="viewcode-block" id="FM2Constants.SYM">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.FM2Constants.SYM">[docs]</a>
+    <span class="n">SYM</span> <span class="o">=</span> <span class="s2">&quot;symmetric&quot;</span></div>
+</div>
+
+
+
+<span class="nd">@frozen</span>
+<div class="viewcode-block" id="PCMSpec">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec">[docs]</a>
+<span class="k">class</span> <span class="nc">PCMSpec</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Price-cost margin (PCM) specification</span>
+
+<span class="sd">    If price-cost margins are specified as having Beta distribution,</span>
+<span class="sd">    `dist_parms` is specified as a pair of positive, non-zero shape parameters of</span>
+<span class="sd">    the standard Beta distribution. Specifying shape parameters :code:`np.array([1, 1])`</span>
+<span class="sd">    is known equivalent to specifying uniform distribution over</span>
+<span class="sd">    the interval :math:`[0, 1]`. If price-cost margins are specified as having</span>
+<span class="sd">    Bounded-Beta distribution, `dist_parms` is specified as</span>
+<span class="sd">    the tuple, (`mean`, `std deviation`, `min`, `max`), where `min` and `max`</span>
+<span class="sd">    are lower- and upper-bounds respectively within the interval :math:`[0, 1]`.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PCMSpec.firm2_pcm_constraint">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.firm2_pcm_constraint">[docs]</a>
+    <span class="n">firm2_pcm_constraint</span><span class="p">:</span> <span class="n">FM2Constants</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`FM2Constants`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PCMSpec.dist_type">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.dist_type">[docs]</a>
+    <span class="n">dist_type</span><span class="p">:</span> <span class="n">PCMConstants</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`PCMConstants`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PCMSpec.dist_parms">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.dist_parms">[docs]</a>
+    <span class="n">dist_parms</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameter specification for tailoring PCM distribution</span>
+
+<span class="sd">    For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;</span>
+<span class="sd">    for Beta distribution, shape parameters, defaults to `(1, 1)`;</span>
+<span class="sd">    for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;</span>
+<span class="sd">    for empirical distribution based on Damodaran margin data, optional, ignored</span>
+
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="SSZConstants">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants">[docs]</a>
+<span class="k">class</span> <span class="nc">SSZConstants</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">ReprEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Scale factors to offset sample size reduction.</span>
+
+<span class="sd">    Sample size reduction occurs when imposing a HSR filing test</span>
+<span class="sd">    or equilibrium condition under MNL demand.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SSZConstants.HSR_NTH">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants.HSR_NTH">[docs]</a>
+    <span class="n">HSR_NTH</span> <span class="o">=</span> <span class="mf">1.666667</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For HSR filing requirement.</span>
+
+<span class="sd">    When filing requirement is assumed met if maximum merging-firm shares exceeds</span>
+<span class="sd">    ten (10) times the n-th firm&#39;s share and minimum merging-firm share is</span>
+<span class="sd">    no less than n-th firm&#39;s share. To assure that the number of draws available</span>
+<span class="sd">    after applying the given restriction, the initial number of draws is larger than</span>
+<span class="sd">    the sample size by the given scale factor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SSZConstants.HSR_TEN">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants.HSR_TEN">[docs]</a>
+    <span class="n">HSR_TEN</span> <span class="o">=</span> <span class="mf">1.234567</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For alternative HSR filing requirement,</span>
+
+<span class="sd">    When filing requirement is assumed met if merging-firm shares exceed 10:1 ratio</span>
+<span class="sd">    to each other.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SSZConstants.MNL_DEP">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants.MNL_DEP">[docs]</a>
+    <span class="n">MNL_DEP</span> <span class="o">=</span> <span class="mf">1.25</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For restricted PCM&#39;s.</span>
+
+<span class="sd">    When merging firm&#39;s PCMs are constrained for consistency with f.o.c.s from</span>
+<span class="sd">    profit maximization under Nash-Bertrand oligopoly with MNL demand.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SSZConstants.ONE">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants.ONE">[docs]</a>
+    <span class="n">ONE</span> <span class="o">=</span> <span class="mf">1.00</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;When initial set of draws is not restricted in any way.&quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1"># Validators for selected attributes of MarketSpec</span>
+<span class="k">def</span> <span class="nf">_share_spec_validator</span><span class="p">(</span>
+    <span class="n">_instance</span><span class="p">:</span> <span class="n">MarketSpec</span><span class="p">,</span> <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">ShareSpec</span><span class="p">],</span> <span class="n">_value</span><span class="p">:</span> <span class="n">ShareSpec</span><span class="p">,</span> <span class="o">/</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">_r_bar</span> <span class="o">=</span> <span class="n">_value</span><span class="o">.</span><span class="n">recapture_rate</span>
+    <span class="k">if</span> <span class="n">_r_bar</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">_r_bar</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Recapture rate must lie in the interval, [0, 1).&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">_r_bar</span> <span class="ow">and</span> <span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">==</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">OUTIN</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Market share specification requires estimation of recapture rate from &quot;</span>
+            <span class="s2">&quot;generated data. Either delete recapture rate specification or set it to None.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">SHRConstants</span><span class="o">.</span><span class="n">UNI</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">==</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">OUTIN</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid recapture specification, </span><span class="si">{</span><span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;for market share specification with Uniform distribution. &quot;</span>
+                <span class="s2">&quot;Redefine the market-sample specification, modifying the .&quot;</span>
+                <span class="s2">&quot;market-share specification or the recapture specification.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">_value</span><span class="o">.</span><span class="n">firm_counts_weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Generated data for markets with specified firm-counts or &quot;</span>
+                <span class="s2">&quot;varying firm counts are not feasible for market shares &quot;</span>
+                <span class="s2">&quot;with Uniform distribution. Consider revising the &quot;</span>
+                <span class="sa">r</span><span class="s2">&quot;distribution type to </span><span class="si">{SHRConstants.DIR_FLAT}</span><span class="s2">, which gives &quot;</span>
+                <span class="s2">&quot;uniformly distributed draws on the :math:`n+1` simplex &quot;</span>
+                <span class="s2">&quot;for firm-count, :math:`n`.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">!=</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">OUTIN</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="n">_r_bar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_r_bar</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Recapture specification, </span><span class="si">{</span><span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span><span class="si">!r}</span><span class="s2"> requires that &quot;</span>
+            <span class="s2">&quot;the market sample specification inclues a recapture rate.&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_pcm_spec_validator</span><span class="p">(</span>
+    <span class="n">_instance</span><span class="p">:</span> <span class="n">MarketSpec</span><span class="p">,</span> <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">PCMSpec</span><span class="p">],</span> <span class="n">_value</span><span class="p">:</span> <span class="n">PCMSpec</span><span class="p">,</span> <span class="o">/</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">_instance</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">==</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">FIXED</span>
+        <span class="ow">and</span> <span class="n">_value</span><span class="o">.</span><span class="n">firm2_pcm_constraint</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">MNL</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Specification of &quot;recapture_form&quot;, &quot;</span><span class="si">{</span><span class="n">_instance</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;requires Firm 2 margin must have property, &quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">IID</span><span class="si">}</span><span class="s1">&quot; or &quot;</span><span class="si">{</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">SYM</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;BETA&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span><span class="p">,</span> <span class="n">DIST_PARMS_DEFAULT</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The distribution parameters, </span><span class="si">{</span><span class="n">DIST_PARMS_DEFAULT</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;are not valid with margin distribution, </span><span class="si">{_dist_type_pcm!r}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">PCMConstants</span><span class="o">.</span><span class="n">BETA</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">((</span><span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">))</span>
+        <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">PCMConstants</span><span class="o">.</span><span class="n">BETA_BND</span>
+            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">((</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">))</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Given number, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span><span class="p">)</span><span class="si">}</span><span class="s2"> of parameters &quot;</span>
+                <span class="sa">f</span><span class="s1">&#39;for PCM with distribution, &quot;</span><span class="si">{</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span><span class="si">}</span><span class="s1">&quot; is incorrect.&#39;</span>
+            <span class="p">)</span>
+
+
+<span class="nd">@define</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="MarketSpec">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec">[docs]</a>
+<span class="k">class</span> <span class="nc">MarketSpec</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameter specification for market data generation.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketSpec.share_spec">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.share_spec">[docs]</a>
+    <span class="n">share_spec</span><span class="p">:</span> <span class="n">ShareSpec</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">ShareSpec</span><span class="p">(</span><span class="n">RECConstants</span><span class="o">.</span><span class="n">INOUT</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="n">SHRConstants</span><span class="o">.</span><span class="n">UNI</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">validator</span><span class="o">=</span><span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">ShareSpec</span><span class="p">),</span> <span class="n">_share_spec_validator</span><span class="p">],</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Market-share specification, see :class:`ShareSpec`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketSpec.pcm_spec">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.pcm_spec">[docs]</a>
+    <span class="n">pcm_spec</span><span class="p">:</span> <span class="n">PCMSpec</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">PCMSpec</span><span class="p">(</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">IID</span><span class="p">,</span> <span class="n">PCMConstants</span><span class="o">.</span><span class="n">UNI</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">validator</span><span class="o">=</span><span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">PCMSpec</span><span class="p">),</span> <span class="n">_pcm_spec_validator</span><span class="p">],</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Margin specification, see :class:`PCMSpec`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketSpec.price_spec">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.price_spec">[docs]</a>
+    <span class="n">price_spec</span><span class="p">:</span> <span class="n">PriceConstants</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">PriceConstants</span><span class="o">.</span><span class="n">SYM</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">PriceConstants</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Price specification, see :class:`PriceConstants`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketSpec.hsr_filing_test_type">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.hsr_filing_test_type">[docs]</a>
+    <span class="n">hsr_filing_test_type</span><span class="p">:</span> <span class="n">SSZConstants</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">SSZConstants</span><span class="o">.</span><span class="n">ONE</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">SSZConstants</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Method for modeling HSR filing threholds, see :class:`SSZConstants`&quot;&quot;&quot;</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="MarketDataSample">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample">[docs]</a>
+<span class="k">class</span> <span class="nc">MarketDataSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Container for generated markets data sample.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketDataSample.frmshr_array">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample.frmshr_array">[docs]</a>
+    <span class="n">frmshr_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merging-firm shares (with two merging firms)&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketDataSample.pcm_array">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample.pcm_array">[docs]</a>
+    <span class="n">pcm_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merging-firms&#39; prices (normalized to 1, in default specification)&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketDataSample.price_array">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample.price_array">[docs]</a>
+    <span class="n">price_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merging-firms&#39; price-cost margins (PCM)&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketDataSample.fcounts">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample.fcounts">[docs]</a>
+    <span class="n">fcounts</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of firms in market&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketDataSample.aggregate_purchase_prob">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample.aggregate_purchase_prob">[docs]</a>
+    <span class="n">aggregate_purchase_prob</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    One (1) minus probability that the outside good is chosen</span>
+
+<span class="sd">    Converts market shares to choice probabilities by multiplication.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketDataSample.nth_firm_share">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample.nth_firm_share">[docs]</a>
+    <span class="n">nth_firm_share</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Market-share of n-th firm</span>
+
+<span class="sd">    Relevant for testing for draws the do or</span>
+<span class="sd">    do not meet HSR filing thresholds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketDataSample.divr_array">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample.divr_array">[docs]</a>
+    <span class="n">divr_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Diversion ratio between the merging firms&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketDataSample.hhi_post">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample.hhi_post">[docs]</a>
+    <span class="n">hhi_post</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Post-merger change in Herfindahl-Hirschmann Index (HHI)&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketDataSample.hhi_delta">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample.hhi_delta">[docs]</a>
+    <span class="n">hhi_delta</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Change in HHI from combination of merging firms&quot;&quot;&quot;</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="ShareDataSample">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareDataSample">[docs]</a>
+<span class="k">class</span> <span class="nc">ShareDataSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Container for generated market shares.</span>
+
+<span class="sd">    Includes related measures of market structure</span>
+<span class="sd">    and aggregate purchase probability.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShareDataSample.mktshr_array">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareDataSample.mktshr_array">[docs]</a>
+    <span class="n">mktshr_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;All-firm shares (with two merging firms)&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShareDataSample.fcounts">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareDataSample.fcounts">[docs]</a>
+    <span class="n">fcounts</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;All-firm-count for each draw&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShareDataSample.nth_firm_share">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareDataSample.nth_firm_share">[docs]</a>
+    <span class="n">nth_firm_share</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Market-share of n-th firm&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShareDataSample.aggregate_purchase_prob">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareDataSample.aggregate_purchase_prob">[docs]</a>
+    <span class="n">aggregate_purchase_prob</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts market shares to choice probabilities by multiplication.&quot;&quot;&quot;</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="PriceDataSample">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceDataSample">[docs]</a>
+<span class="k">class</span> <span class="nc">PriceDataSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Container for generated price array, and related.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PriceDataSample.price_array">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceDataSample.price_array">[docs]</a>
+    <span class="n">price_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merging-firms&#39; prices&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PriceDataSample.hsr_filing_test">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceDataSample.hsr_filing_test">[docs]</a>
+    <span class="n">hsr_filing_test</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Flags draws as meeting HSR filing thresholds or not&quot;&quot;&quot;</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="MarginDataSample">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarginDataSample">[docs]</a>
+<span class="k">class</span> <span class="nc">MarginDataSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Container for generated margin array and related MNL test array.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarginDataSample.pcm_array">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarginDataSample.pcm_array">[docs]</a>
+    <span class="n">pcm_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merging-firms&#39; PCMs&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarginDataSample.mnl_test_array">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarginDataSample.mnl_test_array">[docs]</a>
+    <span class="n">mnl_test_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Flags infeasible observations as False and rest as True</span>
+
+<span class="sd">    Applying restrictions from Bertrand-Nash oligopoly</span>
+<span class="sd">    with MNL demand results in draws of Firm 2 PCM falling</span>
+<span class="sd">    outside the feabile interval,:math:`[0, 1]`, depending</span>
+<span class="sd">    on the configuration of merging firm shares. Such draws</span>
+<span class="sd">    are are flagged as infeasible (False)in :code:`mnl_test_array` while</span>
+<span class="sd">    draws with PCM values within the feasible range are</span>
+<span class="sd">    flagged as True. Used from filtering-out draws with</span>
+<span class="sd">    infeasible PCM.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="INVResolution">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.INVResolution">[docs]</a>
+<span class="k">class</span> <span class="nc">INVResolution</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="INVResolution.CLRN">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.INVResolution.CLRN">[docs]</a>
+    <span class="n">CLRN</span> <span class="o">=</span> <span class="s2">&quot;clearance&quot;</span></div>
+
+<div class="viewcode-block" id="INVResolution.ENFT">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.INVResolution.ENFT">[docs]</a>
+    <span class="n">ENFT</span> <span class="o">=</span> <span class="s2">&quot;enforcement&quot;</span></div>
+
+<div class="viewcode-block" id="INVResolution.BOTH">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.INVResolution.BOTH">[docs]</a>
+    <span class="n">BOTH</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span></div>
+</div>
+
+
+
+<span class="nd">@frozen</span>
+<div class="viewcode-block" id="UPPTestRegime">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestRegime">[docs]</a>
+<span class="k">class</span> <span class="nc">UPPTestRegime</span><span class="p">:</span>
+<div class="viewcode-block" id="UPPTestRegime.resolution">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestRegime.resolution">[docs]</a>
+    <span class="n">resolution</span><span class="p">:</span> <span class="n">INVResolution</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">INVResolution</span><span class="o">.</span><span class="n">ENFT</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">INVResolution</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPPTestRegime.guppi_aggregator">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestRegime.guppi_aggregator">[docs]</a>
+    <span class="n">guppi_aggregator</span><span class="p">:</span> <span class="n">UPPAggrSelector</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MIN</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">UPPAggrSelector</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="UPPTestRegime.divr_aggregator">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestRegime.divr_aggregator">[docs]</a>
+    <span class="n">divr_aggregator</span><span class="p">:</span> <span class="n">UPPAggrSelector</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">((</span><span class="n">UPPAggrSelector</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+    <span class="p">)</span></div>
+</div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="UPPTestsRaw">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsRaw">[docs]</a>
+<span class="k">class</span> <span class="nc">UPPTestsRaw</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Container for arrays marking test failures and successes</span>
+
+<span class="sd">    A test success is a draw (&quot;market&quot;) that meeets the</span>
+<span class="sd">    specified test criterion, and a test failure is</span>
+<span class="sd">    one that does not; test criteria are evaluated in</span>
+<span class="sd">    :func:`enforcement_stats.gen_upp_arrays`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UPPTestsRaw.guppi_test_simple">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsRaw.guppi_test_simple">[docs]</a>
+    <span class="n">guppi_test_simple</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if GUPPI estimate meets criterion&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UPPTestsRaw.guppi_test_compound">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsRaw.guppi_test_compound">[docs]</a>
+    <span class="n">guppi_test_compound</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if both GUPPI estimate and diversion ratio estimate</span>
+<span class="sd">    meet criterion</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UPPTestsRaw.cmcr_test">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsRaw.cmcr_test">[docs]</a>
+    <span class="n">cmcr_test</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if CMCR estimate meets criterion&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UPPTestsRaw.ipr_test">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsRaw.ipr_test">[docs]</a>
+    <span class="n">ipr_test</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if IPR (partial price-simulation) estimate meets criterion&quot;&quot;&quot;</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="UPPTestsCounts">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsCounts">[docs]</a>
+<span class="k">class</span> <span class="nc">UPPTestsCounts</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Counts of markets resolved as specified</span>
+
+<span class="sd">    Resolution may be either :attr:`INVResolution.ENFT` or :attr:`INVResolution.CLRN`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UPPTestsCounts.by_firm_count">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsCounts.by_firm_count">[docs]</a>
+    <span class="n">by_firm_count</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="UPPTestsCounts.by_delta">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsCounts.by_delta">[docs]</a>
+    <span class="n">by_delta</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="UPPTestsCounts.by_conczone">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsCounts.by_conczone">[docs]</a>
+    <span class="n">by_conczone</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Zones are &quot;unoncentrated&quot;, &quot;moderately concentrated&quot;, and &quot;highly concentrated&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1"># https://stackoverflow.com/questions/54668000</span>
+<div class="viewcode-block" id="DataclassInstance">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.DataclassInstance">[docs]</a>
+<span class="k">class</span> <span class="nc">DataclassInstance</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic dataclass-instance&quot;&quot;&quot;</span>
+
+    <span class="n">__dataclass_fields__</span><span class="p">:</span> <span class="n">ClassVar</span></div>
+
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

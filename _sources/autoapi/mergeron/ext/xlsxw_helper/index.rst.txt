@@ -1,0 +1,473 @@
+mergeron.ext.xlsxw_helper
+=========================
+
+.. py:module:: mergeron.ext.xlsxw_helper
+
+.. autoapi-nested-parse::
+
+   Methods for writing data from Python to fresh Excel workbooks using
+   the third-party package, `xlsxwriter`.
+
+   Includes a flexible system of defining cell formats.
+
+   .. rubric:: Notes
+
+   This module is designed for producing formatted summary output. For
+   writing bulk data to Excel, facilities provided in third-party packages
+   such as `polars <https://pola.rs/>`_ likely provide better performance.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: Workbook
+
+.. py:data:: XLBorderType
+   :type:  TypeAlias
+   :value: Literal['none', 'thin', 'medium', 'dashed', 'dotted', 'thick', 'double', 'hair',...
+
+
+.. py:class:: CFmtVal
+
+   Bases: :py:obj:`TypedDict`
+
+
+   Keys for xlsxwriter Format objects.
+
+   This is a partial list based on formats of interest.
+
+
+   .. py:attribute:: font_name
+      :type:  str
+
+
+   .. py:attribute:: font_size
+      :type:  int
+
+
+   .. py:attribute:: font_color
+      :type:  str
+
+
+   .. py:attribute:: align
+      :type:  Literal['left', 'center', 'right', 'center_across', 'top', 'bottom', 'vcenter']
+
+
+   .. py:attribute:: text_wrap
+      :type:  bool
+
+
+   .. py:attribute:: rotation
+      :type:  int
+
+
+   .. py:attribute:: indent
+      :type:  int
+
+
+   .. py:attribute:: shrink
+      :type:  bool
+
+
+   .. py:attribute:: bold
+      :type:  bool
+
+
+   .. py:attribute:: italic
+      :type:  bool
+
+
+   .. py:attribute:: underline
+      :type:  Literal[True, False, 1, 2, 33, 34, 'single', 'double', 'accountingSingle', 'accountingDouble']
+
+
+   .. py:attribute:: font_strikeout
+      :type:  bool
+
+
+   .. py:attribute:: font_script
+      :type:  Literal[1, 2]
+
+
+   .. py:attribute:: num_format
+      :type:  str
+
+
+   .. py:attribute:: pattern
+      :type:  int
+
+
+   .. py:attribute:: fg_color
+      :type:  str
+
+
+   .. py:attribute:: bg_color
+      :type:  str
+
+
+   .. py:attribute:: hidden
+      :type:  bool
+
+
+   .. py:attribute:: locked
+      :type:  bool
+
+
+   .. py:attribute:: border
+      :type:  XLBorderType
+
+
+   .. py:attribute:: bottom
+      :type:  XLBorderType
+
+
+   .. py:attribute:: left
+      :type:  XLBorderType
+
+
+   .. py:attribute:: right
+      :type:  XLBorderType
+
+
+   .. py:attribute:: top
+      :type:  XLBorderType
+
+
+   .. py:attribute:: border_color
+      :type:  str
+
+
+   .. py:attribute:: bottom_color
+      :type:  str
+
+
+   .. py:attribute:: left_color
+      :type:  str
+
+
+   .. py:attribute:: right_color
+      :type:  str
+
+
+   .. py:attribute:: top_color
+      :type:  str
+
+
+   .. py:attribute:: diag_border
+      :type:  XLBorderType
+
+
+   .. py:attribute:: diag_border_color
+      :type:  str
+
+
+   .. py:attribute:: diag_type
+      :type:  Literal[1, 2, 3, 'up', 'down', 'left', 'right', 'cross', 'diagonalUp', 'diagonalDown']
+
+
+.. py:class:: CFmt
+
+   Bases: :py:obj:`dict`, :py:obj:`aenum.Enum`
+
+
+   Cell format enums for xlsxwriter Format objects.
+
+   The enums defined here, or sequences of (any of) them
+   and any added with :meth:`CFmt.add_new`, are
+   rendered as :code:`xlsxWriter.Workbook.Format` objects
+   with :meth:`CFmt.xl_fmt`.
+
+   .. rubric:: Notes
+
+   For more information about xlsxwriter cell formats,
+   see, https://xlsxwriter.readthedocs.io/format.html
+
+
+   .. py:attribute:: XL_DEFAULT
+      :type:  ClassVar
+
+
+   .. py:attribute:: XL_DEFAULT_2003
+      :type:  ClassVar
+
+
+   .. py:attribute:: A_CTR
+      :type:  ClassVar
+
+
+   .. py:attribute:: A_CTR_ACROSS
+      :type:  ClassVar
+
+
+   .. py:attribute:: A_LEFT
+      :type:  ClassVar
+
+
+   .. py:attribute:: A_RIGHT
+      :type:  ClassVar
+
+
+   .. py:attribute:: V_TOP
+      :type:  ClassVar
+
+
+   .. py:attribute:: V_BOTTOM
+      :type:  ClassVar
+
+
+   .. py:attribute:: V_CTR
+      :type:  ClassVar
+
+
+   .. py:attribute:: TEXT_WRAP
+      :type:  ClassVar
+
+
+   .. py:attribute:: TEXT_ROTATE
+      :type:  ClassVar
+
+
+   .. py:attribute:: IND_1
+      :type:  ClassVar
+
+
+   .. py:attribute:: BOLD
+      :type:  ClassVar
+
+
+   .. py:attribute:: BOLD_ITALIC
+      :type:  ClassVar
+
+
+   .. py:attribute:: ITALIC
+      :type:  ClassVar
+
+
+   .. py:attribute:: ULINE
+      :type:  ClassVar
+
+
+   .. py:attribute:: SOUT
+      :type:  ClassVar
+
+
+   .. py:attribute:: SUPERSCRIPT
+      :type:  ClassVar
+
+
+   .. py:attribute:: SUBSCRIPT
+      :type:  ClassVar
+
+
+   .. py:attribute:: AREA_NUM
+      :type:  ClassVar
+
+
+   .. py:attribute:: DOLLAR_NUM
+      :type:  ClassVar
+
+
+   .. py:attribute:: DT_NUM
+      :type:  ClassVar
+
+
+   .. py:attribute:: PCT_NUM
+      :type:  ClassVar
+
+
+   .. py:attribute:: PCT2_NUM
+      :type:  ClassVar
+
+
+   .. py:attribute:: PCT4_NUM
+      :type:  ClassVar
+
+
+   .. py:attribute:: PCT6_NUM
+      :type:  ClassVar
+
+
+   .. py:attribute:: PCT8_NUM
+      :type:  ClassVar
+
+
+   .. py:attribute:: QTY_NUM
+      :type:  ClassVar
+
+
+   .. py:attribute:: BAR_FILL
+      :type:  ClassVar
+
+
+   .. py:attribute:: HDR_FILL
+      :type:  ClassVar
+
+
+   .. py:attribute:: FULL_BORDER
+      :type:  ClassVar
+
+
+   .. py:attribute:: BOTTOM_BORDER
+      :type:  ClassVar
+
+
+   .. py:attribute:: LEFT_BORDER
+      :type:  ClassVar
+
+
+   .. py:attribute:: RIGHT_BORDER
+      :type:  ClassVar
+
+
+   .. py:attribute:: TOP_BORDER
+      :type:  ClassVar
+
+
+   .. py:attribute:: HDR_BORDER
+      :type:  ClassVar
+
+
+   .. py:method:: add_new(_fmt_name, _xlsx_fmt_dict, /)
+      :classmethod:
+
+
+      Add new :class:`CFmt` object to instance.
+
+      :param _fmt_name: Name of new member to be added to :class:`CFmt`
+      :param _xlsx_fmt_dict: Any valid argument to :code:`xlsxwriter.Workbook.add_format()`, or union of
+                             same with one or more :class:`CFmt` objects, e.g.,
+                             :code:`CFmt.HDR_BORDER | CFmt.HDR_FILL`  or
+                             :code:`CFmt.HDR_BORDER | {"pattern": 1, "bg_color": "f2f2f2"}`
+
+      :returns: None
+
+
+
+   .. py:method:: ensure_cell_format_spec_tuple(_cell_format, /)
+      :classmethod:
+
+
+      Test that a given format specification is a tuple of :class:`CFmt` enums
+
+      :param _cell_format: Format specification
+
+      :raises ValueError: If format specification is not a sequence  of (sequences of)
+          :class:`CFmt` enums
+
+      :returns: True if format specification passes, else False
+
+
+
+   .. py:method:: xl_fmt(_xl_book, _cell_fmt, /)
+      :classmethod:
+
+
+      Return :code:`xlsxwriter` :code:`Format` object given a :class:`CFmt` enum, or tuple thereof.
+
+      :param _xl_book: :code:`xlsxwriter.Workbook` object
+      :param _cell_fmt: :class:`CFmt` enum object, or tuple thereof
+
+      :raises ValueError: If format specification is not one of None, a :class:`CFmt` enum, or
+          a :code:`xlsxwriter.format.Format` object
+
+      :returns: :code:`xlsxwriter` :code:`Format`  object
+
+
+
+.. py:function:: write_header(_xl_sheet, /, *, center_header = None, left_header = None, right_header = None)
+
+   Write header text to given worksheet.
+
+   :param _xl_sheet: Worksheet object
+   :param center_header: Text for center header
+   :param left_header: Text for left header
+   :param right_header: Text for right header
+
+   :raises ValueError: Must specify at least one header
+
+   :rtype: None
+
+
+.. py:function:: write_footer(_xl_sheet, /, *, center_footer = None, left_footer = None, right_footer = None)
+
+   Write footer text to given worksheet.
+
+   :param _xl_sheet: Worksheet object
+   :param center_footer: Text for center footer
+   :param left_footer: Text for left footer
+   :param right_footer: Text for right footer
+
+   :raises ValueError: Must specify at least one footer
+
+   :rtype: None
+
+
+.. py:function:: array_to_sheet(_xl_book, _xl_sheet, _data_table, _row_id, _col_id = 0, /, *, cell_format = None, empty_as_blank = True, green_bar_flag = True, ragged_flag = True)
+
+   Write a 2-D array to a worksheet.
+
+   The given array is required be a two-dimensional array, whether
+   a nested list, nested tuple, or a 2-D numpy ndarray. The array is assumed
+   to be ragged by default, i.e. not all rows are the same length, and some
+   cells may contain lists, etc. For rectangular arrays, set `ragged_flag` to
+   false if you wish to provide a format tuple with distinct formats for each
+   column in the rectangular array.
+
+
+   :param _xl_book: Workbook object
+   :param _xl_sheet: Worksheet object to which to write the give array
+   :param _data_table: Array to be written
+   :param _row_id: Row number of top left corner of range to write to
+   :param _col_id: Column number of top left corner of range to write to
+   :param cell_format: Format specification for range to be written
+   :param green_bar_flag: Whether to highlight alternating rows as in green bar paper
+   :param ragged_flag: Whether to write ragged array, i.e. rows not all the same length
+                       or not all cells are scalar-valued
+
+   :raises ValueError: If array is not two-dimensional
+   :raises ValueError: If ragged_flag is False and array is not rectangular
+   :raises ValueError: If array is not rectangular and cell_format is a Sequence
+   :raises ValueError: If array is rectangular but length of format tuple does not
+       match row-length
+
+   :returns: Tuple giving address of cell at right below and after range written
+
+   .. rubric:: Notes
+
+   The keyword argument cell_format may be passed a tuple of :class:`CFmt` enums,
+   if, and only if, ragged_flag is False. If cell_format is a tuple, it must
+   have length equal to the number of cells in each row of the passed array.
+   Further, members of cell_format must each be a :class:`CFmt` enum or a
+   tuple of :class:`CFmt` enums; in other words, :meth:`CFmt.ensure_cell_format_spec_tuple`
+   must return True for any tuple `_c` passed as `cell_format`.
+
+
+.. py:function:: scalar_to_sheet(_xl_sheet, _cell_addr_0 = 'A1', /, *_s2s_args, empty_as_blank = True)
+
+   Write to a single cell in a worksheet.
+
+   :param _xl_sheet: Worksheet object to which to write the give array
+   :param _cell_addr_0: First element of a cell address, which may be the entire address
+                        in 'A1' format or the row-part in 'Row-column' format
+   :param _s2s_args: Other arguments, which may be just the cell value to be written and the
+                     cell format, or the column-part of the 'Row-column' address along with
+                     cell value and cell format.
+
+   :raises ValueError: If too many or too few arguments
+   :raises ValueError: If incorrect/incomplete specification for Excel cell data
+
+   :returns: None
+
+   .. rubric:: Notes
+
+   For more information on xlsxwriter cell-address notation, see:
+   https://xlsxwriter.readthedocs.io/working_with_cell_notation.html
+
+

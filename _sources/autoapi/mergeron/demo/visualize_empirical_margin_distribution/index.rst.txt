@@ -1,0 +1,28 @@
+mergeron.demo.visualize_empirical_margin_distribution
+=====================================================
+
+.. py:module:: mergeron.demo.visualize_empirical_margin_distribution
+
+.. autoapi-nested-parse::
+
+   Plot the empirical distribution derived using the Gaussian KDE with
+   margin data downloaded from Prof. Damodaran's website at NYU.
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: SAMPLE_SIZE
+
+.. py:data:: BIN_COUNT
+   :value: 25
+
+
+.. py:data:: mgn_kde
+
+.. py:data:: mgn_xvec
+

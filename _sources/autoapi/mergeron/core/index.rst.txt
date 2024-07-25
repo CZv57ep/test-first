@@ -1,0 +1,21 @@
+mergeron.core
+=============
+
+.. py:module:: mergeron.core
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/mergeron/core/damodaran_margin_data/index
+   /autoapi/mergeron/core/ftc_merger_investigations_data/index
+   /autoapi/mergeron/core/guidelines_boundaries/index
+   /autoapi/mergeron/core/guidelines_boundary_functions/index
+   /autoapi/mergeron/core/guidelines_boundary_functions_extra/index
+   /autoapi/mergeron/core/proportions_tests/index
+   /autoapi/mergeron/core/pseudorandom_numbers/index
+
+

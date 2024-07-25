@@ -1,0 +1,2825 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.core.guidelines_boundary_functions - mergeron 2024.739091.2</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-contents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.core.guidelines_boundary_functions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739091.2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1" type="checkbox" id="__nav_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html"><span class="md-ellipsis">mergeron</span></a>
+          
+            <label for="__nav_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1" type="checkbox" id="__nav_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html#subpackages"><span class="md-ellipsis">Subpackages</span></a>
+          
+            <label for="__nav_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Subpackages" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Subpackages</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_1" type="checkbox" id="__nav_1_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html"><span class="md-ellipsis">mergeron.<wbr>core</span></a>
+          
+            <label for="__nav_1_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron.core" data-md-level="4">
+        <label class="md-nav__title" for="__nav_1_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron.<wbr>core</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_1_1" type="checkbox" id="__nav_1_1_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html#submodules"><span class="md-ellipsis">Submodules</span></a>
+          
+            <label for="__nav_1_1_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Submodules" data-md-level="5">
+        <label class="md-nav__title" for="__nav_1_1_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Submodules</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../damodaran_margin_data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>damodaran_<wbr>margin_<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ftc_merger_investigations_data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>ftc_<wbr>merger_<wbr>investigations_<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guidelines_boundaries/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions</span>
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords (Python class) — Bases: TypedDict" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>Share<wbr>Ratio<wbr>Boundary<wbr>Keywords</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.recapture_form" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.recapture_form (Python attribute)" class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.prec" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.prec (Python attribute)" class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.agg_method" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.agg_method (Python attribute)" class="md-ellipsis">agg_<wbr>method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.weighting" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.weighting (Python attribute)" class="md-ellipsis">weighting</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>Guidelines<wbr>Boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates (Python attribute) — Market-share pairs as Cartesian coordinates of points on the boundary." class="md-ellipsis">coordinates</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.area" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.area (Python attribute) — Area under the boundary." class="md-ellipsis">area</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.dh_area (Python function) — Area under the ΔHHI boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>dh_<wbr>area</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.dh_area">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area._dh_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.dh_area._dh_val (Python parameter) — Change in concentration." class="md-ellipsis">_<wbr>dh_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.dh_area.prec (Python parameter) — Specified precision in decimal places." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary (Python function) — Generate the list of share combination on the ΔHHI boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>hhi_<wbr>delta_<wbr>boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary._dh_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary._dh_val (Python parameter) — Merging-firms&#39; ΔHHI bound." class="md-ellipsis">_<wbr>dh_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary (Python function) — Share combinations on the premerger HHI contribution boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>hhi_<wbr>pre_<wbr>contrib_<wbr>boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary._hhi_contrib" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary._hhi_contrib (Python parameter) — Merging-firms&#39; pre-merger HHI contribution bound." class="md-ellipsis">_<wbr>hhi_<wbr>contrib</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.combined_share_boundary (Python function) — Share combinations on the merging-firms&#39; combined share boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>combined_<wbr>share_<wbr>boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.combined_share_boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary._s_intcpt" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.combined_share_boundary._s_intcpt (Python parameter) — Merging-firms&#39; combined share." class="md-ellipsis">_<wbr>s_<wbr>intcpt</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.combined_share_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary (Python function) — Share combinations on the postmerger HHI contribution boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>hhi_<wbr>post_<wbr>contrib_<wbr>boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary._hhi_contrib" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary._hhi_contrib (Python parameter) — Merging-firms&#39; pre-merger HHI contribution bound." class="md-ellipsis">_<wbr>hhi_<wbr>contrib</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg (Python function) — Share combinations on the share-weighted average diversion ratio boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>shrratio_<wbr>boundary_<wbr>wtd_<wbr>avg</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._delta_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})" class="md-ellipsis">_<wbr>delta_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._r_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._r_val (Python parameter) — recapture ratio" class="md-ellipsis">_<wbr>r_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.agg_method" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.agg_method (Python parameter) — Whether &#34;arithmetic mean&#34;, &#34;geometric mean&#34;, or &#34;distance&#34;." class="md-ellipsis">agg_<wbr>method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.weighting" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.weighting (Python parameter) — Whether &#34;own-share&#34; or &#34;cross-product-share&#34;  (or None for simple, unweighted average)." class="md-ellipsis">weighting</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.recapture_form (Python parameter) — Whether recapture-ratio is MNL-consistent (&#34;inside-out&#34;) or has fixed value for both merging firms (&#34;proportional&#34;)." class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.prec (Python parameter) — Number of decimal places for rounding returned shares and area." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg (Python function) — Share combinations for the simple average GUPPI boundary with symmetric merging-firm margins." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>shrratio_<wbr>boundary_<wbr>xact_<wbr>avg</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._delta_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})." class="md-ellipsis">_<wbr>delta_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._r_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._r_val (Python parameter) — Recapture ratio" class="md-ellipsis">_<wbr>r_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.recapture_form (Python parameter) — Whether recapture-ratio is MNL-consistent (&#34;inside-out&#34;) or has fixed value for both merging firms (&#34;proportional&#34;)." class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.prec (Python parameter) — Number of decimal places for rounding returned shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min (Python function) — Share combinations on the minimum GUPPI boundary, with symmetric merging-firm margins." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>shrratio_<wbr>boundary_<wbr>min</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._delta_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})." class="md-ellipsis">_<wbr>delta_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._r_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._r_val (Python parameter) — Recapture ratio." class="md-ellipsis">_<wbr>r_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.recapture_form (Python parameter) — Whether recapture-ratio is MNL-consistent (&#34;inside-out&#34;) or has fixed value for both merging firms (&#34;proportional&#34;)." class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.prec (Python parameter) — Number of decimal places for rounding returned shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max (Python function) — Share combinations on the minimum GUPPI boundary with symmetric merging-firm margins." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>shrratio_<wbr>boundary_<wbr>max</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._delta_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})." class="md-ellipsis">_<wbr>delta_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._r_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._r_val (Python parameter) — Recapture ratio." class="md-ellipsis">_<wbr>r_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max.prec (Python parameter) — Number of decimal places for rounding returned shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.lerp (Python function) — From the function of the same name in the C++ standard 2" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>lerp</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.lerp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp._x1" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.lerp._x1 (Python parameter) — bounds x_1, x_2 to interpolate between." class="md-ellipsis">_<wbr>x1</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp._x2" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.lerp._x2 (Python parameter) — bounds x_1, x_2 to interpolate between." class="md-ellipsis">_<wbr>x2</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp._r" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.lerp._r (Python parameter) — interpolation weight r assigned to x_2" class="md-ellipsis">_<wbr>r</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp-raises" class="md-nav__link">
+    <span class="md-ellipsis">Raises</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.round_cust (Python function) — Custom rounding, to the nearest 0.5% by default." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>round_<wbr>cust</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.round_cust">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust._num" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.round_cust._num (Python parameter) — Number to be rounded." class="md-ellipsis">_<wbr>num</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust.frac" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.round_cust.frac (Python parameter) — Fraction to be rounded to." class="md-ellipsis">frac</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust.rounding_mode" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.round_cust.rounding_mode (Python parameter) — Rounding mode, as defined in the decimal package." class="md-ellipsis">rounding_<wbr>mode</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust-raises" class="md-nav__link">
+    <span class="md-ellipsis">Raises</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.boundary_plot" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.boundary_plot (Python function) — Setup basic figure and axes for plots of safe harbor boundaries." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>boundary_<wbr>plot</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guidelines_boundary_functions_extra/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions_<wbr>extra</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../proportions_tests/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>proportions_<wbr>tests</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pseudorandom_numbers/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>demo</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ext/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>ext</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gen/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>gen</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords (Python class) — Bases: TypedDict" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>Share<wbr>Ratio<wbr>Boundary<wbr>Keywords</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.recapture_form" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.recapture_form (Python attribute)" class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.prec" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.prec (Python attribute)" class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.agg_method" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.agg_method (Python attribute)" class="md-ellipsis">agg_<wbr>method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.weighting" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.weighting (Python attribute)" class="md-ellipsis">weighting</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>Guidelines<wbr>Boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates (Python attribute) — Market-share pairs as Cartesian coordinates of points on the boundary." class="md-ellipsis">coordinates</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.area" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.area (Python attribute) — Area under the boundary." class="md-ellipsis">area</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.dh_area (Python function) — Area under the ΔHHI boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>dh_<wbr>area</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.dh_area">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area._dh_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.dh_area._dh_val (Python parameter) — Change in concentration." class="md-ellipsis">_<wbr>dh_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.dh_area.prec (Python parameter) — Specified precision in decimal places." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.dh_area-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary (Python function) — Generate the list of share combination on the ΔHHI boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>hhi_<wbr>delta_<wbr>boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary._dh_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary._dh_val (Python parameter) — Merging-firms&#39; ΔHHI bound." class="md-ellipsis">_<wbr>dh_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary (Python function) — Share combinations on the premerger HHI contribution boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>hhi_<wbr>pre_<wbr>contrib_<wbr>boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary._hhi_contrib" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary._hhi_contrib (Python parameter) — Merging-firms&#39; pre-merger HHI contribution bound." class="md-ellipsis">_<wbr>hhi_<wbr>contrib</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.combined_share_boundary (Python function) — Share combinations on the merging-firms&#39; combined share boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>combined_<wbr>share_<wbr>boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.combined_share_boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary._s_intcpt" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.combined_share_boundary._s_intcpt (Python parameter) — Merging-firms&#39; combined share." class="md-ellipsis">_<wbr>s_<wbr>intcpt</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.combined_share_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary (Python function) — Share combinations on the postmerger HHI contribution boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>hhi_<wbr>post_<wbr>contrib_<wbr>boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary._hhi_contrib" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary._hhi_contrib (Python parameter) — Merging-firms&#39; pre-merger HHI contribution bound." class="md-ellipsis">_<wbr>hhi_<wbr>contrib</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg (Python function) — Share combinations on the share-weighted average diversion ratio boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>shrratio_<wbr>boundary_<wbr>wtd_<wbr>avg</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._delta_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})" class="md-ellipsis">_<wbr>delta_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._r_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._r_val (Python parameter) — recapture ratio" class="md-ellipsis">_<wbr>r_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.agg_method" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.agg_method (Python parameter) — Whether &#34;arithmetic mean&#34;, &#34;geometric mean&#34;, or &#34;distance&#34;." class="md-ellipsis">agg_<wbr>method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.weighting" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.weighting (Python parameter) — Whether &#34;own-share&#34; or &#34;cross-product-share&#34;  (or None for simple, unweighted average)." class="md-ellipsis">weighting</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.recapture_form (Python parameter) — Whether recapture-ratio is MNL-consistent (&#34;inside-out&#34;) or has fixed value for both merging firms (&#34;proportional&#34;)." class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.prec (Python parameter) — Number of decimal places for rounding returned shares and area." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg (Python function) — Share combinations for the simple average GUPPI boundary with symmetric merging-firm margins." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>shrratio_<wbr>boundary_<wbr>xact_<wbr>avg</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._delta_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})." class="md-ellipsis">_<wbr>delta_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._r_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._r_val (Python parameter) — Recapture ratio" class="md-ellipsis">_<wbr>r_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.recapture_form (Python parameter) — Whether recapture-ratio is MNL-consistent (&#34;inside-out&#34;) or has fixed value for both merging firms (&#34;proportional&#34;)." class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.prec (Python parameter) — Number of decimal places for rounding returned shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min (Python function) — Share combinations on the minimum GUPPI boundary, with symmetric merging-firm margins." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>shrratio_<wbr>boundary_<wbr>min</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._delta_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})." class="md-ellipsis">_<wbr>delta_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._r_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._r_val (Python parameter) — Recapture ratio." class="md-ellipsis">_<wbr>r_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.recapture_form (Python parameter) — Whether recapture-ratio is MNL-consistent (&#34;inside-out&#34;) or has fixed value for both merging firms (&#34;proportional&#34;)." class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.prec (Python parameter) — Number of decimal places for rounding returned shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max (Python function) — Share combinations on the minimum GUPPI boundary with symmetric merging-firm margins." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>shrratio_<wbr>boundary_<wbr>max</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._delta_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})." class="md-ellipsis">_<wbr>delta_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._r_val" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._r_val (Python parameter) — Recapture ratio." class="md-ellipsis">_<wbr>r_<wbr>val</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max.prec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max.prec (Python parameter) — Number of decimal places for rounding returned shares." class="md-ellipsis">prec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.lerp (Python function) — From the function of the same name in the C++ standard 2" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>lerp</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.lerp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp._x1" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.lerp._x1 (Python parameter) — bounds x_1, x_2 to interpolate between." class="md-ellipsis">_<wbr>x1</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp._x2" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.lerp._x2 (Python parameter) — bounds x_1, x_2 to interpolate between." class="md-ellipsis">_<wbr>x2</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp._r" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.lerp._r (Python parameter) — interpolation weight r assigned to x_2" class="md-ellipsis">_<wbr>r</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp-raises" class="md-nav__link">
+    <span class="md-ellipsis">Raises</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.lerp-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.round_cust (Python function) — Custom rounding, to the nearest 0.5% by default." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>round_<wbr>cust</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundary_functions.round_cust">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust._num" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.round_cust._num (Python parameter) — Number to be rounded." class="md-ellipsis">_<wbr>num</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust.frac" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.round_cust.frac (Python parameter) — Fraction to be rounded to." class="md-ellipsis">frac</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust.rounding_mode" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundary_functions.round_cust.rounding_mode (Python parameter) — Rounding mode, as defined in the decimal package." class="md-ellipsis">rounding_<wbr>mode</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust-raises" class="md-nav__link">
+    <span class="md-ellipsis">Raises</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.round_cust-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundary_functions.boundary_plot" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundary_functions.boundary_plot (Python function) — Setup basic figure and axes for plots of safe harbor boundaries." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions.<wbr>boundary_<wbr>plot</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1 id="module-mergeron.core.guidelines_boundary_functions"><span id="mergeron-core-guidelines-boundary-functions"></span>mergeron.core.guidelines_boundary_functions<a class="headerlink" href="#module-mergeron.core.guidelines_boundary_functions" title="Link to this heading">¶</a></h1>
+<h2 id="module-contents">Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">ShareRatioBoundaryKeywords</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#ShareRatioBoundaryKeywords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">TypedDict</span></code></p>
+<p>Keyword arguments for functions generating share ratio boundaries.</p>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.recapture_form">
+<span class="sig-name descname"><span class="pre">recapture_form</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'inside-out'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'proportional'</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#ShareRatioBoundaryKeywords.recapture_form"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.recapture_form" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.prec">
+<span class="sig-name descname"><span class="pre">prec</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">int</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#ShareRatioBoundaryKeywords.prec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.prec" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.agg_method">
+<span class="sig-name descname"><span class="pre">agg_method</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'arithmetic</span> <span class="pre">mean'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'geometric</span> <span class="pre">mean'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'distance'</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#ShareRatioBoundaryKeywords.agg_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.agg_method" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.weighting">
+<span class="sig-name descname"><span class="pre">weighting</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'own-share'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'cross-product-share'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#ShareRatioBoundaryKeywords.weighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.ShareRatioBoundaryKeywords.weighting" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">GuidelinesBoundary</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#GuidelinesBoundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" title="Link to this definition">¶</a></dt>
+<dd><p>Output of a Guidelines boundary function.</p>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates">
+<span class="sig-name descname"><span class="pre">coordinates</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#GuidelinesBoundary.coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates" title="Link to this definition">¶</a></dt>
+<dd><p>Market-share pairs as Cartesian coordinates of points on the boundary.</p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.area">
+<span class="sig-name descname"><span class="pre">area</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#GuidelinesBoundary.area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.area" title="Link to this definition">¶</a></dt>
+<dd><p>Area under the boundary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.dh_area">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">dh_area</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.dh_area._dh_val" title="mergeron.core.guidelines_boundary_functions.dh_area._dh_val (Python parameter) — Change in concentration."><span class="n"><span class="pre">_dh_val</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.01</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.dh_area.prec" title="mergeron.core.guidelines_boundary_functions.dh_area.prec (Python parameter) — Specified precision in decimal places."><span class="n"><span class="pre">prec</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">9</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#dh_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.dh_area" title="Link to this definition">¶</a></dt>
+<dd><p>Area under the ΔHHI boundary.</p>
+<p>When the given ΔHHI bound matches a Guidelines standard,
+the area under the boundary is half the intrinsic clearance rate
+for the ΔHHI safeharbor.</p>
+<p class="rubric">Notes</p>
+<p>To derive the knots, <span class="math notranslate nohighlight">\((s^0_1, s^1_1), (s^1_1, s^0_1)\)</span>
+of the ΔHHI boundary, i.e., the points where it intersects
+the merger-to-monopoly boundary, solve</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}2 s1 s_2 &amp;= ΔHHI\\
+s_1 + s_2 &amp;= 1\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.dh_area-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.dh_area-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.dh_area._dh_val"><span class="sig-name descname">_dh_val</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.dh_area._dh_val" title="Permalink to this definition">¶</a></dt><dd><p>Change in concentration.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.dh_area.prec"><span class="sig-name descname">prec</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.dh_area.prec" title="Permalink to this definition">¶</a></dt><dd><p>Specified precision in decimal places.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.dh_area-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.dh_area-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Area under ΔHHI boundary.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.dh_area-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.dh_area-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">hhi_delta_boundary</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary._dh_val" title="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary._dh_val (Python parameter) — Merging-firms' ΔHHI bound."><span class="n"><span class="pre">_dh_val</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.01</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary.prec" title="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares."><span class="n"><span class="pre">prec</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">5</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#hhi_delta_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary" title="Link to this definition">¶</a></dt>
+<dd><p>Generate the list of share combination on the ΔHHI boundary.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary._dh_val"><span class="sig-name descname">_dh_val</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary._dh_val" title="Permalink to this definition">¶</a></dt><dd><p>Merging-firms’ ΔHHI bound.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary.prec"><span class="sig-name descname">prec</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary.prec" title="Permalink to this definition">¶</a></dt><dd><p>Number of decimal places for rounding reported shares.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Array of share-pairs, area under boundary.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_delta_boundary-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function.">GuidelinesBoundary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">hhi_pre_contrib_boundary</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary._hhi_contrib" title="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary._hhi_contrib (Python parameter) — Merging-firms' pre-merger HHI contribution bound."><span class="n"><span class="pre">_hhi_contrib</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.03125</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary.prec" title="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares."><span class="n"><span class="pre">prec</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">5</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#hhi_pre_contrib_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary" title="Link to this definition">¶</a></dt>
+<dd><p>Share combinations on the premerger HHI contribution boundary.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary._hhi_contrib"><span class="sig-name descname">_hhi_contrib</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary._hhi_contrib" title="Permalink to this definition">¶</a></dt><dd><p>Merging-firms’ pre-merger HHI contribution bound.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary.prec"><span class="sig-name descname">prec</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary.prec" title="Permalink to this definition">¶</a></dt><dd><p>Number of decimal places for rounding reported shares.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Array of share-pairs, area under boundary.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_pre_contrib_boundary-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function.">GuidelinesBoundary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.combined_share_boundary">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">combined_share_boundary</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary._s_intcpt" title="mergeron.core.guidelines_boundary_functions.combined_share_boundary._s_intcpt (Python parameter) — Merging-firms' combined share."><span class="n"><span class="pre">_s_intcpt</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.0625</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary.prec" title="mergeron.core.guidelines_boundary_functions.combined_share_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares."><span class="n"><span class="pre">prec</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">10</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#combined_share_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary" title="Link to this definition">¶</a></dt>
+<dd><p>Share combinations on the merging-firms’ combined share boundary.</p>
+<p>Assumes symmetric merging-firm margins. The combined-share is
+congruent to the post-merger HHI contribution boundary, as the
+post-merger HHI bound is the square of the combined-share bound.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.combined_share_boundary-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.combined_share_boundary._s_intcpt"><span class="sig-name descname">_s_intcpt</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary._s_intcpt" title="Permalink to this definition">¶</a></dt><dd><p>Merging-firms’ combined share.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.combined_share_boundary.prec"><span class="sig-name descname">prec</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary.prec" title="Permalink to this definition">¶</a></dt><dd><p>Number of decimal places for rounding reported shares.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.combined_share_boundary-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Array of share-pairs, area under boundary.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.combined_share_boundary-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.combined_share_boundary-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function.">GuidelinesBoundary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">hhi_post_contrib_boundary</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary._hhi_contrib" title="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary._hhi_contrib (Python parameter) — Merging-firms' pre-merger HHI contribution bound."><span class="n"><span class="pre">_hhi_contrib</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.8</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary.prec" title="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary.prec (Python parameter) — Number of decimal places for rounding reported shares."><span class="n"><span class="pre">prec</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">10</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#hhi_post_contrib_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary" title="Link to this definition">¶</a></dt>
+<dd><p>Share combinations on the postmerger HHI contribution boundary.</p>
+<p>The post-merger HHI contribution boundary is identical to the
+combined-share boundary.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary._hhi_contrib"><span class="sig-name descname">_hhi_contrib</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary._hhi_contrib" title="Permalink to this definition">¶</a></dt><dd><p>Merging-firms’ pre-merger HHI contribution bound.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary.prec"><span class="sig-name descname">prec</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary.prec" title="Permalink to this definition">¶</a></dt><dd><p>Number of decimal places for rounding reported shares.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Array of share-pairs, area under boundary.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.hhi_post_contrib_boundary-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function.">GuidelinesBoundary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">shrratio_boundary_wtd_avg</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._delta_star" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})"><span class="n"><span class="pre">_delta_star</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.075</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._r_val" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._r_val (Python parameter) — recapture ratio"><span class="n"><span class="pre">_r_val</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.85</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.agg_method" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.agg_method (Python parameter) — Whether &quot;arithmetic mean&quot;, &quot;geometric mean&quot;, or &quot;distance&quot;."><span class="n"><span class="pre">agg_method</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;arithmetic mean&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.weighting" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.weighting (Python parameter) — Whether &quot;own-share&quot; or &quot;cross-product-share&quot;  (or None for simple, unweighted average)."><span class="n"><span class="pre">weighting</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;own-share&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.recapture_form" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.recapture_form (Python parameter) — Whether recapture-ratio is MNL-consistent (&quot;inside-out&quot;) or has fixed value for both merging firms (&quot;proportional&quot;)."><span class="n"><span class="pre">recapture_form</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;inside-out&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.prec" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.prec (Python parameter) — Number of decimal places for rounding returned shares and area."><span class="n"><span class="pre">prec</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">5</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#shrratio_boundary_wtd_avg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg" title="Link to this definition">¶</a></dt>
+<dd><p>Share combinations on the share-weighted average diversion ratio boundary.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._delta_star"><span class="sig-name descname">_delta_star</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._delta_star" title="Permalink to this definition">¶</a></dt><dd><p>Share ratio (<span class="math notranslate nohighlight">\(\overline{d} / \overline{r}\)</span>)</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._r_val"><span class="sig-name descname">_r_val</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg._r_val" title="Permalink to this definition">¶</a></dt><dd><p>recapture ratio</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.agg_method"><span class="sig-name descname">agg_method</span><span class="p"> : </span><span class="desctype"><span class="desctype">Literal['arithmetic mean', 'geometric mean', 'distance']</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.agg_method" title="Permalink to this definition">¶</a></dt><dd><p>Whether “arithmetic mean”, “geometric mean”, or “distance”.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.weighting"><span class="sig-name descname">weighting</span><span class="p"> : </span><span class="desctype"><span class="desctype">Literal['own-share', 'cross-product-share', None]</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.weighting" title="Permalink to this definition">¶</a></dt><dd><p>Whether “own-share” or “cross-product-share”  (or None for simple, unweighted average).</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.recapture_form"><span class="sig-name descname">recapture_form</span><span class="p"> : </span><span class="desctype"><span class="desctype">Literal['inside-out', 'proportional']</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.recapture_form" title="Permalink to this definition">¶</a></dt><dd><p>Whether recapture-ratio is MNL-consistent (“inside-out”) or has fixed
+value for both merging firms (“proportional”).</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.prec"><span class="sig-name descname">prec</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg.prec" title="Permalink to this definition">¶</a></dt><dd><p>Number of decimal places for rounding returned shares and area.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Array of share-pairs, area under boundary.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_wtd_avg-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function.">GuidelinesBoundary</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>An analytical expression for the share-weighted arithmetic mean boundary
+is derived and plotted from y-intercept to the ray of symmetry as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">plot</span> <span class="k">as</span> <span class="n">symplot</span><span class="p">,</span> <span class="n">solve</span><span class="p">,</span> <span class="n">symbols</span>
+<span class="n">s_1</span><span class="p">,</span> <span class="n">s_2</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;s_1 s_2&quot;</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">g_val</span><span class="p">,</span> <span class="n">r_val</span><span class="p">,</span> <span class="n">m_val</span> <span class="o">=</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">,</span> <span class="mf">0.30</span>
+<span class="n">delta_star</span> <span class="o">=</span> <span class="n">g_val</span> <span class="o">/</span> <span class="p">(</span><span class="n">r_val</span> <span class="o">*</span> <span class="n">m_val</span><span class="p">)</span>
+
+<span class="c1"># recapture_form == &quot;inside-out&quot;</span>
+<span class="n">oswag</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span>
+    <span class="n">s_1</span> <span class="o">*</span> <span class="n">s_2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_1</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">s_2</span> <span class="o">*</span> <span class="n">s_1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">r_val</span> <span class="o">*</span> <span class="n">s_2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_val</span><span class="p">)</span> <span class="o">*</span> <span class="n">s_1</span><span class="p">))</span>
+    <span class="o">-</span> <span class="p">(</span><span class="n">s_1</span> <span class="o">+</span> <span class="n">s_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_star</span><span class="p">,</span>
+    <span class="n">s_2</span>
+<span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">symplot</span><span class="p">(</span>
+    <span class="n">oswag</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">s_1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">d_hat</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">d_hat</span><span class="p">)),</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="n">s_2</span>
+<span class="p">)</span>
+
+<span class="n">cpswag</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span>
+    <span class="n">s_2</span> <span class="o">*</span> <span class="n">s_2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_1</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">s_1</span> <span class="o">*</span> <span class="n">s_1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">r_val</span> <span class="o">*</span> <span class="n">s_2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_val</span><span class="p">)</span> <span class="o">*</span> <span class="n">s_1</span><span class="p">))</span>
+    <span class="o">-</span> <span class="p">(</span><span class="n">s_1</span> <span class="o">+</span> <span class="n">s_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_star</span><span class="p">,</span>
+    <span class="n">s_2</span>
+<span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">symplot</span><span class="p">(</span>
+    <span class="n">cpwag</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">s_1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">d_hat</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">d_hat</span><span class="p">)),</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="n">s_2</span>
+<span class="p">)</span>
+
+<span class="c1"># recapture_form == &quot;proportional&quot;</span>
+<span class="n">oswag</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span>
+    <span class="n">s_1</span> <span class="o">*</span> <span class="n">s_2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_1</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">s_2</span> <span class="o">*</span> <span class="n">s_1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_2</span><span class="p">)</span>
+    <span class="o">-</span> <span class="p">(</span><span class="n">s_1</span> <span class="o">+</span> <span class="n">s_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_star</span><span class="p">,</span>
+     <span class="n">s_2</span>
+<span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">symplot</span><span class="p">(</span>
+    <span class="n">oswag</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">s_1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">d_hat</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">d_hat</span><span class="p">)),</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="n">s_2</span>
+<span class="p">)</span>
+
+<span class="n">cpswag</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span>
+    <span class="n">s_2</span> <span class="o">*</span> <span class="n">s_2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_1</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">s_1</span> <span class="o">*</span> <span class="n">s_1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_2</span><span class="p">)</span>
+    <span class="o">-</span> <span class="p">(</span><span class="n">s_1</span> <span class="o">+</span> <span class="n">s_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_star</span><span class="p">,</span>
+     <span class="n">s_2</span>
+<span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">symplot</span><span class="p">(</span>
+    <span class="n">cpswag</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">s_1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">d_hat</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">d_hat</span><span class="p">)),</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="n">s_2</span>
+<span class="p">)</span>
+</code></pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">shrratio_boundary_xact_avg</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._delta_star" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})."><span class="n"><span class="pre">_delta_star</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.075</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._r_val" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._r_val (Python parameter) — Recapture ratio"><span class="n"><span class="pre">_r_val</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.85</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.recapture_form" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.recapture_form (Python parameter) — Whether recapture-ratio is MNL-consistent (&quot;inside-out&quot;) or has fixed value for both merging firms (&quot;proportional&quot;)."><span class="n"><span class="pre">recapture_form</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;inside-out&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.prec" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.prec (Python parameter) — Number of decimal places for rounding returned shares."><span class="n"><span class="pre">prec</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">5</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#shrratio_boundary_xact_avg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg" title="Link to this definition">¶</a></dt>
+<dd><p>Share combinations for the simple average GUPPI boundary with symmetric
+merging-firm margins.</p>
+<p class="rubric">Notes</p>
+<p>An analytical expression for the exact average boundary is derived
+and plotted from the y-intercept to the ray of symmetry as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">latex</span><span class="p">,</span> <span class="n">plot</span> <span class="k">as</span> <span class="n">symplot</span><span class="p">,</span> <span class="n">solve</span><span class="p">,</span> <span class="n">symbols</span>
+
+<span class="n">s_1</span><span class="p">,</span> <span class="n">s_2</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;s_1 s_2&quot;</span><span class="p">)</span>
+
+<span class="n">g_val</span><span class="p">,</span> <span class="n">r_val</span><span class="p">,</span> <span class="n">m_val</span> <span class="o">=</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">,</span> <span class="mf">0.30</span>
+<span class="n">d_hat</span> <span class="o">=</span> <span class="n">g_val</span> <span class="o">/</span> <span class="p">(</span><span class="n">r_val</span> <span class="o">*</span> <span class="n">m_val</span><span class="p">)</span>
+
+<span class="c1"># recapture_form = &quot;inside-out&quot;</span>
+<span class="n">sag</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">s_2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_1</span><span class="p">))</span>
+    <span class="o">+</span> <span class="p">(</span><span class="n">s_1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">r_val</span> <span class="o">*</span> <span class="n">s_2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_val</span><span class="p">)</span> <span class="o">*</span> <span class="n">s_1</span><span class="p">)))</span>
+    <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d_hat</span><span class="p">,</span>
+    <span class="n">s_2</span>
+<span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">symplot</span><span class="p">(</span>
+    <span class="n">sag</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">s_1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">d_hat</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">d_hat</span><span class="p">)),</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="n">s_2</span>
+<span class="p">)</span>
+
+<span class="c1"># recapture_form = &quot;proportional&quot;</span>
+<span class="n">sag</span> <span class="o">=</span> <span class="n">solve</span><span class="p">((</span><span class="n">s_2</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_1</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="n">s_1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s_2</span><span class="p">))</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d_hat</span><span class="p">,</span> <span class="n">s_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">symplot</span><span class="p">(</span>
+    <span class="n">sag</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">s_1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">d_hat</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">d_hat</span><span class="p">)),</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="n">s_2</span>
+<span class="p">)</span>
+</code></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._delta_star"><span class="sig-name descname">_delta_star</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._delta_star" title="Permalink to this definition">¶</a></dt><dd><p>Share ratio (<span class="math notranslate nohighlight">\(\overline{d} / \overline{r}\)</span>).</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._r_val"><span class="sig-name descname">_r_val</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg._r_val" title="Permalink to this definition">¶</a></dt><dd><p>Recapture ratio</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.recapture_form"><span class="sig-name descname">recapture_form</span><span class="p"> : </span><span class="desctype"><span class="desctype">Literal['inside-out', 'proportional']</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.recapture_form" title="Permalink to this definition">¶</a></dt><dd><p>Whether recapture-ratio is MNL-consistent (“inside-out”) or has fixed
+value for both merging firms (“proportional”).</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.prec"><span class="sig-name descname">prec</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg.prec" title="Permalink to this definition">¶</a></dt><dd><p>Number of decimal places for rounding returned shares.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Array of share-pairs, area under boundary, area under boundary.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_xact_avg-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function.">GuidelinesBoundary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">shrratio_boundary_min</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._delta_star" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})."><span class="n"><span class="pre">_delta_star</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.075</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._r_val" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._r_val (Python parameter) — Recapture ratio."><span class="n"><span class="pre">_r_val</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.85</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.recapture_form" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.recapture_form (Python parameter) — Whether recapture-ratio is MNL-consistent (&quot;inside-out&quot;) or has fixed value for both merging firms (&quot;proportional&quot;)."><span class="n"><span class="pre">recapture_form</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;inside-out&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.prec" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.prec (Python parameter) — Number of decimal places for rounding returned shares."><span class="n"><span class="pre">prec</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">10</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#shrratio_boundary_min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min" title="Link to this definition">¶</a></dt>
+<dd><p>Share combinations on the minimum GUPPI boundary, with symmetric
+merging-firm margins.</p>
+<p class="rubric">Notes</p>
+<p>With symmetric merging-firm margins, the maximum GUPPI boundary is
+defined by the diversion ratio from the smaller merging-firm to the
+larger one, and is hence unaffected by the method of estimating the
+diversion ratio for the larger firm.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._delta_star"><span class="sig-name descname">_delta_star</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._delta_star" title="Permalink to this definition">¶</a></dt><dd><p>Share ratio (<span class="math notranslate nohighlight">\(\overline{d} / \overline{r}\)</span>).</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._r_val"><span class="sig-name descname">_r_val</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min._r_val" title="Permalink to this definition">¶</a></dt><dd><p>Recapture ratio.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.recapture_form"><span class="sig-name descname">recapture_form</span><span class="p"> : </span><span class="desctype"><span class="desctype">str</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.recapture_form" title="Permalink to this definition">¶</a></dt><dd><p>Whether recapture-ratio is MNL-consistent (“inside-out”) or has fixed
+value for both merging firms (“proportional”).</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.prec"><span class="sig-name descname">prec</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min.prec" title="Permalink to this definition">¶</a></dt><dd><p>Number of decimal places for rounding returned shares.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Array of share-pairs, area under boundary.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_min-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function.">GuidelinesBoundary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">shrratio_boundary_max</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._delta_star" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._delta_star (Python parameter) — Share ratio (\overline{d} / \overline{r})."><span class="n"><span class="pre">_delta_star</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.075</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._r_val" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._r_val (Python parameter) — Recapture ratio."><span class="n"><span class="pre">_r_val</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.85</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max.prec" title="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max.prec (Python parameter) — Number of decimal places for rounding returned shares."><span class="n"><span class="pre">prec</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">10</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#shrratio_boundary_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max" title="Link to this definition">¶</a></dt>
+<dd><p>Share combinations on the minimum GUPPI boundary with symmetric
+merging-firm margins.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._delta_star"><span class="sig-name descname">_delta_star</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._delta_star" title="Permalink to this definition">¶</a></dt><dd><p>Share ratio (<span class="math notranslate nohighlight">\(\overline{d} / \overline{r}\)</span>).</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._r_val"><span class="sig-name descname">_r_val</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max._r_val" title="Permalink to this definition">¶</a></dt><dd><p>Recapture ratio.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max.prec"><span class="sig-name descname">prec</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max.prec" title="Permalink to this definition">¶</a></dt><dd><p>Number of decimal places for rounding returned shares.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Array of share-pairs, area under boundary.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.shrratio_boundary_max-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary" title="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary (Python class) — Output of a Guidelines boundary function.">GuidelinesBoundary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.lerp">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">lerp</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.lerp._x1" title="mergeron.core.guidelines_boundary_functions.lerp._x1 (Python parameter) — bounds x_1, x_2 to interpolate between."><span class="n"><span class="pre">_x1</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">3</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.lerp._x2" title="mergeron.core.guidelines_boundary_functions.lerp._x2 (Python parameter) — bounds x_1, x_2 to interpolate between."><span class="n"><span class="pre">_x2</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">1</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.lerp._r" title="mergeron.core.guidelines_boundary_functions.lerp._r (Python parameter) — interpolation weight r assigned to x_2"><span class="n"><span class="pre">_r</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.25</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#lerp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp" title="Link to this definition">¶</a></dt>
+<dd><p>From the function of the same name in the C++ standard <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<p>Constructs the weighted average, <span class="math notranslate nohighlight">\(w_1 x_1 + w_2 x_2\)</span>, where
+<span class="math notranslate nohighlight">\(w_1 = 1 - r\)</span> and <span class="math notranslate nohighlight">\(w_2 = r\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.lerp-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.lerp._x1"><span class="sig-name descname">_x1</span><span class="p"> : </span><span class="desctype"><span class="desctype">int | float | mpmath.mpf | numpy.typing.NDArray[numpy.float64 | numpy.int64]</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp._x1" title="Permalink to this definition">¶</a></dt><dd><p>bounds <span class="math notranslate nohighlight">\(x_1, x_2\)</span> to interpolate between.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.lerp._x2"><span class="sig-name descname">_x2</span><span class="p"> : </span><span class="desctype"><span class="desctype">int | float | mpmath.mpf | numpy.typing.NDArray[numpy.float64 | numpy.int64]</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp._x2" title="Permalink to this definition">¶</a></dt><dd><p>bounds <span class="math notranslate nohighlight">\(x_1, x_2\)</span> to interpolate between.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.lerp._r"><span class="sig-name descname">_r</span><span class="p"> : </span><span class="desctype"><span class="desctype">float | mpmath.mpf</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp._r" title="Permalink to this definition">¶</a></dt><dd><p>interpolation weight <span class="math notranslate nohighlight">\(r\)</span> assigned to <span class="math notranslate nohighlight">\(x_2\)</span></p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.lerp-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>The linear interpolation, or weighted average,
+<span class="math notranslate nohighlight">\(x_1 + r \cdot (x_1 - x_2) \equiv (1 - r) \cdot x_1 + r \cdot x_2\)</span>.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.lerp-raises">Raises<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp-raises" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the interpolation weight is not in the interval, <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.lerp-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>float | mpmath.mpf | numpy.typing.NDArray[numpy.float64]</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">2</a><span class="fn-bracket">]</span></span>
+<p>C++ Reference, <a class="reference external" href="https://en.cppreference.com/w/cpp/numeric/lerp">https://en.cppreference.com/w/cpp/numeric/lerp</a></p>
+</aside>
+</aside>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.round_cust">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">round_cust</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.round_cust._num" title="mergeron.core.guidelines_boundary_functions.round_cust._num (Python parameter) — Number to be rounded."><span class="n"><span class="pre">_num</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.060215</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.round_cust.frac" title="mergeron.core.guidelines_boundary_functions.round_cust.frac (Python parameter) — Fraction to be rounded to."><span class="n"><span class="pre">frac</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.005</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.round_cust.rounding_mode" title="mergeron.core.guidelines_boundary_functions.round_cust.rounding_mode (Python parameter) — Rounding mode, as defined in the decimal package."><span class="n"><span class="pre">rounding_mode</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;ROUND_HALF_UP&#39;</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#round_cust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.round_cust" title="Link to this definition">¶</a></dt>
+<dd><p>Custom rounding, to the nearest 0.5% by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.round_cust-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.round_cust-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundary_functions.round_cust._num"><span class="sig-name descname">_num</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.round_cust._num" title="Permalink to this definition">¶</a></dt><dd><p>Number to be rounded.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.round_cust.frac"><span class="sig-name descname">frac</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.round_cust.frac" title="Permalink to this definition">¶</a></dt><dd><p>Fraction to be rounded to.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundary_functions.round_cust.rounding_mode"><span class="sig-name descname">rounding_mode</span><span class="p"> : </span><span class="desctype"><span class="desctype">str</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.round_cust.rounding_mode" title="Permalink to this definition">¶</a></dt><dd><p>Rounding mode, as defined in the <code class="code docutils literal notranslate"><span class="pre">decimal</span></code> package.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.round_cust-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.round_cust-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>The given number, rounded as specified.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.round_cust-raises">Raises<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.round_cust-raises" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If rounding mode is not defined in the <code class="code docutils literal notranslate"><span class="pre">decimal</span></code> package.</p>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundary_functions.round_cust-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.round_cust-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Integer-round the quotient, <code class="code docutils literal notranslate"><span class="pre">(_num</span> <span class="pre">/</span> <span class="pre">frac)</span></code> using the specified
+rounding mode. Return the product of the rounded quotient times
+the specified precision, <code class="code docutils literal notranslate"><span class="pre">frac</span></code>.</p>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundary_functions.boundary_plot">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundary_functions.</span></span><span class="sig-name descname"><span class="pre">boundary_plot</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundary_functions.boundary_plot" title="mergeron.core.guidelines_boundary_functions.boundary_plot.mktshares_plot_flag (Python parameter)"><span class="n"><span class="pre">mktshares_plot_flag</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">True</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#boundary_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.boundary_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Setup basic figure and axes for plots of safe harbor boundaries.</p>
+<p>See, <a class="reference external" href="https://matplotlib.org/stable/tutorials/text/pgf.html">https://matplotlib.org/stable/tutorials/text/pgf.html</a></p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../guidelines_boundaries/index.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: mergeron.core.guidelines_boundaries" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              mergeron.core.guidelines_boundaries
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../guidelines_boundary_functions_extra/index.html" class="md-footer__link md-footer__link--next" aria-label="Next: mergeron.core.guidelines_boundary_functions_extra" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              mergeron.core.guidelines_boundary_functions_extra
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+        <script id="MathJax-script" src="../../../../_static/mathjax/tex-mml-chtml.js?v=cadf963e"></script>
+    
+  </body>
+</html>

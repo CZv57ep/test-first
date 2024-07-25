@@ -1,0 +1,1466 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.core.pseudorandom_numbers - mergeron 2024.739091.2</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-contents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.core.pseudorandom_numbers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739091.2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1" type="checkbox" id="__nav_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html"><span class="md-ellipsis">mergeron</span></a>
+          
+            <label for="__nav_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1" type="checkbox" id="__nav_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html#subpackages"><span class="md-ellipsis">Subpackages</span></a>
+          
+            <label for="__nav_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Subpackages" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Subpackages</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_1" type="checkbox" id="__nav_1_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html"><span class="md-ellipsis">mergeron.<wbr>core</span></a>
+          
+            <label for="__nav_1_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron.core" data-md-level="4">
+        <label class="md-nav__title" for="__nav_1_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron.<wbr>core</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_1_1" type="checkbox" id="__nav_1_1_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html#submodules"><span class="md-ellipsis">Submodules</span></a>
+          
+            <label for="__nav_1_1_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Submodules" data-md-level="5">
+        <label class="md-nav__title" for="__nav_1_1_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Submodules</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../damodaran_margin_data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>damodaran_<wbr>margin_<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ftc_merger_investigations_data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>ftc_<wbr>merger_<wbr>investigations_<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guidelines_boundaries/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guidelines_boundary_functions/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guidelines_boundary_functions_extra/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions_<wbr>extra</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../proportions_tests/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>proportions_<wbr>tests</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers</span>
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.NTHREADS" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="mergeron.core.pseudorandom_numbers.NTHREADS (Python data)" class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>NTHREADS</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.DIST_PARMS_DEFAULT" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="mergeron.core.pseudorandom_numbers.DIST_PARMS_DEFAULT (Python data)" class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>DIST_<wbr>PARMS_<wbr>DEFAULT</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.pseudorandom_numbers.prng (Python function) — Adopt the PCG64DXSM bit-generator, the future default in numpy.default_rng()." class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>prng</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.pseudorandom_numbers.prng">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng._s" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.prng._s (Python parameter) — SeedSequence, for generating random numbers in repeatable fashion." class="md-ellipsis">_<wbr>s</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default (Python function) — Return specified number of SeedSequences, for generating random variates" class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>gen_<wbr>seed_<wbr>seq_<wbr>list_<wbr>default</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default._sseq_list_len" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default._sseq_list_len (Python parameter) — Number of SeedSequences to initialize" class="md-ellipsis">_<wbr>sseq_<wbr>list_<wbr>len</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default.generated_entropy" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default.generated_entropy (Python parameter) — A list of integers with length not less than _s, to be used as seeds for initializing SeedSequences." class="md-ellipsis">generated_<wbr>entropy</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-raises" class="md-nav__link">
+    <span class="md-ellipsis">Raises</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG (Python class) — Fill given array on demand with pseudo-random numbers as specified." class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>Multithreaded<wbr>RNG</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.pseudorandom_numbers.MultithreadedRNG">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array (Python parameter) — The output array to which generated data are written. Its dimensions define the size of the sample." class="md-ellipsis">_<wbr>out_<wbr>array</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type (Python parameter) — Distribution for the generated random numbers" class="md-ellipsis">dist_<wbr>type</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms (Python parameter) — Parameters, if any, for tailoring random number generation" class="md-ellipsis">dist_<wbr>parms</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence (Python parameter) — SeedSequence object for generating repeatable draws." class="md-ellipsis">seed_<wbr>sequence</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.nthreads (Python parameter) — Number of threads to spawn for random number generation." class="md-ellipsis">nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.thread_count" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.thread_count (Python attribute)" class="md-ellipsis">thread_<wbr>count</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.sample_sz" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.sample_sz (Python attribute)" class="md-ellipsis">sample_<wbr>sz</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_type" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_type (Python attribute)" class="md-ellipsis">dist_<wbr>type</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_parms" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_parms (Python attribute)" class="md-ellipsis">dist_<wbr>parms</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.values" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.values (Python attribute)" class="md-ellipsis">values</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.executor" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.executor (Python attribute)" class="md-ellipsis">executor</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.step_size" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.step_size (Python attribute)" class="md-ellipsis">step_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.fill" class="md-nav__link">
+    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.fill (Python method) — Fill the provided output array with random numbers as specified." class="md-ellipsis">fill</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>demo</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ext/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>ext</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gen/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>gen</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.NTHREADS" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="mergeron.core.pseudorandom_numbers.NTHREADS (Python data)" class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>NTHREADS</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.DIST_PARMS_DEFAULT" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="mergeron.core.pseudorandom_numbers.DIST_PARMS_DEFAULT (Python data)" class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>DIST_<wbr>PARMS_<wbr>DEFAULT</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.pseudorandom_numbers.prng (Python function) — Adopt the PCG64DXSM bit-generator, the future default in numpy.default_rng()." class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>prng</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.pseudorandom_numbers.prng">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng._s" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.prng._s (Python parameter) — SeedSequence, for generating random numbers in repeatable fashion." class="md-ellipsis">_<wbr>s</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.prng-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default (Python function) — Return specified number of SeedSequences, for generating random variates" class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>gen_<wbr>seed_<wbr>seq_<wbr>list_<wbr>default</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default._sseq_list_len" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default._sseq_list_len (Python parameter) — Number of SeedSequences to initialize" class="md-ellipsis">_<wbr>sseq_<wbr>list_<wbr>len</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default.generated_entropy" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default.generated_entropy (Python parameter) — A list of integers with length not less than _s, to be used as seeds for initializing SeedSequences." class="md-ellipsis">generated_<wbr>entropy</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-raises" class="md-nav__link">
+    <span class="md-ellipsis">Raises</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG (Python class) — Fill given array on demand with pseudo-random numbers as specified." class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers.<wbr>Multithreaded<wbr>RNG</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.pseudorandom_numbers.MultithreadedRNG">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array (Python parameter) — The output array to which generated data are written. Its dimensions define the size of the sample." class="md-ellipsis">_<wbr>out_<wbr>array</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type (Python parameter) — Distribution for the generated random numbers" class="md-ellipsis">dist_<wbr>type</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms (Python parameter) — Parameters, if any, for tailoring random number generation" class="md-ellipsis">dist_<wbr>parms</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence (Python parameter) — SeedSequence object for generating repeatable draws." class="md-ellipsis">seed_<wbr>sequence</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.nthreads (Python parameter) — Number of threads to spawn for random number generation." class="md-ellipsis">nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.thread_count" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.thread_count (Python attribute)" class="md-ellipsis">thread_<wbr>count</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.sample_sz" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.sample_sz (Python attribute)" class="md-ellipsis">sample_<wbr>sz</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_type" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_type (Python attribute)" class="md-ellipsis">dist_<wbr>type</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_parms" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_parms (Python attribute)" class="md-ellipsis">dist_<wbr>parms</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.values" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.values (Python attribute)" class="md-ellipsis">values</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.executor" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.executor (Python attribute)" class="md-ellipsis">executor</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.step_size" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.step_size (Python attribute)" class="md-ellipsis">step_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.fill" class="md-nav__link">
+    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.fill (Python method) — Fill the provided output array with random numbers as specified." class="md-ellipsis">fill</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1 id="module-mergeron.core.pseudorandom_numbers"><span id="mergeron-core-pseudorandom-numbers"></span>mergeron.core.pseudorandom_numbers<a class="headerlink" href="#module-mergeron.core.pseudorandom_numbers" title="Link to this heading">¶</a></h1>
+<p>Functions for generating synthetic data under specified distributions.</p>
+<p>Uses multiple CPUs when available, with PCG64DXSM as the PRNG
+<a class="reference external" href="https://github.com/numpy/numpy/issues/16313">https://github.com/numpy/numpy/issues/16313</a>.</p>
+<h2 id="module-contents">Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.NTHREADS">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.pseudorandom_numbers.</span></span><span class="sig-name descname"><span class="pre">NTHREADS</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#NTHREADS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.NTHREADS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.DIST_PARMS_DEFAULT">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.pseudorandom_numbers.</span></span><span class="sig-name descname"><span class="pre">DIST_PARMS_DEFAULT</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#DIST_PARMS_DEFAULT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.DIST_PARMS_DEFAULT" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.prng">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.pseudorandom_numbers.</span></span><span class="sig-name descname"><span class="pre">prng</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.pseudorandom_numbers.prng._s" title="mergeron.core.pseudorandom_numbers.prng._s (Python parameter) — SeedSequence, for generating random numbers in repeatable fashion."><span class="n"><span class="pre">_s</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#prng"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.prng" title="Link to this definition">¶</a></dt>
+<dd><p>Adopt the PCG64DXSM bit-generator, the future default in numpy.default_rng().</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.pseudorandom_numbers.prng-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.prng-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.pseudorandom_numbers.prng._s"><span class="sig-name descname">_s</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence | None</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.prng._s" title="Permalink to this definition">¶</a></dt><dd><p>SeedSequence, for generating random numbers in repeatable fashion.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.pseudorandom_numbers.prng-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.prng-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>A numpy random BitGenerator.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.pseudorandom_numbers.prng-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.prng-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p>numpy.random.Generator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.pseudorandom_numbers.</span></span><span class="sig-name descname"><span class="pre">gen_seed_seq_list_default</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default._sseq_list_len" title="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default._sseq_list_len (Python parameter) — Number of SeedSequences to initialize"><span class="n"><span class="pre">_sseq_list_len</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">3</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default.generated_entropy" title="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default.generated_entropy (Python parameter) — A list of integers with length not less than _s, to be used as seeds for initializing SeedSequences."><span class="n"><span class="pre">generated_entropy</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#gen_seed_seq_list_default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default" title="Link to this definition">¶</a></dt>
+<dd><p>Return specified number of SeedSequences, for generating random variates</p>
+<p>Initializes a specified number of SeedSequences based on a set of
+10 generated “seeds” in a hard-coded list. If the required number of
+random variates is larger than 10, the user must first generate
+a sufficient number of seeds to draw upon for initializing SeedSequences.
+The generated seeds can be reused in subsequent calls to this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default._sseq_list_len"><span class="sig-name descname">_sseq_list_len</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default._sseq_list_len" title="Permalink to this definition">¶</a></dt><dd><p>Number of SeedSequences to initialize</p>
+</dd>
+<dt id="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default.generated_entropy"><span class="sig-name descname">generated_entropy</span><span class="p"> : </span><span class="desctype"><span class="desctype">collections.abc.Sequence[int] | None</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default.generated_entropy" title="Permalink to this definition">¶</a></dt><dd><p>A list of integers with length not less than _s, to be used as seeds
+for initializing SeedSequences. A list of 10 appropriately generated
+integers is used as default.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>A list of numpy SeedSequence objects, which can be used to seed prng() or to spawn
+seed sequences that can be used as seeds to generate non-overlapping streams in parallel.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-raises">Raises<span class="colon">:</span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-raises" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – When, <span class="math notranslate nohighlight">\(\_sseq\_list\_len &gt; max(10, len(generated\_entropy))\)</span>.</p>
+</dd>
+<dt class="field-even" id="mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.gen_seed_seq_list_default-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>list[numpy.random.SeedSequence]</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p><em>See</em>, <a class="reference external" href="https://numpy.org/doc/stable/reference/random/parallel.html">https://numpy.org/doc/stable/reference/random/parallel.html</a></p>
+</dd></dl>
+
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mergeron.core.pseudorandom_numbers.</span></span><span class="sig-name descname"><span class="pre">MultithreadedRNG</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array" title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array (Python parameter) — The output array to which generated data are written. Its dimensions define the size of the sample."><span class="n"><span class="pre">_out_array</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type" title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type (Python parameter) — Distribution for the generated random numbers"><span class="n"><span class="pre">dist_type</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;Uniform&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms" title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms (Python parameter) — Parameters, if any, for tailoring random number generation"><span class="n"><span class="pre">dist_parms</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="n">DIST_PARMS_DEFAULT</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence" title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence (Python parameter) — SeedSequence object for generating repeatable draws."><span class="n"><span class="pre">seed_sequence</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.nthreads" title="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.nthreads (Python parameter) — Number of threads to spawn for random number generation."><span class="n"><span class="pre">nthreads</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="n">NTHREADS</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#MultithreadedRNG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG" title="Link to this definition">¶</a></dt>
+<dd><p>Fill given array on demand with pseudo-random numbers as specified.</p>
+<p>Random number generation is multithreaded, using twice
+the number of threads as available CPU cores by default.
+If a seed sequence is provided, it is used in a thread-safe way
+to generate repeatable i.i.d. draws. All arguments are validated
+before commencing multithreaded random number generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array"><span class="sig-name descname">_out_array</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.typing.NDArray[numpy.float64]</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array" title="Permalink to this definition">¶</a></dt><dd><p>The output array to which generated data are written.
+Its dimensions define the size of the sample.</p>
+</dd>
+<dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type"><span class="sig-name descname">dist_type</span><span class="p"> : </span><span class="desctype"><span class="desctype">Literal['Beta', 'Dirichlet', 'Gaussian', 'Normal', 'Random', 'Uniform']</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type" title="Permalink to this definition">¶</a></dt><dd><p>Distribution for the generated random numbers</p>
+</dd>
+<dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms"><span class="sig-name descname">dist_parms</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.typing.NDArray[numpy.float64] | None</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms" title="Permalink to this definition">¶</a></dt><dd><p>Parameters, if any, for tailoring random number generation</p>
+</dd>
+<dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence"><span class="sig-name descname">seed_sequence</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence | None</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence" title="Permalink to this definition">¶</a></dt><dd><p>SeedSequence object for generating repeatable draws.</p>
+</dd>
+<dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.nthreads"><span class="sig-name descname">nthreads</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.nthreads" title="Permalink to this definition">¶</a></dt><dd><p>Number of threads to spawn for random number generation.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.thread_count">
+<span class="sig-name descname"><span class="pre">thread_count</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#MultithreadedRNG.thread_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.thread_count" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.sample_sz">
+<span class="sig-name descname"><span class="pre">sample_sz</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#MultithreadedRNG.sample_sz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.sample_sz" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_type">
+<span class="sig-name descname"><span class="pre">dist_type</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#MultithreadedRNG.dist_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_parms">
+<span class="sig-name descname"><span class="pre">dist_parms</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#MultithreadedRNG.dist_parms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.dist_parms" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.values">
+<span class="sig-name descname"><span class="pre">values</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#MultithreadedRNG.values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.values" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.executor">
+<span class="sig-name descname"><span class="pre">executor</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#MultithreadedRNG.executor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.executor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.step_size">
+<span class="sig-name descname"><span class="pre">step_size</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#MultithreadedRNG.step_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.step_size" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.fill">
+<span class="sig-name descname"><span class="pre">fill</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/pseudorandom_numbers.html#MultithreadedRNG.fill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.fill" title="Link to this definition">¶</a></dt>
+<dd><p>Fill the provided output array with random numbers as specified.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../proportions_tests/index.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: mergeron.core.proportions_tests" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              mergeron.core.proportions_tests
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../data/index.html" class="md-footer__link md-footer__link--next" aria-label="Next: mergeron.data" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              mergeron.data
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+        <script id="MathJax-script" src="../../../../_static/mathjax/tex-mml-chtml.js?v=cadf963e"></script>
+    
+  </body>
+</html>

@@ -1,0 +1,95 @@
+mergeron.ext.tol_colors
+=======================
+
+.. py:module:: mergeron.ext.tol_colors
+
+.. autoapi-nested-parse::
+
+   Definition of colour schemes for lines and maps that also work for colour-blind
+   people. See https://personal.sron.nl/~pault/ for background information and
+   best usage of the schemes.
+
+   Copyright (c) 2022, Paul Tol
+   All rights reserved.
+
+   License:  Standard 3-clause BSD
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: discretemap(colormap, hexclrs)
+
+   Produce a colormap from a list of discrete colors without interpolation.
+
+
+.. py:class:: TOLcmaps
+
+   .. py:attribute:: cname
+      :type:  str
+      :value: ''
+
+
+
+   .. py:attribute:: namelist
+      :type:  collections.abc.Sequence[str]
+      :value: ('sunset_discrete', 'sunset', 'nightfall_discrete', 'nightfall', 'BuRd_discrete', 'BuRd',...
+
+
+
+   .. py:attribute:: funcdict
+      :type:  dict[str, collections.abc.Callable[[], None] | collections.abc.Callable[[None | int], None]]
+
+
+   .. py:method:: show()
+
+      List names of defined colormaps.
+
+
+
+   .. py:method:: get(cname = 'rainbow_PuRd', lut = None)
+
+      Return requested colormap, default is 'rainbow_PuRd'.
+
+
+
+.. py:function:: tol_cmap(colormap = None, lut = None)
+
+   Continuous and discrete color sets for ordered data.
+
+   Return a matplotlib colormap.
+   Parameter lut is ignored for all colormaps except 'rainbow_discrete'.
+
+
+.. py:data:: Bcset
+
+.. py:data:: Hcset
+
+.. py:data:: Vcset
+
+.. py:data:: Muset
+
+.. py:data:: Mcset
+
+.. py:data:: Lcset
+
+.. py:function:: tol_cset(colorset = None)
+
+   Discrete color sets for qualitative data.
+
+   Define a namedtuple instance with the colors.
+   Examples for: cset = tol_cset(<scheme>)
+   - cset.red and cset[1] give the same color (in default 'bright' colorset)
+   - cset._fields gives a tuple with all color names
+   - list(cset) gives a list with all colors
+
+
+.. py:function:: main()
+

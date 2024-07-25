@@ -1,0 +1,1928 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.core.guidelines_boundaries - mergeron 2024.739091.2</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-contents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.core.guidelines_boundaries
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739091.2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1" type="checkbox" id="__nav_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html"><span class="md-ellipsis">mergeron</span></a>
+          
+            <label for="__nav_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1" type="checkbox" id="__nav_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html#subpackages"><span class="md-ellipsis">Subpackages</span></a>
+          
+            <label for="__nav_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Subpackages" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Subpackages</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_1" type="checkbox" id="__nav_1_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html"><span class="md-ellipsis">mergeron.<wbr>core</span></a>
+          
+            <label for="__nav_1_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron.core" data-md-level="4">
+        <label class="md-nav__title" for="__nav_1_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron.<wbr>core</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_1_1" type="checkbox" id="__nav_1_1_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html#submodules"><span class="md-ellipsis">Submodules</span></a>
+          
+            <label for="__nav_1_1_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Submodules" data-md-level="5">
+        <label class="md-nav__title" for="__nav_1_1_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Submodules</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../damodaran_margin_data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>damodaran_<wbr>margin_<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ftc_merger_investigations_data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>ftc_<wbr>merger_<wbr>investigations_<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries</span>
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGPubYear" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="mergeron.core.guidelines_boundaries.HMGPubYear (Python data)" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>HMGPub<wbr>Year</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds (Python class) — delta : float      fc : float      rec : float      guppi : float      divr : float      cmcr : float      ipr : float" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>HMGThresholds</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.HMGThresholds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.delta" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.delta (Python attribute)" class="md-ellipsis">delta</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.fc" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.fc (Python attribute)" class="md-ellipsis">fc</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.rec" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.rec (Python attribute)" class="md-ellipsis">rec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.guppi" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.guppi (Python attribute)" class="md-ellipsis">guppi</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.divr" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.divr (Python attribute)" class="md-ellipsis">divr</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.cmcr" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.cmcr (Python attribute)" class="md-ellipsis">cmcr</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.ipr" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.ipr (Python attribute)" class="md-ellipsis">ipr</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds (Python class) — Guidelines threholds by Guidelines publication year" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>Guidelines<wbr>Thresholds</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.GuidelinesThresholds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.pub_year" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds.pub_year (Python attribute) — Year of publication of the Guidelines" class="md-ellipsis">pub_<wbr>year</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.safeharbor" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds.safeharbor (Python attribute) — Negative presumption quantified on various measures" class="md-ellipsis">safeharbor</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.presumption" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds.presumption (Python attribute) — Presumption of harm defined in HMG" class="md-ellipsis">presumption</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.imputed_presumption" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds.imputed_presumption (Python attribute) — Presumption of harm imputed from guidelines" class="md-ellipsis">imputed_<wbr>presumption</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary (Python class) — Concentration parameters, boundary coordinates, and area under concentration boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>Concentration<wbr>Boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.ConcentrationBoundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.threshold" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.threshold (Python attribute)" class="md-ellipsis">threshold</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.precision" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.precision (Python attribute)" class="md-ellipsis">precision</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.measure_name" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.measure_name (Python attribute)" class="md-ellipsis">measure_<wbr>name</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.coordinates" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.coordinates (Python attribute) — Market-share pairs as Cartesian coordinates of points on the concentration boundary." class="md-ellipsis">coordinates</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.area" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.area (Python attribute) — Area under the concentration boundary." class="md-ellipsis">area</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary (Python class) — Diversion ratio specification, boundary coordinates, and area under boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>Diversion<wbr>Ratio<wbr>Boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.DiversionRatioBoundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.diversion_ratio" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.diversion_ratio (Python attribute)" class="md-ellipsis">diversion_<wbr>ratio</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_rate" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_rate (Python attribute)" class="md-ellipsis">recapture_<wbr>rate</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_form" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_form (Python attribute) — The form of the recapture rate." class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.agg_method" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.agg_method (Python attribute) — Method for aggregating the distinct diversion ratio measures for the two products." class="md-ellipsis">agg_<wbr>method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.precision" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.precision (Python attribute) — The number of decimal places of precision for the estimated area under the UPP boundary." class="md-ellipsis">precision</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.coordinates" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.coordinates (Python attribute) — Market-share pairs as Cartesian coordinates of points on the diversion ratio boundary." class="md-ellipsis">coordinates</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.area" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.area (Python attribute) — Area under the diversion ratio boundary." class="md-ellipsis">area</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundaries.guppi_from_delta (Python function) — Translate ∆HHI bound to GUPPI bound." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>guppi_<wbr>from_<wbr>delta</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.guppi_from_delta">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta._delta_bound" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.guppi_from_delta._delta_bound (Python parameter) — Specified ∆HHI bound." class="md-ellipsis">_<wbr>delta_<wbr>bound</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta.m_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.guppi_from_delta.m_star (Python parameter) — Parametric price-cost margin." class="md-ellipsis">m_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta.r_bar" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.guppi_from_delta.r_bar (Python parameter) — Default recapture rate." class="md-ellipsis">r_<wbr>bar</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundaries.critical_share_ratio (Python function) — Corollary to GUPPI bound." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>critical_<wbr>share_<wbr>ratio</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.critical_share_ratio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio._guppi_bound" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.critical_share_ratio._guppi_bound (Python parameter) — Specified GUPPI bound." class="md-ellipsis">_<wbr>guppi_<wbr>bound</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio.m_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.critical_share_ratio.m_star (Python parameter) — Parametric price-cost margin." class="md-ellipsis">m_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio.r_bar" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.critical_share_ratio.r_bar (Python parameter) — Default recapture rate." class="md-ellipsis">r_<wbr>bar</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundaries.share_from_guppi (Python function) — Symmetric-firm share for given GUPPI, margin, and recapture rate." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>share_<wbr>from_<wbr>guppi</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.share_from_guppi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi._guppi_bound" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.share_from_guppi._guppi_bound (Python parameter) — GUPPI bound." class="md-ellipsis">_<wbr>guppi_<wbr>bound</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi.m_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.share_from_guppi.m_star (Python parameter) — Parametric price-cost margin." class="md-ellipsis">m_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi.r_bar" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.share_from_guppi.r_bar (Python parameter) — Default recapture rate." class="md-ellipsis">r_<wbr>bar</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guidelines_boundary_functions/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guidelines_boundary_functions_extra/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundary_<wbr>functions_<wbr>extra</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../proportions_tests/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>proportions_<wbr>tests</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pseudorandom_numbers/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core.<wbr>pseudorandom_<wbr>numbers</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>demo</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ext/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>ext</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gen/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>gen</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGPubYear" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="mergeron.core.guidelines_boundaries.HMGPubYear (Python data)" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>HMGPub<wbr>Year</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds (Python class) — delta : float      fc : float      rec : float      guppi : float      divr : float      cmcr : float      ipr : float" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>HMGThresholds</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.HMGThresholds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.delta" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.delta (Python attribute)" class="md-ellipsis">delta</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.fc" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.fc (Python attribute)" class="md-ellipsis">fc</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.rec" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.rec (Python attribute)" class="md-ellipsis">rec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.guppi" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.guppi (Python attribute)" class="md-ellipsis">guppi</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.divr" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.divr (Python attribute)" class="md-ellipsis">divr</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.cmcr" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.cmcr (Python attribute)" class="md-ellipsis">cmcr</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.HMGThresholds.ipr" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.HMGThresholds.ipr (Python attribute)" class="md-ellipsis">ipr</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds (Python class) — Guidelines threholds by Guidelines publication year" class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>Guidelines<wbr>Thresholds</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.GuidelinesThresholds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.pub_year" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds.pub_year (Python attribute) — Year of publication of the Guidelines" class="md-ellipsis">pub_<wbr>year</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.safeharbor" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds.safeharbor (Python attribute) — Negative presumption quantified on various measures" class="md-ellipsis">safeharbor</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.presumption" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds.presumption (Python attribute) — Presumption of harm defined in HMG" class="md-ellipsis">presumption</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.imputed_presumption" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.GuidelinesThresholds.imputed_presumption (Python attribute) — Presumption of harm imputed from guidelines" class="md-ellipsis">imputed_<wbr>presumption</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary (Python class) — Concentration parameters, boundary coordinates, and area under concentration boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>Concentration<wbr>Boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.ConcentrationBoundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.threshold" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.threshold (Python attribute)" class="md-ellipsis">threshold</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.precision" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.precision (Python attribute)" class="md-ellipsis">precision</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.measure_name" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.measure_name (Python attribute)" class="md-ellipsis">measure_<wbr>name</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.coordinates" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.coordinates (Python attribute) — Market-share pairs as Cartesian coordinates of points on the concentration boundary." class="md-ellipsis">coordinates</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.area" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.ConcentrationBoundary.area (Python attribute) — Area under the concentration boundary." class="md-ellipsis">area</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary (Python class) — Diversion ratio specification, boundary coordinates, and area under boundary." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>Diversion<wbr>Ratio<wbr>Boundary</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.DiversionRatioBoundary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.diversion_ratio" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.diversion_ratio (Python attribute)" class="md-ellipsis">diversion_<wbr>ratio</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_rate" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_rate (Python attribute)" class="md-ellipsis">recapture_<wbr>rate</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_form" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_form (Python attribute) — The form of the recapture rate." class="md-ellipsis">recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.agg_method" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.agg_method (Python attribute) — Method for aggregating the distinct diversion ratio measures for the two products." class="md-ellipsis">agg_<wbr>method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.precision" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.precision (Python attribute) — The number of decimal places of precision for the estimated area under the UPP boundary." class="md-ellipsis">precision</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.coordinates" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.coordinates (Python attribute) — Market-share pairs as Cartesian coordinates of points on the diversion ratio boundary." class="md-ellipsis">coordinates</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.area" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.area (Python attribute) — Area under the diversion ratio boundary." class="md-ellipsis">area</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundaries.guppi_from_delta (Python function) — Translate ∆HHI bound to GUPPI bound." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>guppi_<wbr>from_<wbr>delta</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.guppi_from_delta">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta._delta_bound" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.guppi_from_delta._delta_bound (Python parameter) — Specified ∆HHI bound." class="md-ellipsis">_<wbr>delta_<wbr>bound</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta.m_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.guppi_from_delta.m_star (Python parameter) — Parametric price-cost margin." class="md-ellipsis">m_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta.r_bar" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.guppi_from_delta.r_bar (Python parameter) — Default recapture rate." class="md-ellipsis">r_<wbr>bar</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.guppi_from_delta-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundaries.critical_share_ratio (Python function) — Corollary to GUPPI bound." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>critical_<wbr>share_<wbr>ratio</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.critical_share_ratio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio._guppi_bound" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.critical_share_ratio._guppi_bound (Python parameter) — Specified GUPPI bound." class="md-ellipsis">_<wbr>guppi_<wbr>bound</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio.m_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.critical_share_ratio.m_star (Python parameter) — Parametric price-cost margin." class="md-ellipsis">m_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio.r_bar" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.critical_share_ratio.r_bar (Python parameter) — Default recapture rate." class="md-ellipsis">r_<wbr>bar</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.critical_share_ratio-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.core.guidelines_boundaries.share_from_guppi (Python function) — Symmetric-firm share for given GUPPI, margin, and recapture rate." class="md-ellipsis">mergeron.<wbr>core.<wbr>guidelines_<wbr>boundaries.<wbr>share_<wbr>from_<wbr>guppi</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.core.guidelines_boundaries.share_from_guppi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi._guppi_bound" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.share_from_guppi._guppi_bound (Python parameter) — GUPPI bound." class="md-ellipsis">_<wbr>guppi_<wbr>bound</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi.m_star" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.share_from_guppi.m_star (Python parameter) — Parametric price-cost margin." class="md-ellipsis">m_<wbr>star</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi.r_bar" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.core.guidelines_boundaries.share_from_guppi.r_bar (Python parameter) — Default recapture rate." class="md-ellipsis">r_<wbr>bar</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.core.guidelines_boundaries.share_from_guppi-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1 id="module-mergeron.core.guidelines_boundaries"><span id="mergeron-core-guidelines-boundaries"></span>mergeron.core.guidelines_boundaries<a class="headerlink" href="#module-mergeron.core.guidelines_boundaries" title="Link to this heading">¶</a></h1>
+<p>Methods for defining and analyzing boundaries for Guidelines standards,
+with a canvas on which to draw boundaries for Guidelines standards.</p>
+<h2 id="module-contents">Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundaries.HMGPubYear">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundaries.</span></span><span class="sig-name descname"><span class="pre">HMGPubYear</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">TypeAlias</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Literal</span><span class="p">[</span><span class="mi">1992</span><span class="p">,</span> <span class="mi">2004</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2023</span><span class="p">]</span></code><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#HMGPubYear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.HMGPubYear" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.HMGThresholds">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundaries.</span></span><span class="sig-name descname"><span class="pre">HMGThresholds</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#HMGThresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.HMGThresholds" title="Link to this definition">¶</a></dt>
+<dd><dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.HMGThresholds.delta">
+<span class="sig-name descname"><span class="pre">delta</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#HMGThresholds.delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.HMGThresholds.delta" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.HMGThresholds.fc">
+<span class="sig-name descname"><span class="pre">fc</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#HMGThresholds.fc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.HMGThresholds.fc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.HMGThresholds.rec">
+<span class="sig-name descname"><span class="pre">rec</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#HMGThresholds.rec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.HMGThresholds.rec" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.HMGThresholds.guppi">
+<span class="sig-name descname"><span class="pre">guppi</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#HMGThresholds.guppi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.HMGThresholds.guppi" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.HMGThresholds.divr">
+<span class="sig-name descname"><span class="pre">divr</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#HMGThresholds.divr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.HMGThresholds.divr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.HMGThresholds.cmcr">
+<span class="sig-name descname"><span class="pre">cmcr</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#HMGThresholds.cmcr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.HMGThresholds.cmcr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.HMGThresholds.ipr">
+<span class="sig-name descname"><span class="pre">ipr</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#HMGThresholds.ipr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.HMGThresholds.ipr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.GuidelinesThresholds">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundaries.</span></span><span class="sig-name descname"><span class="pre">GuidelinesThresholds</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#GuidelinesThresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds" title="Link to this definition">¶</a></dt>
+<dd><p>Guidelines threholds by Guidelines publication year</p>
+<p>ΔHHI, Recapture Rate, GUPPI, Diversion ratio, CMCR, and IPR thresholds
+constructed from concentration standards in Guidelines published in
+1992, 2004, 2010, and 2023.</p>
+<p>The 2004 Guidelines refernced here are the EU Commission
+guidelines on assessment of horizontal mergers. These
+guidelines also define a presumption for mergers with
+post-merger HHI in [1000, 2000) and ΔHHI &gt;= 250 points,
+whi is not modeled here.</p>
+<p>All other Guidelines modeled here are U.S. merger guidelines.</p>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.GuidelinesThresholds.pub_year">
+<span class="sig-name descname"><span class="pre">pub_year</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">HMGPubYear</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#GuidelinesThresholds.pub_year"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.pub_year" title="Link to this definition">¶</a></dt>
+<dd><p>Year of publication of the Guidelines</p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.GuidelinesThresholds.safeharbor">
+<span class="sig-name descname"><span class="pre">safeharbor</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#mergeron.core.guidelines_boundaries.HMGThresholds" title="mergeron.core.guidelines_boundaries.HMGThresholds (Python class) — delta : float      fc : float      rec : float      guppi : float      divr : float      cmcr : float      ipr : float"><span class="pre">HMGThresholds</span></a></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#GuidelinesThresholds.safeharbor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.safeharbor" title="Link to this definition">¶</a></dt>
+<dd><p>Negative presumption quantified on various measures</p>
+<p>ΔHHI safeharbor bound, default recapture rate, GUPPI bound,
+diversion ratio limit, CMCR, and IPR</p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.GuidelinesThresholds.presumption">
+<span class="sig-name descname"><span class="pre">presumption</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#mergeron.core.guidelines_boundaries.HMGThresholds" title="mergeron.core.guidelines_boundaries.HMGThresholds (Python class) — delta : float      fc : float      rec : float      guppi : float      divr : float      cmcr : float      ipr : float"><span class="pre">HMGThresholds</span></a></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#GuidelinesThresholds.presumption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.presumption" title="Link to this definition">¶</a></dt>
+<dd><p>Presumption of harm defined in HMG</p>
+<p>ΔHHI bound and corresponding default recapture rate, GUPPI bound,
+diversion ratio limit, CMCR, and IPR</p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.GuidelinesThresholds.imputed_presumption">
+<span class="sig-name descname"><span class="pre">imputed_presumption</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="#mergeron.core.guidelines_boundaries.HMGThresholds" title="mergeron.core.guidelines_boundaries.HMGThresholds (Python class) — delta : float      fc : float      rec : float      guppi : float      divr : float      cmcr : float      ipr : float"><span class="pre">HMGThresholds</span></a></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#GuidelinesThresholds.imputed_presumption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.GuidelinesThresholds.imputed_presumption" title="Link to this definition">¶</a></dt>
+<dd><p>Presumption of harm imputed from guidelines</p>
+<p>ΔHHI bound inferred from strict numbers-equivalent
+of (post-merger) HHI presumption, and corresponding default recapture rate,
+GUPPI bound, diversion ratio limit, CMCR, and IPR</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.ConcentrationBoundary">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundaries.</span></span><span class="sig-name descname"><span class="pre">ConcentrationBoundary</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#ConcentrationBoundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary" title="Link to this definition">¶</a></dt>
+<dd><p>Concentration parameters, boundary coordinates, and area under concentration boundary.</p>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.ConcentrationBoundary.threshold">
+<span class="sig-name descname"><span class="pre">threshold</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#ConcentrationBoundary.threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.threshold" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.ConcentrationBoundary.precision">
+<span class="sig-name descname"><span class="pre">precision</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">int</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#ConcentrationBoundary.precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.precision" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundaries.ConcentrationBoundary.measure_name">
+<span class="sig-name descname"><span class="pre">measure_name</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'ΔHHI'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Combined</span> <span class="pre">share'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Pre-merger</span> <span class="pre">HHI'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'Post-merger</span> <span class="pre">HHI'</span></span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#ConcentrationBoundary.measure_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.measure_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.ConcentrationBoundary.coordinates">
+<span class="sig-name descname"><span class="pre">coordinates</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#ConcentrationBoundary.coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.coordinates" title="Link to this definition">¶</a></dt>
+<dd><p>Market-share pairs as Cartesian coordinates of points on the concentration boundary.</p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.ConcentrationBoundary.area">
+<span class="sig-name descname"><span class="pre">area</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#ConcentrationBoundary.area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.ConcentrationBoundary.area" title="Link to this definition">¶</a></dt>
+<dd><p>Area under the concentration boundary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.DiversionRatioBoundary">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundaries.</span></span><span class="sig-name descname"><span class="pre">DiversionRatioBoundary</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#DiversionRatioBoundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary" title="Link to this definition">¶</a></dt>
+<dd><p>Diversion ratio specification, boundary coordinates, and area under boundary.</p>
+<p>Along with the default diversion ratio and recapture rate,
+a diversion ratio boundary specification includes the recapture form –
+whether fixed for both merging firms’ products (“proportional”) or
+consistent with share-proportionality, i.e., “inside-out”;
+the method of aggregating diversion ratios for the two products, and
+the precision for the estimate of area under the divertion ratio boundary
+(also defines the number of points on the boundary).</p>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.diversion_ratio">
+<span class="sig-name descname"><span class="pre">diversion_ratio</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#DiversionRatioBoundary.diversion_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.diversion_ratio" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_rate">
+<span class="sig-name descname"><span class="pre">recapture_rate</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#DiversionRatioBoundary.recapture_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_rate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_form">
+<span class="sig-name descname"><span class="pre">recapture_form</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="../../index.html#mergeron.RECConstants" title="mergeron.RECConstants (Python class) — Bases: enum.StrEnum"><span class="pre">mergeron.RECConstants</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#DiversionRatioBoundary.recapture_form"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_form" title="Link to this definition">¶</a></dt>
+<dd><p>The form of the recapture rate.</p>
+<p>When <a class="reference internal" href="../../index.html#mergeron.RECConstants.INOUT" title="mergeron.RECConstants.INOUT (Python attribute)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mergeron.RECConstants.INOUT</span></code></a>, the recapture rate for
+he product having the smaller market-share is assumed to equal the default,
+and the recapture rate for the product with the larger market-share is
+computed assuming MNL demand. Fixed recapture rates are specified as
+<a class="reference internal" href="../../index.html#mergeron.RECConstants.FIXED" title="mergeron.RECConstants.FIXED (Python attribute)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mergeron.RECConstants.FIXED</span></code></a>. (To specify that recapture rates be
+constructed from the generated purchase-probabilities for products in
+the market and for the outside good, specify <a class="reference internal" href="../../index.html#mergeron.RECConstants.OUTIN" title="mergeron.RECConstants.OUTIN (Python attribute)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mergeron.RECConstants.OUTIN</span></code></a>.)</p>
+<p>The GUPPI boundary is a continuum of diversion ratio boundaries conditional on
+price-cost margins, <span class="math notranslate nohighlight">\(d_{ij} = g_i * p_i / (m_j * p_j)\)</span>,
+with <span class="math notranslate nohighlight">\(d_{ij}\)</span> the diverion ratio from product <span class="math notranslate nohighlight">\(i\)</span> to product <span class="math notranslate nohighlight">\(j\)</span>;
+<span class="math notranslate nohighlight">\(g_i\)</span> the GUPPI for product <span class="math notranslate nohighlight">\(i\)</span>;
+<span class="math notranslate nohighlight">\(m_j\)</span> the margin for product <span class="math notranslate nohighlight">\(j\)</span>; and
+<span class="math notranslate nohighlight">\(p_i, p_j\)</span> the prices of goods <span class="math notranslate nohighlight">\(i, j\)</span>, respectively.</p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.agg_method">
+<span class="sig-name descname"><span class="pre">agg_method</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><a class="reference internal" href="../../index.html#mergeron.UPPAggrSelector" title="mergeron.UPPAggrSelector (Python class) — Bases: enum.StrEnum"><span class="pre">mergeron.UPPAggrSelector</span></a></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#DiversionRatioBoundary.agg_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.agg_method" title="Link to this definition">¶</a></dt>
+<dd><p>Method for aggregating the distinct diversion ratio measures for the two products.</p>
+<p>Distinct diversion ratio or GUPPI measures for the two merging-firms’ products are
+aggregated using the method specified by the <cite>agg_method</cite> attribute, which is specified
+using the enum <a class="reference internal" href="../../index.html#mergeron.UPPAggrSelector" title="mergeron.UPPAggrSelector (Python class) — Bases: enum.StrEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.UPPAggrSelector</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.precision">
+<span class="sig-name descname"><span class="pre">precision</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">int</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#DiversionRatioBoundary.precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.precision" title="Link to this definition">¶</a></dt>
+<dd><p>The number of decimal places of precision for the estimated area under the UPP boundary.</p>
+<p>Leaving this attribute unspecified will result in the default precision,
+which varies based on the <cite>agg_method</cite> attribute, reflecting
+the limit of precision available from the underlying functions. The number of
+boundary points generated is also defined based on this attribute.</p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.coordinates">
+<span class="sig-name descname"><span class="pre">coordinates</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#DiversionRatioBoundary.coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.coordinates" title="Link to this definition">¶</a></dt>
+<dd><p>Market-share pairs as Cartesian coordinates of points on the diversion ratio boundary.</p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundaries.DiversionRatioBoundary.area">
+<span class="sig-name descname"><span class="pre">area</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">float</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#DiversionRatioBoundary.area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.area" title="Link to this definition">¶</a></dt>
+<dd><p>Area under the diversion ratio boundary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundaries.guppi_from_delta">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundaries.</span></span><span class="sig-name descname"><span class="pre">guppi_from_delta</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.guppi_from_delta._delta_bound" title="mergeron.core.guidelines_boundaries.guppi_from_delta._delta_bound (Python parameter) — Specified ∆HHI bound."><span class="n"><span class="pre">_delta_bound</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.01</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.guppi_from_delta.m_star" title="mergeron.core.guidelines_boundaries.guppi_from_delta.m_star (Python parameter) — Parametric price-cost margin."><span class="n"><span class="pre">m_star</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">1.0</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.guppi_from_delta.r_bar" title="mergeron.core.guidelines_boundaries.guppi_from_delta.r_bar (Python parameter) — Default recapture rate."><span class="n"><span class="pre">r_bar</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.8</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#guppi_from_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.guppi_from_delta" title="Link to this definition">¶</a></dt>
+<dd><p>Translate ∆HHI bound to GUPPI bound.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundaries.guppi_from_delta-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.guppi_from_delta-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundaries.guppi_from_delta._delta_bound"><span class="sig-name descname">_delta_bound</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.guppi_from_delta._delta_bound" title="Permalink to this definition">¶</a></dt><dd><p>Specified ∆HHI bound.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundaries.guppi_from_delta.m_star"><span class="sig-name descname">m_star</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.guppi_from_delta.m_star" title="Permalink to this definition">¶</a></dt><dd><p>Parametric price-cost margin.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundaries.guppi_from_delta.r_bar"><span class="sig-name descname">r_bar</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.guppi_from_delta.r_bar" title="Permalink to this definition">¶</a></dt><dd><p>Default recapture rate.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundaries.guppi_from_delta-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.guppi_from_delta-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>GUPPI bound corresponding to ∆HHI bound, at given margin and recapture rate.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundaries.guppi_from_delta-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.guppi_from_delta-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundaries.critical_share_ratio">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundaries.</span></span><span class="sig-name descname"><span class="pre">critical_share_ratio</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.critical_share_ratio._guppi_bound" title="mergeron.core.guidelines_boundaries.critical_share_ratio._guppi_bound (Python parameter) — Specified GUPPI bound."><span class="n"><span class="pre">_guppi_bound</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.075</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.critical_share_ratio.m_star" title="mergeron.core.guidelines_boundaries.critical_share_ratio.m_star (Python parameter) — Parametric price-cost margin."><span class="n"><span class="pre">m_star</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">1.0</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.critical_share_ratio.r_bar" title="mergeron.core.guidelines_boundaries.critical_share_ratio.r_bar (Python parameter) — Default recapture rate."><span class="n"><span class="pre">r_bar</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">1.0</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.critical_share_ratio" title="mergeron.core.guidelines_boundaries.critical_share_ratio.frac (Python parameter)"><span class="n"><span class="pre">frac</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">1e-16</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#critical_share_ratio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.critical_share_ratio" title="Link to this definition">¶</a></dt>
+<dd><p>Corollary to GUPPI bound.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundaries.critical_share_ratio-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.critical_share_ratio-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundaries.critical_share_ratio._guppi_bound"><span class="sig-name descname">_guppi_bound</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.critical_share_ratio._guppi_bound" title="Permalink to this definition">¶</a></dt><dd><p>Specified GUPPI bound.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundaries.critical_share_ratio.m_star"><span class="sig-name descname">m_star</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.critical_share_ratio.m_star" title="Permalink to this definition">¶</a></dt><dd><p>Parametric price-cost margin.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundaries.critical_share_ratio.r_bar"><span class="sig-name descname">r_bar</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.critical_share_ratio.r_bar" title="Permalink to this definition">¶</a></dt><dd><p>Default recapture rate.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundaries.critical_share_ratio-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.critical_share_ratio-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Critical share ratio (share ratio bound) corresponding to the GUPPI bound
+for given margin and recapture rate.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundaries.critical_share_ratio-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.critical_share_ratio-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p>mpmath.mpf</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.core.guidelines_boundaries.share_from_guppi">
+<span class="sig-prename descclassname"><span class="pre">mergeron.core.guidelines_boundaries.</span></span><span class="sig-name descname"><span class="pre">share_from_guppi</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.share_from_guppi._guppi_bound" title="mergeron.core.guidelines_boundaries.share_from_guppi._guppi_bound (Python parameter) — GUPPI bound."><span class="n"><span class="pre">_guppi_bound</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.065</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.share_from_guppi.m_star" title="mergeron.core.guidelines_boundaries.share_from_guppi.m_star (Python parameter) — Parametric price-cost margin."><span class="n"><span class="pre">m_star</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">1.0</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.core.guidelines_boundaries.share_from_guppi.r_bar" title="mergeron.core.guidelines_boundaries.share_from_guppi.r_bar (Python parameter) — Default recapture rate."><span class="n"><span class="pre">r_bar</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.8</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundaries.html#share_from_guppi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundaries.share_from_guppi" title="Link to this definition">¶</a></dt>
+<dd><p>Symmetric-firm share for given GUPPI, margin, and recapture rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.core.guidelines_boundaries.share_from_guppi-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.share_from_guppi-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.core.guidelines_boundaries.share_from_guppi._guppi_bound"><span class="sig-name descname">_guppi_bound</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.share_from_guppi._guppi_bound" title="Permalink to this definition">¶</a></dt><dd><p>GUPPI bound.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundaries.share_from_guppi.m_star"><span class="sig-name descname">m_star</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.share_from_guppi.m_star" title="Permalink to this definition">¶</a></dt><dd><p>Parametric price-cost margin.</p>
+</dd>
+<dt id="mergeron.core.guidelines_boundaries.share_from_guppi.r_bar"><span class="sig-name descname">r_bar</span><span class="p"> : </span><span class="desctype"><span class="desctype">float</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.share_from_guppi.r_bar" title="Permalink to this definition">¶</a></dt><dd><p>Default recapture rate.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.core.guidelines_boundaries.share_from_guppi-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.share_from_guppi-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Symmetric firm market share on GUPPI boundary, for given margin and
+recapture rate.</p>
+</dd>
+<dt class="field-odd" id="mergeron.core.guidelines_boundaries.share_from_guppi-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundaries.share_from_guppi-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../ftc_merger_investigations_data/index.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: mergeron.core.ftc_merger_investigations_data" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              mergeron.core.ftc_merger_investigations_data
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../guidelines_boundary_functions/index.html" class="md-footer__link md-footer__link--next" aria-label="Next: mergeron.core.guidelines_boundary_functions" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              mergeron.core.guidelines_boundary_functions
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+        <script id="MathJax-script" src="../../../../_static/mathjax/tex-mml-chtml.js?v=cadf963e"></script>
+    
+  </body>
+</html>

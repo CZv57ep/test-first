@@ -1,0 +1,1368 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.gen.enforcement_stats - mergeron 2024.739091.2</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.gen.enforcement_stats
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739091.2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../autoapi/mergeron/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1>Source code for mergeron.gen.enforcement_stats</h1><div class="highlight"><pre>
+<span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Methods to format and print summary statistics on merger enforcement patterns.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">resources</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">SimpleNamespace</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">re2</span> <span class="k">as</span> <span class="nn">re</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">FileSystemLoader</span><span class="p">,</span> <span class="n">Template</span><span class="p">,</span> <span class="n">select_autoescape</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>  <span class="c1"># type: ignore</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">_PKG_NAME</span><span class="p">,</span> <span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">VERSION</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">ftc_merger_investigations_data</span> <span class="k">as</span> <span class="n">fid</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..core.proportions_tests</span> <span class="kn">import</span> <span class="n">propn_ci</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">INVResolution</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="INDGRPConstants">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants">[docs]</a>
+<span class="k">class</span> <span class="nc">INDGRPConstants</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="INDGRPConstants.ALL">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.ALL">[docs]</a>
+    <span class="n">ALL</span> <span class="o">=</span> <span class="s2">&quot;All Markets&quot;</span></div>
+
+<div class="viewcode-block" id="INDGRPConstants.GRO">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.GRO">[docs]</a>
+    <span class="n">GRO</span> <span class="o">=</span> <span class="s2">&quot;Grocery Markets&quot;</span></div>
+
+<div class="viewcode-block" id="INDGRPConstants.OIL">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.OIL">[docs]</a>
+    <span class="n">OIL</span> <span class="o">=</span> <span class="s2">&quot;Oil Markets&quot;</span></div>
+
+<div class="viewcode-block" id="INDGRPConstants.CHM">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.CHM">[docs]</a>
+    <span class="n">CHM</span> <span class="o">=</span> <span class="s2">&quot;Chemical Markets&quot;</span></div>
+
+<div class="viewcode-block" id="INDGRPConstants.PHM">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.PHM">[docs]</a>
+    <span class="n">PHM</span> <span class="o">=</span> <span class="s2">&quot;Pharmaceuticals Markets&quot;</span></div>
+
+<div class="viewcode-block" id="INDGRPConstants.HOS">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.HOS">[docs]</a>
+    <span class="n">HOS</span> <span class="o">=</span> <span class="s2">&quot;Hospital Markets&quot;</span></div>
+
+<div class="viewcode-block" id="INDGRPConstants.EDS">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.EDS">[docs]</a>
+    <span class="n">EDS</span> <span class="o">=</span> <span class="s2">&quot;Electronically-Controlled Devices and Systems Markets&quot;</span></div>
+
+<div class="viewcode-block" id="INDGRPConstants.BRD">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.BRD">[docs]</a>
+    <span class="n">BRD</span> <span class="o">=</span> <span class="s2">&quot;Branded Consumer Goods Markets&quot;</span></div>
+
+<div class="viewcode-block" id="INDGRPConstants.OTH">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.OTH">[docs]</a>
+    <span class="n">OTH</span> <span class="o">=</span> <span class="s1">&#39;&quot;Other&quot; Markets&#39;</span></div>
+
+<div class="viewcode-block" id="INDGRPConstants.IIC">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.INDGRPConstants.IIC">[docs]</a>
+    <span class="n">IIC</span> <span class="o">=</span> <span class="s2">&quot;Industries in Common&quot;</span></div>
+</div>
+
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="EVIDENConstants">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.EVIDENConstants">[docs]</a>
+<span class="k">class</span> <span class="nc">EVIDENConstants</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="EVIDENConstants.HD">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.EVIDENConstants.HD">[docs]</a>
+    <span class="n">HD</span> <span class="o">=</span> <span class="s2">&quot;Hot Documents Identified&quot;</span></div>
+
+<div class="viewcode-block" id="EVIDENConstants.CC">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.EVIDENConstants.CC">[docs]</a>
+    <span class="n">CC</span> <span class="o">=</span> <span class="s2">&quot;Strong Customer Complaints&quot;</span></div>
+
+<div class="viewcode-block" id="EVIDENConstants.NE">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.EVIDENConstants.NE">[docs]</a>
+    <span class="n">NE</span> <span class="o">=</span> <span class="s2">&quot;No Entry Evidence&quot;</span></div>
+
+<div class="viewcode-block" id="EVIDENConstants.ED">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.EVIDENConstants.ED">[docs]</a>
+    <span class="n">ED</span> <span class="o">=</span> <span class="s2">&quot;Entry Difficult&quot;</span></div>
+
+<div class="viewcode-block" id="EVIDENConstants.EE">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.EVIDENConstants.EE">[docs]</a>
+    <span class="n">EE</span> <span class="o">=</span> <span class="s2">&quot;Entry Easy&quot;</span></div>
+
+<div class="viewcode-block" id="EVIDENConstants.UR">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.EVIDENConstants.UR">[docs]</a>
+    <span class="n">UR</span> <span class="o">=</span> <span class="s2">&quot;Unrestricted on additional evidence&quot;</span></div>
+</div>
+
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="StatsGrpSelector">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsGrpSelector">[docs]</a>
+<span class="k">class</span> <span class="nc">StatsGrpSelector</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="StatsGrpSelector.FC">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsGrpSelector.FC">[docs]</a>
+    <span class="n">FC</span> <span class="o">=</span> <span class="s2">&quot;ByFirmCount&quot;</span></div>
+
+<div class="viewcode-block" id="StatsGrpSelector.HD">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsGrpSelector.HD">[docs]</a>
+    <span class="n">HD</span> <span class="o">=</span> <span class="s2">&quot;ByHHIandDelta&quot;</span></div>
+
+<div class="viewcode-block" id="StatsGrpSelector.DL">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsGrpSelector.DL">[docs]</a>
+    <span class="n">DL</span> <span class="o">=</span> <span class="s2">&quot;ByDelta&quot;</span></div>
+
+<div class="viewcode-block" id="StatsGrpSelector.ZN">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsGrpSelector.ZN">[docs]</a>
+    <span class="n">ZN</span> <span class="o">=</span> <span class="s2">&quot;ByConcZone&quot;</span></div>
+</div>
+
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="StatsReturnSelector">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsReturnSelector">[docs]</a>
+<span class="k">class</span> <span class="nc">StatsReturnSelector</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="StatsReturnSelector.CNT">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsReturnSelector.CNT">[docs]</a>
+    <span class="n">CNT</span> <span class="o">=</span> <span class="s2">&quot;count&quot;</span></div>
+
+<div class="viewcode-block" id="StatsReturnSelector.RPT">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsReturnSelector.RPT">[docs]</a>
+    <span class="n">RPT</span> <span class="o">=</span> <span class="s2">&quot;rate, point&quot;</span></div>
+
+<div class="viewcode-block" id="StatsReturnSelector.RIN">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsReturnSelector.RIN">[docs]</a>
+    <span class="n">RIN</span> <span class="o">=</span> <span class="s2">&quot;rate, interval&quot;</span></div>
+</div>
+
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<div class="viewcode-block" id="SortSelector">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.SortSelector">[docs]</a>
+<span class="k">class</span> <span class="nc">SortSelector</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="SortSelector.UCH">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.SortSelector.UCH">[docs]</a>
+    <span class="n">UCH</span> <span class="o">=</span> <span class="s2">&quot;unchanged&quot;</span></div>
+
+<div class="viewcode-block" id="SortSelector.REV">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.SortSelector.REV">[docs]</a>
+    <span class="n">REV</span> <span class="o">=</span> <span class="s2">&quot;reversed&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="cnt_format_str">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.cnt_format_str">[docs]</a>
+<span class="n">cnt_format_str</span> <span class="o">=</span> <span class="sa">R</span><span class="s2">&quot;</span><span class="si">{: &gt;5,.0f}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="pct_format_str">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.pct_format_str">[docs]</a>
+<span class="n">pct_format_str</span> <span class="o">=</span> <span class="sa">R</span><span class="s2">&quot;</span><span class="si">{: &gt;6.1f}</span><span class="s2">\%&quot;</span></div>
+
+<div class="viewcode-block" id="ci_format_str">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ci_format_str">[docs]</a>
+<span class="n">ci_format_str</span> <span class="o">=</span> <span class="sa">R</span><span class="s2">&quot;</span><span class="si">{0: &gt;5.1f}</span><span class="s2"> [</span><span class="si">{2: &gt;4.1f}</span><span class="s2">,</span><span class="si">{3: &gt;5.1f}</span><span class="s2">] \%&quot;</span></div>
+
+
+<div class="viewcode-block" id="moe_tmpl">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.moe_tmpl">[docs]</a>
+<span class="n">moe_tmpl</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="sa">R</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    {</span><span class="si">% i</span><span class="s2">f (rv[2] - rv[0]) | abs == (rv[3] - rv[0]) | abs %}</span>
+<span class="s2">         {{- &quot;[\pm </span><span class="si">{:.1f}</span><span class="s2">]&quot;.format(rv[3] - rv[0]) -}}</span>
+<span class="s2">    {</span><span class="si">% e</span><span class="s2">lse %}</span>
+<span class="s2">         {{- &quot;[</span><span class="si">{:.1f}</span><span class="s2">/+</span><span class="si">{:.1f}</span><span class="s2">]&quot;.format(rv[2] - rv[0], rv[3] - rv[0]) -}}</span>
+<span class="s2">    {</span><span class="si">% e</span><span class="s2">ndif %}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Define the LaTeX jinja environment</span>
+<span class="c1"># http://eosrei.net/articles/2015/11/LaTeX-templates-python-and-jinja2-generate-pdfs</span>
+<span class="k">with</span> <span class="n">resources</span><span class="o">.</span><span class="n">as_file</span><span class="p">(</span>
+    <span class="n">resources</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_PKG_NAME</span><span class="si">}</span><span class="s2">.data.jinja2_LaTeX_templates&quot;</span><span class="p">)</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">_tmpl_folder</span><span class="p">:</span>
+<div class="viewcode-block" id="LaTeX_jinja_env">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.LaTeX_jinja_env">[docs]</a>
+    <span class="n">LaTeX_jinja_env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span>
+        <span class="n">block_start_string</span><span class="o">=</span><span class="sa">R</span><span class="s2">&quot;((*&quot;</span><span class="p">,</span>
+        <span class="n">block_end_string</span><span class="o">=</span><span class="s2">&quot;*))&quot;</span><span class="p">,</span>
+        <span class="n">variable_start_string</span><span class="o">=</span><span class="sa">R</span><span class="s2">&quot;\JINVAR{&quot;</span><span class="p">,</span>
+        <span class="n">variable_end_string</span><span class="o">=</span><span class="s2">&quot;}&quot;</span><span class="p">,</span>
+        <span class="n">comment_start_string</span><span class="o">=</span><span class="sa">R</span><span class="s2">&quot;((#&quot;</span><span class="p">,</span>  <span class="c1"># r&#39;#{&#39;,</span>
+        <span class="n">comment_end_string</span><span class="o">=</span><span class="sa">R</span><span class="s2">&quot;#))&quot;</span><span class="p">,</span>  <span class="c1"># &#39;}&#39;,</span>
+        <span class="n">line_statement_prefix</span><span class="o">=</span><span class="s2">&quot;##&quot;</span><span class="p">,</span>
+        <span class="n">line_comment_prefix</span><span class="o">=</span><span class="s2">&quot;%#&quot;</span><span class="p">,</span>
+        <span class="n">trim_blocks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">lstrip_blocks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">autoescape</span><span class="o">=</span><span class="n">select_autoescape</span><span class="p">(</span><span class="n">disabled_extensions</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;tex.jinja2&quot;</span><span class="p">,)),</span>
+        <span class="n">loader</span><span class="o">=</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="n">_tmpl_folder</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+<span class="c1"># Place files related to rendering LaTeX in output data directory</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">_out_path</span> <span class="o">:=</span> <span class="n">DATA_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_PKG_NAME</span><span class="si">}</span><span class="s2">.cls&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">resources</span><span class="o">.</span><span class="n">as_file</span><span class="p">(</span>
+        <span class="n">resources</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_PKG_NAME</span><span class="si">}</span><span class="s2">.data.jinja2_LaTeX_templates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{_PKG_NAME}</span><span class="s2">.cls&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">_in_path</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">_in_path</span><span class="p">,</span> <span class="n">_out_path</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">_DOTTEX</span> <span class="o">:=</span> <span class="n">DATA_DIR</span> <span class="o">/</span> <span class="sa">Rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_PKG_NAME</span><span class="si">}</span><span class="s2">_TikZTableSettings.tex&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+    <span class="c1"># Write to dottex</span>
+    <span class="k">with</span> <span class="n">resources</span><span class="o">.</span><span class="n">as_file</span><span class="p">(</span>
+        <span class="n">resources</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_PKG_NAME</span><span class="si">}</span><span class="s2">.data.jinja2_LaTeX_templates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span>
+            <span class="s2">&quot;setup_tikz_tables.tex&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">_tex_path</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">_tex_path</span><span class="p">,</span> <span class="n">_DOTTEX</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="LTX_ARRAY_LINEEND">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.LTX_ARRAY_LINEEND">[docs]</a>
+<span class="n">LTX_ARRAY_LINEEND</span> <span class="o">=</span> <span class="sa">R</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="LaTeX_hrdcoldesc_format_str">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.LaTeX_hrdcoldesc_format_str">[docs]</a>
+<span class="n">LaTeX_hrdcoldesc_format_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span>
+        <span class="sa">R</span><span class="s2">&quot;\matrix[hcol, above=0pt of </span><span class="si">{}</span><span class="s2">, nodes = {{&quot;</span><span class="p">,</span>
+        <span class="sa">R</span><span class="s2">&quot;text width=</span><span class="si">{}</span><span class="s2">, text depth=10pt, inner sep=3pt, minimum height=25pt,&quot;</span><span class="p">,</span>
+        <span class="sa">R</span><span class="s2">&quot;}},] &quot;</span><span class="p">,</span>
+        <span class="sa">R</span><span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">) &quot;</span><span class="p">,</span>
+        <span class="sa">R</span><span class="s2">&quot;{{&quot;</span><span class="p">,</span>
+    <span class="p">)),</span>
+    <span class="sa">R</span><span class="s2">&quot;\node[align = </span><span class="si">{}</span><span class="s2">,] {{ </span><span class="si">{}</span><span class="s2"> }}; </span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="sa">R</span><span class="s2">&quot;}};&quot;</span><span class="p">,</span>
+<span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="StatsContainer">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsContainer">[docs]</a>
+<span class="k">class</span> <span class="nc">StatsContainer</span><span class="p">(</span><span class="n">SimpleNamespace</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A container for passing content to jinja2 templates</span>
+
+<span class="sd">    Other attributes added later, to fully populate selected jinja2 templates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StatsContainer.invdata_hdrstr">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsContainer.invdata_hdrstr">[docs]</a>
+    <span class="n">invdata_hdrstr</span><span class="p">:</span> <span class="nb">str</span></div>
+
+<div class="viewcode-block" id="StatsContainer.invdata_datstr">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.StatsContainer.invdata_datstr">[docs]</a>
+    <span class="n">invdata_datstr</span><span class="p">:</span> <span class="nb">str</span></div>
+</div>
+
+
+
+<span class="c1"># Parameters and functions to interpolate selected HHI and ΔHHI values</span>
+<span class="c1">#   recorded in fractions to ranges of values in points on the HHI scale</span>
+<div class="viewcode-block" id="HHI_DELTA_KNOTS">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.HHI_DELTA_KNOTS">[docs]</a>
+<span class="n">HHI_DELTA_KNOTS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">1200</span><span class="p">,</span> <span class="mi">2500</span><span class="p">,</span> <span class="mi">5001</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span>
+<span class="p">)</span></div>
+
+<div class="viewcode-block" id="HHI_POST_ZONE_KNOTS">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.HHI_POST_ZONE_KNOTS">[docs]</a>
+<span class="n">HHI_POST_ZONE_KNOTS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1800</span><span class="p">,</span> <span class="mi">2400</span><span class="p">,</span> <span class="mi">10001</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span></div>
+
+<span class="n">hhi_delta_ranger</span><span class="p">,</span> <span class="n">hhi_zone_post_ranger</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">interp1d</span><span class="p">(</span><span class="n">_f</span> <span class="o">/</span> <span class="mf">1e4</span><span class="p">,</span> <span class="n">_f</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;previous&quot;</span><span class="p">,</span> <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">,</span> <span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">)</span>
+<span class="p">)</span>
+
+<div class="viewcode-block" id="HMG_PRESUMPTION_ZONE_DICT">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.HMG_PRESUMPTION_ZONE_DICT">[docs]</a>
+<span class="n">HMG_PRESUMPTION_ZONE_DICT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">{</span>
+        <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">{</span>
+        <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">{</span>
+        <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="ZONE_VALS">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_VALS">[docs]</a>
+<span class="n">ZONE_VALS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
+        <span class="nb">tuple</span><span class="p">(</span><span class="n">HMG_PRESUMPTION_ZONE_DICT</span><span class="p">[</span><span class="n">_k</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">_k</span> <span class="ow">in</span> <span class="n">HMG_PRESUMPTION_ZONE_DICT</span>
+    <span class="p">]),</span>
+    <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ZONE_STRINGS">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_STRINGS">[docs]</a>
+<span class="n">ZONE_STRINGS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;Green Zone (Safeharbor)&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;Yellow Zone&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;Red Zone (SLC Presumption)&quot;</span><span class="p">,</span>
+    <span class="n">fid</span><span class="o">.</span><span class="n">TTL_KEY</span><span class="p">:</span> <span class="s2">&quot;TOTAL&quot;</span><span class="p">,</span>
+<span class="p">}</span></div>
+
+<div class="viewcode-block" id="ZONE_DETAIL_STRINGS_HHI">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_HHI">[docs]</a>
+<span class="n">ZONE_DETAIL_STRINGS_HHI</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;HHI &lt; </span><span class="si">{</span><span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts.&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;HHI ∈ [</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">) pts. and &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]),</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;HHI ≥ </span><span class="si">{</span><span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts. and &quot;</span><span class="p">,</span>
+<span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="ZONE_DETAIL_STRINGS_DELTA">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_DELTA">[docs]</a>
+<span class="n">ZONE_DETAIL_STRINGS_DELTA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;ΔHHI &lt; \text</span><span class="se">{{</span><span class="si">{</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts.</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;ΔHHI ≥ \text</span><span class="se">{{</span><span class="si">{</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts.</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;ΔHHI ∈ \text{{[</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">) pts.}}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]),</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;ΔHHI ≥ \text</span><span class="se">{{</span><span class="si">{</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts.</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="ZONE_STRINGS_LATEX">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_STRINGS_LATEX">[docs]</a>
+<span class="n">ZONE_STRINGS_LATEX</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;\node[align = left, fill=BrightGreen] {Green Zone (Safeharbor)};&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;\node[align = left, fill=HiCoYellow] {Yellow Zone};&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;\node[align = left, fill=VibrRed] {Red Zone (SLC Presumption)};&quot;</span><span class="p">,</span>
+    <span class="n">fid</span><span class="o">.</span><span class="n">TTL_KEY</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;\node[align = left, fill=OBSHDRFill] </span><span class="si">{TOTAL}</span><span class="s2">;&quot;</span><span class="p">,</span>
+<span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="ZONE_DETAIL_STRINGS_HHI_LATEX">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_HHI_LATEX">[docs]</a>
+<span class="n">ZONE_DETAIL_STRINGS_HHI_LATEX</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;HHI_</span><span class="se">{{</span><span class="s2">post</span><span class="se">}}</span><span class="s2"> &lt; \text</span><span class="se">{{</span><span class="si">{</span><span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts.</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;HHI_{{post}} \in \text{{[</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">) pts. and }} &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="o">*</span><span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+    <span class="p">),</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;HHI_</span><span class="se">{{</span><span class="s2">post</span><span class="se">}}</span><span class="s2"> \geqslant \text</span><span class="se">{{</span><span class="si">{</span><span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts. and </span><span class="se">}}</span><span class="s2"> &quot;</span><span class="p">,</span>
+<span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="ZONE_DETAIL_STRINGS_DELTA_LATEX">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_DELTA_LATEX">[docs]</a>
+<span class="n">ZONE_DETAIL_STRINGS_DELTA_LATEX</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;\Delta HHI &lt; \text</span><span class="se">{{</span><span class="si">{</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts.</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;\Delta HHI \geqslant \text</span><span class="se">{{</span><span class="si">{</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts.</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="sa">R</span><span class="s2">&quot;\Delta HHI \in \text{{[</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">) pts.}}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]),</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="sa">Rf</span><span class="s2">&quot;\Delta HHI \geqslant \text</span><span class="se">{{</span><span class="si">{</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2"> pts.</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="enf_stats_output">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_output">[docs]</a>
+<span class="k">def</span> <span class="nf">enf_stats_output</span><span class="p">(</span>
+    <span class="n">_data_array_dict</span><span class="p">:</span> <span class="n">fid</span><span class="o">.</span><span class="n">INVData</span><span class="p">,</span>
+    <span class="n">_data_period</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;1996-2003&quot;</span><span class="p">,</span>
+    <span class="n">_table_ind_group</span><span class="p">:</span> <span class="n">INDGRPConstants</span> <span class="o">=</span> <span class="n">INDGRPConstants</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+    <span class="n">_table_evid_cond</span><span class="p">:</span> <span class="n">EVIDENConstants</span> <span class="o">=</span> <span class="n">EVIDENConstants</span><span class="o">.</span><span class="n">UR</span><span class="p">,</span>
+    <span class="n">_stats_group</span><span class="p">:</span> <span class="n">StatsGrpSelector</span> <span class="o">=</span> <span class="n">StatsGrpSelector</span><span class="o">.</span><span class="n">FC</span><span class="p">,</span>
+    <span class="n">_enf_spec</span><span class="p">:</span> <span class="n">INVResolution</span> <span class="o">=</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">CLRN</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">return_type_sel</span><span class="p">:</span> <span class="n">StatsReturnSelector</span> <span class="o">=</span> <span class="n">StatsReturnSelector</span><span class="o">.</span><span class="n">RPT</span><span class="p">,</span>
+    <span class="n">sort_order</span><span class="p">:</span> <span class="n">SortSelector</span> <span class="o">=</span> <span class="n">SortSelector</span><span class="o">.</span><span class="n">UCH</span><span class="p">,</span>
+    <span class="n">print_to_screen</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+    <span class="k">if</span> <span class="n">_data_period</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_data_array_dict</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Value of _data_period, </span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">_data_period</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="si">}</span><span class="s2"> is invalid.&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Must be in, </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">_data_array_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">match</span> <span class="n">_stats_group</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">StatsGrpSelector</span><span class="o">.</span><span class="n">ZN</span><span class="p">:</span>
+            <span class="n">_enf_stats_table_func</span> <span class="o">=</span> <span class="n">enf_stats_table_byzone</span>
+        <span class="k">case</span> <span class="n">StatsGrpSelector</span><span class="o">.</span><span class="n">FC</span><span class="p">:</span>
+            <span class="n">_enf_stats_table_func</span> <span class="o">=</span> <span class="n">enf_stats_table_onedim</span>
+        <span class="k">case</span> <span class="n">StatsGrpSelector</span><span class="o">.</span><span class="n">DL</span><span class="p">:</span>
+            <span class="n">_enf_stats_table_func</span> <span class="o">=</span> <span class="n">enf_stats_table_onedim</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Statistics formatted, &quot;</span><span class="si">{_stats_group}</span><span class="s1">&quot; not available here.&#39;</span>
+            <span class="p">)</span>
+
+    <span class="n">_enf_stats_cnts</span> <span class="o">=</span> <span class="n">enf_stats_listing_by_group</span><span class="p">(</span>
+        <span class="n">_data_array_dict</span><span class="p">,</span>
+        <span class="n">_data_period</span><span class="p">,</span>
+        <span class="n">_table_ind_group</span><span class="p">,</span>
+        <span class="n">_table_evid_cond</span><span class="p">,</span>
+        <span class="n">_stats_group</span><span class="p">,</span>
+        <span class="n">_enf_spec</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">_enf_stats_hdr_list</span><span class="p">,</span> <span class="n">_enf_stats_dat_list</span> <span class="o">=</span> <span class="n">_enf_stats_table_func</span><span class="p">(</span>
+        <span class="n">_enf_stats_cnts</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">return_type_sel</span><span class="o">=</span><span class="n">return_type_sel</span><span class="p">,</span> <span class="n">sort_order</span><span class="o">=</span><span class="n">sort_order</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">print_to_screen</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_enf_spec</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2"> stats (</span><span class="si">{</span><span class="n">return_type_sel</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;for Period: </span><span class="si">{</span><span class="n">_data_period</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="se">\u2014</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_table_ind_group</span><span class="si">}</span><span class="s2">;&quot;</span><span class="p">,</span>
+            <span class="n">_table_evid_cond</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">stats_print_rows</span><span class="p">(</span><span class="n">_enf_stats_hdr_list</span><span class="p">,</span> <span class="n">_enf_stats_dat_list</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_enf_stats_hdr_list</span><span class="p">,</span> <span class="n">_enf_stats_dat_list</span></div>
+
+
+
+<div class="viewcode-block" id="enf_stats_listing_by_group">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_listing_by_group">[docs]</a>
+<span class="k">def</span> <span class="nf">enf_stats_listing_by_group</span><span class="p">(</span>
+    <span class="n">_invdata_array_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">fid</span><span class="o">.</span><span class="n">INVTableData</span><span class="p">]]],</span>
+    <span class="n">_study_period</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">_table_ind_grp</span><span class="p">:</span> <span class="n">INDGRPConstants</span><span class="p">,</span>
+    <span class="n">_table_evid_cond</span><span class="p">:</span> <span class="n">EVIDENConstants</span><span class="p">,</span>
+    <span class="n">_stats_group</span><span class="p">:</span> <span class="n">StatsGrpSelector</span><span class="p">,</span>
+    <span class="n">_enf_spec</span><span class="p">:</span> <span class="n">INVResolution</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">_stats_group</span> <span class="o">==</span> <span class="n">StatsGrpSelector</span><span class="o">.</span><span class="n">HD</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Clearance/enforcement statistics, &#39;</span><span class="si">{</span><span class="n">_stats_group</span><span class="si">}</span><span class="s2">&#39; not valied here.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">match</span> <span class="n">_stats_group</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">StatsGrpSelector</span><span class="o">.</span><span class="n">FC</span><span class="p">:</span>
+            <span class="n">_cnts_func</span> <span class="o">=</span> <span class="n">enf_cnts_byfirmcount</span>
+            <span class="n">_cnts_listing_func</span> <span class="o">=</span> <span class="n">enf_cnts_listing_byfirmcount</span>
+        <span class="k">case</span> <span class="n">StatsGrpSelector</span><span class="o">.</span><span class="n">DL</span><span class="p">:</span>
+            <span class="n">_cnts_func</span> <span class="o">=</span> <span class="n">enf_cnts_bydelta</span>
+            <span class="n">_cnts_listing_func</span> <span class="o">=</span> <span class="n">enf_cnts_listing_byhhianddelta</span>
+        <span class="k">case</span> <span class="n">StatsGrpSelector</span><span class="o">.</span><span class="n">ZN</span><span class="p">:</span>
+            <span class="n">_cnts_func</span> <span class="o">=</span> <span class="n">enf_cnts_byconczone</span>
+            <span class="n">_cnts_listing_func</span> <span class="o">=</span> <span class="n">enf_cnts_listing_byhhianddelta</span>
+
+    <span class="k">return</span> <span class="n">_cnts_func</span><span class="p">(</span>
+        <span class="n">_cnts_listing_func</span><span class="p">(</span>
+            <span class="n">_invdata_array_dict</span><span class="p">,</span>
+            <span class="n">_study_period</span><span class="p">,</span>
+            <span class="n">_table_ind_grp</span><span class="p">,</span>
+            <span class="n">_table_evid_cond</span><span class="p">,</span>
+            <span class="n">_enf_spec</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="enf_cnts_listing_byfirmcount">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_cnts_listing_byfirmcount">[docs]</a>
+<span class="k">def</span> <span class="nf">enf_cnts_listing_byfirmcount</span><span class="p">(</span>
+    <span class="n">_data_array_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">fid</span><span class="o">.</span><span class="n">INVTableData</span><span class="p">]]],</span>
+    <span class="n">_data_period</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;1996-2003&quot;</span><span class="p">,</span>
+    <span class="n">_table_ind_group</span><span class="p">:</span> <span class="n">INDGRPConstants</span> <span class="o">=</span> <span class="n">INDGRPConstants</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+    <span class="n">_table_evid_cond</span><span class="p">:</span> <span class="n">EVIDENConstants</span> <span class="o">=</span> <span class="n">EVIDENConstants</span><span class="o">.</span><span class="n">UR</span><span class="p">,</span>
+    <span class="n">_enf_spec</span><span class="p">:</span> <span class="n">INVResolution</span> <span class="o">=</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">CLRN</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">_data_period</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_data_array_dict</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid value of data period, </span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">_data_period</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Must be one of, </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">_data_array_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">_data_array_dict_sub</span> <span class="o">=</span> <span class="n">_data_array_dict</span><span class="p">[</span><span class="n">_data_period</span><span class="p">][</span><span class="n">fid</span><span class="o">.</span><span class="n">TABLE_TYPES</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+    <span class="n">_table_no</span> <span class="o">=</span> <span class="n">table_no_lku</span><span class="p">(</span><span class="n">_data_array_dict_sub</span><span class="p">,</span> <span class="n">_table_ind_group</span><span class="p">,</span> <span class="n">_table_evid_cond</span><span class="p">)</span>
+
+    <span class="n">_cnts_array</span> <span class="o">=</span> <span class="n">_data_array_dict_sub</span><span class="p">[</span><span class="n">_table_no</span><span class="p">]</span><span class="o">.</span><span class="n">data_array</span>
+
+    <span class="n">_ndim_in</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">_stats_kept_indxs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">match</span> <span class="n">_enf_spec</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">CLRN</span><span class="p">:</span>
+            <span class="n">_stats_kept_indxs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">case</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">ENFT</span><span class="p">:</span>
+            <span class="n">_stats_kept_indxs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+        <span class="k">case</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">BOTH</span><span class="p">:</span>
+            <span class="n">_stats_kept_indxs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span>
+        <span class="n">_cnts_array</span><span class="p">[:,</span> <span class="p">:</span><span class="n">_ndim_in</span><span class="p">],</span>
+        <span class="n">_cnts_array</span><span class="p">[:,</span> <span class="n">_stats_kept_indxs</span><span class="p">],</span>
+    <span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="enf_cnts_listing_byhhianddelta">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_cnts_listing_byhhianddelta">[docs]</a>
+<span class="k">def</span> <span class="nf">enf_cnts_listing_byhhianddelta</span><span class="p">(</span>
+    <span class="n">_data_array_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">fid</span><span class="o">.</span><span class="n">INVTableData</span><span class="p">]]],</span>
+    <span class="n">_data_period</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;1996-2003&quot;</span><span class="p">,</span>
+    <span class="n">_table_ind_group</span><span class="p">:</span> <span class="n">INDGRPConstants</span> <span class="o">=</span> <span class="n">INDGRPConstants</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+    <span class="n">_table_evid_cond</span><span class="p">:</span> <span class="n">EVIDENConstants</span> <span class="o">=</span> <span class="n">EVIDENConstants</span><span class="o">.</span><span class="n">UR</span><span class="p">,</span>
+    <span class="n">_enf_spec</span><span class="p">:</span> <span class="n">INVResolution</span> <span class="o">=</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">CLRN</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">_data_period</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_data_array_dict</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid value of data period, </span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">_data_period</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Must be one of, </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">_data_array_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">_data_array_dict_sub</span> <span class="o">=</span> <span class="n">_data_array_dict</span><span class="p">[</span><span class="n">_data_period</span><span class="p">][</span><span class="n">fid</span><span class="o">.</span><span class="n">TABLE_TYPES</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+    <span class="n">_table_no</span> <span class="o">=</span> <span class="n">table_no_lku</span><span class="p">(</span><span class="n">_data_array_dict_sub</span><span class="p">,</span> <span class="n">_table_ind_group</span><span class="p">,</span> <span class="n">_table_evid_cond</span><span class="p">)</span>
+
+    <span class="n">_cnts_array</span> <span class="o">=</span> <span class="n">_data_array_dict_sub</span><span class="p">[</span><span class="n">_table_no</span><span class="p">]</span><span class="o">.</span><span class="n">data_array</span>
+
+    <span class="n">_ndim_in</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">_stats_kept_indxs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">match</span> <span class="n">_enf_spec</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">CLRN</span><span class="p">:</span>
+            <span class="n">_stats_kept_indxs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">case</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">ENFT</span><span class="p">:</span>
+            <span class="n">_stats_kept_indxs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+        <span class="k">case</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">BOTH</span><span class="p">:</span>
+            <span class="n">_stats_kept_indxs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span>
+        <span class="n">_cnts_array</span><span class="p">[:,</span> <span class="p">:</span><span class="n">_ndim_in</span><span class="p">],</span>
+        <span class="n">_cnts_array</span><span class="p">[:,</span> <span class="n">_stats_kept_indxs</span><span class="p">],</span>
+    <span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="table_no_lku">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.table_no_lku">[docs]</a>
+<span class="k">def</span> <span class="nf">table_no_lku</span><span class="p">(</span>
+    <span class="n">_data_array_dict_sub</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">fid</span><span class="o">.</span><span class="n">INVTableData</span><span class="p">],</span>
+    <span class="n">_table_ind_group</span><span class="p">:</span> <span class="n">INDGRPConstants</span> <span class="o">=</span> <span class="n">INDGRPConstants</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+    <span class="n">_table_evid_cond</span><span class="p">:</span> <span class="n">EVIDENConstants</span> <span class="o">=</span> <span class="n">EVIDENConstants</span><span class="o">.</span><span class="n">UR</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">_table_ind_group</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="n">_igl</span> <span class="o">:=</span> <span class="p">[</span><span class="n">_data_array_dict_sub</span><span class="p">[</span><span class="n">_v</span><span class="p">]</span><span class="o">.</span><span class="n">industry_group</span> <span class="k">for</span> <span class="n">_v</span> <span class="ow">in</span> <span class="n">_data_array_dict_sub</span><span class="p">]</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid value for industry group, </span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">_table_ind_group</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Must be one of </span><span class="si">{</span><span class="n">_igl</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">_tno</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+        <span class="n">_t</span>
+        <span class="k">for</span> <span class="n">_t</span> <span class="ow">in</span> <span class="n">_data_array_dict_sub</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">((</span>
+            <span class="n">_data_array_dict_sub</span><span class="p">[</span><span class="n">_t</span><span class="p">]</span><span class="o">.</span><span class="n">industry_group</span> <span class="o">==</span> <span class="n">_table_ind_group</span><span class="p">,</span>
+            <span class="n">_data_array_dict_sub</span><span class="p">[</span><span class="n">_t</span><span class="p">]</span><span class="o">.</span><span class="n">additional_evidence</span> <span class="o">==</span> <span class="n">_table_evid_cond</span><span class="p">,</span>
+        <span class="p">))</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_tno</span></div>
+
+
+
+<div class="viewcode-block" id="enf_cnts_byfirmcount">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_cnts_byfirmcount">[docs]</a>
+<span class="k">def</span> <span class="nf">enf_cnts_byfirmcount</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+    <span class="n">_ndim_in</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
+            <span class="p">(</span><span class="n">f</span><span class="p">,),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">_cnts_array</span><span class="p">[</span><span class="n">_cnts_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">f</span><span class="p">][:,</span> <span class="n">_ndim_in</span><span class="p">:]),</span>
+        <span class="p">])</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="enf_cnts_bydelta">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_cnts_bydelta">[docs]</a>
+<span class="k">def</span> <span class="nf">enf_cnts_bydelta</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+    <span class="n">_ndim_in</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
+            <span class="p">(</span><span class="n">f</span><span class="p">,),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">_cnts_array</span><span class="p">[</span><span class="n">_cnts_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">f</span><span class="p">][:,</span> <span class="n">_ndim_in</span><span class="p">:]),</span>
+        <span class="p">])</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">HHI_DELTA_KNOTS</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="enf_cnts_byconczone">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_cnts_byconczone">[docs]</a>
+<span class="k">def</span> <span class="nf">enf_cnts_byconczone</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+    <span class="c1"># Prepare to tag clearance stats by presumption zone</span>
+    <span class="n">_hhi_zone_post_ranged</span> <span class="o">=</span> <span class="n">hhi_zone_post_ranger</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e4</span><span class="p">)</span>
+    <span class="n">_hhi_delta_ranged</span> <span class="o">=</span> <span class="n">hhi_delta_ranger</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e4</span><span class="p">)</span>
+
+    <span class="c1"># Step 1: Tag and agg. from HHI-post and Delta to zone triple</span>
+    <span class="c1"># NOTE: Although you could just map and not (partially) aggregate in this step,</span>
+    <span class="c1"># the mapped array is a copy, and is larger without partial aggregation, so</span>
+    <span class="c1"># aggregation reduces the footprint of this step in memory. Although this point</span>
+    <span class="c1"># is more relevant for generated than observed data, using the same coding pattern</span>
+    <span class="c1"># in both cases does make life easier</span>
+    <span class="n">_ndim_in</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">_nkeys</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">_cnts_byhhipostanddelta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span>
+        <span class="n">_nkeys</span> <span class="o">+</span> <span class="n">_cnts_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">_ndim_in</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span>
+    <span class="p">)</span>
+    <span class="n">_cnts_byconczone</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">_cnts_byhhipostanddelta</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_hhi_zone_post_lim</span> <span class="ow">in</span> <span class="n">HHI_POST_ZONE_KNOTS</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">_level_test</span> <span class="o">=</span> <span class="n">_hhi_zone_post_ranged</span> <span class="o">==</span> <span class="n">_hhi_zone_post_lim</span>
+
+        <span class="k">for</span> <span class="n">_hhi_zone_delta_lim</span> <span class="ow">in</span> <span class="n">HHI_DELTA_KNOTS</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+            <span class="n">_delta_test</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">_hhi_delta_ranged</span> <span class="o">&gt;</span> <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">_hhi_zone_delta_lim</span> <span class="o">==</span> <span class="n">HHI_DELTA_KNOTS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="k">else</span> <span class="p">(</span><span class="n">_hhi_delta_ranged</span> <span class="o">==</span> <span class="n">_hhi_zone_delta_lim</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="n">_zone_val</span> <span class="o">=</span> <span class="n">HMG_PRESUMPTION_ZONE_DICT</span><span class="p">[</span><span class="n">_hhi_zone_post_lim</span><span class="p">][</span>
+                <span class="n">_hhi_zone_delta_lim</span>
+            <span class="p">]</span>
+
+            <span class="n">_conc_test</span> <span class="o">=</span> <span class="n">_level_test</span> <span class="o">&amp;</span> <span class="n">_delta_test</span>
+
+            <span class="n">_cnts_byhhipostanddelta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span>
+                <span class="n">_cnts_byhhipostanddelta</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="o">*</span><span class="n">_zone_val</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">_cnts_array</span><span class="p">[:,</span> <span class="n">_ndim_in</span><span class="p">:][</span><span class="n">_conc_test</span><span class="p">]),</span>
+                    <span class="p">),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">))</span>
+    <span class="n">_cnts_byhhipostanddelta</span> <span class="o">=</span> <span class="n">_cnts_byhhipostanddelta</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="k">for</span> <span class="n">_zone_val</span> <span class="ow">in</span> <span class="n">ZONE_VALS</span><span class="p">:</span>
+        <span class="c1"># Logical-and of multiple vectors:</span>
+        <span class="n">_hhi_zone_test</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">1</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span>
+                <span class="n">_cnts_byhhipostanddelta</span><span class="p">[:,</span> <span class="n">_idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">_val</span>
+                <span class="k">for</span> <span class="n">_idx</span><span class="p">,</span> <span class="n">_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_zone_val</span><span class="p">)</span>
+            <span class="p">])</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+        <span class="n">_cnts_byconczone</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span>
+            <span class="n">_cnts_byconczone</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">_zone_val</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+                        <span class="s2">&quot;ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">_cnts_byhhipostanddelta</span><span class="p">[</span><span class="n">_hhi_zone_test</span><span class="p">][:,</span> <span class="n">_nkeys</span><span class="p">:]</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">_cnts_byconczone</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span></div>
+
+
+
+<div class="viewcode-block" id="enf_stats_table_onedim">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_table_onedim">[docs]</a>
+<span class="k">def</span> <span class="nf">enf_stats_table_onedim</span><span class="p">(</span>
+    <span class="n">_inparr</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span>
+    <span class="n">_totals_row</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">return_type_sel</span><span class="p">:</span> <span class="n">StatsReturnSelector</span> <span class="o">=</span> <span class="n">StatsReturnSelector</span><span class="o">.</span><span class="n">CNT</span><span class="p">,</span>
+    <span class="n">sort_order</span><span class="p">:</span> <span class="n">SortSelector</span> <span class="o">=</span> <span class="n">SortSelector</span><span class="o">.</span><span class="n">UCH</span><span class="p">,</span>
+    <span class="n">print_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;LaTeX&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+    <span class="n">_ndim_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">_dim_hdr_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">_v</span><span class="p">:</span> <span class="p">(</span><span class="n">_k</span> <span class="k">if</span> <span class="n">_k</span> <span class="o">==</span> <span class="s2">&quot;TOTAL&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">_k</span><span class="p">,</span> <span class="n">_v</span> <span class="ow">in</span> <span class="n">fid</span><span class="o">.</span><span class="n">CNT_FCOUNT_DICT</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span> <span class="o">|</span> <span class="p">{</span>
+        <span class="n">_v</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;[2500, 5000]&quot;</span>
+            <span class="k">if</span> <span class="n">_k</span> <span class="o">==</span> <span class="s2">&quot;2,500 +&quot;</span>
+            <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">_k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; - &quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">_k</span><span class="p">,</span> <span class="n">_v</span> <span class="ow">in</span> <span class="n">fid</span><span class="o">.</span><span class="n">CONC_DELTA_DICT</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">_k</span> <span class="o">!=</span> <span class="s2">&quot;TOTAL&quot;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">_totals_row</span><span class="p">:</span>
+        <span class="n">_in_totals_row</span> <span class="o">=</span> <span class="n">_inparr</span><span class="p">[</span><span class="n">_totals_row</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">_inparr_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_inparr</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">_inparr_mask</span><span class="p">[</span><span class="n">_in_totals_row</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">_inparr</span> <span class="o">=</span> <span class="n">_inparr</span><span class="p">[</span><span class="n">_inparr_mask</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_in_totals_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span>
+            <span class="p">[</span><span class="n">fid</span><span class="o">.</span><span class="n">TTL_KEY</span><span class="p">],</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">_inparr</span><span class="p">[:,</span> <span class="n">_ndim_in</span><span class="p">:]),</span>
+        <span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">sort_order</span> <span class="o">==</span> <span class="n">SortSelector</span><span class="o">.</span><span class="n">REV</span><span class="p">:</span>
+        <span class="n">_inparr</span> <span class="o">=</span> <span class="n">_inparr</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">_inparr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">_inparr</span><span class="p">,</span> <span class="n">_in_totals_row</span><span class="p">))</span>
+
+    <span class="n">_stats_hdr_list</span><span class="p">,</span> <span class="n">_stats_dat_list</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_stats_row</span> <span class="ow">in</span> <span class="n">_inparr</span><span class="p">:</span>
+        <span class="n">_stats_hdr_str</span> <span class="o">=</span> <span class="n">_dim_hdr_dict</span><span class="p">[</span><span class="n">_stats_row</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">_stats_hdr_list</span> <span class="o">+=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="si">{</span><span class="n">_stats_hdr_str</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">print_format</span> <span class="o">==</span> <span class="s2">&quot;LaTeX&quot;</span> <span class="k">else</span> <span class="n">_stats_hdr_str</span>
+        <span class="p">]</span>
+
+        <span class="n">_stats_cnt</span> <span class="o">=</span> <span class="n">_stats_row</span><span class="p">[</span><span class="n">_ndim_in</span><span class="p">:]</span>
+        <span class="n">_stats_tot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span>
+            <span class="p">[</span><span class="n">_inparr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">_ndim_in</span><span class="p">]],</span>
+            <span class="n">_stats_cnt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">_stats_cnt</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span>
+        <span class="p">))</span>
+        <span class="n">_stats_dat_list</span> <span class="o">+=</span> <span class="n">_stats_formatted_row</span><span class="p">(</span><span class="n">_stats_cnt</span><span class="p">,</span> <span class="n">_stats_tot</span><span class="p">,</span> <span class="n">return_type_sel</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_stats_hdr_list</span><span class="p">,</span> <span class="n">_stats_dat_list</span></div>
+
+
+
+<div class="viewcode-block" id="enf_stats_table_byzone">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_table_byzone">[docs]</a>
+<span class="k">def</span> <span class="nf">enf_stats_table_byzone</span><span class="p">(</span>
+    <span class="n">_inparr</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span>
+    <span class="n">_totals_row</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">return_type_sel</span><span class="p">:</span> <span class="n">StatsReturnSelector</span> <span class="o">=</span> <span class="n">StatsReturnSelector</span><span class="o">.</span><span class="n">CNT</span><span class="p">,</span>
+    <span class="n">sort_order</span><span class="p">:</span> <span class="n">SortSelector</span> <span class="o">=</span> <span class="n">SortSelector</span><span class="o">.</span><span class="n">UCH</span><span class="p">,</span>
+    <span class="n">print_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;LaTeX&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+    <span class="n">_ndim_in</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">ZONE_VALS</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">_zone_str_dict</span> <span class="o">=</span> <span class="n">ZONE_STRINGS_LATEX</span> <span class="k">if</span> <span class="n">print_format</span> <span class="o">==</span> <span class="s2">&quot;LaTeX&quot;</span> <span class="k">else</span> <span class="n">ZONE_STRINGS</span>
+    <span class="n">_zone_str_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_zone_str_dict</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sort_order</span> <span class="o">==</span> <span class="n">SortSelector</span><span class="o">.</span><span class="n">REV</span><span class="p">:</span>
+        <span class="n">_inparr</span> <span class="o">=</span> <span class="n">_inparr</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">_zone_str_keys</span> <span class="o">=</span> <span class="n">_zone_str_keys</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">_zone_str_keys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+
+    <span class="k">if</span> <span class="n">_totals_row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_inparr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span>
+            <span class="n">_inparr</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span>
+                <span class="p">[</span><span class="n">fid</span><span class="o">.</span><span class="n">TTL_KEY</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">_inparr</span><span class="p">[:,</span> <span class="n">_ndim_in</span><span class="p">:]),</span>
+            <span class="p">)),</span>
+        <span class="p">))</span>
+
+    <span class="n">_stats_hdr_list</span><span class="p">,</span> <span class="n">_stats_dat_list</span> <span class="o">=</span> <span class="p">([],</span> <span class="p">[])</span>
+    <span class="k">for</span> <span class="n">_conc_zone</span> <span class="ow">in</span> <span class="n">_zone_str_keys</span><span class="p">:</span>
+        <span class="n">_stats_byzone_it</span> <span class="o">=</span> <span class="n">_inparr</span><span class="p">[</span><span class="n">_inparr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">_conc_zone</span><span class="p">]</span>
+        <span class="n">_stats_hdr_list</span> <span class="o">+=</span> <span class="p">[</span><span class="n">_zone_str_dict</span><span class="p">[</span><span class="n">_conc_zone</span><span class="p">]]</span>
+
+        <span class="n">_stats_cnt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;j&quot;</span><span class="p">,</span> <span class="n">_stats_byzone_it</span><span class="p">[:,</span> <span class="n">_ndim_in</span><span class="p">:])</span>
+        <span class="n">_stats_tot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span>
+            <span class="p">[</span><span class="n">_inparr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">_ndim_in</span><span class="p">]],</span>
+            <span class="n">_stats_cnt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">_stats_cnt</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span>
+        <span class="p">))</span>
+        <span class="n">_stats_dat_list</span> <span class="o">+=</span> <span class="n">_stats_formatted_row</span><span class="p">(</span><span class="n">_stats_cnt</span><span class="p">,</span> <span class="n">_stats_tot</span><span class="p">,</span> <span class="n">return_type_sel</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">_conc_zone</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">fid</span><span class="o">.</span><span class="n">TTL_KEY</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="k">for</span> <span class="n">_stats_byzone_detail</span> <span class="ow">in</span> <span class="n">_stats_byzone_it</span><span class="p">:</span>
+            <span class="c1"># Only two sets of subtotals detail, so</span>
+            <span class="c1"># a conditional expression will do here</span>
+            <span class="k">if</span> <span class="n">print_format</span> <span class="o">==</span> <span class="s2">&quot;LaTeX&quot;</span><span class="p">:</span>
+                <span class="n">_stats_text_color</span> <span class="o">=</span> <span class="s2">&quot;HiCoYellow&quot;</span> <span class="k">if</span> <span class="n">_conc_zone</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;BrightGreen&quot;</span>
+                <span class="n">_stats_hdr_list</span> <span class="o">+=</span> <span class="p">[</span>
+                    <span class="sa">R</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> {{ \(</span><span class="si">{}{}</span><span class="s2">\) }};&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="sa">rf</span><span class="s2">&quot;\node[text = </span><span class="si">{</span><span class="n">_stats_text_color</span><span class="si">}</span><span class="s2">, fill = white, align = right]&quot;</span><span class="p">,</span>
+                        <span class="n">ZONE_DETAIL_STRINGS_HHI_LATEX</span><span class="p">[</span><span class="n">_stats_byzone_detail</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                        <span class="p">(</span>
+                            <span class="s2">&quot;&quot;</span>
+                            <span class="k">if</span> <span class="n">_stats_byzone_detail</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+                            <span class="k">else</span> <span class="sa">Rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ZONE_DETAIL_STRINGS_DELTA_LATEX</span><span class="p">[</span><span class="n">_stats_byzone_detail</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_stats_hdr_list</span> <span class="o">+=</span> <span class="p">[</span>
+                    <span class="sa">R</span><span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">ZONE_DETAIL_STRINGS_HHI</span><span class="p">[</span><span class="n">_stats_byzone_detail</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                        <span class="p">(</span>
+                            <span class="s2">&quot;&quot;</span>
+                            <span class="k">if</span> <span class="n">_stats_byzone_detail</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+                            <span class="k">else</span> <span class="sa">Rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ZONE_DETAIL_STRINGS_DELTA</span><span class="p">[</span><span class="n">_stats_byzone_detail</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">]</span>
+
+            <span class="n">_stats_cnt</span> <span class="o">=</span> <span class="n">_stats_byzone_detail</span><span class="p">[</span><span class="n">_ndim_in</span><span class="p">:]</span>
+            <span class="n">_stats_tot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span>
+                <span class="p">[</span><span class="n">_inparr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">_ndim_in</span><span class="p">]],</span>
+                <span class="n">_stats_cnt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">_stats_cnt</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span>
+            <span class="p">))</span>
+            <span class="n">_stats_dat_list</span> <span class="o">+=</span> <span class="n">_stats_formatted_row</span><span class="p">(</span>
+                <span class="n">_stats_cnt</span><span class="p">,</span> <span class="n">_stats_tot</span><span class="p">,</span> <span class="n">return_type_sel</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_stats_hdr_list</span><span class="p">,</span> <span class="n">_stats_dat_list</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_stats_formatted_row</span><span class="p">(</span>
+    <span class="n">_stats_row_cnt</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span>
+    <span class="n">_stats_row_tot</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span>
+    <span class="n">_return_type_sel</span><span class="p">:</span> <span class="n">StatsReturnSelector</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="n">_stats_row_pct</span> <span class="o">=</span> <span class="n">_stats_row_cnt</span> <span class="o">/</span> <span class="n">_stats_row_tot</span>
+
+    <span class="k">match</span> <span class="n">_return_type_sel</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">StatsReturnSelector</span><span class="o">.</span><span class="n">RIN</span><span class="p">:</span>
+            <span class="n">_stats_row_ci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="n">propn_ci</span><span class="p">(</span><span class="o">*</span><span class="n">g</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Wilson&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">_stats_row_cnt</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">_stats_row_tot</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">])</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="p">[</span>
+                    <span class="n">pct_format_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">_stats_row_pct</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="o">*</span><span class="p">[</span>
+                        <span class="n">ci_format_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="mi">100</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                            <span class="sa">R</span><span class="s2">&quot;  nan [ nan,  nan] \%&quot;</span><span class="p">,</span> <span class="s2">&quot;---&quot;</span>
+                        <span class="p">)</span>
+                        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_stats_row_ci</span>
+                    <span class="p">],</span>
+                <span class="p">]</span>
+            <span class="p">]</span>
+        <span class="k">case</span> <span class="n">StatsReturnSelector</span><span class="o">.</span><span class="n">RPT</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="p">[</span>
+                    <span class="n">pct_format_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">R</span><span class="s2">&quot;nan\%&quot;</span><span class="p">,</span> <span class="s2">&quot;---&quot;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">_stats_row_pct</span>
+                <span class="p">]</span>
+            <span class="p">]</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="p">[</span>
+                    <span class="n">cnt_format_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">R</span><span class="s2">&quot;nan&quot;</span><span class="p">,</span> <span class="s2">&quot;---&quot;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_stats_row_cnt</span>
+                <span class="p">]</span>
+            <span class="p">]</span>
+
+
+<div class="viewcode-block" id="stats_print_rows">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.stats_print_rows">[docs]</a>
+<span class="k">def</span> <span class="nf">stats_print_rows</span><span class="p">(</span>
+    <span class="n">_enf_stats_hdr_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">_enf_stats_dat_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">print_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;LaTeX&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">_idx</span><span class="p">,</span> <span class="n">_hdr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_enf_stats_hdr_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">print_format</span> <span class="o">==</span> <span class="s2">&quot;LaTeX&quot;</span><span class="p">:</span>
+            <span class="n">_hdr_str</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">_hdr</span>
+                <span class="k">if</span> <span class="n">_hdr</span> <span class="o">==</span> <span class="s2">&quot;TOTAL&quot;</span>
+                <span class="k">else</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.*?\{(.*)\};?&quot;</span><span class="p">,</span> <span class="n">_hdr</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="n">_hdr_str</span><span class="p">,</span>
+                <span class="s2">&quot; &amp; &quot;</span><span class="p">,</span>
+                <span class="s2">&quot; &amp; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_enf_stats_dat_list</span><span class="p">[</span><span class="n">_idx</span><span class="p">]),</span>
+                <span class="n">LTX_ARRAY_LINEEND</span><span class="p">,</span>
+                <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">_hdr</span><span class="p">,</span> <span class="s2">&quot; | &quot;</span><span class="p">,</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_enf_stats_dat_list</span><span class="p">[</span><span class="n">_idx</span><span class="p">]))</span>
+
+    <span class="nb">print</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="render_table_pdf">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.render_table_pdf">[docs]</a>
+<span class="k">def</span> <span class="nf">render_table_pdf</span><span class="p">(</span>
+    <span class="n">_table_dottex_pathlist</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">_table_coll_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">/</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">_table_collection_design</span> <span class="o">=</span> <span class="n">LaTeX_jinja_env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span>
+        <span class="s2">&quot;mergeron_table_collection_template.tex.jinja2&quot;</span>
+    <span class="p">)</span>
+    <span class="n">_table_collection_content</span> <span class="o">=</span> <span class="n">StatsContainer</span><span class="p">()</span>
+
+    <span class="n">_table_collection_content</span><span class="o">.</span><span class="n">path_list</span> <span class="o">=</span> <span class="n">_table_dottex_pathlist</span>
+
+    <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">DATA_DIR</span> <span class="o">/</span> <span class="n">_table_coll_path</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">_table_coll_file</span><span class="p">:</span>
+        <span class="n">_table_coll_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="n">_table_collection_design</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">tmpl_data</span><span class="o">=</span><span class="n">_table_collection_content</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">_table_coll_file</span><span class="p">)</span>
+
+    <span class="n">_run_rc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>  <span class="c1"># noqa: S603</span>
+        <span class="sa">f</span><span class="s2">&quot;LaTeXmk -f -quiet -synctex=0 -interaction=nonstopmode -file-line-error -pdflua </span><span class="si">{</span><span class="n">_table_coll_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
+        <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">cwd</span><span class="o">=</span><span class="n">DATA_DIR</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">_run_rc</span><span class="p">:</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;LaTeXmk -quiet -c&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">DATA_DIR</span><span class="p">)</span>  <span class="c1"># noqa: S603</span>
+    <span class="k">del</span> <span class="n">_run_rc</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Tables rendered to path, </span><span class="si">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">_table_coll_path</span><span class="p">)</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.pdf&quot;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;This module provides methods to format and print summary statistics on merger enforcement patterns..&quot;</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

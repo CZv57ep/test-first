@@ -1,0 +1,30 @@
+mergeron.gen.market_sample
+==========================
+
+.. py:module:: mergeron.gen.market_sample
+
+.. autoapi-nested-parse::
+
+   Methods to generate data for analyzing merger enforcement policy.
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: MarketSample
+
+   Bases: :py:obj:`mergeron.gen.MarketSpec`
+
+
+   Parameter specification for market data generation.
+
+
+   .. py:method:: generate_sample(/, *, sample_size = 10**6, seed_seq_list, nthreads, save_data_to_file = False)
+
+
+   .. py:method:: estimate_enf_counts(_enf_parm_vec, _upp_test_regime, /, *, sample_size = 10**6, seed_seq_list, nthreads, save_data_to_file = False)
+
+

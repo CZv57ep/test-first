@@ -1,0 +1,15 @@
+mergeron.demo
+=============
+
+.. py:module:: mergeron.demo
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/mergeron/demo/visualize_empirical_margin_distribution/index
+
+

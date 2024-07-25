@@ -1,0 +1,106 @@
+mergeron.core.pseudorandom_numbers
+==================================
+
+.. py:module:: mergeron.core.pseudorandom_numbers
+
+.. autoapi-nested-parse::
+
+   Functions for generating synthetic data under specified distributions.
+
+   Uses multiple CPUs when available, with PCG64DXSM as the PRNG
+   https://github.com/numpy/numpy/issues/16313.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: NTHREADS
+
+.. py:data:: DIST_PARMS_DEFAULT
+
+.. py:function:: prng(_s = None, /)
+
+   Adopt the PCG64DXSM bit-generator, the future default in numpy.default_rng().
+
+   :param _s: SeedSequence, for generating random numbers in repeatable fashion.
+
+   :returns: A numpy random BitGenerator.
+
+
+.. py:function:: gen_seed_seq_list_default(_sseq_list_len = 3, /, *, generated_entropy = None)
+
+   Return specified number of SeedSequences, for generating random variates
+
+   Initializes a specified number of SeedSequences based on a set of
+   10 generated "seeds" in a hard-coded list. If the required number of
+   random variates is larger than 10, the user must first generate
+   a sufficient number of seeds to draw upon for initializing SeedSequences.
+   The generated seeds can be reused in subsequent calls to this function.
+
+   :param _sseq_list_len: Number of SeedSequences to initialize
+   :param generated_entropy: A list of integers with length not less than _s, to be used as seeds
+                             for initializing SeedSequences. A list of 10 appropriately generated
+                             integers is used as default.
+
+   :returns: A list of numpy SeedSequence objects, which can be used to seed prng() or to spawn
+             seed sequences that can be used as seeds to generate non-overlapping streams in parallel.
+
+   :raises ValueError: When, :math:`\_sseq\_list\_len > max(10, len(generated\_entropy))`.
+
+   .. rubric:: References
+
+   *See*, https://numpy.org/doc/stable/reference/random/parallel.html
+
+
+.. py:class:: MultithreadedRNG(_out_array, /, *, dist_type = 'Uniform', dist_parms = DIST_PARMS_DEFAULT, seed_sequence = None, nthreads = NTHREADS)
+
+   Fill given array on demand with pseudo-random numbers as specified.
+
+   Random number generation is multithreaded, using twice
+   the number of threads as available CPU cores by default.
+   If a seed sequence is provided, it is used in a thread-safe way
+   to generate repeatable i.i.d. draws. All arguments are validated
+   before commencing multithreaded random number generation.
+
+   :param _out_array: The output array to which generated data are written.
+                      Its dimensions define the size of the sample.
+   :param dist_type: Distribution for the generated random numbers
+   :param dist_parms: Parameters, if any, for tailoring random number generation
+   :param seed_sequence: SeedSequence object for generating repeatable draws.
+   :param nthreads: Number of threads to spawn for random number generation.
+
+
+   .. py:attribute:: thread_count
+
+
+   .. py:attribute:: sample_sz
+
+
+   .. py:attribute:: dist_type
+
+
+   .. py:attribute:: dist_parms
+
+
+   .. py:attribute:: values
+
+
+   .. py:attribute:: executor
+
+
+   .. py:attribute:: step_size
+
+
+   .. py:method:: fill()
+
+      Fill the provided output array with random numbers as specified.
+
+
+

@@ -1,0 +1,596 @@
+mergeron.gen
+============
+
+.. py:module:: mergeron.gen
+
+.. autoapi-nested-parse::
+
+   Defines constants and containers for industry data generation and testing
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/mergeron/gen/data_generation/index
+   /autoapi/mergeron/gen/enforcement_stats/index
+   /autoapi/mergeron/gen/market_sample/index
+   /autoapi/mergeron/gen/upp_tests/index
+
+
+
+
+
+
+Package Contents
+----------------
+
+.. py:data:: EMPTY_ARRAY_DEFAULT
+
+.. py:data:: FCOUNT_WTS_DEFAULT
+
+.. py:class:: PriceConstants
+
+   Bases: :py:obj:`tuple`\ [\ :py:obj:`bool`\ , :py:obj:`str | None`\ ], :py:obj:`enum.ReprEnum`
+
+
+   Price specification.
+
+   Whether prices are symmetric and, if not, the direction of correlation, if any.
+
+
+   .. py:attribute:: SYM
+      :value: (True, None)
+
+
+
+   .. py:attribute:: ZERO
+      :value: (False, None)
+
+
+
+   .. py:attribute:: NEG
+      :value: (False, 'negative share-correlation')
+
+
+
+   .. py:attribute:: POS
+      :value: (False, 'positive share-correlation')
+
+
+
+.. py:class:: SHRConstants
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Market share distributions.
+
+
+   .. py:attribute:: UNI
+      :value: 'Uniform'
+
+
+      Uniform distribution over :math:`s_1 + s_2 \leqslant 1`
+
+
+   .. py:attribute:: DIR_FLAT
+      :value: 'Flat Dirichlet'
+
+
+      Shape parameter for all merging-firm-shares is unity (1)
+
+
+   .. py:attribute:: DIR_FLAT_CONSTR
+      :value: 'Flat Dirichlet - Constrained'
+
+
+      Impose minimum probablility weight on each firm-count
+
+      Only firm-counts with probability weight of no less than 3%
+      are included for data generation.
+
+
+   .. py:attribute:: DIR_ASYM
+      :value: 'Asymmetric Dirichlet'
+
+
+      Share distribution for merging-firm shares has a higher peak share
+
+      Shape parameter for merging-firm-share is 2.5, and 1.0 for all others.
+
+
+   .. py:attribute:: DIR_COND
+      :value: 'Conditional Dirichlet'
+
+
+      Shape parameters for non-merging firms is proportional
+
+      Shape parameters for merging-firm-share are 2.0 each; and
+      are equiproportional and add to 2.0 for all non-merging-firm-shares.
+
+
+.. py:class:: ShareSpec
+
+   Market share specification
+
+   .. rubric:: Notes
+
+   If recapture is determined "outside-in", market shares cannot have
+   Uniform distribution.
+
+   If sample with varying firm counts is required, market shares must
+   be specified as having a supported Dirichlet distribution.
+
+
+   .. py:attribute:: recapture_form
+      :type:  mergeron.RECConstants
+
+      See :class:`mergeron.RECConstants`
+
+
+   .. py:attribute:: recapture_rate
+      :type:  float | None
+
+      A value between 0 and 1, typically 0.8.
+
+      :code:`None` if market share specification requires direct generation of
+      outside good choice probabilities (:attr:`mergeron.RECConstants.OUTIN`).
+
+      The recapture rate is usually calibrated to the numbers-equivalent of the
+      HHI threshold for the presumtion of harm from unilateral competitive effects
+      in published merger guidelines. Accordingly, the recapture rate rounded to
+      the nearest 5% is:
+
+      * 0.85, **7-to-6 merger from symmetry**; US Guidelines, 1992, 2023
+      * 0.80, **6-to-5 merger to symmetry**; EU Guidelines for horizontal mergers, 2004
+      * 0.80, 5-to-4 merger from symmetry
+      * 0.80, **5-to-4 merger to symmetry**; US Guidelines, 2010
+
+      Highlighting indicates hypothetical mergers in the neighborhood of (the boundary of)
+      the Guidelines presumption of harm. (In the EU Guidelines, concentration measures serve as
+      screens for further investigation, rather than as the basis for presumptions of harm or
+      presumptions no harm.)
+
+
+   .. py:attribute:: dist_type
+      :type:  SHRConstants
+
+      See :class:`SHRConstants`
+
+
+   .. py:attribute:: dist_parms
+      :type:  numpy.typing.NDArray[numpy.float64] | None
+
+      Parameters for tailoring market-share distribution
+
+      For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
+      for Dirichlet-type distributions, a vector of shape parameters of length
+      no less than the length of firm-count weights below; defaults depend on
+      type of Dirichlet-distribution specified.
+
+
+   .. py:attribute:: firm_counts_weights
+      :type:  numpy.typing.NDArray[numpy.float64 | numpy.int64] | None
+
+      Relative or absolute frequencies of firm counts
+
+
+      Given frequencies are exogenous to generated market data sample;
+      for Dirichlet-type distributions, defaults to FCOUNT_WTS_DEFAULT, which specifies
+      firm-counts of 2 to 6 with weights in descending order from 5 to 1.
+
+
+.. py:class:: PCMConstants
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Margin distributions.
+
+
+   .. py:attribute:: UNI
+      :value: 'Uniform'
+
+
+
+   .. py:attribute:: BETA
+      :value: 'Beta'
+
+
+
+   .. py:attribute:: BETA_BND
+      :value: 'Bounded Beta'
+
+
+
+   .. py:attribute:: EMPR
+      :value: 'Damodaran margin data, resampled'
+
+
+
+.. py:class:: FM2Constants
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Firm 2 margins - derivation methods.
+
+
+   .. py:attribute:: IID
+      :value: 'i.i.d'
+
+
+
+   .. py:attribute:: MNL
+      :value: 'MNL-dep'
+
+
+
+   .. py:attribute:: SYM
+      :value: 'symmetric'
+
+
+
+.. py:class:: PCMSpec
+
+   Price-cost margin (PCM) specification
+
+   If price-cost margins are specified as having Beta distribution,
+   `dist_parms` is specified as a pair of positive, non-zero shape parameters of
+   the standard Beta distribution. Specifying shape parameters :code:`np.array([1, 1])`
+   is known equivalent to specifying uniform distribution over
+   the interval :math:`[0, 1]`. If price-cost margins are specified as having
+   Bounded-Beta distribution, `dist_parms` is specified as
+   the tuple, (`mean`, `std deviation`, `min`, `max`), where `min` and `max`
+   are lower- and upper-bounds respectively within the interval :math:`[0, 1]`.
+
+
+
+
+   .. py:attribute:: firm2_pcm_constraint
+      :type:  FM2Constants
+
+      See :class:`FM2Constants`
+
+
+   .. py:attribute:: dist_type
+      :type:  PCMConstants
+
+      See :class:`PCMConstants`
+
+
+   .. py:attribute:: dist_parms
+      :type:  numpy.typing.NDArray[numpy.float64] | None
+
+      Parameter specification for tailoring PCM distribution
+
+      For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
+      for Beta distribution, shape parameters, defaults to `(1, 1)`;
+      for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;
+      for empirical distribution based on Damodaran margin data, optional, ignored
+
+
+.. py:class:: SSZConstants
+
+   Bases: :py:obj:`float`, :py:obj:`enum.ReprEnum`
+
+
+   Scale factors to offset sample size reduction.
+
+   Sample size reduction occurs when imposing a HSR filing test
+   or equilibrium condition under MNL demand.
+
+
+   .. py:attribute:: HSR_NTH
+      :value: 1.666667
+
+
+      For HSR filing requirement.
+
+      When filing requirement is assumed met if maximum merging-firm shares exceeds
+      ten (10) times the n-th firm's share and minimum merging-firm share is
+      no less than n-th firm's share. To assure that the number of draws available
+      after applying the given restriction, the initial number of draws is larger than
+      the sample size by the given scale factor.
+
+
+   .. py:attribute:: HSR_TEN
+      :value: 1.234567
+
+
+      For alternative HSR filing requirement,
+
+      When filing requirement is assumed met if merging-firm shares exceed 10:1 ratio
+      to each other.
+
+
+   .. py:attribute:: MNL_DEP
+      :value: 1.25
+
+
+      For restricted PCM's.
+
+      When merging firm's PCMs are constrained for consistency with f.o.c.s from
+      profit maximization under Nash-Bertrand oligopoly with MNL demand.
+
+
+   .. py:attribute:: ONE
+      :value: 1.0
+
+
+      When initial set of draws is not restricted in any way.
+
+
+.. py:class:: MarketSpec
+
+   Parameter specification for market data generation.
+
+
+   .. py:attribute:: share_spec
+      :type:  ShareSpec
+
+      Market-share specification, see :class:`ShareSpec`
+
+
+   .. py:attribute:: pcm_spec
+      :type:  PCMSpec
+
+      Margin specification, see :class:`PCMSpec`
+
+
+   .. py:attribute:: price_spec
+      :type:  PriceConstants
+
+      Price specification, see :class:`PriceConstants`
+
+
+   .. py:attribute:: hsr_filing_test_type
+      :type:  SSZConstants
+
+      Method for modeling HSR filing threholds, see :class:`SSZConstants`
+
+
+.. py:class:: MarketDataSample
+
+   Container for generated markets data sample.
+
+
+   .. py:attribute:: frmshr_array
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Merging-firm shares (with two merging firms)
+
+
+   .. py:attribute:: pcm_array
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Merging-firms' prices (normalized to 1, in default specification)
+
+
+   .. py:attribute:: price_array
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Merging-firms' price-cost margins (PCM)
+
+
+   .. py:attribute:: fcounts
+      :type:  numpy.typing.NDArray[numpy.int64]
+
+      Number of firms in market
+
+
+   .. py:attribute:: aggregate_purchase_prob
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      One (1) minus probability that the outside good is chosen
+
+      Converts market shares to choice probabilities by multiplication.
+
+
+   .. py:attribute:: nth_firm_share
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Market-share of n-th firm
+
+      Relevant for testing for draws the do or
+      do not meet HSR filing thresholds.
+
+
+   .. py:attribute:: divr_array
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Diversion ratio between the merging firms
+
+
+   .. py:attribute:: hhi_post
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Post-merger change in Herfindahl-Hirschmann Index (HHI)
+
+
+   .. py:attribute:: hhi_delta
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Change in HHI from combination of merging firms
+
+
+.. py:class:: ShareDataSample
+
+   Container for generated market shares.
+
+   Includes related measures of market structure
+   and aggregate purchase probability.
+
+
+   .. py:attribute:: mktshr_array
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      All-firm shares (with two merging firms)
+
+
+   .. py:attribute:: fcounts
+      :type:  numpy.typing.NDArray[numpy.int64]
+
+      All-firm-count for each draw
+
+
+   .. py:attribute:: nth_firm_share
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Market-share of n-th firm
+
+
+   .. py:attribute:: aggregate_purchase_prob
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Converts market shares to choice probabilities by multiplication.
+
+
+.. py:class:: PriceDataSample
+
+   Container for generated price array, and related.
+
+
+   .. py:attribute:: price_array
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Merging-firms' prices
+
+
+   .. py:attribute:: hsr_filing_test
+      :type:  numpy.typing.NDArray[numpy.bool_]
+
+      Flags draws as meeting HSR filing thresholds or not
+
+
+.. py:class:: MarginDataSample
+
+   Container for generated margin array and related MNL test array.
+
+
+   .. py:attribute:: pcm_array
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Merging-firms' PCMs
+
+
+   .. py:attribute:: mnl_test_array
+      :type:  numpy.typing.NDArray[numpy.bool_]
+
+      Flags infeasible observations as False and rest as True
+
+      Applying restrictions from Bertrand-Nash oligopoly
+      with MNL demand results in draws of Firm 2 PCM falling
+      outside the feabile interval,:math:`[0, 1]`, depending
+      on the configuration of merging firm shares. Such draws
+      are are flagged as infeasible (False)in :code:`mnl_test_array` while
+      draws with PCM values within the feasible range are
+      flagged as True. Used from filtering-out draws with
+      infeasible PCM.
+
+
+.. py:class:: INVResolution
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Enum where members are also (and must be) strings
+
+
+   .. py:attribute:: CLRN
+      :value: 'clearance'
+
+
+
+   .. py:attribute:: ENFT
+      :value: 'enforcement'
+
+
+
+   .. py:attribute:: BOTH
+      :value: 'both'
+
+
+
+.. py:class:: UPPTestRegime
+
+   .. py:attribute:: resolution
+      :type:  INVResolution
+
+
+   .. py:attribute:: guppi_aggregator
+      :type:  mergeron.UPPAggrSelector
+
+
+   .. py:attribute:: divr_aggregator
+      :type:  mergeron.UPPAggrSelector | None
+
+
+.. py:class:: UPPTestsRaw
+
+   Container for arrays marking test failures and successes
+
+   A test success is a draw ("market") that meeets the
+   specified test criterion, and a test failure is
+   one that does not; test criteria are evaluated in
+   :func:`enforcement_stats.gen_upp_arrays`.
+
+
+   .. py:attribute:: guppi_test_simple
+      :type:  numpy.typing.NDArray[numpy.bool_]
+
+      True if GUPPI estimate meets criterion
+
+
+   .. py:attribute:: guppi_test_compound
+      :type:  numpy.typing.NDArray[numpy.bool_]
+
+      True if both GUPPI estimate and diversion ratio estimate
+      meet criterion
+
+
+   .. py:attribute:: cmcr_test
+      :type:  numpy.typing.NDArray[numpy.bool_]
+
+      True if CMCR estimate meets criterion
+
+
+   .. py:attribute:: ipr_test
+      :type:  numpy.typing.NDArray[numpy.bool_]
+
+      True if IPR (partial price-simulation) estimate meets criterion
+
+
+.. py:class:: UPPTestsCounts
+
+   Counts of markets resolved as specified
+
+   Resolution may be either :attr:`INVResolution.ENFT` or :attr:`INVResolution.CLRN`.
+
+
+   .. py:attribute:: by_firm_count
+      :type:  numpy.typing.NDArray[numpy.int64]
+
+
+   .. py:attribute:: by_delta
+      :type:  numpy.typing.NDArray[numpy.int64]
+
+
+   .. py:attribute:: by_conczone
+      :type:  numpy.typing.NDArray[numpy.int64]
+
+      Zones are "unoncentrated", "moderately concentrated", and "highly concentrated"
+
+
+.. py:class:: DataclassInstance
+
+   Bases: :py:obj:`Protocol`
+
+
+   Generic dataclass-instance
+
+

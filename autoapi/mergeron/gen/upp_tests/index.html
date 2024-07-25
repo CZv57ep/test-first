@@ -1,0 +1,1403 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.gen.upp_tests - mergeron 2024.739091.2</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-contents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.gen.upp_tests
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739091.2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1" type="checkbox" id="__nav_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html"><span class="md-ellipsis">mergeron</span></a>
+          
+            <label for="__nav_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1" type="checkbox" id="__nav_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html#subpackages"><span class="md-ellipsis">Subpackages</span></a>
+          
+            <label for="__nav_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Subpackages" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Subpackages</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>demo</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ext/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>ext</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_5" type="checkbox" id="__nav_1_1_1_5" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html"><span class="md-ellipsis">mergeron.<wbr>gen</span></a>
+          
+            <label for="__nav_1_1_1_5">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron.gen" data-md-level="4">
+        <label class="md-nav__title" for="__nav_1_1_1_5">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron.<wbr>gen</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_5_1" type="checkbox" id="__nav_1_1_1_5_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html#submodules"><span class="md-ellipsis">Submodules</span></a>
+          
+            <label for="__nav_1_1_1_5_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Submodules" data-md-level="5">
+        <label class="md-nav__title" for="__nav_1_1_1_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Submodules</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_generation/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../enforcement_stats/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>enforcement_<wbr>stats</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../market_sample/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>market_<wbr>sample</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests</span>
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.SaveData" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="mergeron.gen.upp_tests.SaveData (Python data)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>Save<wbr>Data</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs (Python class) — Bases: TypedDict" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>INVRESCnts<wbr>Args</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.upp_tests.INVRESCntsArgs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.sample_size" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.sample_size (Python attribute)" class="md-ellipsis">sample_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.seed_seq_list" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.seed_seq_list (Python attribute)" class="md-ellipsis">seed_<wbr>seq_<wbr>list</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.nthreads" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.nthreads (Python attribute)" class="md-ellipsis">nthreads</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.save_data_to_file" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.save_data_to_file (Python attribute)" class="md-ellipsis">save_<wbr>data_<wbr>to_<wbr>file</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.saved_array_name_suffix" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.saved_array_name_suffix (Python attribute)" class="md-ellipsis">saved_<wbr>array_<wbr>name_<wbr>suffix</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll (Python function) — A function to parallelize data-generation and testing" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>sim_<wbr>enf_<wbr>cnts_<wbr>ll</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.upp_tests.sim_enf_cnts_ll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._enf_parm_vec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll._enf_parm_vec (Python parameter) — Guidelines thresholds to test against" class="md-ellipsis">_<wbr>enf_<wbr>parm_<wbr>vec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._mkt_sample_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll._mkt_sample_spec (Python parameter) — Configuration to use for generating sample data to test" class="md-ellipsis">_<wbr>mkt_<wbr>sample_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._sim_test_regime" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll._sim_test_regime (Python parameter) — Configuration to use for testing" class="md-ellipsis">_<wbr>sim_<wbr>test_<wbr>regime</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.saved_array_name_suffix" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.saved_array_name_suffix (Python parameter) — Suffix to add to the array names in the HDF5 file" class="md-ellipsis">saved_<wbr>array_<wbr>name_<wbr>suffix</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.save_data_to_file" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.save_data_to_file (Python parameter) — Whether to save data to an HDF5 file, and where to save it" class="md-ellipsis">save_<wbr>data_<wbr>to_<wbr>file</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.sample_size" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.sample_size (Python parameter) — Number of draws to simulate" class="md-ellipsis">sample_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.seed_seq_list" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.seed_seq_list (Python parameter) — List of seed sequences, to assure independent samples in each thread" class="md-ellipsis">seed_<wbr>seq_<wbr>list</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.nthreads (Python parameter) — Number of parallel processes to use" class="md-ellipsis">nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.sim_enf_cnts (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>sim_<wbr>enf_<wbr>cnts</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.enf_cnts" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.enf_cnts (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>enf_<wbr>cnts</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.gen_upp_test_arrays (Python function) — Generate UPP tests arrays for given configuration and market sample" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>gen_<wbr>upp_<wbr>test_<wbr>arrays</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.upp_tests.gen_upp_test_arrays">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays._market_data" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.gen_upp_test_arrays._market_data (Python parameter) — market data sample" class="md-ellipsis">_<wbr>market_<wbr>data</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays._upp_test_parms" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.gen_upp_test_arrays._upp_test_parms (Python parameter) — guidelines thresholds for testing UPP and related statistics" class="md-ellipsis">_<wbr>upp_<wbr>test_<wbr>parms</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays._sim_test_regime" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.gen_upp_test_arrays._sim_test_regime (Python parameter) — configuration to use for generating UPP tests" class="md-ellipsis">_<wbr>sim_<wbr>test_<wbr>regime</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.initialize_hd5" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.initialize_hd5 (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>initialize_<wbr>hd5</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.save_data_to_hdf5" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.save_data_to_hdf5 (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>save_<wbr>data_<wbr>to_<wbr>hdf5</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.save_array_to_hdf5" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.save_array_to_hdf5 (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>save_<wbr>array_<wbr>to_<wbr>hdf5</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.SaveData" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="mergeron.gen.upp_tests.SaveData (Python data)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>Save<wbr>Data</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs (Python class) — Bases: TypedDict" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>INVRESCnts<wbr>Args</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.upp_tests.INVRESCntsArgs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.sample_size" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.sample_size (Python attribute)" class="md-ellipsis">sample_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.seed_seq_list" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.seed_seq_list (Python attribute)" class="md-ellipsis">seed_<wbr>seq_<wbr>list</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.nthreads" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.nthreads (Python attribute)" class="md-ellipsis">nthreads</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.save_data_to_file" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.save_data_to_file (Python attribute)" class="md-ellipsis">save_<wbr>data_<wbr>to_<wbr>file</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.INVRESCntsArgs.saved_array_name_suffix" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="mergeron.gen.upp_tests.INVRESCntsArgs.saved_array_name_suffix (Python attribute)" class="md-ellipsis">saved_<wbr>array_<wbr>name_<wbr>suffix</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll (Python function) — A function to parallelize data-generation and testing" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>sim_<wbr>enf_<wbr>cnts_<wbr>ll</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.upp_tests.sim_enf_cnts_ll">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._enf_parm_vec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll._enf_parm_vec (Python parameter) — Guidelines thresholds to test against" class="md-ellipsis">_<wbr>enf_<wbr>parm_<wbr>vec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._mkt_sample_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll._mkt_sample_spec (Python parameter) — Configuration to use for generating sample data to test" class="md-ellipsis">_<wbr>mkt_<wbr>sample_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._sim_test_regime" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll._sim_test_regime (Python parameter) — Configuration to use for testing" class="md-ellipsis">_<wbr>sim_<wbr>test_<wbr>regime</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.saved_array_name_suffix" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.saved_array_name_suffix (Python parameter) — Suffix to add to the array names in the HDF5 file" class="md-ellipsis">saved_<wbr>array_<wbr>name_<wbr>suffix</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.save_data_to_file" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.save_data_to_file (Python parameter) — Whether to save data to an HDF5 file, and where to save it" class="md-ellipsis">save_<wbr>data_<wbr>to_<wbr>file</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.sample_size" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.sample_size (Python parameter) — Number of draws to simulate" class="md-ellipsis">sample_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.seed_seq_list" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.seed_seq_list (Python parameter) — List of seed sequences, to assure independent samples in each thread" class="md-ellipsis">seed_<wbr>seq_<wbr>list</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.sim_enf_cnts_ll.nthreads (Python parameter) — Number of parallel processes to use" class="md-ellipsis">nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts_ll-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.sim_enf_cnts" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.sim_enf_cnts (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>sim_<wbr>enf_<wbr>cnts</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.enf_cnts" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.enf_cnts (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>enf_<wbr>cnts</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.gen_upp_test_arrays (Python function) — Generate UPP tests arrays for given configuration and market sample" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>gen_<wbr>upp_<wbr>test_<wbr>arrays</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.upp_tests.gen_upp_test_arrays">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays._market_data" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.gen_upp_test_arrays._market_data (Python parameter) — market data sample" class="md-ellipsis">_<wbr>market_<wbr>data</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays._upp_test_parms" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.gen_upp_test_arrays._upp_test_parms (Python parameter) — guidelines thresholds for testing UPP and related statistics" class="md-ellipsis">_<wbr>upp_<wbr>test_<wbr>parms</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.gen_upp_test_arrays._sim_test_regime" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.upp_tests.gen_upp_test_arrays._sim_test_regime (Python parameter) — configuration to use for generating UPP tests" class="md-ellipsis">_<wbr>sim_<wbr>test_<wbr>regime</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.initialize_hd5" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.initialize_hd5 (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>initialize_<wbr>hd5</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.save_data_to_hdf5" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.save_data_to_hdf5 (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>save_<wbr>data_<wbr>to_<wbr>hdf5</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.upp_tests.save_array_to_hdf5" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.upp_tests.save_array_to_hdf5 (Python function)" class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests.<wbr>save_<wbr>array_<wbr>to_<wbr>hdf5</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1 id="module-mergeron.gen.upp_tests"><span id="mergeron-gen-upp-tests"></span>mergeron.gen.upp_tests<a class="headerlink" href="#module-mergeron.gen.upp_tests" title="Link to this heading">¶</a></h1>
+<p>Methods to compute intrinsic clearance rates and intrinsic enforcement rates
+from generated market data.</p>
+<h2 id="module-contents">Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.upp_tests.SaveData">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.upp_tests.</span></span><span class="sig-name descname"><span class="pre">SaveData</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">TypeAlias</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Literal</span><span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">],</span> <span class="n">ptb</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">ptb</span><span class="o">.</span><span class="n">Group</span><span class="p">]</span></code><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#SaveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.SaveData" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.gen.upp_tests.INVRESCntsArgs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mergeron.gen.upp_tests.</span></span><span class="sig-name descname"><span class="pre">INVRESCntsArgs</span></span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#INVRESCntsArgs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.INVRESCntsArgs" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">TypedDict</span></code></p>
+<p>Keyword arguments of function, <code class="code docutils literal notranslate"><span class="pre">sim_enf_cnts</span></code></p>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.gen.upp_tests.INVRESCntsArgs.sample_size">
+<span class="sig-name descname"><span class="pre">sample_size</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">int</span></span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#INVRESCntsArgs.sample_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.INVRESCntsArgs.sample_size" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.gen.upp_tests.INVRESCntsArgs.seed_seq_list">
+<span class="sig-name descname"><span class="pre">seed_seq_list</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.random.SeedSequence</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#INVRESCntsArgs.seed_seq_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.INVRESCntsArgs.seed_seq_list" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.gen.upp_tests.INVRESCntsArgs.nthreads">
+<span class="sig-name descname"><span class="pre">nthreads</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">int</span></span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#INVRESCntsArgs.nthreads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.INVRESCntsArgs.nthreads" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.gen.upp_tests.INVRESCntsArgs.save_data_to_file">
+<span class="sig-name descname"><span class="pre">save_data_to_file</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">SaveData</span></span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#INVRESCntsArgs.save_data_to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.INVRESCntsArgs.save_data_to_file" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="mergeron.gen.upp_tests.INVRESCntsArgs.saved_array_name_suffix">
+<span class="sig-name descname"><span class="pre">saved_array_name_suffix</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">str</span></span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#INVRESCntsArgs.saved_array_name_suffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.INVRESCntsArgs.saved_array_name_suffix" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.upp_tests.sim_enf_cnts_ll">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.upp_tests.</span></span><span class="sig-name descname"><span class="pre">sim_enf_cnts_ll</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._mkt_sample_spec" title="mergeron.gen.upp_tests.sim_enf_cnts_ll._mkt_sample_spec (Python parameter) — Configuration to use for generating sample data to test"><span class="n"><span class="pre">_mkt_sample_spec</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._enf_parm_vec" title="mergeron.gen.upp_tests.sim_enf_cnts_ll._enf_parm_vec (Python parameter) — Guidelines thresholds to test against"><span class="n"><span class="pre">_enf_parm_vec</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._sim_test_regime" title="mergeron.gen.upp_tests.sim_enf_cnts_ll._sim_test_regime (Python parameter) — Configuration to use for testing"><span class="n"><span class="pre">_sim_test_regime</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.sample_size" title="mergeron.gen.upp_tests.sim_enf_cnts_ll.sample_size (Python parameter) — Number of draws to simulate"><span class="n"><span class="pre">sample_size</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">10</span><span class="o">**</span><span class="mi">6</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.seed_seq_list" title="mergeron.gen.upp_tests.sim_enf_cnts_ll.seed_seq_list (Python parameter) — List of seed sequences, to assure independent samples in each thread"><span class="n"><span class="pre">seed_seq_list</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.nthreads" title="mergeron.gen.upp_tests.sim_enf_cnts_ll.nthreads (Python parameter) — Number of parallel processes to use"><span class="n"><span class="pre">nthreads</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">16</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.save_data_to_file" title="mergeron.gen.upp_tests.sim_enf_cnts_ll.save_data_to_file (Python parameter) — Whether to save data to an HDF5 file, and where to save it"><span class="n"><span class="pre">save_data_to_file</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.saved_array_name_suffix" title="mergeron.gen.upp_tests.sim_enf_cnts_ll.saved_array_name_suffix (Python parameter) — Suffix to add to the array names in the HDF5 file"><span class="n"><span class="pre">saved_array_name_suffix</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;&#39;</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#sim_enf_cnts_ll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll" title="Link to this definition">¶</a></dt>
+<dd><p>A function to parallelize data-generation and testing</p>
+<p>The parameters <cite>_sim_enf_cnts_kwargs</cite> are passed unaltered to
+the parent function, <cite>sim_enf_cnts()</cite>, except that, if provided,
+<cite>seed_seq_list</cite> is used to spawn a seed sequence for each thread,
+to assure independent samples in each thread, and <cite>nthreads</cite> defines
+the number of parallel processes used. The number of draws in
+each thread may be tuned, by trial and error, to the amount of
+memory (RAM) available.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.upp_tests.sim_enf_cnts_ll-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.upp_tests.sim_enf_cnts_ll._enf_parm_vec"><span class="sig-name descname">_enf_parm_vec</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../../core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds" title="mergeron.core.guidelines_boundaries.HMGThresholds (Python class) — delta : float      fc : float      rec : float      guppi : float      divr : float      cmcr : float      ipr : float">mergeron.core.guidelines_boundaries.HMGThresholds</a></span></span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._enf_parm_vec" title="Permalink to this definition">¶</a></dt><dd><p>Guidelines thresholds to test against</p>
+</dd>
+<dt id="mergeron.gen.upp_tests.sim_enf_cnts_ll._mkt_sample_spec"><span class="sig-name descname">_mkt_sample_spec</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.MarketSpec" title="mergeron.gen.MarketSpec (Python class) — Parameter specification for market data generation.">mergeron.gen.MarketSpec</a></span></span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._mkt_sample_spec" title="Permalink to this definition">¶</a></dt><dd><p>Configuration to use for generating sample data to test</p>
+</dd>
+<dt id="mergeron.gen.upp_tests.sim_enf_cnts_ll._sim_test_regime"><span class="sig-name descname">_sim_test_regime</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.UPPTestRegime" title="mergeron.gen.UPPTestRegime (Python class) — resolution : INVResolution      guppi_aggregator : mergeron.UPPAggrSelector      divr_aggregator : mergeron.UPPAggrSelector | None">mergeron.gen.UPPTestRegime</a></span></span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll._sim_test_regime" title="Permalink to this definition">¶</a></dt><dd><p>Configuration to use for testing</p>
+</dd>
+<dt id="mergeron.gen.upp_tests.sim_enf_cnts_ll.saved_array_name_suffix"><span class="sig-name descname">saved_array_name_suffix</span><span class="p"> : </span><span class="desctype"><span class="desctype">str</span></span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.saved_array_name_suffix" title="Permalink to this definition">¶</a></dt><dd><p>Suffix to add to the array names in the HDF5 file</p>
+</dd>
+<dt id="mergeron.gen.upp_tests.sim_enf_cnts_ll.save_data_to_file"><span class="sig-name descname">save_data_to_file</span><span class="p"> : </span><span class="desctype"><span class="desctype">SaveData</span></span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.save_data_to_file" title="Permalink to this definition">¶</a></dt><dd><p>Whether to save data to an HDF5 file, and where to save it</p>
+</dd>
+<dt id="mergeron.gen.upp_tests.sim_enf_cnts_ll.sample_size"><span class="sig-name descname">sample_size</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.sample_size" title="Permalink to this definition">¶</a></dt><dd><p>Number of draws to simulate</p>
+</dd>
+<dt id="mergeron.gen.upp_tests.sim_enf_cnts_ll.seed_seq_list"><span class="sig-name descname">seed_seq_list</span><span class="p"> : </span><span class="desctype"><span class="desctype">list[numpy.random.SeedSequence] | None</span></span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.seed_seq_list" title="Permalink to this definition">¶</a></dt><dd><p>List of seed sequences, to assure independent samples in each thread</p>
+</dd>
+<dt id="mergeron.gen.upp_tests.sim_enf_cnts_ll.nthreads"><span class="sig-name descname">nthreads</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll.nthreads" title="Permalink to this definition">¶</a></dt><dd><p>Number of parallel processes to use</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.gen.upp_tests.sim_enf_cnts_ll-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Arrays of UPPTestCounts</p>
+</dd>
+<dt class="field-odd" id="mergeron.gen.upp_tests.sim_enf_cnts_ll-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts_ll-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../index.html#mergeron.gen.UPPTestsCounts" title="mergeron.gen.UPPTestsCounts (Python class) — Counts of markets resolved as specified">mergeron.gen.UPPTestsCounts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.upp_tests.sim_enf_cnts">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.upp_tests.</span></span><span class="sig-name descname"><span class="pre">sim_enf_cnts</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts" title="mergeron.gen.upp_tests.sim_enf_cnts._mkt_sample_spec (Python parameter)"><span class="n"><span class="pre">_mkt_sample_spec</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts" title="mergeron.gen.upp_tests.sim_enf_cnts._upp_test_parms (Python parameter)"><span class="n"><span class="pre">_upp_test_parms</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts" title="mergeron.gen.upp_tests.sim_enf_cnts._sim_test_regime (Python parameter)"><span class="n"><span class="pre">_sim_test_regime</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts" title="mergeron.gen.upp_tests.sim_enf_cnts.sample_size (Python parameter)"><span class="n"><span class="pre">sample_size</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">10</span><span class="o">**</span><span class="mi">6</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts" title="mergeron.gen.upp_tests.sim_enf_cnts.seed_seq_list (Python parameter)"><span class="n"><span class="pre">seed_seq_list</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts" title="mergeron.gen.upp_tests.sim_enf_cnts.nthreads (Python parameter)"><span class="n"><span class="pre">nthreads</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">16</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts" title="mergeron.gen.upp_tests.sim_enf_cnts.save_data_to_file (Python parameter)"><span class="n"><span class="pre">save_data_to_file</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.sim_enf_cnts" title="mergeron.gen.upp_tests.sim_enf_cnts.saved_array_name_suffix (Python parameter)"><span class="n"><span class="pre">saved_array_name_suffix</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;&#39;</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#sim_enf_cnts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.sim_enf_cnts" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.upp_tests.enf_cnts">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.upp_tests.</span></span><span class="sig-name descname"><span class="pre">enf_cnts</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.enf_cnts" title="mergeron.gen.upp_tests.enf_cnts._market_data_sample (Python parameter)"><span class="n"><span class="pre">_market_data_sample</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.enf_cnts" title="mergeron.gen.upp_tests.enf_cnts._upp_test_parms (Python parameter)"><span class="n"><span class="pre">_upp_test_parms</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.enf_cnts" title="mergeron.gen.upp_tests.enf_cnts._upp_test_regime (Python parameter)"><span class="n"><span class="pre">_upp_test_regime</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#enf_cnts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.enf_cnts" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.upp_tests.gen_upp_test_arrays">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.upp_tests.</span></span><span class="sig-name descname"><span class="pre">gen_upp_test_arrays</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.gen_upp_test_arrays._market_data" title="mergeron.gen.upp_tests.gen_upp_test_arrays._market_data (Python parameter) — market data sample"><span class="n"><span class="pre">_market_data</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.gen_upp_test_arrays._upp_test_parms" title="mergeron.gen.upp_tests.gen_upp_test_arrays._upp_test_parms (Python parameter) — guidelines thresholds for testing UPP and related statistics"><span class="n"><span class="pre">_upp_test_parms</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.gen_upp_test_arrays._sim_test_regime" title="mergeron.gen.upp_tests.gen_upp_test_arrays._sim_test_regime (Python parameter) — configuration to use for generating UPP tests"><span class="n"><span class="pre">_sim_test_regime</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#gen_upp_test_arrays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.gen_upp_test_arrays" title="Link to this definition">¶</a></dt>
+<dd><p>Generate UPP tests arrays for given configuration and market sample</p>
+<p>Given a standards vector, market</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.upp_tests.gen_upp_test_arrays-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.upp_tests.gen_upp_test_arrays-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.upp_tests.gen_upp_test_arrays._market_data"><span class="sig-name descname">_market_data</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.MarketDataSample" title="mergeron.gen.MarketDataSample (Python class) — Container for generated markets data sample.">mergeron.gen.MarketDataSample</a></span></span><a class="headerlink" href="#mergeron.gen.upp_tests.gen_upp_test_arrays._market_data" title="Permalink to this definition">¶</a></dt><dd><p>market data sample</p>
+</dd>
+<dt id="mergeron.gen.upp_tests.gen_upp_test_arrays._upp_test_parms"><span class="sig-name descname">_upp_test_parms</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../../core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds" title="mergeron.core.guidelines_boundaries.HMGThresholds (Python class) — delta : float      fc : float      rec : float      guppi : float      divr : float      cmcr : float      ipr : float">mergeron.core.guidelines_boundaries.HMGThresholds</a></span></span><a class="headerlink" href="#mergeron.gen.upp_tests.gen_upp_test_arrays._upp_test_parms" title="Permalink to this definition">¶</a></dt><dd><p>guidelines thresholds for testing UPP and related statistics</p>
+</dd>
+<dt id="mergeron.gen.upp_tests.gen_upp_test_arrays._sim_test_regime"><span class="sig-name descname">_sim_test_regime</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.UPPTestRegime" title="mergeron.gen.UPPTestRegime (Python class) — resolution : INVResolution      guppi_aggregator : mergeron.UPPAggrSelector      divr_aggregator : mergeron.UPPAggrSelector | None">mergeron.gen.UPPTestRegime</a></span></span><a class="headerlink" href="#mergeron.gen.upp_tests.gen_upp_test_arrays._sim_test_regime" title="Permalink to this definition">¶</a></dt><dd><p>configuration to use for generating UPP tests</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.upp_tests.initialize_hd5">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.upp_tests.</span></span><span class="sig-name descname"><span class="pre">initialize_hd5</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.initialize_hd5" title="mergeron.gen.upp_tests.initialize_hd5._h5_path (Python parameter)"><span class="n"><span class="pre">_h5_path</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.initialize_hd5" title="mergeron.gen.upp_tests.initialize_hd5._hmg_pub_year (Python parameter)"><span class="n"><span class="pre">_hmg_pub_year</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.initialize_hd5" title="mergeron.gen.upp_tests.initialize_hd5._test_regime (Python parameter)"><span class="n"><span class="pre">_test_regime</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#initialize_hd5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.initialize_hd5" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.upp_tests.save_data_to_hdf5">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.upp_tests.</span></span><span class="sig-name descname"><span class="pre">save_data_to_hdf5</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.save_data_to_hdf5" title="mergeron.gen.upp_tests.save_data_to_hdf5._dclass (Python parameter)"><span class="n"><span class="pre">_dclass</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.save_data_to_hdf5" title="mergeron.gen.upp_tests.save_data_to_hdf5.saved_array_name_suffix (Python parameter)"><span class="n"><span class="pre">saved_array_name_suffix</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.save_data_to_hdf5" title="mergeron.gen.upp_tests.save_data_to_hdf5.excluded_attrs (Python parameter)"><span class="n"><span class="pre">excluded_attrs</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="p">()</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.save_data_to_hdf5" title="mergeron.gen.upp_tests.save_data_to_hdf5.save_data_to_file (Python parameter)"><span class="n"><span class="pre">save_data_to_file</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#save_data_to_hdf5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.save_data_to_hdf5" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.upp_tests.save_array_to_hdf5">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.upp_tests.</span></span><span class="sig-name descname"><span class="pre">save_array_to_hdf5</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.save_array_to_hdf5" title="mergeron.gen.upp_tests.save_array_to_hdf5._array_obj (Python parameter)"><span class="n"><span class="pre">_array_obj</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.save_array_to_hdf5" title="mergeron.gen.upp_tests.save_array_to_hdf5._array_name (Python parameter)"><span class="n"><span class="pre">_array_name</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.save_array_to_hdf5" title="mergeron.gen.upp_tests.save_array_to_hdf5._h5_group (Python parameter)"><span class="n"><span class="pre">_h5_group</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.save_array_to_hdf5" title="mergeron.gen.upp_tests.save_array_to_hdf5._h5_file (Python parameter)"><span class="n"><span class="pre">_h5_file</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.upp_tests.save_array_to_hdf5" title="mergeron.gen.upp_tests.save_array_to_hdf5.saved_array_name_suffix (Python parameter)"><span class="n"><span class="pre">saved_array_name_suffix</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/upp_tests.html#save_array_to_hdf5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.upp_tests.save_array_to_hdf5" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../market_sample/index.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: mergeron.gen.market_sample" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              mergeron.gen.market_sample
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../../../license.html" class="md-footer__link md-footer__link--next" aria-label="Next: License" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              License
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

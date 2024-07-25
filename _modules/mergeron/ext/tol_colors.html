@@ -1,0 +1,1325 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.ext.tol_colors - mergeron 2024.739091.2</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.ext.tol_colors
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739091.2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../autoapi/mergeron/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1>Source code for mergeron.ext.tol_colors</h1><div class="highlight"><pre>
+<span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Definition of colour schemes for lines and maps that also work for colour-blind</span>
+<span class="sd">people. See https://personal.sron.nl/~pault/ for background information and</span>
+<span class="sd">best usage of the schemes.</span>
+
+<span class="sd">Copyright (c) 2022, Paul Tol</span>
+<span class="sd">All rights reserved.</span>
+
+<span class="sd">License:  Standard 3-clause BSD</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;2022.10&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LinearSegmentedColormap</span><span class="p">,</span> <span class="n">to_rgba_array</span>
+
+
+<div class="viewcode-block" id="discretemap">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.discretemap">[docs]</a>
+<span class="k">def</span> <span class="nf">discretemap</span><span class="p">(</span><span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hexclrs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">LinearSegmentedColormap</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Produce a colormap from a list of discrete colors without interpolation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">clrs</span> <span class="o">=</span> <span class="n">to_rgba_array</span><span class="p">(</span><span class="n">hexclrs</span><span class="p">)</span>
+    <span class="n">clrs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">clrs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">clrs</span><span class="p">,</span> <span class="n">clrs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">cdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
+        <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">ki</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">)):</span>
+        <span class="n">cdict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># type: ignore</span>
+            <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clrs</span><span class="p">)</span> <span class="o">-</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">clrs</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">ki</span><span class="p">],</span> <span class="n">clrs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ki</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clrs</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="k">return</span> <span class="n">LinearSegmentedColormap</span><span class="p">(</span><span class="n">colormap</span><span class="p">,</span> <span class="n">cdict</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="TOLcmaps">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.TOLcmaps">[docs]</a>
+<span class="k">class</span> <span class="nc">TOLcmaps</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Class TOLcmaps definition.</span>
+
+<span class="sd">        Attributes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cmap</span>
+<span class="sd">            A matploltib colormap</span>
+
+<span class="sd">        cname</span>
+<span class="sd">            Colormap name</span>
+
+<span class="sd">        namelist</span>
+<span class="sd">            A list of colormap names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># self.cmap: LinearSegmentedColormap | None = None</span>
+<div class="viewcode-block" id="TOLcmaps.cname">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.TOLcmaps.cname">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="TOLcmaps.namelist">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.TOLcmaps.namelist">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">namelist</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;sunset_discrete&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sunset&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nightfall_discrete&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nightfall&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;BuRd_discrete&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;BuRd&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;PRGn_discrete&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;PRGn&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;YlOrBr_discrete&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;YlOrBr&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;WhOrBr&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;iridescent&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rainbow_PuRd&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rainbow_PuBr&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rainbow_WhRd&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rainbow_WhBr&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rainbow_discrete&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TOLcmaps.funcdict">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.TOLcmaps.funcdict">[docs]</a>
+        <span class="bp">self</span><span class="o">.</span><span class="n">funcdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="kc">None</span> <span class="o">|</span> <span class="nb">int</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="nb">zip</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">namelist</span><span class="p">,</span>
+                    <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__sunset_discrete</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__sunset</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__nightfall_discrete</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__nightfall</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__BuRd_discrete</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__BuRd</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__PRGn_discrete</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__PRGn</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__YlOrBr_discrete</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__YlOrBr</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__WhOrBr</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__iridescent</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__rainbow_PuRd</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__rainbow_PuBr</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__rainbow_WhRd</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__rainbow_WhBr</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__rainbow_discrete</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__sunset_discrete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;sunset_discrete&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#364B9A&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4A7BB7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#6EA6CD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#98CAE1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#C2E4EF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EAECCC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FEDA8B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FDB366&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F67E4B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DD3D2D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A50026&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">discretemap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__sunset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;sunset&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#364B9A&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4A7BB7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#6EA6CD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#98CAE1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#C2E4EF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EAECCC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FEDA8B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FDB366&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F67E4B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DD3D2D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A50026&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__nightfall_discrete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;nighfall_discrete&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#125A56&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#238F9D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#60BCE9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#C6DBED&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#ECEADA&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F9D576&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FD9A44&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E94C1F&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A01813&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">discretemap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__nightfall</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;nightfall&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#125A56&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#00767B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#238F9D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#42A7C6&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#60BCE9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9DCCEF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#C6DBED&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DEE6E7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#ECEADA&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F0E6B2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F9D576&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FFB954&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FD9A44&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F57634&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E94C1F&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D11807&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A01813&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__BuRd_discrete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;BuRd_discrete&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#2166AC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4393C3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#92C5DE&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D1E5F0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F7F7F7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FDDBC7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F4A582&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D6604D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#B2182B&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">discretemap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFEE99&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__BuRd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;BuRd&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#2166AC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4393C3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#92C5DE&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D1E5F0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F7F7F7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FDDBC7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F4A582&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D6604D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#B2182B&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFEE99&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__PRGn_discrete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;PRGn_discrete&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#762A83&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9970AB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#C2A5CF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E7D4E8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F7F7F7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D9F0D3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#ACD39E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#5AAE61&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#1B7837&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">discretemap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFEE99&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__PRGn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;PRGn&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#762A83&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9970AB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#C2A5CF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E7D4E8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F7F7F7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D9F0D3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#ACD39E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#5AAE61&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#1B7837&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFEE99&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__YlOrBr_discrete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;YlOrBr_discrete&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#FFFFE5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FFF7BC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FEE391&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FEC44F&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FB9A29&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EC7014&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#CC4C02&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#993404&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#662506&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">discretemap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#888888&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__YlOrBr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;YlOrBr&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#FFFFE5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FFF7BC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FEE391&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FEC44F&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FB9A29&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EC7014&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#CC4C02&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#993404&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#662506&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#888888&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__WhOrBr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;WhOrBr&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#FFFFFF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FFF7BC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FEE391&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FEC44F&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FB9A29&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EC7014&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#CC4C02&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#993404&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#662506&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#888888&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iridescent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;iridescent&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#FEFBE9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FCF7D5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F5F3C1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EAF0B5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDECBF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D0E7CA&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#C2E3D2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#B5DDD8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A8D8DC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9BD2E1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#8DCBE4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#81C4E7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#7BBCE7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#7EB2E4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#88A5DD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9398D2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9B8AC4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9D7DB2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9A709E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#906388&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#805770&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#684957&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#46353A&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#999999&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__rainbow_PuRd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;rainbow_PuRd&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#6F4C9B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#6059A9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#5568B8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4E79C5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4D8AC6&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4E96BC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#549EB3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#59A5A9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#60AB9E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#69B190&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#77B77D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#8CBC68&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A6BE54&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#BEBC48&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D1B541&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDAA3C&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E49C39&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E78C35&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E67932&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E4632D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DF4828&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DA2222&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__rainbow_PuBr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;rainbow_PuBr&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#6F4C9B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#6059A9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#5568B8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4E79C5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4D8AC6&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4E96BC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#549EB3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#59A5A9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#60AB9E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#69B190&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#77B77D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#8CBC68&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A6BE54&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#BEBC48&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D1B541&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDAA3C&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E49C39&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E78C35&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E67932&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E4632D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DF4828&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DA2222&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#B8221E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#95211B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#721E17&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#521A13&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__rainbow_WhRd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;rainbow_WhRd&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#E8ECFB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDD8EF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D1C1E1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#C3A8D1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#B58FC2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A778B4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9B62A7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#8C4E99&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#6F4C9B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#6059A9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#5568B8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4E79C5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4D8AC6&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4E96BC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#549EB3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#59A5A9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#60AB9E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#69B190&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#77B77D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#8CBC68&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A6BE54&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#BEBC48&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D1B541&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDAA3C&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E49C39&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E78C35&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E67932&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E4632D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DF4828&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DA2222&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#666666&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__rainbow_WhBr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;rainbow_WhBr&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#E8ECFB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDD8EF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D1C1E1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#C3A8D1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#B58FC2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A778B4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#9B62A7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#8C4E99&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#6F4C9B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#6059A9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#5568B8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4E79C5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4D8AC6&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4E96BC&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#549EB3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#59A5A9&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#60AB9E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#69B190&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#77B77D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#8CBC68&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A6BE54&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#BEBC48&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D1B541&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDAA3C&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E49C39&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E78C35&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E67932&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E4632D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DF4828&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DA2222&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#B8221E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#95211B&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#721E17&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#521A13&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="n">clrs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#666666&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__rainbow_discrete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lut</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define colormap &#39;rainbow_discrete&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#E8ECFB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D9CCE3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#D1BBD7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#CAACCB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#BA8DB4&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#AE76A3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#AA6F9E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#994F88&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#882E72&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#1965B0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#437DBF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#5289C7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#6195CF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#7BAFDE&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#4EB265&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#90C987&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#CAE0AB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F7F056&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F7CB45&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F6C141&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F4A736&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#F1932D&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EE8026&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E8601C&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#E65518&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DC050C&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#A5170E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#72190E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#42150A&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="mi">9</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">],</span>
+            <span class="p">[</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="mi">3</span><span class="p">,</span>
+                <span class="mi">4</span><span class="p">,</span>
+                <span class="mi">6</span><span class="p">,</span>
+                <span class="mi">7</span><span class="p">,</span>
+                <span class="mi">8</span><span class="p">,</span>
+                <span class="mi">9</span><span class="p">,</span>
+                <span class="mi">10</span><span class="p">,</span>
+                <span class="mi">12</span><span class="p">,</span>
+                <span class="mi">13</span><span class="p">,</span>
+                <span class="mi">14</span><span class="p">,</span>
+                <span class="mi">15</span><span class="p">,</span>
+                <span class="mi">16</span><span class="p">,</span>
+                <span class="mi">17</span><span class="p">,</span>
+                <span class="mi">18</span><span class="p">,</span>
+                <span class="mi">20</span><span class="p">,</span>
+                <span class="mi">22</span><span class="p">,</span>
+                <span class="mi">24</span><span class="p">,</span>
+                <span class="mi">25</span><span class="p">,</span>
+                <span class="mi">26</span><span class="p">,</span>
+                <span class="mi">27</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="mi">3</span><span class="p">,</span>
+                <span class="mi">4</span><span class="p">,</span>
+                <span class="mi">6</span><span class="p">,</span>
+                <span class="mi">7</span><span class="p">,</span>
+                <span class="mi">8</span><span class="p">,</span>
+                <span class="mi">9</span><span class="p">,</span>
+                <span class="mi">10</span><span class="p">,</span>
+                <span class="mi">12</span><span class="p">,</span>
+                <span class="mi">13</span><span class="p">,</span>
+                <span class="mi">14</span><span class="p">,</span>
+                <span class="mi">15</span><span class="p">,</span>
+                <span class="mi">16</span><span class="p">,</span>
+                <span class="mi">17</span><span class="p">,</span>
+                <span class="mi">18</span><span class="p">,</span>
+                <span class="mi">20</span><span class="p">,</span>
+                <span class="mi">22</span><span class="p">,</span>
+                <span class="mi">24</span><span class="p">,</span>
+                <span class="mi">25</span><span class="p">,</span>
+                <span class="mi">26</span><span class="p">,</span>
+                <span class="mi">27</span><span class="p">,</span>
+                <span class="mi">28</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="mi">3</span><span class="p">,</span>
+                <span class="mi">4</span><span class="p">,</span>
+                <span class="mi">6</span><span class="p">,</span>
+                <span class="mi">7</span><span class="p">,</span>
+                <span class="mi">8</span><span class="p">,</span>
+                <span class="mi">9</span><span class="p">,</span>
+                <span class="mi">10</span><span class="p">,</span>
+                <span class="mi">12</span><span class="p">,</span>
+                <span class="mi">13</span><span class="p">,</span>
+                <span class="mi">14</span><span class="p">,</span>
+                <span class="mi">15</span><span class="p">,</span>
+                <span class="mi">16</span><span class="p">,</span>
+                <span class="mi">17</span><span class="p">,</span>
+                <span class="mi">18</span><span class="p">,</span>
+                <span class="mi">20</span><span class="p">,</span>
+                <span class="mi">22</span><span class="p">,</span>
+                <span class="mi">24</span><span class="p">,</span>
+                <span class="mi">25</span><span class="p">,</span>
+                <span class="mi">26</span><span class="p">,</span>
+                <span class="mi">27</span><span class="p">,</span>
+                <span class="mi">28</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">lut</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">lut</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">lut</span> <span class="o">&gt;</span> <span class="mi">23</span><span class="p">:</span>
+            <span class="n">lut</span> <span class="o">=</span> <span class="mi">22</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">discretemap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cname</span><span class="p">,</span> <span class="p">[</span><span class="n">clrs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indexes</span><span class="p">[</span><span class="n">lut</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]])</span>
+        <span class="k">if</span> <span class="n">lut</span> <span class="o">==</span> <span class="mi">23</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#777777&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TOLcmaps.show">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.TOLcmaps.show">[docs]</a>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List names of defined colormaps.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">namelist</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="TOLcmaps.get">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.TOLcmaps.get">[docs]</a>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">cname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;rainbow_PuRd&quot;</span><span class="p">,</span> <span class="n">lut</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinearSegmentedColormap</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return requested colormap, default is &#39;rainbow_PuRd&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cname</span> <span class="o">=</span> <span class="n">cname</span>
+        <span class="k">if</span> <span class="n">cname</span> <span class="o">==</span> <span class="s2">&quot;rainbow_discrete&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__rainbow_discrete</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">funcdict</span><span class="p">[</span><span class="n">cname</span><span class="p">]()</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="tol_cmap">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.tol_cmap">[docs]</a>
+<span class="k">def</span> <span class="nf">tol_cmap</span><span class="p">(</span>
+    <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">lut</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">LinearSegmentedColormap</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Continuous and discrete color sets for ordered data.</span>
+
+<span class="sd">    Return a matplotlib colormap.</span>
+<span class="sd">    Parameter lut is ignored for all colormaps except &#39;rainbow_discrete&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">TOLcmaps</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">colormap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">namelist</span>
+    <span class="k">if</span> <span class="n">colormap</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">namelist</span><span class="p">:</span>
+        <span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;rainbow_PuRd&quot;</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;*** Warning: requested colormap not defined,&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;known colormaps are </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">namelist</span><span class="p">),</span>  <span class="c1"># noqa: UP032</span>
+            <span class="s2">&quot;Using </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">colormap</span><span class="p">),</span>  <span class="c1"># noqa: UP032</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">colormap</span><span class="p">,</span> <span class="n">lut</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Bcset">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.Bcset">[docs]</a>
+<span class="n">Bcset</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Bcset&quot;</span><span class="p">,</span> <span class="s2">&quot;blue red green yellow cyan purple grey black&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Hcset">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.Hcset">[docs]</a>
+<span class="n">Hcset</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Hcset&quot;</span><span class="p">,</span> <span class="s2">&quot;blue yellow red black&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Vcset">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.Vcset">[docs]</a>
+<span class="n">Vcset</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Vcset&quot;</span><span class="p">,</span> <span class="s2">&quot;orange blue cyan magenta red teal grey black&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Muset">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.Muset">[docs]</a>
+<span class="n">Muset</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">&quot;Muset&quot;</span><span class="p">,</span> <span class="s2">&quot;rose indigo sand green cyan wine teal olive purple pale_grey black&quot;</span>
+<span class="p">)</span></div>
+
+<div class="viewcode-block" id="Mcset">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.Mcset">[docs]</a>
+<span class="n">Mcset</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">&quot;Mcset&quot;</span><span class="p">,</span> <span class="s2">&quot;light_blue dark_blue light_yellow dark_red dark_yellow light_red black&quot;</span>
+<span class="p">)</span></div>
+
+<div class="viewcode-block" id="Lcset">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.Lcset">[docs]</a>
+<span class="n">Lcset</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">&quot;Lcset&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;light_blue orange light_yellow pink light_cyan mint pear olive pale_grey black&quot;</span><span class="p">,</span>
+<span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="tol_cset">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.tol_cset">[docs]</a>
+<span class="k">def</span> <span class="nf">tol_cset</span><span class="p">(</span>  <span class="c1"># noqa: PLR0911</span>
+    <span class="n">colorset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="n">Bcset</span> <span class="o">|</span> <span class="n">Hcset</span> <span class="o">|</span> <span class="n">Vcset</span> <span class="o">|</span> <span class="n">Muset</span> <span class="o">|</span> <span class="n">Mcset</span> <span class="o">|</span> <span class="n">Lcset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Discrete color sets for qualitative data.</span>
+
+<span class="sd">    Define a namedtuple instance with the colors.</span>
+<span class="sd">    Examples for: cset = tol_cset(&lt;scheme&gt;)</span>
+<span class="sd">    - cset.red and cset[1] give the same color (in default &#39;bright&#39; colorset)</span>
+<span class="sd">    - cset._fields gives a tuple with all color names</span>
+<span class="sd">    - list(cset) gives a list with all colors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">namelist</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;bright&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;high-contrast&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;vibrant&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;muted&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;medium-contrast&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;light&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">Bcinst</span> <span class="o">=</span> <span class="n">Bcset</span><span class="p">(</span>
+        <span class="s2">&quot;#4477AA&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#EE6677&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#228833&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#CCBB44&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#66CCEE&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#AA3377&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#BBBBBB&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#000000&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">colorset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">namelist</span>
+
+    <span class="k">elif</span> <span class="n">colorset</span> <span class="o">==</span> <span class="s2">&quot;bright&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Bcinst</span>
+
+    <span class="k">elif</span> <span class="n">colorset</span> <span class="o">==</span> <span class="s2">&quot;high-contrast&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Hcset</span><span class="p">(</span><span class="s2">&quot;#004488&quot;</span><span class="p">,</span> <span class="s2">&quot;#DDAA33&quot;</span><span class="p">,</span> <span class="s2">&quot;#BB5566&quot;</span><span class="p">,</span> <span class="s2">&quot;#000000&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">colorset</span> <span class="o">==</span> <span class="s2">&quot;vibrant&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Vcset</span><span class="p">(</span>
+            <span class="s2">&quot;#EE7733&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#0077BB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#33BBEE&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EE3377&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#CC3311&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#009988&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#BBBBBB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#000000&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">colorset</span> <span class="o">==</span> <span class="s2">&quot;muted&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Muset</span><span class="p">(</span>
+            <span class="s2">&quot;#CC6677&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#332288&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDCC77&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#117733&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#88CCEE&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#882255&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#44AA99&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#999933&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#AA4499&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDDDDD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#000000&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">colorset</span> <span class="o">==</span> <span class="s2">&quot;medium-contrast&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Mcset</span><span class="p">(</span>
+            <span class="s2">&quot;#6699CC&quot;</span><span class="p">,</span> <span class="s2">&quot;#004488&quot;</span><span class="p">,</span> <span class="s2">&quot;#EECC66&quot;</span><span class="p">,</span> <span class="s2">&quot;#994455&quot;</span><span class="p">,</span> <span class="s2">&quot;#997700&quot;</span><span class="p">,</span> <span class="s2">&quot;#EE99AA&quot;</span><span class="p">,</span> <span class="s2">&quot;#000000&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">colorset</span> <span class="o">==</span> <span class="s2">&quot;light&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Lcset</span><span class="p">(</span>
+            <span class="s2">&quot;#77AADD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EE8866&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#EEDD88&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#FFAABB&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#99DDFF&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#44BB99&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#BBCC33&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#AAAA00&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#DDDDDD&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#000000&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">colorset</span> <span class="o">=</span> <span class="s2">&quot;bright&quot;</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;*** Warning: requested colorset not defined,&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;known colorsets are </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">namelist</span><span class="p">),</span>  <span class="c1"># noqa: UP032</span>
+            <span class="s2">&quot;Using </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">colorset</span><span class="p">),</span>  <span class="c1"># noqa: UP032</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Bcinst</span></div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/tol_colors/index.html#mergeron.ext.tol_colors.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+    <span class="c1"># Change default colorset (for lines) and colormap (for maps).</span>
+    <span class="c1">#    plt.rc(&#39;axes&#39;, prop_cycle=plt.cycler(&#39;color&#39;, list(tol_cset(&#39;bright&#39;))))</span>
+    <span class="c1">#    plt.cm.register_cmap(&#39;rainbow_PuRd&#39;, tol_cmap(&#39;rainbow_PuRd&#39;))</span>
+    <span class="c1">#    plt.rc(&#39;image&#39;, cmap=&#39;rainbow_PuRd&#39;)</span>
+    <span class="c1"># Show colorsets tol_cset(&lt;scheme&gt;).</span>
+    <span class="n">schemes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">tol_cset</span><span class="p">()</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">schemes</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.92</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">scheme</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">schemes</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="n">cset</span> <span class="o">=</span> <span class="n">tol_cset</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">cset</span><span class="o">.</span><span class="n">_fields</span>  <span class="c1"># type: ignore</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cset</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">scheme</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># Show colormaps tol_cmap(&lt;scheme&gt;).</span>
+    <span class="n">schemes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">tol_cmap</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">gradient</span><span class="p">,</span> <span class="n">gradient</span><span class="p">))</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">schemes</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">scheme</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">schemes</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">tol_cmap</span><span class="p">(</span><span class="n">scheme</span><span class="p">))</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+            <span class="n">scheme</span><span class="p">,</span>
+            <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># Show colormaps tol_cmap(&#39;rainbow_discrete&#39;, &lt;lut&gt;).</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">gradient</span><span class="p">,</span> <span class="n">gradient</span><span class="p">))</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">23</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">lut</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gradient</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">tol_cmap</span><span class="p">(</span><span class="s2">&quot;rainbow_discrete&quot;</span><span class="p">,</span> <span class="n">lut</span><span class="p">))</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span>
+            <span class="s2">&quot;rainbow_discrete, &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lut</span><span class="p">),</span>
+            <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+            <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

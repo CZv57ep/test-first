@@ -1,0 +1,99 @@
+mergeron.gen.upp_tests
+======================
+
+.. py:module:: mergeron.gen.upp_tests
+
+.. autoapi-nested-parse::
+
+   Methods to compute intrinsic clearance rates and intrinsic enforcement rates
+   from generated market data.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: SaveData
+   :type:  TypeAlias
+   :value: Literal[False] | tuple[Literal[True], ptb.File, ptb.Group]
+
+
+.. py:class:: INVRESCntsArgs
+
+   Bases: :py:obj:`TypedDict`
+
+
+   Keyword arguments of function, :code:`sim_enf_cnts`
+
+
+   .. py:attribute:: sample_size
+      :type:  int
+
+
+   .. py:attribute:: seed_seq_list
+      :type:  list[numpy.random.SeedSequence] | None
+
+
+   .. py:attribute:: nthreads
+      :type:  int
+
+
+   .. py:attribute:: save_data_to_file
+      :type:  SaveData
+
+
+   .. py:attribute:: saved_array_name_suffix
+      :type:  str
+
+
+.. py:function:: sim_enf_cnts_ll(_mkt_sample_spec, _enf_parm_vec, _sim_test_regime, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16, save_data_to_file = False, saved_array_name_suffix = '')
+
+   A function to parallelize data-generation and testing
+
+   The parameters `_sim_enf_cnts_kwargs` are passed unaltered to
+   the parent function, `sim_enf_cnts()`, except that, if provided,
+   `seed_seq_list` is used to spawn a seed sequence for each thread,
+   to assure independent samples in each thread, and `nthreads` defines
+   the number of parallel processes used. The number of draws in
+   each thread may be tuned, by trial and error, to the amount of
+   memory (RAM) available.
+
+   :param _enf_parm_vec: Guidelines thresholds to test against
+   :param _mkt_sample_spec: Configuration to use for generating sample data to test
+   :param _sim_test_regime: Configuration to use for testing
+   :param saved_array_name_suffix: Suffix to add to the array names in the HDF5 file
+   :param save_data_to_file: Whether to save data to an HDF5 file, and where to save it
+   :param sample_size: Number of draws to simulate
+   :param seed_seq_list: List of seed sequences, to assure independent samples in each thread
+   :param nthreads: Number of parallel processes to use
+
+   :returns: Arrays of UPPTestCounts
+
+
+.. py:function:: sim_enf_cnts(_mkt_sample_spec, _upp_test_parms, _sim_test_regime, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16, save_data_to_file = False, saved_array_name_suffix = '')
+
+.. py:function:: enf_cnts(_market_data_sample, _upp_test_parms, _upp_test_regime, /)
+
+.. py:function:: gen_upp_test_arrays(_market_data, _upp_test_parms, _sim_test_regime, /)
+
+   Generate UPP tests arrays for given configuration and market sample
+
+   Given a standards vector, market
+
+   :param _market_data: market data sample
+   :param _upp_test_parms: guidelines thresholds for testing UPP and related statistics
+   :param _sim_test_regime: configuration to use for generating UPP tests
+
+
+.. py:function:: initialize_hd5(_h5_path, _hmg_pub_year, _test_regime, /)
+
+.. py:function:: save_data_to_hdf5(_dclass, /, *, saved_array_name_suffix = '', excluded_attrs = (), save_data_to_file = False)
+
+.. py:function:: save_array_to_hdf5(_array_obj, _array_name, _h5_group, _h5_file, /, *, saved_array_name_suffix = None)
+

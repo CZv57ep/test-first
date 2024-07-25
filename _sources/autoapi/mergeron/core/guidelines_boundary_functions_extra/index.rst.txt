@@ -1,0 +1,97 @@
+mergeron.core.guidelines_boundary_functions_extra
+=================================================
+
+.. py:module:: mergeron.core.guidelines_boundary_functions_extra
+
+.. autoapi-nested-parse::
+
+   Specialized methods for defining and analyzing boundaries for Guidelines standards.
+
+   These methods (functions) provide rely on scipy of sympy for core computations,
+   and may provide improved precision than core functions, but tend to have
+   poor performance
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: GuidelinesBoundaryCallable
+
+   .. py:attribute:: boundary_function
+      :type:  collections.abc.Callable[[numpy.typing.NDArray[numpy.float64]], numpy.typing.NDArray[numpy.float64]]
+
+
+   .. py:attribute:: area
+      :type:  float
+
+
+   .. py:attribute:: s_naught
+      :type:  float
+      :value: 0
+
+
+
+.. py:function:: dh_area_quad(_dh_val = 0.01, /, *, prec = 9)
+
+   Area under the ΔHHI boundary.
+
+   When the given ΔHHI bound matches a Guidelines safeharbor,
+   the area under the boundary is half the intrinsic clearance rate
+   for the ΔHHI safeharbor.
+
+   :param _dh_val: Merging-firms' ΔHHI bound.
+   :param prec: Specified precision in decimal places.
+
+   :returns: Area under ΔHHI boundary.
+
+
+.. py:function:: hhi_delta_boundary_qdtr(_dh_val = 0.01, /)
+
+   Generate the list of share combination on the ΔHHI boundary.
+
+   :param _dh_val: Merging-firms' ΔHHI bound.
+
+   :returns: Callable to generate array of share-pairs, area under boundary.
+
+
+.. py:function:: shrratio_boundary_qdtr_wtd_avg(_delta_star = 0.075, _r_val = 0.85, /, *, weighting = 'own-share', recapture_form = 'inside-out')
+
+   Share combinations for the share-weighted average GUPPI boundary with symmetric
+   merging-firm margins.
+
+   :param _delta_star: corollary to GUPPI bound (:math:`\overline{g} / (m^* \cdot \overline{r})`)
+   :param _r_val: recapture ratio
+   :param weighting: Whether "own-share" or "cross-product-share" (or None for simple, unweighted average)
+   :param recapture_form: Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
+                          value for both merging firms ("proportional").
+
+   :returns: Array of share-pairs, area under boundary.
+
+
+.. py:function:: shrratio_boundary_distance(_delta_star = 0.075, _r_val = 0.85, /, *, agg_method = 'arithmetic mean', weighting = 'own-share', recapture_form = 'inside-out', prec = 5)
+
+   Share combinations for the GUPPI boundaries using various aggregators with
+   symmetric merging-firm margins.
+
+   Reimplements the arithmetic-averages and distance estimations from function,
+   `shrratio_boundary_wtd_avg` but uses the Minkowski-distance function,
+   `scipy.spatial.distance.minkowski` for all aggregators. This reimplementation
+   is useful for testing the output of `shrratio_boundary_wtd_avg`
+   but runs considerably slower.
+
+   :param _delta_star: corollary to GUPPI bound (:math:`\overline{g} / (m^* \cdot \overline{r})`)
+   :param _r_val: recapture ratio
+   :param agg_method: Whether "arithmetic mean" or "distance".
+   :param weighting: Whether "own-share" or "cross-product-share".
+   :param recapture_form: Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
+                          value for both merging firms ("proportional").
+   :param prec: Number of decimal places for rounding returned shares and area.
+
+   :returns: Array of share-pairs, area under boundary.
+
+

@@ -1,0 +1,283 @@
+mergeron.gen.enforcement_stats
+==============================
+
+.. py:module:: mergeron.gen.enforcement_stats
+
+.. autoapi-nested-parse::
+
+   Methods to format and print summary statistics on merger enforcement patterns.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: INDGRPConstants
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Enum where members are also (and must be) strings
+
+
+   .. py:attribute:: ALL
+      :value: 'All Markets'
+
+
+
+   .. py:attribute:: GRO
+      :value: 'Grocery Markets'
+
+
+
+   .. py:attribute:: OIL
+      :value: 'Oil Markets'
+
+
+
+   .. py:attribute:: CHM
+      :value: 'Chemical Markets'
+
+
+
+   .. py:attribute:: PHM
+      :value: 'Pharmaceuticals Markets'
+
+
+
+   .. py:attribute:: HOS
+      :value: 'Hospital Markets'
+
+
+
+   .. py:attribute:: EDS
+      :value: 'Electronically-Controlled Devices and Systems Markets'
+
+
+
+   .. py:attribute:: BRD
+      :value: 'Branded Consumer Goods Markets'
+
+
+
+   .. py:attribute:: OTH
+      :value: '"Other" Markets'
+
+
+
+   .. py:attribute:: IIC
+      :value: 'Industries in Common'
+
+
+
+.. py:class:: EVIDENConstants
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Enum where members are also (and must be) strings
+
+
+   .. py:attribute:: HD
+      :value: 'Hot Documents Identified'
+
+
+
+   .. py:attribute:: CC
+      :value: 'Strong Customer Complaints'
+
+
+
+   .. py:attribute:: NE
+      :value: 'No Entry Evidence'
+
+
+
+   .. py:attribute:: ED
+      :value: 'Entry Difficult'
+
+
+
+   .. py:attribute:: EE
+      :value: 'Entry Easy'
+
+
+
+   .. py:attribute:: UR
+      :value: 'Unrestricted on additional evidence'
+
+
+
+.. py:class:: StatsGrpSelector
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Enum where members are also (and must be) strings
+
+
+   .. py:attribute:: FC
+      :value: 'ByFirmCount'
+
+
+
+   .. py:attribute:: HD
+      :value: 'ByHHIandDelta'
+
+
+
+   .. py:attribute:: DL
+      :value: 'ByDelta'
+
+
+
+   .. py:attribute:: ZN
+      :value: 'ByConcZone'
+
+
+
+.. py:class:: StatsReturnSelector
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Enum where members are also (and must be) strings
+
+
+   .. py:attribute:: CNT
+      :value: 'count'
+
+
+
+   .. py:attribute:: RPT
+      :value: 'rate, point'
+
+
+
+   .. py:attribute:: RIN
+      :value: 'rate, interval'
+
+
+
+.. py:class:: SortSelector
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Enum where members are also (and must be) strings
+
+
+   .. py:attribute:: UCH
+      :value: 'unchanged'
+
+
+
+   .. py:attribute:: REV
+      :value: 'reversed'
+
+
+
+.. py:data:: cnt_format_str
+   :value: '{: >5,.0f}'
+
+
+.. py:data:: pct_format_str
+   :value: '{: >6.1f}\\%'
+
+
+.. py:data:: ci_format_str
+   :value: '{0: >5.1f} [{2: >4.1f},{3: >5.1f}] \\%'
+
+
+.. py:data:: moe_tmpl
+
+.. py:data:: LaTeX_jinja_env
+
+.. py:data:: LTX_ARRAY_LINEEND
+   :value: Multiline-String
+
+   .. raw:: html
+
+      <details><summary>Show Value</summary>
+
+   .. code-block:: python
+
+      """\\
+      """
+
+   .. raw:: html
+
+      </details>
+
+
+
+.. py:data:: LaTeX_hrdcoldesc_format_str
+
+.. py:class:: StatsContainer
+
+   Bases: :py:obj:`types.SimpleNamespace`
+
+
+   A container for passing content to jinja2 templates
+
+   Other attributes added later, to fully populate selected jinja2 templates
+
+
+   .. py:attribute:: invdata_hdrstr
+      :type:  str
+
+
+   .. py:attribute:: invdata_datstr
+      :type:  str
+
+
+.. py:data:: HHI_DELTA_KNOTS
+
+.. py:data:: HHI_POST_ZONE_KNOTS
+
+.. py:data:: HMG_PRESUMPTION_ZONE_DICT
+
+.. py:data:: ZONE_VALS
+
+.. py:data:: ZONE_STRINGS
+
+.. py:data:: ZONE_DETAIL_STRINGS_HHI
+
+.. py:data:: ZONE_DETAIL_STRINGS_DELTA
+
+.. py:data:: ZONE_STRINGS_LATEX
+
+.. py:data:: ZONE_DETAIL_STRINGS_HHI_LATEX
+
+.. py:data:: ZONE_DETAIL_STRINGS_DELTA_LATEX
+
+.. py:function:: enf_stats_output(_data_array_dict, _data_period = '1996-2003', _table_ind_group = INDGRPConstants.ALL, _table_evid_cond = EVIDENConstants.UR, _stats_group = StatsGrpSelector.FC, _enf_spec = INVResolution.CLRN, /, *, return_type_sel = StatsReturnSelector.RPT, sort_order = SortSelector.UCH, print_to_screen = True)
+
+.. py:function:: enf_stats_listing_by_group(_invdata_array_dict, _study_period, _table_ind_grp, _table_evid_cond, _stats_group, _enf_spec, /)
+
+.. py:function:: enf_cnts_listing_byfirmcount(_data_array_dict, _data_period = '1996-2003', _table_ind_group = INDGRPConstants.ALL, _table_evid_cond = EVIDENConstants.UR, _enf_spec = INVResolution.CLRN, /)
+
+.. py:function:: enf_cnts_listing_byhhianddelta(_data_array_dict, _data_period = '1996-2003', _table_ind_group = INDGRPConstants.ALL, _table_evid_cond = EVIDENConstants.UR, _enf_spec = INVResolution.CLRN, /)
+
+.. py:function:: table_no_lku(_data_array_dict_sub, _table_ind_group = INDGRPConstants.ALL, _table_evid_cond = EVIDENConstants.UR, /)
+
+.. py:function:: enf_cnts_byfirmcount(_cnts_array, /)
+
+.. py:function:: enf_cnts_bydelta(_cnts_array, /)
+
+.. py:function:: enf_cnts_byconczone(_cnts_array, /)
+
+.. py:function:: enf_stats_table_onedim(_inparr, _totals_row = None, /, *, return_type_sel = StatsReturnSelector.CNT, sort_order = SortSelector.UCH, print_format = 'text')
+
+.. py:function:: enf_stats_table_byzone(_inparr, _totals_row = None, /, *, return_type_sel = StatsReturnSelector.CNT, sort_order = SortSelector.UCH, print_format = 'text')
+
+.. py:function:: stats_print_rows(_enf_stats_hdr_list, _enf_stats_dat_list, print_format = 'text')
+
+.. py:function:: render_table_pdf(_table_dottex_pathlist, _table_coll_path, /)
+

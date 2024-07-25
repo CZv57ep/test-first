@@ -1,0 +1,329 @@
+mergeron.core.guidelines_boundary_functions
+===========================================
+
+.. py:module:: mergeron.core.guidelines_boundary_functions
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:class:: ShareRatioBoundaryKeywords
+
+   Bases: :py:obj:`TypedDict`
+
+
+   Keyword arguments for functions generating share ratio boundaries.
+
+
+   .. py:attribute:: recapture_form
+      :type:  Literal['inside-out', 'proportional']
+
+
+   .. py:attribute:: prec
+      :type:  int
+
+
+   .. py:attribute:: agg_method
+      :type:  Literal['arithmetic mean', 'geometric mean', 'distance']
+
+
+   .. py:attribute:: weighting
+      :type:  Literal['own-share', 'cross-product-share', None]
+
+
+.. py:class:: GuidelinesBoundary
+
+   Output of a Guidelines boundary function.
+
+
+   .. py:attribute:: coordinates
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Market-share pairs as Cartesian coordinates of points on the boundary.
+
+
+   .. py:attribute:: area
+      :type:  float
+
+      Area under the boundary.
+
+
+.. py:function:: dh_area(_dh_val = 0.01, /, *, prec = 9)
+
+   Area under the ΔHHI boundary.
+
+   When the given ΔHHI bound matches a Guidelines standard,
+   the area under the boundary is half the intrinsic clearance rate
+   for the ΔHHI safeharbor.
+
+   .. rubric:: Notes
+
+   To derive the knots, :math:`(s^0_1, s^1_1), (s^1_1, s^0_1)`
+   of the ΔHHI boundary, i.e., the points where it intersects
+   the merger-to-monopoly boundary, solve
+
+   .. math::
+
+       2 s1 s_2 &= ΔHHI\\
+       s_1 + s_2 &= 1
+
+   :param _dh_val: Change in concentration.
+   :param prec: Specified precision in decimal places.
+
+   :returns: Area under ΔHHI boundary.
+
+
+.. py:function:: hhi_delta_boundary(_dh_val = 0.01, /, *, prec = 5)
+
+   Generate the list of share combination on the ΔHHI boundary.
+
+   :param _dh_val: Merging-firms' ΔHHI bound.
+   :param prec: Number of decimal places for rounding reported shares.
+
+   :returns: Array of share-pairs, area under boundary.
+
+
+.. py:function:: hhi_pre_contrib_boundary(_hhi_contrib = 0.03125, /, *, prec = 5)
+
+   Share combinations on the premerger HHI contribution boundary.
+
+   :param _hhi_contrib: Merging-firms' pre-merger HHI contribution bound.
+   :param prec: Number of decimal places for rounding reported shares.
+
+   :returns: Array of share-pairs, area under boundary.
+
+
+.. py:function:: combined_share_boundary(_s_intcpt = 0.0625, /, *, prec = 10)
+
+   Share combinations on the merging-firms' combined share boundary.
+
+   Assumes symmetric merging-firm margins. The combined-share is
+   congruent to the post-merger HHI contribution boundary, as the
+   post-merger HHI bound is the square of the combined-share bound.
+
+   :param _s_intcpt: Merging-firms' combined share.
+   :param prec: Number of decimal places for rounding reported shares.
+
+   :returns: Array of share-pairs, area under boundary.
+
+
+.. py:function:: hhi_post_contrib_boundary(_hhi_contrib = 0.8, /, *, prec = 10)
+
+   Share combinations on the postmerger HHI contribution boundary.
+
+   The post-merger HHI contribution boundary is identical to the
+   combined-share boundary.
+
+   :param _hhi_contrib: Merging-firms' pre-merger HHI contribution bound.
+   :param prec: Number of decimal places for rounding reported shares.
+
+   :returns: Array of share-pairs, area under boundary.
+
+
+.. py:function:: shrratio_boundary_wtd_avg(_delta_star = 0.075, _r_val = 0.85, /, *, agg_method = 'arithmetic mean', weighting = 'own-share', recapture_form = 'inside-out', prec = 5)
+
+   Share combinations on the share-weighted average diversion ratio boundary.
+
+   :param _delta_star: Share ratio (:math:`\overline{d} / \overline{r}`)
+   :param _r_val: recapture ratio
+   :param agg_method: Whether "arithmetic mean", "geometric mean", or "distance".
+   :param weighting: Whether "own-share" or "cross-product-share"  (or None for simple, unweighted average).
+   :param recapture_form: Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
+                          value for both merging firms ("proportional").
+   :param prec: Number of decimal places for rounding returned shares and area.
+
+   :returns: Array of share-pairs, area under boundary.
+
+   .. rubric:: Notes
+
+   An analytical expression for the share-weighted arithmetic mean boundary
+   is derived and plotted from y-intercept to the ray of symmetry as follows::
+
+       from sympy import plot as symplot, solve, symbols
+       s_1, s_2 = symbols("s_1 s_2", positive=True)
+
+       g_val, r_val, m_val = 0.06, 0.80, 0.30
+       delta_star = g_val / (r_val * m_val)
+
+       # recapture_form == "inside-out"
+       oswag = solve(
+           s_1 * s_2 / (1 - s_1)
+           + s_2 * s_1 / (1 - (r_val * s_2 + (1 - r_val) * s_1))
+           - (s_1 + s_2) * delta_star,
+           s_2
+       )[0]
+       symplot(
+           oswag,
+           (s_1, 0., d_hat / (1 + d_hat)),
+           ylabel=s_2
+       )
+
+       cpswag = solve(
+           s_2 * s_2 / (1 - s_1)
+           + s_1 * s_1 / (1 - (r_val * s_2 + (1 - r_val) * s_1))
+           - (s_1 + s_2) * delta_star,
+           s_2
+       )[1]
+       symplot(
+           cpwag,
+           (s_1, 0., d_hat / (1 + d_hat)),
+           ylabel=s_2
+       )
+
+       # recapture_form == "proportional"
+       oswag = solve(
+           s_1 * s_2 / (1 - s_1)
+           + s_2 * s_1 / (1 - s_2)
+           - (s_1 + s_2) * delta_star,
+            s_2
+       )[0]
+       symplot(
+           oswag,
+           (s_1, 0., d_hat / (1 + d_hat)),
+           ylabel=s_2
+       )
+
+       cpswag = solve(
+           s_2 * s_2 / (1 - s_1)
+           + s_1 * s_1 / (1 - s_2)
+           - (s_1 + s_2) * delta_star,
+            s_2
+       )[1]
+       symplot(
+           cpswag,
+           (s_1, 0.0, d_hat / (1 + d_hat)),
+           ylabel=s_2
+       )
+
+
+.. py:function:: shrratio_boundary_xact_avg(_delta_star = 0.075, _r_val = 0.85, /, *, recapture_form = 'inside-out', prec = 5)
+
+   Share combinations for the simple average GUPPI boundary with symmetric
+   merging-firm margins.
+
+   .. rubric:: Notes
+
+   An analytical expression for the exact average boundary is derived
+   and plotted from the y-intercept to the ray of symmetry as follows::
+
+       from sympy import latex, plot as symplot, solve, symbols
+
+       s_1, s_2 = symbols("s_1 s_2")
+
+       g_val, r_val, m_val = 0.06, 0.80, 0.30
+       d_hat = g_val / (r_val * m_val)
+
+       # recapture_form = "inside-out"
+       sag = solve(
+           (s_2 / (1 - s_1))
+           + (s_1 / (1 - (r_val * s_2 + (1 - r_val) * s_1)))
+           - 2 * d_hat,
+           s_2
+       )[0]
+       symplot(
+           sag,
+           (s_1, 0., d_hat / (1 + d_hat)),
+           ylabel=s_2
+       )
+
+       # recapture_form = "proportional"
+       sag = solve((s_2/(1 - s_1)) + (s_1/(1 - s_2)) - 2 * d_hat, s_2)[0]
+       symplot(
+           sag,
+           (s_1, 0., d_hat / (1 + d_hat)),
+           ylabel=s_2
+       )
+
+   :param _delta_star: Share ratio (:math:`\overline{d} / \overline{r}`).
+   :param _r_val: Recapture ratio
+   :param recapture_form: Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
+                          value for both merging firms ("proportional").
+   :param prec: Number of decimal places for rounding returned shares.
+
+   :returns: Array of share-pairs, area under boundary, area under boundary.
+
+
+.. py:function:: shrratio_boundary_min(_delta_star = 0.075, _r_val = 0.85, /, *, recapture_form = 'inside-out', prec = 10)
+
+   Share combinations on the minimum GUPPI boundary, with symmetric
+   merging-firm margins.
+
+   .. rubric:: Notes
+
+   With symmetric merging-firm margins, the maximum GUPPI boundary is
+   defined by the diversion ratio from the smaller merging-firm to the
+   larger one, and is hence unaffected by the method of estimating the
+   diversion ratio for the larger firm.
+
+   :param _delta_star: Share ratio (:math:`\overline{d} / \overline{r}`).
+   :param _r_val: Recapture ratio.
+   :param recapture_form: Whether recapture-ratio is MNL-consistent ("inside-out") or has fixed
+                          value for both merging firms ("proportional").
+   :param prec: Number of decimal places for rounding returned shares.
+
+   :returns: Array of share-pairs, area under boundary.
+
+
+.. py:function:: shrratio_boundary_max(_delta_star = 0.075, _r_val = 0.85, /, *, prec = 10)
+
+   Share combinations on the minimum GUPPI boundary with symmetric
+   merging-firm margins.
+
+   :param _delta_star: Share ratio (:math:`\overline{d} / \overline{r}`).
+   :param _r_val: Recapture ratio.
+   :param prec: Number of decimal places for rounding returned shares.
+
+   :returns: Array of share-pairs, area under boundary.
+
+
+.. py:function:: lerp(_x1 = 3, _x2 = 1, _r = 0.25, /)
+
+   From the function of the same name in the C++ standard [2]_
+
+   Constructs the weighted average, :math:`w_1 x_1 + w_2 x_2`, where
+   :math:`w_1 = 1 - r` and :math:`w_2 = r`.
+
+   :param _x1: bounds :math:`x_1, x_2` to interpolate between.
+   :param _x2: bounds :math:`x_1, x_2` to interpolate between.
+   :param _r: interpolation weight :math:`r` assigned to :math:`x_2`
+
+   :returns: The linear interpolation, or weighted average,
+             :math:`x_1 + r \cdot (x_1 - x_2) \equiv (1 - r) \cdot x_1 + r \cdot x_2`.
+
+   :raises ValueError: If the interpolation weight is not in the interval, :math:`[0, 1]`.
+
+   .. rubric:: References
+
+   .. [2] C++ Reference, https://en.cppreference.com/w/cpp/numeric/lerp
+
+
+.. py:function:: round_cust(_num = 0.060215, /, *, frac = 0.005, rounding_mode = 'ROUND_HALF_UP')
+
+   Custom rounding, to the nearest 0.5% by default.
+
+   :param _num: Number to be rounded.
+   :param frac: Fraction to be rounded to.
+   :param rounding_mode: Rounding mode, as defined in the :code:`decimal` package.
+
+   :returns: The given number, rounded as specified.
+
+   :raises ValueError: If rounding mode is not defined in the :code:`decimal` package.
+
+   .. rubric:: Notes
+
+   Integer-round the quotient, :code:`(_num / frac)` using the specified
+   rounding mode. Return the product of the rounded quotient times
+   the specified precision, :code:`frac`.
+
+
+.. py:function:: boundary_plot(*, mktshares_plot_flag = True)
+
+   Setup basic figure and axes for plots of safe harbor boundaries.
+
+   See, https://matplotlib.org/stable/tutorials/text/pgf.html
+
+

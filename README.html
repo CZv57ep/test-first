@@ -1,0 +1,463 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron: Merger Policy Analysis using Python - mergeron 2024.739091.2</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron: Merger Policy Analysis using Python
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739091.2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="autoapi/mergeron/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1 id="mergeron-merger-policy-analysis-using-python">mergeron: Merger Policy Analysis using Python<a class="headerlink" href="#mergeron-merger-policy-analysis-using-python" title="Link to this heading">¶</a></h1>
+<p>Download and analyze merger investigations data published by the U.S. Federal Trade Commission in various reports on extended merger investigations during 1996 to 2011. Model the sets of mergers conforming to various U.S. Horizontal Merger Guidelines standards. Analyze intrinsic clearance rates and intrinsic enforcement rates under Guidelines standards using generated data with specified distributions of market shares, price-cost margins, firm counts, and prices, optionally imposing restrictions impled by statutory filing thresholds and/or Bertrand-Nash oligopoly with MNL demand.</p>
+<p>Intrinsic clearance and enforcement rates are distinguished from <em>observed</em> clearance and enforcement rates in that the former do not reflect the effects of screening and deterrence as do the latter.</p>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>Classes for specifying concentration standards (<a class="reference internal" href="autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.ConcentrationBoundary" title="mergeron.core.guidelines_boundaries.ConcentrationBoundary (Python class) — Concentration parameters, boundary coordinates, and area under concentration boundary."><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.core.guidelines_boundaries.ConcentrationBoundary</span></code></a>) and diversion-ratio standards (<a class="reference internal" href="autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary" title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary (Python class) — Diversion ratio specification, boundary coordinates, and area under boundary."><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.core.guidelines_boundaries.DiversionRatioBoundary</span></code></a>), with automatic generation of boundary (as an array of share-pairs) and area, are provided in <a class="reference internal" href="autoapi/mergeron/core/guidelines_boundaries/index.html#module-mergeron.core.guidelines_boundaries" title="mergeron.core.guidelines_boundaries (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.core.guidelines_boundaries</span></code></a>. This module also includes a function for generating plots of concentation and diversion-ratio boundaries, and functions for mapping GUPPI standards to concentration (ΔHHI) standards, and vice-versa.</p>
+<p>Methods for generating industry data under various distributions of shares, margins, and prices are included in, <a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#module-mergeron.gen.data_generation" title="mergeron.gen.data_generation (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.gen.data_generation</span></code></a>. Shares are drawn with uniform distribution with <span class="math notranslate nohighlight">\(s_1 + s_2 \leqslant 1\)</span> and an unspecified number of firms. Alternatively, shares may be drawn from the Dirichlet distribution. When drawing shares from the Dirichlet distribution, the user can specify a fixed number for firms or provide a vector of weights specifying the frequency distribution over sequential firm counts, e.g., <code class="code docutils literal notranslate"><span class="pre">[133,</span> <span class="pre">184,</span> <span class="pre">134,</span> <span class="pre">52,</span> <span class="pre">32,</span> <span class="pre">10,</span> <span class="pre">12,</span> <span class="pre">4,</span> <span class="pre">3]</span></code> to specify shares drawn from Dirichlet distributions with 2 to 10 pre-merger firms distributed as in data for FTC merger investigations during 1996–2003 (See, for example, Table 4.1 of <a class="reference external" href="&quot;https://www.ftc.gov/sites/default/files/documents/reports/horizontal-merger-investigation-data-fiscal-years-1996-2003/040831horizmergersdata96-03.pdf">FTC, Horizontal Merger Investigations Data, Fiscal Years 1996–2003 (Revised: August 31, 2004)</a>). The user can specify recapture rates as, “proportional”, “inside-out” — i.e., consistent with merging-firms’ in-market shares and a default recapture rate) — or “outside-in” — i.e., purchase probabilities are drawn at random for <span class="math notranslate nohighlight">\(N+1\)</span> goods, from which are derived market shares and recapture rates for the <span class="math notranslate nohighlight">\(N\)</span> goods in the putative market. Documentation on specifying the sampling strategy for market shares is at <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec" title="mergeron.gen.ShareSpec (Python class) — Market share specification"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.ShareSpec</span></code></a>. Price-cost-margins may be specified as symmetric, i.i.d., or subject to equilibrium conditions for (profit-mazimization in) Bertrand-Nash oligopoly with MNL demand (see, <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec" title="mergeron.gen.PCMSpec (Python class) — Price-cost margin (PCM) specification"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.PCMSpec</span></code></a>). Prices may be specified as symmetric or asymmetric, and in the latter case, the direction of correlation between merging firm prices, if any, can also be specified (see, <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.PriceSpec</span></code>). Two alternative approaches for modeling statutory filing requirements (HSR filing thresholds) are implemented (see, <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants" title="mergeron.gen.SSZConstants (Python class) — Bases: float, enum.ReprEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.SSZConstants</span></code></a>). The full specification of a market sample is given in a <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample" title="mergeron.gen.market_sample.MarketSample (Python class) — Bases: mergeron.gen.MarketSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample</span></code></a> object. Data are drawn by invoking <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.generate_sample" title="mergeron.gen.market_sample.MarketSample.generate_sample (Python method)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample.generate_sample()</span></code></a> which adds a <code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code> property of class, <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample" title="mergeron.gen.MarketDataSample (Python class) — Container for generated markets data sample."><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.MarketDataSample</span></code></a>. Enforcement or clearance counts are computed by invoking <code class="xref py py-meth docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample.estimate_invres_counts()</span></code>, which adds an <code class="xref py py-attr docutils literal notranslate"><span class="pre">invres_counts</span></code> property of class <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsCounts" title="mergeron.gen.UPPTestsCounts (Python class) — Counts of markets resolved as specified"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.UPPTestsCounts</span></code></a>. For fast, parallel generation of enforcement or clearance counts over large market data samples that ordinarily would exceed available limits on machine memory, the user can invoke the method <code class="xref py py-meth docutils literal notranslate"><span class="pre">estimate_invres_counts()</span></code> on a <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample" title="mergeron.gen.market_sample.MarketSample (Python class) — Bases: mergeron.gen.MarketSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample</span></code></a> object without first invoking <code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_sample()</span></code>. Note, however, that this strategy discards the market sample in the interests of conserving memory and maintaining high performance.</p>
+<p>Methods for printing enforcement statistics based on FTC investigations data and test data are printed to screen or rendered to LaTex files (for processing into publication-quality tables) using methods provided in <a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#module-mergeron.gen.enforcement_stats" title="mergeron.gen.enforcement_stats (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.gen.enforcement_stats</span></code></a>.</p>
+<p>Programs demonstrating the analysis and reporting facilites provided by the sub-package, <a class="reference internal" href="autoapi/mergeron/demo/index.html#module-mergeron.demo" title="mergeron.demo (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.demo</span></code></a>.</p>
+<p>This package exposes methods employed for generating random numbers with selected continuous distribution over specified parameters, and with CPU multithreading on machines with multiple virtual, logical, or physical CPU cores. To access these directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">mergeron.core.pseudorandom_numbers</span> <span class="k">as</span> <span class="nn">prng</span>
+</code></pre></div>
+</div>
+<p>Also included are methods for estimating confidence intervals for proportions and for contrasts (differences) in proportions. (Although coded from scratch using the source literature, the APIs implemented in the module included here are designed for consistency with the APIs in, <code class="xref py py-mod docutils literal notranslate"><span class="pre">statsmodels.stats.proportion</span></code> from the package, <code class="xref py py-mod docutils literal notranslate"><span class="pre">statsmodels</span></code> (<a class="reference external" href="https://pypi.org/project/statsmodels/">https://pypi.org/project/statsmodels/</a>).) To access these directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">mergeron.core.proportions_tests</span> <span class="k">as</span> <span class="nn">prci</span>
+</code></pre></div>
+</div>
+<p>A recent version of Paul Tol’s python module, <code class="xref py py-mod docutils literal notranslate"><span class="pre">tol_colors.py</span></code> is redistributed within this package. Other than re-formatting and type annotation, the <a class="reference internal" href="autoapi/mergeron/ext/tol_colors/index.html#module-mergeron.ext.tol_colors" title="mergeron.ext.tol_colors (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.ext.tol_colors</span></code></a> module is re-distributed as downloaded from, <a class="reference external" href="https://personal.sron.nl/~pault/data/tol_colors.py">https://personal.sron.nl/~pault/data/tol_colors.py</a>. The <code class="xref py py-mod docutils literal notranslate"><span class="pre">tol_colors.py</span></code> module is distributed under the Standard 3-clause BSD license. To access the <a class="reference internal" href="autoapi/mergeron/ext/tol_colors/index.html#module-mergeron.ext.tol_colors" title="mergeron.ext.tol_colors (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.ext.tol_colors</span></code></a> module directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">mergeron.ext.tol_colors</span> <span class="k">as</span> <span class="nn">ptc</span>
+</code></pre></div>
+</div>
+<p>Documentation for this package is in the form of the API Reference. Documentation for individual functions and classes is accessible within a python shell. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">mergeron.core.market_sample</span> <span class="k">as</span> <span class="nn">market_sample</span>
+
+<span class="n">help</span><span class="p">(</span><span class="n">market_sample</span><span class="o">.</span><span class="n">MarketSample</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<a class="reference external image-reference" href="https://python-poetry.org/"><img alt="Poetry" src="https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json" />
+</a>
+<a class="reference external image-reference" href="https://github.com/astral-sh/ruff"><img alt="Ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" />
+</a>
+<a class="reference external image-reference" href="https://mypy-lang.org/"><img alt="Checked with mypy" src="https://www.mypy-lang.org/static/mypy_badge.svg" />
+</a>
+<a class="reference external image-reference" href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+</a>
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+        <script id="MathJax-script" src="_static/mathjax/tex-mml-chtml.js?v=cadf963e"></script>
+    
+  </body>
+</html>

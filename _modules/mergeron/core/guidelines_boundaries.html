@@ -1,0 +1,988 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.core.guidelines_boundaries - mergeron 2024.739091.2</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.core.guidelines_boundaries
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739091.2
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../autoapi/mergeron/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1>Source code for mergeron.core.guidelines_boundaries</h1><div class="highlight"><pre>
+<span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Methods for defining and analyzing boundaries for Guidelines standards,</span>
+<span class="sd">with a canvas on which to draw boundaries for Guidelines standards.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">TypeAlias</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">Attribute</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">frozen</span><span class="p">,</span> <span class="n">validators</span>
+<span class="kn">from</span> <span class="nn">mpmath</span> <span class="kn">import</span> <span class="n">mp</span><span class="p">,</span> <span class="n">mpf</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">RECConstants</span><span class="p">,</span> <span class="n">UPPAggrSelector</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">guidelines_boundary_functions</span> <span class="k">as</span> <span class="n">gbfn</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
+
+
+<span class="n">mp</span><span class="o">.</span><span class="n">prec</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">trap_complex</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="HMGPubYear">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGPubYear">[docs]</a>
+<span class="n">HMGPubYear</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1992</span><span class="p">,</span> <span class="mi">2004</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2023</span><span class="p">]</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="HMGThresholds">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds">[docs]</a>
+<span class="k">class</span> <span class="nc">HMGThresholds</span><span class="p">:</span>
+<div class="viewcode-block" id="HMGThresholds.delta">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds.delta">[docs]</a>
+    <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="HMGThresholds.fc">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds.fc">[docs]</a>
+    <span class="n">fc</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="HMGThresholds.rec">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds.rec">[docs]</a>
+    <span class="n">rec</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="HMGThresholds.guppi">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds.guppi">[docs]</a>
+    <span class="n">guppi</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="HMGThresholds.divr">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds.divr">[docs]</a>
+    <span class="n">divr</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="HMGThresholds.cmcr">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds.cmcr">[docs]</a>
+    <span class="n">cmcr</span><span class="p">:</span> <span class="nb">float</span></div>
+
+<div class="viewcode-block" id="HMGThresholds.ipr">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.HMGThresholds.ipr">[docs]</a>
+    <span class="n">ipr</span><span class="p">:</span> <span class="nb">float</span></div>
+</div>
+
+
+
+<span class="nd">@frozen</span>
+<div class="viewcode-block" id="GuidelinesThresholds">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.GuidelinesThresholds">[docs]</a>
+<span class="k">class</span> <span class="nc">GuidelinesThresholds</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Guidelines threholds by Guidelines publication year</span>
+
+<span class="sd">    ΔHHI, Recapture Rate, GUPPI, Diversion ratio, CMCR, and IPR thresholds</span>
+<span class="sd">    constructed from concentration standards in Guidelines published in</span>
+<span class="sd">    1992, 2004, 2010, and 2023.</span>
+
+<span class="sd">    The 2004 Guidelines refernced here are the EU Commission</span>
+<span class="sd">    guidelines on assessment of horizontal mergers. These</span>
+<span class="sd">    guidelines also define a presumption for mergers with</span>
+<span class="sd">    post-merger HHI in [1000, 2000) and ΔHHI &gt;= 250 points,</span>
+<span class="sd">    whi is not modeled here.</span>
+
+<span class="sd">    All other Guidelines modeled here are U.S. merger guidelines.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GuidelinesThresholds.pub_year">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.GuidelinesThresholds.pub_year">[docs]</a>
+    <span class="n">pub_year</span><span class="p">:</span> <span class="n">HMGPubYear</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Year of publication of the Guidelines</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GuidelinesThresholds.safeharbor">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.GuidelinesThresholds.safeharbor">[docs]</a>
+    <span class="n">safeharbor</span><span class="p">:</span> <span class="n">HMGThresholds</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Negative presumption quantified on various measures</span>
+
+<span class="sd">    ΔHHI safeharbor bound, default recapture rate, GUPPI bound,</span>
+<span class="sd">    diversion ratio limit, CMCR, and IPR</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GuidelinesThresholds.presumption">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.GuidelinesThresholds.presumption">[docs]</a>
+    <span class="n">presumption</span><span class="p">:</span> <span class="n">HMGThresholds</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Presumption of harm defined in HMG</span>
+
+<span class="sd">    ΔHHI bound and corresponding default recapture rate, GUPPI bound,</span>
+<span class="sd">    diversion ratio limit, CMCR, and IPR</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GuidelinesThresholds.imputed_presumption">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.GuidelinesThresholds.imputed_presumption">[docs]</a>
+    <span class="n">imputed_presumption</span><span class="p">:</span> <span class="n">HMGThresholds</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Presumption of harm imputed from guidelines</span>
+
+<span class="sd">    ΔHHI bound inferred from strict numbers-equivalent</span>
+<span class="sd">    of (post-merger) HHI presumption, and corresponding default recapture rate,</span>
+<span class="sd">    GUPPI bound, diversion ratio limit, CMCR, and IPR</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__attrs_post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># In the 2023 Guidlines, the agencies do not define a</span>
+        <span class="c1"># negative presumption, or safeharbor. Practically speaking,</span>
+        <span class="c1"># given resource constraints and loss aversion, it is likely</span>
+        <span class="c1"># that staff only investigates mergers that meet the presumption;</span>
+        <span class="c1"># thus, here, the tentative delta safeharbor under</span>
+        <span class="c1"># the 2023 Guidelines is 100 points</span>
+        <span class="n">_hhi_p</span><span class="p">,</span> <span class="n">_dh_s</span><span class="p">,</span> <span class="n">_dh_p</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">1992</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span>
+            <span class="mi">2010</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">),</span>
+            <span class="mi">2004</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">),</span>
+            <span class="mi">2023</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.18</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span>
+        <span class="p">}[</span><span class="bp">self</span><span class="o">.</span><span class="n">pub_year</span><span class="p">]</span>
+
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">&quot;safeharbor&quot;</span><span class="p">,</span>
+            <span class="n">HMGThresholds</span><span class="p">(</span>
+                <span class="n">_dh_s</span><span class="p">,</span>
+                <span class="n">_fc</span> <span class="o">:=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">_hhi_p</span><span class="p">)),</span>
+                <span class="n">_r</span> <span class="o">:=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">round_cust</span><span class="p">(</span><span class="n">_fc</span> <span class="o">/</span> <span class="p">(</span><span class="n">_fc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">),</span>
+                <span class="n">_g_s</span> <span class="o">:=</span> <span class="n">guppi_from_delta</span><span class="p">(</span><span class="n">_dh_s</span><span class="p">,</span> <span class="n">m_star</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">r_bar</span><span class="o">=</span><span class="n">_r</span><span class="p">),</span>
+                <span class="n">_dr</span> <span class="o">:=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_r</span><span class="p">),</span>
+                <span class="n">_cmcr</span> <span class="o">:=</span> <span class="mf">0.03</span><span class="p">,</span>  <span class="c1"># Not strictly a Guidelines standard</span>
+                <span class="n">_ipr</span> <span class="o">:=</span> <span class="n">_g_s</span><span class="p">,</span>  <span class="c1"># Not strictly a Guidelines standard</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">&quot;presumption&quot;</span><span class="p">,</span>
+            <span class="n">HMGThresholds</span><span class="p">(</span>
+                <span class="n">_dh_p</span><span class="p">,</span>
+                <span class="n">_fc</span><span class="p">,</span>
+                <span class="n">_r</span><span class="p">,</span>
+                <span class="n">_g_p</span> <span class="o">:=</span> <span class="n">guppi_from_delta</span><span class="p">(</span><span class="n">_dh_p</span><span class="p">,</span> <span class="n">m_star</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">r_bar</span><span class="o">=</span><span class="n">_r</span><span class="p">),</span>
+                <span class="n">_dr</span><span class="p">,</span>
+                <span class="n">_cmcr</span><span class="p">,</span>
+                <span class="n">_ipr</span> <span class="o">:=</span> <span class="n">_g_p</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># imputed_presumption is relevant for 2010 Guidelines</span>
+        <span class="c1"># merger to symmettry in numbers-equivalent of post-merger HHI</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="s2">&quot;imputed_presumption&quot;</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">HMGThresholds</span><span class="p">(</span>
+                    <span class="n">_dh_i</span> <span class="o">:=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">/</span> <span class="n">_fc</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="n">_fc</span><span class="p">,</span>
+                    <span class="n">_r_i</span> <span class="o">:=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">round_cust</span><span class="p">((</span><span class="n">_fc</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">_fc</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.05</span><span class="p">),</span>
+                    <span class="n">_g_i</span> <span class="o">:=</span> <span class="n">guppi_from_delta</span><span class="p">(</span><span class="n">_dh_p</span><span class="p">,</span> <span class="n">m_star</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">r_bar</span><span class="o">=</span><span class="n">_r_i</span><span class="p">),</span>
+                    <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_r_i</span><span class="p">),</span>
+                    <span class="n">_cmcr</span><span class="p">,</span>
+                    <span class="n">_g_i</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pub_year</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2004</span><span class="p">,</span> <span class="mi">2010</span><span class="p">)</span>
+                <span class="k">else</span> <span class="n">HMGThresholds</span><span class="p">(</span>
+                    <span class="n">_dh_i</span> <span class="o">:=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">_fc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="n">_fc</span><span class="p">,</span>
+                    <span class="n">_r</span><span class="p">,</span>
+                    <span class="n">_g_i</span> <span class="o">:=</span> <span class="n">guppi_from_delta</span><span class="p">(</span><span class="n">_dh_p</span><span class="p">,</span> <span class="n">m_star</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">r_bar</span><span class="o">=</span><span class="n">_r</span><span class="p">),</span>
+                    <span class="n">_dr</span><span class="p">,</span>
+                    <span class="n">_cmcr</span><span class="p">,</span>
+                    <span class="n">_g_i</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_concentration_threshold_validator</span><span class="p">(</span>
+    <span class="n">_instance</span><span class="p">:</span> <span class="n">ConcentrationBoundary</span><span class="p">,</span> <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">/</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">_value</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Concentration threshold must lie between 0 and 1.&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_concentration_measure_name_validator</span><span class="p">(</span>
+    <span class="n">_instance</span><span class="p">:</span> <span class="n">ConcentrationBoundary</span><span class="p">,</span> <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">_value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">/</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;ΔHHI&quot;</span><span class="p">,</span> <span class="s2">&quot;Combined share&quot;</span><span class="p">,</span> <span class="s2">&quot;Pre-merger HHI&quot;</span><span class="p">,</span> <span class="s2">&quot;Post-merger HHI&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid name for a concentration measure, </span><span class="si">{</span><span class="n">_value</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@frozen</span>
+<div class="viewcode-block" id="ConcentrationBoundary">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.ConcentrationBoundary">[docs]</a>
+<span class="k">class</span> <span class="nc">ConcentrationBoundary</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Concentration parameters, boundary coordinates, and area under concentration boundary.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConcentrationBoundary.threshold">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.ConcentrationBoundary.threshold">[docs]</a>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">_concentration_threshold_validator</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ConcentrationBoundary.precision">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.ConcentrationBoundary.precision">[docs]</a>
+    <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ConcentrationBoundary.measure_name">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.ConcentrationBoundary.measure_name">[docs]</a>
+    <span class="n">measure_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
+        <span class="s2">&quot;ΔHHI&quot;</span><span class="p">,</span> <span class="s2">&quot;Combined share&quot;</span><span class="p">,</span> <span class="s2">&quot;Pre-merger HHI&quot;</span><span class="p">,</span> <span class="s2">&quot;Post-merger HHI&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;ΔHHI&quot;</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">_concentration_measure_name_validator</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConcentrationBoundary.coordinates">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.ConcentrationBoundary.coordinates">[docs]</a>
+    <span class="n">coordinates</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Market-share pairs as Cartesian coordinates of points on the concentration boundary.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConcentrationBoundary.area">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.ConcentrationBoundary.area">[docs]</a>
+    <span class="n">area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Area under the concentration boundary.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__attrs_post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_name</span><span class="p">:</span>
+            <span class="k">case</span> <span class="s2">&quot;ΔHHI&quot;</span><span class="p">:</span>
+                <span class="n">_conc_fn</span> <span class="o">=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">hhi_delta_boundary</span>
+            <span class="k">case</span> <span class="s2">&quot;Combined share&quot;</span><span class="p">:</span>
+                <span class="n">_conc_fn</span> <span class="o">=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">combined_share_boundary</span>
+            <span class="k">case</span> <span class="s2">&quot;Pre-merger HHI&quot;</span><span class="p">:</span>
+                <span class="n">_conc_fn</span> <span class="o">=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">hhi_pre_contrib_boundary</span>
+            <span class="k">case</span> <span class="s2">&quot;Post-merger HHI&quot;</span><span class="p">:</span>
+                <span class="n">_conc_fn</span> <span class="o">=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">hhi_post_contrib_boundary</span>
+
+        <span class="n">_boundary</span> <span class="o">=</span> <span class="n">_conc_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;coordinates&quot;</span><span class="p">,</span> <span class="n">_boundary</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;area&quot;</span><span class="p">,</span> <span class="n">_boundary</span><span class="o">.</span><span class="n">area</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_divr_value_validator</span><span class="p">(</span>
+    <span class="n">_instance</span><span class="p">:</span> <span class="n">DiversionRatioBoundary</span><span class="p">,</span> <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">/</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">_value</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Margin-adjusted benchmark share ratio must lie between 0 and 1.&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_rec_spec_validator</span><span class="p">(</span>
+    <span class="n">_instance</span><span class="p">:</span> <span class="n">DiversionRatioBoundary</span><span class="p">,</span>
+    <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">RECConstants</span><span class="p">],</span>
+    <span class="n">_value</span><span class="p">:</span> <span class="n">RECConstants</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">_value</span> <span class="o">==</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">OUTIN</span> <span class="ow">and</span> <span class="n">_instance</span><span class="o">.</span><span class="n">recapture_rate</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid recapture specification, </span><span class="si">{</span><span class="n">_value</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+            <span class="s2">&quot;You may consider specifying `mergeron.RECConstants.INOUT` here, and &quot;</span>
+            <span class="s1">&#39;assigning the default recapture rate as attribute, &quot;recapture_rate&quot; of &#39;</span>
+            <span class="s2">&quot;this `DiversionRatioBoundarySpec` object.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">_value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_instance</span><span class="o">.</span><span class="n">agg_method</span> <span class="o">!=</span> <span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MAX</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Specified aggregation method, </span><span class="si">{</span><span class="n">_instance</span><span class="o">.</span><span class="n">agg_method</span><span class="si">}</span><span class="s2"> requires a recapture specification.&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="nd">@frozen</span>
+<div class="viewcode-block" id="DiversionRatioBoundary">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary">[docs]</a>
+<span class="k">class</span> <span class="nc">DiversionRatioBoundary</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Diversion ratio specification, boundary coordinates, and area under boundary.</span>
+
+<span class="sd">    Along with the default diversion ratio and recapture rate,</span>
+<span class="sd">    a diversion ratio boundary specification includes the recapture form --</span>
+<span class="sd">    whether fixed for both merging firms&#39; products (&quot;proportional&quot;) or</span>
+<span class="sd">    consistent with share-proportionality, i.e., &quot;inside-out&quot;;</span>
+<span class="sd">    the method of aggregating diversion ratios for the two products, and</span>
+<span class="sd">    the precision for the estimate of area under the divertion ratio boundary</span>
+<span class="sd">    (also defines the number of points on the boundary).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DiversionRatioBoundary.diversion_ratio">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.diversion_ratio">[docs]</a>
+    <span class="n">diversion_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">0.065</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">_divr_value_validator</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DiversionRatioBoundary.recapture_rate">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_rate">[docs]</a>
+    <span class="n">recapture_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DiversionRatioBoundary.recapture_form">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_form">[docs]</a>
+    <span class="n">recapture_form</span><span class="p">:</span> <span class="n">RECConstants</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">RECConstants</span><span class="o">.</span><span class="n">INOUT</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
+            <span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">RECConstants</span><span class="p">)),</span>
+            <span class="n">_rec_spec_validator</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The form of the recapture rate.</span>
+
+<span class="sd">    When :attr:`mergeron.RECConstants.INOUT`, the recapture rate for</span>
+<span class="sd">    he product having the smaller market-share is assumed to equal the default,</span>
+<span class="sd">    and the recapture rate for the product with the larger market-share is</span>
+<span class="sd">    computed assuming MNL demand. Fixed recapture rates are specified as</span>
+<span class="sd">    :attr:`mergeron.RECConstants.FIXED`. (To specify that recapture rates be</span>
+<span class="sd">    constructed from the generated purchase-probabilities for products in</span>
+<span class="sd">    the market and for the outside good, specify :attr:`mergeron.RECConstants.OUTIN`.)</span>
+
+<span class="sd">    The GUPPI boundary is a continuum of diversion ratio boundaries conditional on</span>
+<span class="sd">    price-cost margins, :math:`d_{ij} = g_i * p_i / (m_j * p_j)`,</span>
+<span class="sd">    with :math:`d_{ij}` the diverion ratio from product :math:`i` to product :math:`j`;</span>
+<span class="sd">    :math:`g_i` the GUPPI for product :math:`i`;</span>
+<span class="sd">    :math:`m_j` the margin for product :math:`j`; and</span>
+<span class="sd">    :math:`p_i, p_j` the prices of goods :math:`i, j`, respectively.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DiversionRatioBoundary.agg_method">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.agg_method">[docs]</a>
+    <span class="n">agg_method</span><span class="p">:</span> <span class="n">UPPAggrSelector</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MAX</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">UPPAggrSelector</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Method for aggregating the distinct diversion ratio measures for the two products.</span>
+
+<span class="sd">    Distinct diversion ratio or GUPPI measures for the two merging-firms&#39; products are</span>
+<span class="sd">    aggregated using the method specified by the `agg_method` attribute, which is specified</span>
+<span class="sd">    using the enum :class:`mergeron.UPPAggrSelector`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DiversionRatioBoundary.precision">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.precision">[docs]</a>
+    <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The number of decimal places of precision for the estimated area under the UPP boundary.</span>
+
+<span class="sd">    Leaving this attribute unspecified will result in the default precision,</span>
+<span class="sd">    which varies based on the `agg_method` attribute, reflecting</span>
+<span class="sd">    the limit of precision available from the underlying functions. The number of</span>
+<span class="sd">    boundary points generated is also defined based on this attribute.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DiversionRatioBoundary.coordinates">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.coordinates">[docs]</a>
+    <span class="n">coordinates</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Market-share pairs as Cartesian coordinates of points on the diversion ratio boundary.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DiversionRatioBoundary.area">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.area">[docs]</a>
+    <span class="n">area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Area under the diversion ratio boundary.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__attrs_post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_share_ratio</span> <span class="o">=</span> <span class="n">critical_share_ratio</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">diversion_ratio</span><span class="p">,</span> <span class="n">r_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">recapture_rate</span>
+        <span class="p">)</span>
+        <span class="n">_upp_agg_kwargs</span><span class="p">:</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">ShareRatioBoundaryKeywords</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;recapture_form&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recapture_form</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;inside-out&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;prec&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_method</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">DIS</span><span class="p">:</span>
+                <span class="n">_upp_agg_fn</span> <span class="o">=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">shrratio_boundary_wtd_avg</span>
+                <span class="n">_upp_agg_kwargs</span> <span class="o">|=</span> <span class="p">{</span><span class="s2">&quot;agg_method&quot;</span><span class="p">:</span> <span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="s2">&quot;weighting&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+            <span class="k">case</span> <span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">AVG</span><span class="p">:</span>
+                <span class="n">_upp_agg_fn</span> <span class="o">=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">shrratio_boundary_xact_avg</span>  <span class="c1"># type: ignore</span>
+            <span class="k">case</span> <span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MAX</span><span class="p">:</span>
+                <span class="n">_upp_agg_fn</span> <span class="o">=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">shrratio_boundary_max</span>  <span class="c1"># type: ignore</span>
+                <span class="n">_upp_agg_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;prec&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>  <span class="c1"># replace here</span>
+            <span class="k">case</span> <span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MIN</span><span class="p">:</span>
+                <span class="n">_upp_agg_fn</span> <span class="o">=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">shrratio_boundary_min</span>  <span class="c1"># type: ignore</span>
+                <span class="n">_upp_agg_kwargs</span> <span class="o">|=</span> <span class="p">{</span><span class="s2">&quot;prec&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>  <span class="c1"># update here</span>
+            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                <span class="n">_upp_agg_fn</span> <span class="o">=</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">shrratio_boundary_wtd_avg</span>
+
+                <span class="n">_aggregator</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;arithmetic mean&quot;</span><span class="p">,</span> <span class="s2">&quot;geometric mean&quot;</span><span class="p">,</span> <span class="s2">&quot;distance&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_method</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;average&quot;</span><span class="p">):</span>
+                    <span class="n">_aggregator</span> <span class="o">=</span> <span class="s2">&quot;arithmetic mean&quot;</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_method</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;geometric mean&quot;</span><span class="p">):</span>
+                    <span class="n">_aggregator</span> <span class="o">=</span> <span class="s2">&quot;geometric mean&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">_aggregator</span> <span class="o">=</span> <span class="s2">&quot;distance&quot;</span>
+
+                <span class="n">_wgt_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;cross-product-share&quot;</span><span class="p">,</span> <span class="s2">&quot;own-share&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_method</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;cross-product-share&quot;</span><span class="p">):</span>
+                    <span class="n">_wgt_type</span> <span class="o">=</span> <span class="s2">&quot;cross-product-share&quot;</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">agg_method</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;own-share&quot;</span><span class="p">):</span>
+                    <span class="n">_wgt_type</span> <span class="o">=</span> <span class="s2">&quot;own-share&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">_wgt_type</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="n">_upp_agg_kwargs</span> <span class="o">|=</span> <span class="p">{</span><span class="s2">&quot;agg_method&quot;</span><span class="p">:</span> <span class="n">_aggregator</span><span class="p">,</span> <span class="s2">&quot;weighting&quot;</span><span class="p">:</span> <span class="n">_wgt_type</span><span class="p">}</span>
+
+        <span class="n">_boundary</span> <span class="o">=</span> <span class="n">_upp_agg_fn</span><span class="p">(</span><span class="n">_share_ratio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">recapture_rate</span><span class="p">,</span> <span class="o">**</span><span class="n">_upp_agg_kwargs</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;coordinates&quot;</span><span class="p">,</span> <span class="n">_boundary</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;area&quot;</span><span class="p">,</span> <span class="n">_boundary</span><span class="o">.</span><span class="n">area</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="guppi_from_delta">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.guppi_from_delta">[docs]</a>
+<span class="k">def</span> <span class="nf">guppi_from_delta</span><span class="p">(</span>
+    <span class="n">_delta_bound</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="o">/</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">m_star</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.00</span><span class="p">,</span> <span class="n">r_bar</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Translate ∆HHI bound to GUPPI bound.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _delta_bound</span>
+<span class="sd">        Specified ∆HHI bound.</span>
+<span class="sd">    m_star</span>
+<span class="sd">        Parametric price-cost margin.</span>
+<span class="sd">    r_bar</span>
+<span class="sd">        Default recapture rate.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        GUPPI bound corresponding to ∆HHI bound, at given margin and recapture rate.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">round_cust</span><span class="p">(</span>
+        <span class="n">m_star</span> <span class="o">*</span> <span class="n">r_bar</span> <span class="o">*</span> <span class="p">(</span><span class="n">_s_m</span> <span class="o">:=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_delta_bound</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_s_m</span><span class="p">),</span>
+        <span class="n">frac</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+        <span class="n">rounding_mode</span><span class="o">=</span><span class="s2">&quot;ROUND_HALF_DOWN&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="critical_share_ratio">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.critical_share_ratio">[docs]</a>
+<span class="k">def</span> <span class="nf">critical_share_ratio</span><span class="p">(</span>
+    <span class="n">_guppi_bound</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.075</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">m_star</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.00</span><span class="p">,</span>
+    <span class="n">r_bar</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.00</span><span class="p">,</span>
+    <span class="n">frac</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-16</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mpf</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Corollary to GUPPI bound.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _guppi_bound</span>
+<span class="sd">        Specified GUPPI bound.</span>
+<span class="sd">    m_star</span>
+<span class="sd">        Parametric price-cost margin.</span>
+<span class="sd">    r_bar</span>
+<span class="sd">        Default recapture rate.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Critical share ratio (share ratio bound) corresponding to the GUPPI bound</span>
+<span class="sd">        for given margin and recapture rate.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">round_cust</span><span class="p">(</span>
+        <span class="n">mpf</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_guppi_bound</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="n">mp</span><span class="o">.</span><span class="n">fmul</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">m_star</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r_bar</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">frac</span><span class="o">=</span><span class="n">frac</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="share_from_guppi">
+<a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.share_from_guppi">[docs]</a>
+<span class="k">def</span> <span class="nf">share_from_guppi</span><span class="p">(</span>
+    <span class="n">_guppi_bound</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.065</span><span class="p">,</span> <span class="o">/</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">m_star</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.00</span><span class="p">,</span> <span class="n">r_bar</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Symmetric-firm share for given GUPPI, margin, and recapture rate.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _guppi_bound</span>
+<span class="sd">        GUPPI bound.</span>
+<span class="sd">    m_star</span>
+<span class="sd">        Parametric price-cost margin.</span>
+<span class="sd">    r_bar</span>
+<span class="sd">        Default recapture rate.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Symmetric firm market share on GUPPI boundary, for given margin and</span>
+<span class="sd">        recapture rate.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">gbfn</span><span class="o">.</span><span class="n">round_cust</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">_d0</span> <span class="o">:=</span> <span class="n">critical_share_ratio</span><span class="p">(</span><span class="n">_guppi_bound</span><span class="p">,</span> <span class="n">m_star</span><span class="o">=</span><span class="n">m_star</span><span class="p">,</span> <span class="n">r_bar</span><span class="o">=</span><span class="n">r_bar</span><span class="p">))</span>
+        <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_d0</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;This module defines classes with methods for generating boundaries for concentration and diversion-ratio screens.&quot;</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

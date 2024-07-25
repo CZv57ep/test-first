@@ -1,0 +1,71 @@
+mergeron.core.damodaran_margin_data
+===================================
+
+.. py:module:: mergeron.core.damodaran_margin_data
+
+.. autoapi-nested-parse::
+
+   Functions to parse margin data compiled by
+   Prof. Aswath Damodaran, Stern School of Business, NYU.
+
+   Data are downloaded or reused from a local copy, on demand.
+
+   For terms of use of Prof. Damodaran's data, please see:
+   https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datahistory.html
+
+   .. rubric:: Notes
+
+   Prof. Damodaran notes that the data construction may not be
+   consistent from iteration to iteration. He also notes that,
+   "the best use for my data is in real time corporate financial analysis
+   and valuation." Here, gross margin data compiled by Prof. Damodaran are
+   optionally used to model the distribution of price-cost margin
+   across firms that antitrust enforcement agencies are likely to review in
+   merger enforcement investigations over a multi-year span. The
+   implicit assumption is that refinements in source-data construction from
+   iteration to iteration do not result in inconsistent estimates of
+   the empirical distribution of margins estimated using
+   a Gaussian kernel density estimator (KDE).
+
+   Second, other procedures included in this package allow the researcher to
+   generate margins for a single firm and impute margins of other firms in
+   a model relevant antitrust market based on FOCs for profit maximization by
+   firms facing MNL demand. In that exercise, the distribution of
+   inferred margins does not follow the empirical distribution estimated
+   from the source data, due to restrictions resulting from the distribution of
+   generated market shares across firms and the feasibility condition that
+   price-cost margins fall in the interval :math:`[0, 1]`.
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: MGNDATA_ARCHIVE_PATH
+
+.. py:data:: u3pm
+
+.. py:function:: mgn_data_getter(_table_name = 'margin', *, data_archive_path = None, data_download_flag = False)
+
+.. py:function:: mgn_data_builder(_mgn_tbl_dict = None, /)
+
+.. py:function:: mgn_data_resampler(_sample_size = (10**6, 2), /, *, seed_sequence = None)
+
+   Generate draws from the empirical distribution bassed on Prof. Damodaran's margin data.
+
+   The empirical distribution is estimated using a Gaussian KDE; the bandwidth
+   selected using Silverman's rule is narrowed to reflect that the margin data
+   are multimodal. Margins for firms in finance, investment, insurance, reinsurance, and
+   REITs are excluded from the sample used to estimate the empirical distribution.
+
+   :param _sample_size: Number of draws
+   :param seed_sequence: SeedSequence for seeding random-number generator when results
+                         are to be repeatable
+
+   :returns: Array of margin values
+
+

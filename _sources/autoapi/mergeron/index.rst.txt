@@ -1,0 +1,124 @@
+mergeron
+========
+
+.. py:module:: mergeron
+
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/mergeron/core/index
+   /autoapi/mergeron/data/index
+   /autoapi/mergeron/demo/index
+   /autoapi/mergeron/ext/index
+   /autoapi/mergeron/gen/index
+
+
+
+
+
+
+Package Contents
+----------------
+
+.. py:data:: VERSION
+   :value: '2024.739091.2'
+
+
+.. py:data:: DATA_DIR
+   :type:  pathlib.Path
+
+   Defines a subdirectory named for this package in the user's home path.
+
+   If the subdirectory doesn't exist, it is created on package invocation.
+
+.. py:class:: RECConstants
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Recapture rate - derivation methods.
+
+
+   .. py:attribute:: INOUT
+      :value: 'inside-out'
+
+
+
+   .. py:attribute:: OUTIN
+      :value: 'outside-in'
+
+
+
+   .. py:attribute:: FIXED
+      :value: 'proportional'
+
+
+
+.. py:class:: UPPAggrSelector
+
+   Bases: :py:obj:`enum.StrEnum`
+
+
+   Aggregator selection for GUPPI and diversion ratio
+
+
+
+   .. py:attribute:: AVG
+      :value: 'average'
+
+
+
+   .. py:attribute:: CPA
+      :value: 'cross-product-share weighted average'
+
+
+
+   .. py:attribute:: CPD
+      :value: 'cross-product-share weighted distance'
+
+
+
+   .. py:attribute:: CPG
+      :value: 'cross-product-share weighted geometric mean'
+
+
+
+   .. py:attribute:: DIS
+      :value: 'symmetrically-weighted distance'
+
+
+
+   .. py:attribute:: GMN
+      :value: 'geometric mean'
+
+
+
+   .. py:attribute:: MAX
+      :value: 'max'
+
+
+
+   .. py:attribute:: MIN
+      :value: 'min'
+
+
+
+   .. py:attribute:: OSA
+      :value: 'own-share weighted average'
+
+
+
+   .. py:attribute:: OSD
+      :value: 'own-share weighted distance'
+
+
+
+   .. py:attribute:: OSG
+      :value: 'own-share weighted geometric mean'
+
+
+

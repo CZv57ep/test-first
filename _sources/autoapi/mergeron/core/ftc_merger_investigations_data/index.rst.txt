@@ -1,0 +1,99 @@
+mergeron.core.ftc_merger_investigations_data
+============================================
+
+.. py:module:: mergeron.core.ftc_merger_investigations_data
+
+.. autoapi-nested-parse::
+
+   Methods to parse FTC Merger Investigations Data, downloading source documents
+   as necessary
+
+   .. rubric:: Notes
+
+   Reported row and column totals from source data are not stored.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: FTCDATA_DIR
+
+.. py:data:: INVDATA_ARCHIVE_PATH
+
+.. py:data:: TABLE_NO_RE
+
+.. py:data:: TABLE_TYPES
+   :value: ('ByHHIandDelta', 'ByFirmCount')
+
+
+.. py:data:: CONC_TABLE_ALL
+   :value: 'Table 3.1'
+
+
+.. py:data:: CNT_TABLE_ALL
+   :value: 'Table 4.1'
+
+
+.. py:data:: TTL_KEY
+   :value: 86825
+
+
+.. py:data:: CONC_HHI_DICT
+
+.. py:data:: CONC_DELTA_DICT
+
+.. py:data:: CNT_FCOUNT_DICT
+
+.. py:class:: INVTableData
+
+   Bases: :py:obj:`NamedTuple`
+
+
+   .. py:attribute:: industry_group
+      :type:  str
+
+
+   .. py:attribute:: additional_evidence
+      :type:  str
+
+
+   .. py:attribute:: data_array
+      :type:  numpy.typing.NDArray[numpy.int64]
+
+
+.. py:data:: INVData
+   :type:  TypeAlias
+   :value: Mapping[str, dict[str, dict[str, INVTableData]]]
+
+
+.. py:function:: construct_data(_archive_path = None, *, flag_backward_compatibility = True, flag_pharma_for_exclusion = True, rebuild_data = False)
+
+   Construct FTC merger investigations data for non-overlapping periods,
+   from reported data on cumulative periods.
+
+   FTC merger investigations data are reported in cumulative periods,
+   e.g., 1996-2003 and 1996-2011, but the analyst may want data reported in
+   non-overlapping periods, e.g., 2004-2011. Given the way in which FTC had
+   reported merger investigations data, the above example is the only instance
+   in which the 1996-2003 data can be subtracted from the cumulative data to
+   extract merger investigations data for the later period.
+   See also, Kwoka [1]_, Sec. 2.3.3.
+
+   .. [1] Kwoka, J., Greenfield, D., & Gu, C. (2015). Mergers, merger control,
+      and remedies: A retrospective analysis of U.S. policy. MIT Press.
+
+   :param _archive_path: Path to file container for serialized constructed data
+   :param flag_backward_compatibility: Flag whether the reported data should be treated as backward-compatible
+   :param flag_pharma_for_exclusion: Flag whether data for Pharmaceuticals is included in,  the set of
+                                     industry groups with consistent reporting in both early and late periods
+
+   :returns: A dictionary of merger investigations data keyed to reporting periods
+
+

@@ -1,0 +1,249 @@
+mergeron.core.guidelines_boundaries
+===================================
+
+.. py:module:: mergeron.core.guidelines_boundaries
+
+.. autoapi-nested-parse::
+
+   Methods for defining and analyzing boundaries for Guidelines standards,
+   with a canvas on which to draw boundaries for Guidelines standards.
+
+
+
+
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:data:: HMGPubYear
+   :type:  TypeAlias
+   :value: Literal[1992, 2004, 2010, 2023]
+
+
+.. py:class:: HMGThresholds
+
+   .. py:attribute:: delta
+      :type:  float
+
+
+   .. py:attribute:: fc
+      :type:  float
+
+
+   .. py:attribute:: rec
+      :type:  float
+
+
+   .. py:attribute:: guppi
+      :type:  float
+
+
+   .. py:attribute:: divr
+      :type:  float
+
+
+   .. py:attribute:: cmcr
+      :type:  float
+
+
+   .. py:attribute:: ipr
+      :type:  float
+
+
+.. py:class:: GuidelinesThresholds
+
+   Guidelines threholds by Guidelines publication year
+
+   ΔHHI, Recapture Rate, GUPPI, Diversion ratio, CMCR, and IPR thresholds
+   constructed from concentration standards in Guidelines published in
+   1992, 2004, 2010, and 2023.
+
+   The 2004 Guidelines refernced here are the EU Commission
+   guidelines on assessment of horizontal mergers. These
+   guidelines also define a presumption for mergers with
+   post-merger HHI in [1000, 2000) and ΔHHI >= 250 points,
+   whi is not modeled here.
+
+   All other Guidelines modeled here are U.S. merger guidelines.
+
+
+
+   .. py:attribute:: pub_year
+      :type:  HMGPubYear
+
+      Year of publication of the Guidelines
+
+
+   .. py:attribute:: safeharbor
+      :type:  HMGThresholds
+
+      Negative presumption quantified on various measures
+
+      ΔHHI safeharbor bound, default recapture rate, GUPPI bound,
+      diversion ratio limit, CMCR, and IPR
+
+
+   .. py:attribute:: presumption
+      :type:  HMGThresholds
+
+      Presumption of harm defined in HMG
+
+      ΔHHI bound and corresponding default recapture rate, GUPPI bound,
+      diversion ratio limit, CMCR, and IPR
+
+
+   .. py:attribute:: imputed_presumption
+      :type:  HMGThresholds
+
+      Presumption of harm imputed from guidelines
+
+      ΔHHI bound inferred from strict numbers-equivalent
+      of (post-merger) HHI presumption, and corresponding default recapture rate,
+      GUPPI bound, diversion ratio limit, CMCR, and IPR
+
+
+.. py:class:: ConcentrationBoundary
+
+   Concentration parameters, boundary coordinates, and area under concentration boundary.
+
+
+   .. py:attribute:: threshold
+      :type:  float
+
+
+   .. py:attribute:: precision
+      :type:  int
+
+
+   .. py:attribute:: measure_name
+      :type:  Literal['ΔHHI', 'Combined share', 'Pre-merger HHI', 'Post-merger HHI']
+
+
+   .. py:attribute:: coordinates
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Market-share pairs as Cartesian coordinates of points on the concentration boundary.
+
+
+   .. py:attribute:: area
+      :type:  float
+
+      Area under the concentration boundary.
+
+
+.. py:class:: DiversionRatioBoundary
+
+   Diversion ratio specification, boundary coordinates, and area under boundary.
+
+   Along with the default diversion ratio and recapture rate,
+   a diversion ratio boundary specification includes the recapture form --
+   whether fixed for both merging firms' products ("proportional") or
+   consistent with share-proportionality, i.e., "inside-out";
+   the method of aggregating diversion ratios for the two products, and
+   the precision for the estimate of area under the divertion ratio boundary
+   (also defines the number of points on the boundary).
+
+
+
+   .. py:attribute:: diversion_ratio
+      :type:  float
+
+
+   .. py:attribute:: recapture_rate
+      :type:  float
+
+
+   .. py:attribute:: recapture_form
+      :type:  mergeron.RECConstants | None
+
+      The form of the recapture rate.
+
+      When :attr:`mergeron.RECConstants.INOUT`, the recapture rate for
+      he product having the smaller market-share is assumed to equal the default,
+      and the recapture rate for the product with the larger market-share is
+      computed assuming MNL demand. Fixed recapture rates are specified as
+      :attr:`mergeron.RECConstants.FIXED`. (To specify that recapture rates be
+      constructed from the generated purchase-probabilities for products in
+      the market and for the outside good, specify :attr:`mergeron.RECConstants.OUTIN`.)
+
+      The GUPPI boundary is a continuum of diversion ratio boundaries conditional on
+      price-cost margins, :math:`d_{ij} = g_i * p_i / (m_j * p_j)`,
+      with :math:`d_{ij}` the diverion ratio from product :math:`i` to product :math:`j`;
+      :math:`g_i` the GUPPI for product :math:`i`;
+      :math:`m_j` the margin for product :math:`j`; and
+      :math:`p_i, p_j` the prices of goods :math:`i, j`, respectively.
+
+
+   .. py:attribute:: agg_method
+      :type:  mergeron.UPPAggrSelector
+
+      Method for aggregating the distinct diversion ratio measures for the two products.
+
+      Distinct diversion ratio or GUPPI measures for the two merging-firms' products are
+      aggregated using the method specified by the `agg_method` attribute, which is specified
+      using the enum :class:`mergeron.UPPAggrSelector`.
+
+
+   .. py:attribute:: precision
+      :type:  int
+
+      The number of decimal places of precision for the estimated area under the UPP boundary.
+
+      Leaving this attribute unspecified will result in the default precision,
+      which varies based on the `agg_method` attribute, reflecting
+      the limit of precision available from the underlying functions. The number of
+      boundary points generated is also defined based on this attribute.
+
+
+   .. py:attribute:: coordinates
+      :type:  numpy.typing.NDArray[numpy.float64]
+
+      Market-share pairs as Cartesian coordinates of points on the diversion ratio boundary.
+
+
+   .. py:attribute:: area
+      :type:  float
+
+      Area under the diversion ratio boundary.
+
+
+.. py:function:: guppi_from_delta(_delta_bound = 0.01, /, *, m_star = 1.0, r_bar = 0.8)
+
+   Translate ∆HHI bound to GUPPI bound.
+
+   :param _delta_bound: Specified ∆HHI bound.
+   :param m_star: Parametric price-cost margin.
+   :param r_bar: Default recapture rate.
+
+   :returns: GUPPI bound corresponding to ∆HHI bound, at given margin and recapture rate.
+
+
+.. py:function:: critical_share_ratio(_guppi_bound = 0.075, /, *, m_star = 1.0, r_bar = 1.0, frac = 1e-16)
+
+   Corollary to GUPPI bound.
+
+   :param _guppi_bound: Specified GUPPI bound.
+   :param m_star: Parametric price-cost margin.
+   :param r_bar: Default recapture rate.
+
+   :returns: Critical share ratio (share ratio bound) corresponding to the GUPPI bound
+             for given margin and recapture rate.
+
+
+.. py:function:: share_from_guppi(_guppi_bound = 0.065, /, *, m_star = 1.0, r_bar = 0.8)
+
+   Symmetric-firm share for given GUPPI, margin, and recapture rate.
+
+   :param _guppi_bound: GUPPI bound.
+   :param m_star: Parametric price-cost margin.
+   :param r_bar: Default recapture rate.
+
+   :returns: Symmetric firm market share on GUPPI boundary, for given margin and
+             recapture rate.
+   :rtype: float
+
+
