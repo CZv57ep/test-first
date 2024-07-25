@@ -12,23 +12,33 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - name: Install dependencies
         run: |
           pip install -r docs/source/requirements.txt
       - name: Sphinx build
         run: |
           sphinx-build -a docs/source/ _build
-  
-  # Deploy to the github-pages environment
-  environment:
-    name: github-pages
-    url: ${{ steps.deployment.outputs.page_url }}
-  
-  # Specify runner + deployment step
-  runs-on: ubuntu-latest
-  steps:
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
 
+  # Push the generated docs to the gh-pages branch
+  # Deploy job
+  deploy:
+    # Add a dependency to the build job
+    needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
