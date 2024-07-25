@@ -60,7 +60,6 @@ types-requests = ">=2.31.0"
 types-beautifulsoup4 = ">=4.11.2"
 xlrd = "^2.0.1"                   # Needed to read margin data
 poetry-plugin-export = "^1.8.0"
-time-machine = "^2.14.2"
 
 
 [tool.poetry.group.dev.dependencies]
