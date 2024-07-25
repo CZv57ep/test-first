@@ -19,11 +19,16 @@ jobs:
       - name: Sphinx build
         run: |
           sphinx-build -a docs/source/ _build
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        with:
-          publish_branch: trunk/
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _build/
-          force_orphan: true
+  
+  # Deploy to the github-pages environment
+  environment:
+    name: github-pages
+    url: ${{ steps.deployment.outputs.page_url }}
+  
+  # Specify runner + deployment step
+  runs-on: ubuntu-latest
+  steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+
