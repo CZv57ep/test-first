@@ -68,7 +68,6 @@ pkg_init_path.write_text(
     )
 )
 
-run(["git", "tag", f"{sem_ver}"], check=True)  # noqa: S603, S607
 run(  # noqa: S603
     [  # noqa: S607
         "git",
@@ -80,3 +79,4 @@ run(  # noqa: S603
     ],
     check=True,
 )
+run(["git", "tag", f"{sem_ver}"], check=True)  # noqa: S603, S607
