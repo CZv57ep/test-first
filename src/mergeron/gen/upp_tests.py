@@ -195,9 +195,7 @@ def sim_enf_cnts(
         save_data_to_file=save_data_to_file,
     )
 
-    _upp_test_arrays = enf_cnts(
-        _market_data_sample, _upp_test_parms, _sim_test_regime
-    )
+    _upp_test_arrays = enf_cnts(_market_data_sample, _upp_test_parms, _sim_test_regime)
 
     save_data_to_hdf5(
         _upp_test_arrays,
@@ -310,9 +308,7 @@ def enf_cnts(
                 ]),
             ))
 
-    _enf_cnts_sim_byconczone_array = esl.enf_cnts_byconczone(
-        _stats_byconczone_sim[1:]
-    )
+    _enf_cnts_sim_byconczone_array = esl.enf_cnts_byconczone(_stats_byconczone_sim[1:])
     del _stats_byconczone_sim
     del _hhi_delta, _hhi_post, _fcounts
 
