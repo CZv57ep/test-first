@@ -21,7 +21,7 @@ __version__ = VERSION
 
 EMPTY_ARRAY_DEFAULT = np.zeros(2)
 FCOUNT_WTS_DEFAULT = np.divide(
-    (_nr := np.arange(1, 6)[::-1]), _nr.sum(), dtype=np.float64
+    (_nr := np.arange(1, 7)[::-1]), _nr.sum(), dtype=np.float64
 )
 
 
@@ -36,7 +36,7 @@ class PriceConstants(tuple[bool, str | None], enum.ReprEnum):
     ZERO = (False, None)
     NEG = (False, "negative share-correlation")
     POS = (False, "positive share-correlation")
-    # TODO: CSY = (False, "market-wide cost-symmetry")
+    CSY = (False, "market-wide cost-symmetry")
 
 
 @enum.unique
@@ -59,7 +59,11 @@ class SHRConstants(enum.StrEnum):
     DIR_ASYM = "Asymmetric Dirichlet"
     """Share distribution for merging-firm shares has a higher peak share
 
-    Shape parameter for merging-firm-share is 2.5, and 1.0 for all others.
+    By default, shape parameter for merging-firm-share is 2.5, and
+    1.0 for all others. Defining, :attr:`mergeron.ShareSpec.dist_parms`
+    as a vector of shape parameters with length matching
+    that of :attr:`mergeron.ShareSpec.dist_parms` allows flexible specification
+    of Dirichlet-distributed share-data generation.
     """
 
     DIR_COND = "Conditional Dirichlet"
@@ -74,13 +78,24 @@ class SHRConstants(enum.StrEnum):
 class ShareSpec:
     """Market share specification
 
+    A key feature of market-share specification in this package is that
+    the draws represent markets with multiple different firm-counts.
+    Firm-counts are unspecified if the share distribution is
+    :attr:`mergeron.SHRConstants.UNI`, for Dirichlet-distributed market-shares,
+    the default specification is that firm-counts  vary between
+    2 and 7 firms with each value equally likely.
+
     Notes
     -----
-    If recapture is determined "outside-in", market shares cannot have
-    Uniform distribution.
+    If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRConstants.UNI`,
+    then it is infeasible that
+    :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECConstants.OUTIN`.
+    In other words, if firm-counts are unspecified, the recapture rate cannot be
+    estimated using outside good choice probabilities.
 
-    If sample with varying firm counts is required, market shares must
-    be specified as having a supported Dirichlet distribution.
+    For a sample with explicit firm counts, market shares must
+    be specified as having a supported Dirichlet distribution
+    (see :class:`mergeron.gen.SHRConstants`).
 
     """
 
@@ -446,7 +461,8 @@ class UPPTestRegime:
         default=UPPAggrSelector.MIN, validator=validators.instance_of(UPPAggrSelector)
     )
     divr_aggregator: UPPAggrSelector | None = field(
-        default=None, validator=validators.instance_of((UPPAggrSelector, type(None)))
+        default=UPPAggrSelector.MIN,
+        validator=validators.instance_of((UPPAggrSelector, type(None))),
     )
 
 
