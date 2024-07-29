@@ -13,4 +13,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 Exceptions
 ----------
-Modules provided in the :code:`mergeron.ext` subpackage are redistributed under the license published within each module.
+Modules provided in the :mod:`mergeron.ext` subpackage are redistributed under the license published within each module.
