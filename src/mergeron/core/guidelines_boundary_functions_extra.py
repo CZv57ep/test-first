@@ -91,8 +91,8 @@ def hhi_delta_boundary_qdtr(_dh_val: float = 0.01, /) -> GuidelinesBoundaryCalla
 
     _hhi_eqn = _s_2 - 0.01 / (2 * _s_1)
 
-    _hhi_bdry = solve(_hhi_eqn, _s_2)[0]  # type: ignore
-    _s_nought = float(solve(_hhi_eqn.subs({_s_2: 1 - _s_1}), _s_1)[0])  # type: ignore
+    _hhi_bdry = solve(_hhi_eqn, _s_2)[0]
+    _s_nought = float(solve(_hhi_eqn.subs({_s_2: 1 - _s_1}), _s_1)[0])
 
     _hhi_bdry_area = 2 * (
         _s_nought
@@ -154,7 +154,7 @@ def shrratio_boundary_qdtr_wtd_avg(
                 - (_s_1 + _s_2) * _delta_star
             )
 
-            _bdry_func = solve(_bdry_eqn, _s_2)[0]  # type: ignore
+            _bdry_func = solve(_bdry_eqn, _s_2)[0]
             _s_naught = (
                 float(solve(simplify(_bdry_eqn.subs({_s_2: 1 - _s_1})), _s_1)[0])  # type: ignore
                 if recapture_form == "inside-out"
@@ -184,7 +184,7 @@ def shrratio_boundary_qdtr_wtd_avg(
                 - (_s_1 + _s_2) * _d_star
             )
 
-            _bdry_func = solve(_bdry_eqn, _s_2)[1]  # type: ignore
+            _bdry_func = solve(_bdry_eqn, _s_2)[1]
             _bdry_area = float(
                 2
                 * (
@@ -212,7 +212,7 @@ def shrratio_boundary_qdtr_wtd_avg(
                 - _delta_star
             )
 
-            _bdry_func = solve(_bdry_eqn, _s_2)[0]  # type: ignore
+            _bdry_func = solve(_bdry_eqn, _s_2)[0]
             _bdry_area = float(
                 2 * (mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (0, _s_mid)))
                 - _s_mid**2
@@ -370,7 +370,7 @@ def shrratio_boundary_distance(
         # Area under boundary
         _gbdry_area_total = 2 * _gbd_prtlarea - mp.power(_s_mid, "2")
 
-    _gbdry_points = np.vstack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(  # type: ignore
+    _gbdry_points = np.vstack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
         np.float64
     )
     # Points defining boundary to point-of-symmetry

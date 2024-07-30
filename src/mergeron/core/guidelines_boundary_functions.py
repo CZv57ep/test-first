@@ -414,7 +414,7 @@ def shrratio_boundary_wtd_avg(
 
     # Points defining boundary to point-of-symmetry
     return GuidelinesBoundary(
-        np.vstack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),  # type: ignore
+        np.vstack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbdry_area_total), prec),
     )
 
