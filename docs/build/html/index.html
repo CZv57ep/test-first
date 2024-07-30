@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron 2024.739097.2</title>
+        <title>mergeron 2024.739097.3</title>
       
     
     
@@ -77,7 +77,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="#" title="mergeron 2024.739097.2" class="md-header__button md-logo" aria-label="mergeron 2024.739097.2" data-md-component="logo">
+    <a href="#" title="mergeron 2024.739097.3" class="md-header__button md-logo" aria-label="mergeron 2024.739097.3" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -186,12 +186,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="#" title="mergeron 2024.739097.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.2" data-md-component="logo">
+    <a href="#" title="mergeron 2024.739097.3" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.3" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739097.2
+    mergeron 2024.739097.3
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -396,7 +396,7 @@
 
 <h1 id="mergeron-merger-policy-analysis-using-python">mergeron: Merger Policy Analysis using Python<a class="headerlink" href="#mergeron-merger-policy-analysis-using-python" title="Link to this heading">¶</a></h1>
 <p>Analyze the sets of mergers conforming to concentration and diversion ratio bounds. Analyze intrinsic enforcement rates, and intrinsic clearance rates, under concentration, diversion ratio, GUPPI, CMCR, and IPR bounds using generated data with specified distributions of market shares, price-cost margins, firm counts, and prices, optionally imposing restrictions impled by statutory filing thresholds and/or Bertrand-Nash oligopoly with MNL demand. Download and analyze merger investigations data published by the U.S. Federal Trade Commission in various reports on extended merger investigations (Second Requests) during 1996 to 2011.</p>
-<p>Intrinsic enforcement rates and intrinsice clearance rates are distinguished from <em>observed</em> clearance and enforcement rates in that the former are derived from analyzing theorectical predictions regarding firm conduct against enforcement thresholds, treating enforcement policy as exogenous to firm conduct. Depending on the merger enforcement regime, or merger control regime, intrinsic enforcement rates may also not be the complement of intrinsic clearance rates, i.e, it is not necessarily true that the intrinsic clearance rate estimate for a given enforcement regime is 1 minus the intrinsic enforcement rate. In contrast, observed enforcement rates reflect the deterrent effects of merger enforcement on firm conduct as well as the effects of merger screening on the level of enforcement, and, ny definition, the observed clearance rate is 1 minus the observed enforement rate.</p>
+<p>Intrinsic enforcement rates and intrinsice clearance rates are distinguished from <em>observed</em> clearance and enforcement rates in that the former are derived from analyzing theorectical predictions regarding firm conduct against enforcement thresholds, treating enforcement policy as exogenous to firm conduct. Depending on the merger enforcement regime, or merger control regime, intrinsic enforcement rates may also not be the complement of intrinsic clearance rates, i.e, it is not necessarily true that the intrinsic clearance rate estimate for a given enforcement regime is 1 minus the intrinsic enforcement rate. In contrast, observed enforcement rates reflect the deterrent effects of merger enforcement on firm conduct as well as the effects of merger screening on the level of enforcement, and, by definition, the observed clearance rate is 1 minus the observed enforement rate.</p>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <p>Module <a class="reference internal" href="autoapi/mergeron/core/guidelines_boundaries/index.html#module-mergeron.core.guidelines_boundaries" title="mergeron.core.guidelines_boundaries (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.core.guidelines_boundaries</span></code></a> includes classes for specifying concentration bounds (<a class="reference internal" href="autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.ConcentrationBoundary" title="mergeron.core.guidelines_boundaries.ConcentrationBoundary (Python class) — Concentration parameters, boundary coordinates, and area under concentration boundary."><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.core.guidelines_boundaries.ConcentrationBoundary</span></code></a>) and diversion-ratio bounds (<a class="reference internal" href="autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary" title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary (Python class) — Diversion ratio specification, boundary coordinates, and area under boundary."><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.core.guidelines_boundaries.DiversionRatioBoundary</span></code></a>), with automatic generation of boundary (as an array of share-pairs) and area. This module also includes a function for generating plots of concentation and diversion-ratio boundaries, and functions for mapping GUPPI standards to concentration (ΔHHI) standards, and vice-versa.</p>
 <p>Module <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#module-mergeron.gen.market_sample" title="mergeron.gen.market_sample (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.gen.market_sample</span></code></a> includes the <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample" title="mergeron.gen.market_sample.MarketSample (Python class) — Bases: mergeron.gen.MarketSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample</span></code></a> with methods for, (i) generating sample data under a rich specification of shares, diversion ratios, margins, prices, and HSR filing requirements, and (ii) for estimating enforcement or clearance rates under specified enforcement regimes given a method of aggregating diversion ratio or GUPPI estimates for the firms in a merger. Notably. share are genarated not just for markets with a fixed number of firms, but for markets with multiple firm-count weights, which may be left unspecified or explicitly specified.</p>
