@@ -202,7 +202,7 @@ def mgn_data_resampler(
     Parameters
     ----------
     _sample_size
-        Number of draws
+        Number of draws; if tuple, (number of draws, number of columns)
 
     seed_sequence
         SeedSequence for seeding random-number generator when results

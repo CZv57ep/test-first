@@ -1,7 +1,7 @@
-mergeron.core.proportions_tests
-===============================
+mergeron.ext.proportions_tests
+==============================
 
-.. py:module:: mergeron.core.proportions_tests
+.. py:module:: mergeron.ext.proportions_tests
 
 .. autoapi-nested-parse::
 

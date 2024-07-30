@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import Literal
 
 import numpy as np
+from attrs import evolve
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
 
@@ -21,11 +22,12 @@ from . import (
     FCOUNT_WTS_DEFAULT,
     FM2Constants,
     MarginDataSample,
-    MarketSpec,
     PCMConstants,
+    PCMSpec,
     PriceConstants,
     PriceDataSample,
     ShareDataSample,
+    ShareSpec,
     SHRConstants,
     SSZConstants,
 )
@@ -35,7 +37,7 @@ __version__ = VERSION
 
 def _gen_share_data(
     _sample_size: int,
-    _mkt_sample_spec: MarketSpec,
+    _share_spec: ShareSpec,
     _fcount_rng_seed_seq: SeedSequence | None,
     _mktshr_rng_seed_seq: SeedSequence,
     _nthreads: int = 16,
@@ -45,8 +47,8 @@ def _gen_share_data(
 
     Parameters
     ----------
-    _mkt_sample_spec
-        Class specifying parameters for share-, price-, and margin-data generation
+    _share_spec
+        Class specifying parameters for generating market share data
     _fcount_rng_seed_seq
         Seed sequence for assuring independent and, optionally, redundant streams
     _mktshr_rng_seed_seq
@@ -60,44 +62,43 @@ def _gen_share_data(
 
     """
 
-    _recapture_form, _dist_type_mktshr, _dist_parms_mktshr, _firm_count_prob_wts_raw = (
-        getattr(_mkt_sample_spec.share_spec, _f)
+    _recapture_form, _dist_type_mktshr, _dist_parms_mktshr, _firm_count_prob_wts = (
+        getattr(_share_spec, _f)
         for _f in ("recapture_form", "dist_type", "dist_parms", "firm_counts_weights")
     )
 
     _ssz = _sample_size
 
-    match _dist_type_mktshr:
-        case SHRConstants.UNI:
-            _mkt_share_sample = _gen_market_shares_uniform(
-                _ssz, _dist_parms_mktshr, _mktshr_rng_seed_seq, _nthreads
-            )
+    if _dist_type_mktshr == SHRConstants.UNI:
+        _mkt_share_sample = _gen_market_shares_uniform(
+            _ssz, _dist_parms_mktshr, _mktshr_rng_seed_seq, _nthreads
+        )
 
-        case _ if _dist_type_mktshr.name.startswith("DIR_"):
-            _firm_count_prob_wts = (
-                None
-                if _firm_count_prob_wts_raw is None
-                else np.array(_firm_count_prob_wts_raw, dtype=np.float64)
-            )
-            _mkt_share_sample = _gen_market_shares_dirichlet_multisample(
-                _ssz,
-                _recapture_form,
-                _dist_type_mktshr,
-                _dist_parms_mktshr,
-                _firm_count_prob_wts,
-                _fcount_rng_seed_seq,
-                _mktshr_rng_seed_seq,
-                _nthreads,
-            )
+    elif _dist_type_mktshr.name.startswith("DIR_"):
+        _firm_count_prob_wts = (
+            None
+            if _firm_count_prob_wts is None
+            else np.array(_firm_count_prob_wts, dtype=np.float64)
+        )
+        _mkt_share_sample = _gen_market_shares_dirichlet_multisample(
+            _ssz,
+            _recapture_form,
+            _dist_type_mktshr,
+            _dist_parms_mktshr,
+            _firm_count_prob_wts,
+            _fcount_rng_seed_seq,
+            _mktshr_rng_seed_seq,
+            _nthreads,
+        )
 
-        case _:
-            raise ValueError(
-                f'Unexpected type, "{_dist_type_mktshr}" for share distribution.'
-            )
+    else:
+        raise ValueError(
+            f'Unexpected type, "{_dist_type_mktshr}" for share distribution.'
+        )
 
     # If recapture_form == "inside-out", recalculate _aggregate_purchase_prob
     _frmshr_array = _mkt_share_sample.mktshr_array[:, :2]
-    _r_bar = _mkt_sample_spec.share_spec.recapture_rate or 0.85
+    _r_bar = _share_spec.recapture_rate or 0.85
     if _recapture_form == RECConstants.INOUT:
         _mkt_share_sample = ShareDataSample(
             _mkt_share_sample.mktshr_array,
@@ -392,23 +393,25 @@ def _gen_market_shares_dirichlet(
     )
 
 
-def _gen_price_data(
+def _gen_margin_price_data(
     _frmshr_array: NDArray[np.float64],
     _nth_firm_share: NDArray[np.float64],
-    _mkt_sample_spec: MarketSpec,
-    _seed_seq: SeedSequence | None = None,
+    _aggregate_purchase_prob: NDArray[np.float64],
+    _pcm_spec: PCMSpec,
+    _price_spec: PriceConstants,
+    _hsr_filing_test_type: SSZConstants,
+    _pcm_rng_seed_seq: SeedSequence,
+    _pr_rng_seed_seq: SeedSequence | None = None,
+    _nthreads: int = 16,
     /,
-) -> PriceDataSample:
-    _hsr_filing_test_type = _mkt_sample_spec.hsr_filing_test_type
-
-    _price_array, _price_ratio_array, _hsr_filing_test = (
+) -> tuple[MarginDataSample, PriceDataSample]:
+    _price_array, _price_ratio_array = (
         np.ones_like(_frmshr_array, np.float64),
         np.empty_like(_frmshr_array, np.float64),
-        np.empty(len(_frmshr_array), bool),
     )
 
     _pr_max_ratio = 5.0
-    match _mkt_sample_spec.price_spec:
+    match _price_spec:
         case PriceConstants.SYM:
             _nth_firm_price = np.ones((len(_frmshr_array), 1))
         case PriceConstants.POS:
@@ -421,17 +424,76 @@ def _gen_price_data(
                 for _p in (_frmshr_array, _nth_firm_share)
             )
         case PriceConstants.ZERO:
-            _price_array_gen = prng(_seed_seq).choice(
+            _price_array_gen = prng(_pr_rng_seed_seq).choice(
                 1 + np.arange(_pr_max_ratio), size=(len(_frmshr_array), 3)
             )
             _price_array = _price_array_gen[:, :2]
             _nth_firm_price = _price_array_gen[:, [2]]
             # del _price_array_gen
+        case PriceConstants.CSY:
+            # TODO:
+            # evolve FM2Constraint (save running MNL test twice); evolve copy of _mkt_sample_spec=1q
+            # generate the margin data
+            # generate price and margin data
+            _frmshr_array_plus = np.hstack((_frmshr_array, _nth_firm_share))
+            _pcm_spec_here = evolve(_pcm_spec, firm2_pcm_constraint=FM2Constants.IID)
+            _margin_data = _gen_margin_data(
+                _frmshr_array_plus,
+                np.ones_like(_frmshr_array_plus, np.float64),
+                _aggregate_purchase_prob,
+                _pcm_spec_here,
+                _pcm_rng_seed_seq,
+                _nthreads,
+            )
+
+            _pcm_array, _mnl_test_array = (
+                getattr(_margin_data, _f) for _f in ("pcm_array", "mnl_test_array")
+            )
+
+            _price_array_here = 1 / (1 - _pcm_array)
+            _price_array = _price_array_here[:, :2]
+            _nth_firm_price = _price_array_here[:, [-1]]
+            if _pcm_spec.firm2_pcm_constraint == FM2Constants.MNL:
+                # Generate i.i.d. PCMs then take PCM0 and construct PCM1
+                # Regenerate MNL test
+                _purchase_prob_array = _aggregate_purchase_prob * _frmshr_array
+                _pcm_array[:, 1] = np.divide(
+                    (
+                        _m1_nr := np.divide(
+                            np.einsum(
+                                "ij,ij,ij->ij",
+                                _price_array[:, [0]],
+                                _pcm_array[:, [0]],
+                                1 - _purchase_prob_array[:, [0]],
+                            ),
+                            1 - _purchase_prob_array[:, [1]],
+                        )
+                    ),
+                    1 + _m1_nr,
+                )
+                _mnl_test_array = (_pcm_array[:, [1]] >= 0) & (_pcm_array[:, [1]] <= 1)
+            else:
+                # Generate i.i.d. PCMs
+                # Construct price_array = 1/ (1 - pcm_array)
+                # Rgenerate MNL test
+                pass
+
+            _margin_data = MarginDataSample(_pcm_array[:, :2], _mnl_test_array)
+            del _price_array_here
         case _:
             raise ValueError(
-                f"Condition regarding price symmetry"
-                f' "{_mkt_sample_spec.price_spec.value}" is invalid.'
+                f"Specitication of price distribution"
+                f' "{_price_spec.value}" is invalid.'
             )
+    if _price_spec != PriceConstants.CSY:
+        _margin_data = _gen_margin_data(
+            _frmshr_array,
+            _price_array,
+            _aggregate_purchase_prob,
+            _pcm_spec,
+            _pcm_rng_seed_seq,
+            _nthreads,
+        )
 
     _price_array = _price_array.astype(np.float64)
     _rev_array = _price_array * _frmshr_array
@@ -476,26 +538,117 @@ def _gen_price_data(
             # Otherwise, all draws meet the filing test
             _hsr_filing_test = np.ones(len(_frmshr_array), dtype=bool)
 
+    return _margin_data, PriceDataSample(_price_array, _hsr_filing_test)
+
+
+# marked for deletion
+def _gen_price_data(
+    _frmshr_array: NDArray[np.float64],
+    _nth_firm_share: NDArray[np.float64],
+    _price_spec: PriceConstants,
+    _hsr_filing_test_type: SSZConstants,
+    _seed_seq: SeedSequence | None = None,
+    /,
+) -> PriceDataSample:
+    _price_array, _price_ratio_array, _hsr_filing_test = (
+        np.ones_like(_frmshr_array, np.float64),
+        np.empty_like(_frmshr_array, np.float64),
+        np.empty(len(_frmshr_array), bool),
+    )
+
+    _pr_max_ratio = 5.0
+    match _price_spec:
+        case PriceConstants.SYM:
+            _nth_firm_price = np.ones((len(_frmshr_array), 1))
+        case PriceConstants.POS:
+            _price_array, _nth_firm_price = (
+                np.ceil(_p * _pr_max_ratio) for _p in (_frmshr_array, _nth_firm_share)
+            )
+        case PriceConstants.NEG:
+            _price_array, _nth_firm_price = (
+                np.ceil((1 - _p) * _pr_max_ratio)
+                for _p in (_frmshr_array, _nth_firm_share)
+            )
+        case PriceConstants.ZERO:
+            _price_array_gen = prng(_seed_seq).choice(
+                1 + np.arange(_pr_max_ratio), size=(len(_frmshr_array), 3)
+            )
+            _price_array = _price_array_gen[:, :2]
+            _nth_firm_price = _price_array_gen[:, [2]]
+            # del _price_array_gen
+        case PriceConstants.CSY:
+            raise ValueError("Market-wide cost-symmetry is not yet implemented.")
+        case _:
+            raise ValueError(
+                f"Specitication of price distribution"
+                f' "{_price_spec.value}" is invalid.'
+            )
+
+    _price_array = _price_array.astype(np.float64)
+    _rev_array = _price_array * _frmshr_array
+    _nth_firm_rev = _nth_firm_price * _nth_firm_share
+
+    # Although `_test_rev_ratio_inv` is not fixed at 10%,
+    # the ratio has not changed since inception of the HSR filing test,
+    # so we treat it as a constant of merger enforcement policy.
+    _test_rev_ratio, _test_rev_ratio_inv = 10, 1 / 10
+
+    match _hsr_filing_test_type:
+        case SSZConstants.HSR_TEN:
+            # See, https://www.ftc.gov/enforcement/premerger-notification-program/
+            #   -> Procedures For Submitting Post-Consummation Filings
+            #    -> Key Elements to Determine Whether a Post Consummation Filing is Required
+            #           under heading, "Historical Thresholds"
+            # Revenue ratio has been 10-to-1 since inception
+            # Thus, a simple form of the HSR filing test would impose a 10-to-1
+            # ratio restriction on the merging firms' revenues
+            _rev_ratio = (_rev_array.min(axis=1) / _rev_array.max(axis=1)).round(4)
+            _hsr_filing_test = _rev_ratio >= _test_rev_ratio_inv
+            # del _rev_array, _rev_ratio
+        case SSZConstants.HSR_NTH:
+            # To get around the 10-to-1 ratio restriction, specify that the nth firm test:
+            # if the smaller merging firm matches or exceeds the n-th firm in size, and
+            # the larger merging firm has at least 10 times the size of the nth firm,
+            # the size test is considered met.
+            # Alternatively, if the smaller merging firm has 10% or greater share,
+            # the value of transaction test is considered met.
+            _rev_ratio_to_nth = np.round(np.sort(_rev_array, axis=1) / _nth_firm_rev, 4)
+            _hsr_filing_test = (
+                np.einsum(
+                    "ij->i",
+                    1 * (_rev_ratio_to_nth > [1, _test_rev_ratio]),
+                    dtype=np.int64,
+                )
+                == _rev_ratio_to_nth.shape[1]
+            ) | (_frmshr_array.min(axis=1) >= _test_rev_ratio_inv)
+
+        case _:
+            # Otherwise, all draws meet the filing test
+            _hsr_filing_test = np.ones(len(_frmshr_array), dtype=bool)
+
     return PriceDataSample(_price_array, _hsr_filing_test)
 
 
-def _gen_pcm_data(
+def _gen_margin_data(
     _frmshr_array: NDArray[np.float64],
     _price_array: NDArray[np.float64],
     _aggregate_purchase_prob: NDArray[np.float64],
-    _mkt_sample_spec: MarketSpec,
+    _pcm_spec: PCMSpec,
     _pcm_rng_seed_seq: SeedSequence,
     _nthreads: int = 16,
     /,
 ) -> MarginDataSample:
     _dist_type_pcm, _dist_firm2_pcm, _dist_parms_pcm = (
-        getattr(_mkt_sample_spec.pcm_spec, _f)
+        getattr(_pcm_spec, _f)
         for _f in ("dist_type", "firm2_pcm_constraint", "dist_parms")
     )
 
     _dist_type: Literal["Beta", "Uniform"]
-    _pcm_array = np.empty((len(_frmshr_array), 2), dtype=np.float64)
-    _mnl_test_array = np.empty((len(_frmshr_array), 2), dtype=int)
+    _pcm_array = (
+        np.empty((len(_frmshr_array), 1), dtype=np.float64)
+        if _pcm_spec.firm2_pcm_constraint == FM2Constants.SYM
+        else np.empty_like(_frmshr_array, dtype=np.float64)
+    )
 
     _beta_min, _beta_max = [None] * 2  # placeholder
     if _dist_type_pcm == PCMConstants.EMPR:
@@ -534,25 +687,33 @@ def _gen_pcm_data(
         _pcm_array = (_beta_max - _beta_min) * _pcm_array + _beta_min
         del _beta_min, _beta_max
 
+    if _dist_firm2_pcm == FM2Constants.SYM:
+        _pcm_array = np.column_stack((_pcm_array,) * _frmshr_array.shape[1])
     if _dist_firm2_pcm == FM2Constants.MNL:
         # Impose FOCs from profit-maximization with MNL demand
-        _purchprob_array = _aggregate_purchase_prob * _frmshr_array
+        if _dist_type_pcm == PCMConstants.EMPR:
+            print(
+                "NOTE: Estimated Firm 2 parameters will not be consistent with "
+                "the empirical distribution of margins in the source data. For "
+                "consistency, respecify pcm_spec.firm2_pcm_constraint = FM2Constants.IID."
+            )
+        _purchase_prob_array = _aggregate_purchase_prob * _frmshr_array
 
         _pcm_array[:, [1]] = np.divide(
             np.einsum(
                 "ij,ij,ij->ij",
                 _price_array[:, [0]],
                 _pcm_array[:, [0]],
-                1 - _purchprob_array[:, [0]],
+                1 - _purchase_prob_array[:, [0]],
             ),
-            np.einsum("ij,ij->ij", _price_array[:, [1]], 1 - _purchprob_array[:, [1]]),
+            np.einsum(
+                "ij,ij->ij", _price_array[:, [1]], 1 - _purchase_prob_array[:, [1]]
+            ),
         )
 
         _mnl_test_array = _pcm_array[:, 1].__ge__(0) & _pcm_array[:, 1].__le__(1)
     else:
         _mnl_test_array = np.ones(len(_pcm_array), dtype=bool)
-        if _dist_firm2_pcm == FM2Constants.SYM:
-            _pcm_array[:, [1]] = _pcm_array[:, [0]]
 
     return MarginDataSample(_pcm_array, _mnl_test_array)
 

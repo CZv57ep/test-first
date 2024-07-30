@@ -22,7 +22,6 @@ import numpy as np
 import re2 as re  # type: ignore
 import requests
 from bs4 import BeautifulSoup
-from icecream import ic  # type: ignore
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
 
@@ -345,7 +344,7 @@ def _construct_new_period_data(
                 #   _invdata_array_bld_enfcls < 0, _invdata_array_bld_enfcls, 0
                 # )
                 # if np.einsum('ij->', invdata_array_bld_tbc):
-                #     ic(
+                #     print(
                 #       f"{_data_period}, {_table_no}, {_invdata_ind_group}:",
                 #       abs(np.einsum('ij->', invdata_array_bld_tbc))
                 #       )
@@ -551,7 +550,7 @@ def _parse_table_blocks(
         _invdata_evid_cond = "Unrestricted on additional evidence"
 
     else:
-        # ic(_table_blocks)
+        # print(_table_blocks)
         _invdata_evid_cond = (
             _table_blocks[1][-3].strip()
             if _table_ser == 9
@@ -570,8 +569,8 @@ def _parse_table_blocks(
 
     _table_array = process_table_func(_table_blocks)
     if not isinstance(_table_array, np.ndarray) or _table_array.dtype != np.int64:
-        ic(_table_num)
-        ic(_table_blocks)
+        print(_table_num)
+        print(_table_blocks)
         raise ValueError
 
     _table_data = INVTableData(_invdata_ind_group, _invdata_evid_cond, _table_array)

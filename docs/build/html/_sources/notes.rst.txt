@@ -7,9 +7,7 @@ Source code for the function used to parse the source data in the relevant FTC p
 
 This package relies heavily on the Python packages, :code:`numpy` and :code:`matplotlib`, both for functionality and in the design of the APIs, with the exceptions that multi-valued input specifications are supplied as classes rather than as individual parameters. Classes for input-specification are defined using the :code:`attrs` package, making extensive use of the supplied validators and of custom validators.
 
-Thanks go to Paul Tol, SRON Netherlands Institute for Space Research for permission to bundle :code:`tol_colors.py` within this package.
-
-Thanks also to Prof. Ashwath Damodaran, New York University for his compilation of financial data, particularly gross margins, which are used to estimate an empirical margin distribution for potential merging firms.
+Thanks to Prof. Ashwath Damodaran, New York University for his compilation of financial data, particularly gross margins, which are used to estimate an empirical margin distribution for potential merging firms.
 
 On first attempt to specify data generation with empirical margin distribution, you may see the following message:
 
@@ -20,4 +18,8 @@ If you wish to use use the latest data from Prof. Damodaran, please do the follo
 #. download the file at the above URL to ~/mergeron/damodaran_margin_data.xls
 #. delete the file ~/mergeron/damodaran_margin_data_dict.msgpack
 #. rerun your code
+
+Thanks also to Paul Tol, SRON Netherlands Institute for Space Research for permission to bundle :code:`tol_colors.py` within this package.
+
+
 

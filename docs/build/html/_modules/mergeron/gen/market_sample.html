@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.gen.market_sample - mergeron 2024.739091.2</title>
+        <title>mergeron.gen.market_sample - mergeron 2024.739097.0</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.0" class="md-header__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739091.2
+    mergeron 2024.739097.0
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -397,22 +397,51 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">/</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">seed_seq_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate market data</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sample_size</span>
+<span class="sd">            Size of the market sample drawn</span>
+
+<span class="sd">        seed_seq_list</span>
+<span class="sd">            List of :code:`numpy.random.SeedSequence` objects</span>
+
+<span class="sd">        nthreads</span>
+<span class="sd">            Number of threads to use</span>
+
+<span class="sd">        save_data_to_file</span>
+<span class="sd">            Save data to given HDF5 file, at specified group node</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        See documentation for :class:`mergeron.gen.data_generation.gen_market_sample`</span>
+<span class="sd">        for more information, and :func:`mergeron.gen.data_generation.parse_seed_seq_list`</span>
+<span class="sd">        on the specification of :code:`seed_seq_list`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">gen_market_sample</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">sample_size</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span>
             <span class="n">seed_seq_list</span><span class="o">=</span><span class="n">seed_seq_list</span><span class="p">,</span>
             <span class="n">nthreads</span><span class="o">=</span><span class="n">nthreads</span><span class="p">,</span>
         <span class="p">)</span>
+
         <span class="n">_invalid_array_names</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="s2">&quot;fcounts&quot;</span><span class="p">,</span> <span class="s2">&quot;choice_prob_outgd&quot;</span><span class="p">,</span> <span class="s2">&quot;nth_firm_share&quot;</span><span class="p">,</span> <span class="s2">&quot;hhi_post&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="s2">&quot;Uniform&quot;</span>
             <span class="k">else</span> <span class="p">()</span>
         <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">save_data_to_file</span><span class="p">:</span>
             <span class="n">save_data_to_hdf5</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
@@ -434,22 +463,61 @@
         <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate market data</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        _enf_parm_vec</span>
+<span class="sd">            Threshold values for various Guidelines criteria</span>
+
+<span class="sd">        _upp_test_regime</span>
+<span class="sd">            Specifies whether to analyze enforcement, clearance, or both</span>
+<span class="sd">            and the GUPPI and diversion ratio aggregators employed, with</span>
+<span class="sd">            default being to analyze enforcement based on the maximum</span>
+<span class="sd">            merging-firm GUPPI and maximum diversion ratio between the</span>
+<span class="sd">            merging firms</span>
+
+<span class="sd">        sample_size</span>
+<span class="sd">            Size of the market sample drawn</span>
+
+<span class="sd">        seed_seq_list</span>
+<span class="sd">            List of :code:`numpy.random.SeedSequence` objects</span>
+
+<span class="sd">        nthreads</span>
+<span class="sd">            Number of threads to use</span>
+
+<span class="sd">        save_data_to_file</span>
+<span class="sd">            Save data to given HDF5 file, at specified group node</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        See documentation for :class:`mergeron.gen.MarketSpec` for details on specifying</span>
+<span class="sd">        how shares, margins, prices, and diversion ratios are generated, and whether to restrict</span>
+<span class="sd">        the sample to draws representing mergers that meet the HSR filing requirements. See</span>
+<span class="sd">        :class:`mergeron.gen.MarketDataSample` on the sample data generated; see,</span>
+<span class="sd">        :func:`mergeron.gen.data_generation.parse_seed_seq_list` on</span>
+<span class="sd">        the specification of :code:`seed_seq_list`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;market_data_sample&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">enf_counts</span> <span class="o">=</span> <span class="n">sim_enf_cnts_ll</span><span class="p">(</span>
                 <span class="bp">self</span><span class="p">,</span>
                 <span class="n">_enf_parm_vec</span><span class="p">,</span>
                 <span class="n">_upp_test_regime</span><span class="p">,</span>
-                <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
                 <span class="n">sample_size</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span>
                 <span class="n">seed_seq_list</span><span class="o">=</span><span class="n">seed_seq_list</span><span class="p">,</span>
                 <span class="n">nthreads</span><span class="o">=</span><span class="n">nthreads</span><span class="p">,</span>
+                <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">enf_counts</span> <span class="o">=</span> <span class="n">enf_cnts</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">_enf_parm_vec</span><span class="p">,</span> <span class="n">_upp_test_regime</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="n">save_data_to_file</span><span class="p">:</span>
-            <span class="n">save_data_to_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">enf_counts</span><span class="p">,</span> <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enf_counts</span> <span class="o">=</span> <span class="n">enf_cnts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">_enf_parm_vec</span><span class="p">,</span> <span class="n">_upp_test_regime</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">save_data_to_file</span><span class="p">:</span>
+                <span class="n">save_data_to_hdf5</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">enf_counts</span><span class="p">,</span> <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">)</span></div>
 </div>
 
 </code></pre></div>

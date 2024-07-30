@@ -62,7 +62,7 @@ Module Contents
    are multimodal. Margins for firms in finance, investment, insurance, reinsurance, and
    REITs are excluded from the sample used to estimate the empirical distribution.
 
-   :param _sample_size: Number of draws
+   :param _sample_size: Number of draws; if tuple, (number of draws, number of columns)
    :param seed_sequence: SeedSequence for seeding random-number generator when results
                          are to be repeatable
 

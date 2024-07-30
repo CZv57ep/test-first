@@ -62,6 +62,11 @@ Package Contents
 
 
 
+   .. py:attribute:: CSY
+      :value: (False, 'market-wide cost-symmetry')
+
+
+
 .. py:class:: SHRConstants
 
    Bases: :py:obj:`enum.StrEnum`
@@ -100,7 +105,11 @@ Package Contents
 
       Share distribution for merging-firm shares has a higher peak share
 
-      Shape parameter for merging-firm-share is 2.5, and 1.0 for all others.
+      By default, shape parameter for merging-firm-share is 2.5, and
+      1.0 for all others. Defining, :attr:`mergeron.ShareSpec.dist_parms`
+      as a vector of shape parameters with length matching
+      that of :attr:`mergeron.ShareSpec.dist_parms` allows flexible specification
+      of Dirichlet-distributed share-data generation.
 
 
    .. py:attribute:: DIR_COND
@@ -117,13 +126,24 @@ Package Contents
 
    Market share specification
 
+   A key feature of market-share specification in this package is that
+   the draws represent markets with multiple different firm-counts.
+   Firm-counts are unspecified if the share distribution is
+   :attr:`mergeron.SHRConstants.UNI`, for Dirichlet-distributed market-shares,
+   the default specification is that firm-counts  vary between
+   2 and 7 firms with each value equally likely.
+
    .. rubric:: Notes
 
-   If recapture is determined "outside-in", market shares cannot have
-   Uniform distribution.
+   If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRConstants.UNI`,
+   then it is infeasible that
+   :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECConstants.OUTIN`.
+   In other words, if firm-counts are unspecified, the recapture rate cannot be
+   estimated using outside good choice probabilities.
 
-   If sample with varying firm counts is required, market shares must
-   be specified as having a supported Dirichlet distribution.
+   For a sample with explicit firm counts, market shares must
+   be specified as having a supported Dirichlet distribution
+   (see :class:`mergeron.gen.SHRConstants`).
 
 
    .. py:attribute:: recapture_form

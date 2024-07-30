@@ -1,5 +1,6 @@
 """
-Methods to generate data for analyzing merger enforcement policy.
+Methods to generate market data, including shares price, marginsm, and diversion ratios
+for analyzing merger enforcement policy.
 
 """
 
@@ -21,7 +22,7 @@ from . import (
     SHRConstants,
     SSZConstants,
 )
-from ._data_generation_functions import _gen_pcm_data, _gen_price_data, _gen_share_data
+from ._data_generation_functions import _gen_margin_price_data, _gen_share_data
 
 __version__ = VERSION
 
@@ -42,24 +43,13 @@ def gen_market_sample(
     nthreads: int = 16,
 ) -> MarketDataSample:
     """
-    Generate share, diversion ratio, price, and margin data based on supplied parameters
+    Generate share, diversion ratio, price, and margin data for MarketSpec.
 
-    Diversion ratios generated assuming share-proportionality, unless
-    `recapture_form` = "proportional", in which case both firms' recapture rate
-    is set to `r_bar`.
-
-    The tuple of SeedSequences, if specified, is parsed in the following order
-    for generating the relevant random variates:
-    1.) quantity shares
-    2.) price-cost margins
-    3.) firm-counts, from :code:`[2, 2 + len(firm_counts_weights)]`,
-    weighted by :code:`firm_counts_weights`, where relevant
-    4.) prices, if :code:`price_spec == PriceConstants.ZERO`.
 
     Parameters
     ----------
     _mkt_sample_spec
-        class specifying parameters for data generation
+        class specifying parameters for data generation, see :class:`mergeron.gen.MarketSpec`
     sample_size
         number of draws to generate
     seed_seq_list
@@ -100,7 +90,7 @@ def gen_market_sample(
     # Generate share data
     _mktshr_data = _gen_share_data(
         _shr_sample_size,
-        _mkt_sample_spec,
+        _mkt_sample_spec.share_spec,
         _fcount_rng_seed_seq,
         _mktshr_rng_seed_seq,
         nthreads,
@@ -116,40 +106,28 @@ def gen_market_sample(
         )
     )
 
-    # Generate merging-firm price data
-    _price_data = _gen_price_data(
-        _mktshr_array[:, :2], _nth_firm_share, _mkt_sample_spec, _pr_rng_seed_seq
+    # Generate merging-firm price and PCM data
+    _margin_data, _price_data = _gen_margin_price_data(
+        _mktshr_array[:, :2],
+        _nth_firm_share,
+        _aggregate_purchase_prob,
+        _mkt_sample_spec.pcm_spec,
+        _mkt_sample_spec.price_spec,
+        _mkt_sample_spec.hsr_filing_test_type,
+        _pcm_rng_seed_seq,
+        _pr_rng_seed_seq,
+        nthreads,
     )
 
     _price_array, _hsr_filing_test = (
         getattr(_price_data, _f) for _f in ("price_array", "hsr_filing_test")
     )
 
-    if _hsr_filing_test_type != SSZConstants.ONE:
-        _mktshr_array = _mktshr_array[_hsr_filing_test]
-        _fcounts = _fcounts[_hsr_filing_test]
-        _aggregate_purchase_prob = _aggregate_purchase_prob[_hsr_filing_test]
-        _nth_firm_share = _nth_firm_share[_hsr_filing_test]
-        _price_array = _price_array[_hsr_filing_test]
-
-    # Calculate diversion ratios
-    _divr_array = gen_divr_array(
-        _recapture_form, _recapture_rate, _mktshr_array[:, :2], _aggregate_purchase_prob
-    )
-
-    # Generate margin data
-    _pcm_data = _gen_pcm_data(
-        _mktshr_array[:, :2],
-        _price_array,
-        _aggregate_purchase_prob,
-        _mkt_sample_spec,
-        _pcm_rng_seed_seq,
-        nthreads,
-    )
     _pcm_array, _mnl_test_rows = (
-        getattr(_pcm_data, _f) for _f in ("pcm_array", "mnl_test_array")
+        getattr(_margin_data, _f) for _f in ("pcm_array", "mnl_test_array")
     )
 
+    _mnl_test_rows = _mnl_test_rows * _hsr_filing_test
     _s_size = sample_size  # originally-specified sample size
     if _dist_firm2_pcm == FM2Constants.MNL:
         _mktshr_array = _mktshr_array[_mnl_test_rows][:_s_size]
@@ -158,7 +136,11 @@ def gen_market_sample(
         _fcounts = _fcounts[_mnl_test_rows][:_s_size]
         _aggregate_purchase_prob = _aggregate_purchase_prob[_mnl_test_rows][:_s_size]
         _nth_firm_share = _nth_firm_share[_mnl_test_rows][:_s_size]
-        _divr_array = _divr_array[_mnl_test_rows][:_s_size]
+
+    # Calculate diversion ratios
+    _divr_array = gen_divr_array(
+        _recapture_form, _recapture_rate, _mktshr_array[:, :2], _aggregate_purchase_prob
+    )
 
     del _mnl_test_rows, _s_size
 
@@ -188,7 +170,33 @@ def parse_seed_seq_list(
     _price_spec: PriceConstants,
     /,
 ) -> SeedSequenceData:
-    """Initialize RNG seed sequences to ensure independence of distinct random streams."""
+    """Initialize RNG seed sequences to ensure independence of distinct random streams.
+
+    The tuple of SeedSequences, is parsed in the following order
+    for generating the relevant random variates:
+    1.) quantity shares
+    2.) price-cost margins
+    3.) firm-counts, if :code:`MarketSpec.share_spec.dist_type` is a Dirichlet distribution
+    4.) prices, if :code:`MarketSpec.price_spec ==`:attr:`mergeron.gen.PriceConstants.ZERO`.
+
+
+
+    Parameters
+    ----------
+    _sseq_list
+        List of RNG seed sequences
+
+    _mktshr_dist_type
+        Market share distribution type
+
+    _price_spec
+        Price specification
+
+    Returns
+    -------
+        Seed sequence data
+
+    """
     _fcount_rng_seed_seq: SeedSequence | None = None
     _pr_rng_seed_seq: SeedSequence | None = None
 

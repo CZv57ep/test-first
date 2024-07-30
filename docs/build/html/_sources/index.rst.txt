@@ -1,20 +1,22 @@
 .. include:: README.rst
 
 .. toctree::
-   :caption: Contents
+    :caption: Contents
 
 .. toctree::
-   :caption: API Reference
+    :caption: API Reference
 
-   autoapi/mergeron/index
-
-.. toctree::
-   :caption: License
-
-   license
+    autoapi/mergeron/index
 
 .. toctree::
-   :caption: Notes and Acknowlegements
+    :caption: License
 
-   notes
+    license
+
+.. toctree::
+    :caption: Notes and Acknowlegements
+
+    notes
+
+
 

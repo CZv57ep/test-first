@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.gen - mergeron 2024.739091.2</title>
+        <title>mergeron.gen - mergeron 2024.739097.0</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../index.html" title="mergeron 2024.739097.0" class="md-header__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../index.html" title="mergeron 2024.739097.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739091.2
+    mergeron 2024.739097.0
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -396,7 +396,7 @@
 <div class="viewcode-block" id="FCOUNT_WTS_DEFAULT">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.FCOUNT_WTS_DEFAULT">[docs]</a>
 <span class="n">FCOUNT_WTS_DEFAULT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
-    <span class="p">(</span><span class="n">_nr</span> <span class="o">:=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">_nr</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+    <span class="p">(</span><span class="n">_nr</span> <span class="o">:=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">_nr</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
 <span class="p">)</span></div>
 
 
@@ -425,9 +425,12 @@
 <div class="viewcode-block" id="PriceConstants.POS">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.POS">[docs]</a>
     <span class="n">POS</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;positive share-correlation&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PriceConstants.CSY">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.CSY">[docs]</a>
+    <span class="n">CSY</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;market-wide cost-symmetry&quot;</span><span class="p">)</span></div>
 </div>
 
-    <span class="c1"># TODO: CSY = (False, &quot;market-wide cost-symmetry&quot;)</span>
 
 
 <span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
@@ -464,7 +467,11 @@
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Share distribution for merging-firm shares has a higher peak share</span>
 
-<span class="sd">    Shape parameter for merging-firm-share is 2.5, and 1.0 for all others.</span>
+<span class="sd">    By default, shape parameter for merging-firm-share is 2.5, and</span>
+<span class="sd">    1.0 for all others. Defining, :attr:`mergeron.ShareSpec.dist_parms`</span>
+<span class="sd">    as a vector of shape parameters with length matching</span>
+<span class="sd">    that of :attr:`mergeron.ShareSpec.dist_parms` allows flexible specification</span>
+<span class="sd">    of Dirichlet-distributed share-data generation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SHRConstants.DIR_COND">
@@ -485,13 +492,24 @@
 <span class="k">class</span> <span class="nc">ShareSpec</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Market share specification</span>
 
+<span class="sd">    A key feature of market-share specification in this package is that</span>
+<span class="sd">    the draws represent markets with multiple different firm-counts.</span>
+<span class="sd">    Firm-counts are unspecified if the share distribution is</span>
+<span class="sd">    :attr:`mergeron.SHRConstants.UNI`, for Dirichlet-distributed market-shares,</span>
+<span class="sd">    the default specification is that firm-counts  vary between</span>
+<span class="sd">    2 and 7 firms with each value equally likely.</span>
+
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    If recapture is determined &quot;outside-in&quot;, market shares cannot have</span>
-<span class="sd">    Uniform distribution.</span>
+<span class="sd">    If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRConstants.UNI`,</span>
+<span class="sd">    then it is infeasible that</span>
+<span class="sd">    :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECConstants.OUTIN`.</span>
+<span class="sd">    In other words, if firm-counts are unspecified, the recapture rate cannot be</span>
+<span class="sd">    estimated using outside good choice probabilities.</span>
 
-<span class="sd">    If sample with varying firm counts is required, market shares must</span>
-<span class="sd">    be specified as having a supported Dirichlet distribution.</span>
+<span class="sd">    For a sample with explicit firm counts, market shares must</span>
+<span class="sd">    be specified as having a supported Dirichlet distribution</span>
+<span class="sd">    (see :class:`mergeron.gen.SHRConstants`).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1027,7 +1045,8 @@
 <div class="viewcode-block" id="UPPTestRegime.divr_aggregator">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestRegime.divr_aggregator">[docs]</a>
     <span class="n">divr_aggregator</span><span class="p">:</span> <span class="n">UPPAggrSelector</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">((</span><span class="n">UPPAggrSelector</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MIN</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">((</span><span class="n">UPPAggrSelector</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))),</span>
     <span class="p">)</span></div>
 </div>
 

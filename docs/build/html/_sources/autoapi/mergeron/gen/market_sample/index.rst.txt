@@ -22,9 +22,50 @@ Module Contents
    Parameter specification for market data generation.
 
 
-   .. py:method:: generate_sample(/, *, sample_size = 10**6, seed_seq_list, nthreads, save_data_to_file = False)
+   .. py:method:: generate_sample(/, *, sample_size, seed_seq_list, nthreads, save_data_to_file)
+
+      Generate market data
+
+      :param sample_size: Size of the market sample drawn
+      :param seed_seq_list: List of :code:`numpy.random.SeedSequence` objects
+      :param nthreads: Number of threads to use
+      :param save_data_to_file: Save data to given HDF5 file, at specified group node
+
+      :rtype: None
+
+      .. rubric:: Notes
+
+      See documentation for :class:`mergeron.gen.data_generation.gen_market_sample`
+      for more information, and :func:`mergeron.gen.data_generation.parse_seed_seq_list`
+      on the specification of :code:`seed_seq_list`.
+
 
 
    .. py:method:: estimate_enf_counts(_enf_parm_vec, _upp_test_regime, /, *, sample_size = 10**6, seed_seq_list, nthreads, save_data_to_file = False)
+
+      Generate market data
+
+      :param _enf_parm_vec: Threshold values for various Guidelines criteria
+      :param _upp_test_regime: Specifies whether to analyze enforcement, clearance, or both
+                               and the GUPPI and diversion ratio aggregators employed, with
+                               default being to analyze enforcement based on the maximum
+                               merging-firm GUPPI and maximum diversion ratio between the
+                               merging firms
+      :param sample_size: Size of the market sample drawn
+      :param seed_seq_list: List of :code:`numpy.random.SeedSequence` objects
+      :param nthreads: Number of threads to use
+      :param save_data_to_file: Save data to given HDF5 file, at specified group node
+
+      :rtype: None
+
+      .. rubric:: Notes
+
+      See documentation for :class:`mergeron.gen.MarketSpec` for details on specifying
+      how shares, margins, prices, and diversion ratios are generated, and whether to restrict
+      the sample to draws representing mergers that meet the HSR filing requirements. See
+      :class:`mergeron.gen.MarketDataSample` on the sample data generated; see,
+      :func:`mergeron.gen.data_generation.parse_seed_seq_list` on
+      the specification of :code:`seed_seq_list`.
+
 
 

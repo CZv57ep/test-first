@@ -3,7 +3,7 @@ from itertools import product as iterprod
 from types import MappingProxyType
 from typing import Literal
 
-import mergeron.core.proportions_tests as pci
+import mergeron.ext.proportions_tests as pci
 import numpy as np
 import pytest
 from numpy.testing import assert_array_almost_equal

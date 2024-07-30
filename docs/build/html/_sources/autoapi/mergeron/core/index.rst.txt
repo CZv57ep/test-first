@@ -15,7 +15,6 @@ Submodules
    /autoapi/mergeron/core/guidelines_boundaries/index
    /autoapi/mergeron/core/guidelines_boundary_functions/index
    /autoapi/mergeron/core/guidelines_boundary_functions_extra/index
-   /autoapi/mergeron/core/proportions_tests/index
    /autoapi/mergeron/core/pseudorandom_numbers/index
 
 

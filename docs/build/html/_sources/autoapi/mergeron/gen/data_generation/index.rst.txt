@@ -5,7 +5,8 @@ mergeron.gen.data_generation
 
 .. autoapi-nested-parse::
 
-   Methods to generate data for analyzing merger enforcement policy.
+   Methods to generate market data, including shares price, marginsm, and diversion ratios
+   for analyzing merger enforcement policy.
 
 
 
@@ -39,21 +40,10 @@ Module Contents
 
 .. py:function:: gen_market_sample(_mkt_sample_spec, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16)
 
-   Generate share, diversion ratio, price, and margin data based on supplied parameters
+   Generate share, diversion ratio, price, and margin data for MarketSpec.
 
-   Diversion ratios generated assuming share-proportionality, unless
-   `recapture_form` = "proportional", in which case both firms' recapture rate
-   is set to `r_bar`.
 
-   The tuple of SeedSequences, if specified, is parsed in the following order
-   for generating the relevant random variates:
-   1.) quantity shares
-   2.) price-cost margins
-   3.) firm-counts, from :code:`[2, 2 + len(firm_counts_weights)]`,
-   weighted by :code:`firm_counts_weights`, where relevant
-   4.) prices, if :code:`price_spec == PriceConstants.ZERO`.
-
-   :param _mkt_sample_spec: class specifying parameters for data generation
+   :param _mkt_sample_spec: class specifying parameters for data generation, see :class:`mergeron.gen.MarketSpec`
    :param sample_size: number of draws to generate
    :param seed_seq_list: tuple of SeedSequences to ensure replicable data generation with
                          appropriately independent random streams
@@ -66,6 +56,21 @@ Module Contents
 .. py:function:: parse_seed_seq_list(_sseq_list, _mktshr_dist_type, _price_spec, /)
 
    Initialize RNG seed sequences to ensure independence of distinct random streams.
+
+   The tuple of SeedSequences, is parsed in the following order
+   for generating the relevant random variates:
+   1.) quantity shares
+   2.) price-cost margins
+   3.) firm-counts, if :code:`MarketSpec.share_spec.dist_type` is a Dirichlet distribution
+   4.) prices, if :code:`MarketSpec.price_spec ==`:attr:`mergeron.gen.PriceConstants.ZERO`.
+
+
+
+   :param _sseq_list: List of RNG seed sequences
+   :param _mktshr_dist_type: Market share distribution type
+   :param _price_spec: Price specification
+
+   :returns: Seed sequence data
 
 
 .. py:function:: gen_divr_array(_recapture_form, _recapture_rate, _frmshr_array, _aggregate_purchase_prob = EMPTY_ARRAY_DEFAULT, /)

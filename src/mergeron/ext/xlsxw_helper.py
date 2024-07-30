@@ -11,6 +11,14 @@ This module is designed for producing formatted summary output. For
 writing bulk data to Excel, facilities provided in third-party packages
 such as `polars <https://pola.rs/>`_ likely provide better performance.
 
+License
+========
+
+Copyright 2017-2023 S. Murthy Kambhampaty
+Licese: MIT
+https://mit-license.org/
+
+
 """
 
 from __future__ import annotations

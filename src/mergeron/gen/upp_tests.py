@@ -11,7 +11,6 @@ from typing import Literal, TypeAlias, TypedDict
 
 import numpy as np
 import tables as ptb  # type: ignore
-from icecream import ic  # type: ignore
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
@@ -195,9 +194,7 @@ def sim_enf_cnts(
         save_data_to_file=save_data_to_file,
     )
 
-    _upp_test_arrays = enf_cnts(
-        _market_data_sample, _upp_test_parms, _sim_test_regime
-    )
+    _upp_test_arrays = enf_cnts(_market_data_sample, _upp_test_parms, _sim_test_regime)
 
     save_data_to_hdf5(
         _upp_test_arrays,
@@ -279,7 +276,7 @@ def enf_cnts(
     try:
         _hhi_zone_post_ranged = esl.hhi_zone_post_ranger(_hhi_post)
     except ValueError as _err:
-        ic(_hhi_post)
+        print(_hhi_post)
         raise _err
 
     _stats_byconczone_sim = -1 * np.ones(_stats_rowlen + 1, np.int64)
@@ -310,9 +307,7 @@ def enf_cnts(
                 ]),
             ))
 
-    _enf_cnts_sim_byconczone_array = esl.enf_cnts_byconczone(
-        _stats_byconczone_sim[1:]
-    )
+    _enf_cnts_sim_byconczone_array = esl.enf_cnts_byconczone(_stats_byconczone_sim[1:])
     del _stats_byconczone_sim
     del _hhi_delta, _hhi_post, _fcounts
 

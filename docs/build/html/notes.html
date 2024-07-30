@@ -13,7 +13,7 @@
     
     
       
-        <title>Notes and Acknowlegements - mergeron 2024.739091.2</title>
+        <title>Notes and Acknowlegements - mergeron 2024.739097.0</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="index.html" title="mergeron 2024.739097.0" class="md-header__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="index.html" title="mergeron 2024.739097.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739091.2
+    mergeron 2024.739097.0
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -381,8 +381,7 @@
 <p>FTC merger investigtions data published in 2004, 2007, 2008, and 2013 are provided in the module, along with constructed data for non-overlapping periods. For each period, as feasible, additional tables are constructed for, (a.) enforcement and clearance counts for mergers in industries common to the contructed period and the base period; and (b.) markets with no evidence on entry.</p>
 <p>Source code for the function used to parse the source data in the relevant FTC publications for constructing the included dataset is included in the module, <code class="code docutils literal notranslate"><span class="pre">mergeron.core.ftc_merger_investigations_data</span></code>, but is inoperable by design. Users developing workarounds to reparse the data from the FTC publications will have to install additional software distributed under an incompatible license, and that license may impose additional restrictions on redistribution.</p>
 <p>This package relies heavily on the Python packages, <code class="code docutils literal notranslate"><span class="pre">numpy</span></code> and <code class="code docutils literal notranslate"><span class="pre">matplotlib</span></code>, both for functionality and in the design of the APIs, with the exceptions that multi-valued input specifications are supplied as classes rather than as individual parameters. Classes for input-specification are defined using the <code class="code docutils literal notranslate"><span class="pre">attrs</span></code> package, making extensive use of the supplied validators and of custom validators.</p>
-<p>Thanks go to Paul Tol, SRON Netherlands Institute for Space Research for permission to bundle <code class="code docutils literal notranslate"><span class="pre">tol_colors.py</span></code> within this package.</p>
-<p>Thanks also to Prof. Ashwath Damodaran, New York University for his compilation of financial data, particularly gross margins, which are used to estimate an empirical margin distribution for potential merging firms.</p>
+<p>Thanks to Prof. Ashwath Damodaran, New York University for his compilation of financial data, particularly gross margins, which are used to estimate an empirical margin distribution for potential merging firms.</p>
 <p>On first attempt to specify data generation with empirical margin distribution, you may see the following message:</p>
 <p><code class="docutils literal notranslate"><span class="pre">WARNING:</span> <span class="pre">Could</span> <span class="pre">not</span> <span class="pre">establish</span> <span class="pre">secure</span> <span class="pre">connection</span> <span class="pre">to,</span> <span class="pre">https://pages.stern.nyu.edu/~adamodar/pc/datasets/margin.xls.</span> <span class="pre">Using</span> <span class="pre">bundled</span> <span class="pre">copy.</span></code></p>
 <p>If you wish to use use the latest data from Prof. Damodaran, please do the following:</p>
@@ -391,6 +390,7 @@
 <li><p>delete the file ~/mergeron/damodaran_margin_data_dict.msgpack</p></li>
 <li><p>rerun your code</p></li>
 </ol>
+<p>Thanks also to Paul Tol, SRON Netherlands Institute for Space Research for permission to bundle <code class="code docutils literal notranslate"><span class="pre">tol_colors.py</span></code> within this package.</p>
 
 
 

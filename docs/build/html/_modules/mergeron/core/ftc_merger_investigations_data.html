@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.ftc_merger_investigations_data - mergeron 2024.739091.2</title>
+        <title>mergeron.core.ftc_merger_investigations_data - mergeron 2024.739097.0</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.0" class="md-header__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739091.2
+    mergeron 2024.739097.0
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -392,7 +392,6 @@
 <span class="kn">import</span> <span class="nn">re2</span> <span class="k">as</span> <span class="nn">re</span>  <span class="c1"># type: ignore</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
-<span class="kn">from</span> <span class="nn">icecream</span> <span class="kn">import</span> <span class="n">ic</span>  <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_array_equal</span>
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
 
@@ -763,7 +762,7 @@
                 <span class="c1">#   _invdata_array_bld_enfcls &lt; 0, _invdata_array_bld_enfcls, 0</span>
                 <span class="c1"># )</span>
                 <span class="c1"># if np.einsum(&#39;ij-&gt;&#39;, invdata_array_bld_tbc):</span>
-                <span class="c1">#     ic(</span>
+                <span class="c1">#     print(</span>
                 <span class="c1">#       f&quot;{_data_period}, {_table_no}, {_invdata_ind_group}:&quot;,</span>
                 <span class="c1">#       abs(np.einsum(&#39;ij-&gt;&#39;, invdata_array_bld_tbc))</span>
                 <span class="c1">#       )</span>
@@ -969,7 +968,7 @@
         <span class="n">_invdata_evid_cond</span> <span class="o">=</span> <span class="s2">&quot;Unrestricted on additional evidence&quot;</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># ic(_table_blocks)</span>
+        <span class="c1"># print(_table_blocks)</span>
         <span class="n">_invdata_evid_cond</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">_table_blocks</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">_table_ser</span> <span class="o">==</span> <span class="mi">9</span>
@@ -988,8 +987,8 @@
 
     <span class="n">_table_array</span> <span class="o">=</span> <span class="n">process_table_func</span><span class="p">(</span><span class="n">_table_blocks</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_table_array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_table_array</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">:</span>
-        <span class="n">ic</span><span class="p">(</span><span class="n">_table_num</span><span class="p">)</span>
-        <span class="n">ic</span><span class="p">(</span><span class="n">_table_blocks</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">_table_num</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">_table_blocks</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span>
 
     <span class="n">_table_data</span> <span class="o">=</span> <span class="n">INVTableData</span><span class="p">(</span><span class="n">_invdata_ind_group</span><span class="p">,</span> <span class="n">_invdata_evid_cond</span><span class="p">,</span> <span class="n">_table_array</span><span class="p">)</span>

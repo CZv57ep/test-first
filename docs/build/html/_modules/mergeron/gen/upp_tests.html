@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.gen.upp_tests - mergeron 2024.739091.2</title>
+        <title>mergeron.gen.upp_tests - mergeron 2024.739097.0</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.0" class="md-header__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739091.2
+    mergeron 2024.739097.0
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -381,7 +381,6 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tables</span> <span class="k">as</span> <span class="nn">ptb</span>  <span class="c1"># type: ignore</span>
-<span class="kn">from</span> <span class="nn">icecream</span> <span class="kn">import</span> <span class="n">ic</span>  <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">cpu_count</span><span class="p">,</span> <span class="n">delayed</span>  <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">SeedSequence</span>
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
@@ -591,9 +590,7 @@
         <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">_upp_test_arrays</span> <span class="o">=</span> <span class="n">enf_cnts</span><span class="p">(</span>
-        <span class="n">_market_data_sample</span><span class="p">,</span> <span class="n">_upp_test_parms</span><span class="p">,</span> <span class="n">_sim_test_regime</span>
-    <span class="p">)</span>
+    <span class="n">_upp_test_arrays</span> <span class="o">=</span> <span class="n">enf_cnts</span><span class="p">(</span><span class="n">_market_data_sample</span><span class="p">,</span> <span class="n">_upp_test_parms</span><span class="p">,</span> <span class="n">_sim_test_regime</span><span class="p">)</span>
 
     <span class="n">save_data_to_hdf5</span><span class="p">(</span>
         <span class="n">_upp_test_arrays</span><span class="p">,</span>
@@ -678,7 +675,7 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">_hhi_zone_post_ranged</span> <span class="o">=</span> <span class="n">esl</span><span class="o">.</span><span class="n">hhi_zone_post_ranger</span><span class="p">(</span><span class="n">_hhi_post</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">_err</span><span class="p">:</span>
-        <span class="n">ic</span><span class="p">(</span><span class="n">_hhi_post</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">_hhi_post</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">_err</span>
 
     <span class="n">_stats_byconczone_sim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">_stats_rowlen</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
@@ -709,9 +706,7 @@
                 <span class="p">]),</span>
             <span class="p">))</span>
 
-    <span class="n">_enf_cnts_sim_byconczone_array</span> <span class="o">=</span> <span class="n">esl</span><span class="o">.</span><span class="n">enf_cnts_byconczone</span><span class="p">(</span>
-        <span class="n">_stats_byconczone_sim</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="p">)</span>
+    <span class="n">_enf_cnts_sim_byconczone_array</span> <span class="o">=</span> <span class="n">esl</span><span class="o">.</span><span class="n">enf_cnts_byconczone</span><span class="p">(</span><span class="n">_stats_byconczone_sim</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
     <span class="k">del</span> <span class="n">_stats_byconczone_sim</span>
     <span class="k">del</span> <span class="n">_hhi_delta</span><span class="p">,</span> <span class="n">_hhi_post</span><span class="p">,</span> <span class="n">_fcounts</span>
 

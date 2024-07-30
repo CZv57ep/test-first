@@ -16,6 +16,13 @@ mergeron.ext.xlsxw_helper
    writing bulk data to Excel, facilities provided in third-party packages
    such as `polars <https://pola.rs/>`_ likely provide better performance.
 
+   License
+   ========
+
+   Copyright 2017-2023 S. Murthy Kambhampaty
+   Licese: MIT
+   https://mit-license.org/
+
 
 
 

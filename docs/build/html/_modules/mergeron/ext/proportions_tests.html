@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.proportions_tests - mergeron 2024.739091.2</title>
+        <title>mergeron.ext.proportions_tests - mergeron 2024.739097.0</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-header__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.0" class="md-header__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -90,7 +90,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              mergeron.core.proportions_tests
+              mergeron.ext.proportions_tests
             
           </span>
         </div>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739091.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739091.2" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739091.2
+    mergeron 2024.739097.0
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -367,7 +367,7 @@
                   
 
 
-<h1>Source code for mergeron.core.proportions_tests</h1><div class="highlight"><pre>
+<h1>Source code for mergeron.ext.proportions_tests</h1><div class="highlight"><pre>
 <span></span><code><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions to estimate confidence intervals for</span>
 <span class="sd">    (a.) a proportion or muliple proportions, and (b.) contrast between</span>
@@ -391,13 +391,13 @@
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
 
 <div class="viewcode-block" id="TI">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.TI">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.TI">[docs]</a>
 <span class="n">TI</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TI&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">NBitBase</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="propn_ci">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.propn_ci">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.propn_ci">[docs]</a>
 <span class="k">def</span> <span class="nf">propn_ci</span><span class="p">(</span>
     <span class="n">_npos</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">[</span><span class="n">TI</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
     <span class="n">_nobs</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">[</span><span class="n">TI</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
@@ -506,7 +506,7 @@
 
 
 <div class="viewcode-block" id="propn_ci_multinomial">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.propn_ci_multinomial">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.propn_ci_multinomial">[docs]</a>
 <span class="k">def</span> <span class="nf">propn_ci_multinomial</span><span class="p">(</span>
     <span class="n">_counts</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">[</span><span class="n">TI</span><span class="p">]],</span>
     <span class="o">/</span><span class="p">,</span>
@@ -567,7 +567,7 @@
 
 
 <div class="viewcode-block" id="propn_diff_ci">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.propn_diff_ci">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.propn_diff_ci">[docs]</a>
 <span class="k">def</span> <span class="nf">propn_diff_ci</span><span class="p">(</span>
     <span class="n">_npos1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
     <span class="n">_nobs1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
@@ -823,7 +823,7 @@
 
 
 <div class="viewcode-block" id="propn_diff_ci_multinomial">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.propn_diff_ci_multinomial">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.propn_diff_ci_multinomial">[docs]</a>
 <span class="k">def</span> <span class="nf">propn_diff_ci_multinomial</span><span class="p">(</span>
     <span class="n">_counts</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">[</span><span class="n">TI</span><span class="p">]],</span> <span class="o">/</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
@@ -861,29 +861,29 @@
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <div class="viewcode-block" id="MultinomialPropnsTest">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.MultinomialPropnsTest">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.MultinomialPropnsTest">[docs]</a>
 <span class="k">class</span> <span class="nc">MultinomialPropnsTest</span><span class="p">:</span>
 <div class="viewcode-block" id="MultinomialPropnsTest.estimate">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.MultinomialPropnsTest.estimate">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.MultinomialPropnsTest.estimate">[docs]</a>
     <span class="n">estimate</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span></div>
 
 <div class="viewcode-block" id="MultinomialPropnsTest.dof">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.MultinomialPropnsTest.dof">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.MultinomialPropnsTest.dof">[docs]</a>
     <span class="n">dof</span><span class="p">:</span> <span class="nb">int</span></div>
 
 <div class="viewcode-block" id="MultinomialPropnsTest.critical_value">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.MultinomialPropnsTest.critical_value">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.MultinomialPropnsTest.critical_value">[docs]</a>
     <span class="n">critical_value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span></div>
 
 <div class="viewcode-block" id="MultinomialPropnsTest.p_value">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.MultinomialPropnsTest.p_value">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.MultinomialPropnsTest.p_value">[docs]</a>
     <span class="n">p_value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span></div>
 </div>
 
 
 
 <div class="viewcode-block" id="propn_test_multinomial">
-<a class="viewcode-back" href="../../../autoapi/mergeron/core/proportions_tests/index.html#mergeron.core.proportions_tests.propn_test_multinomial">[docs]</a>
+<a class="viewcode-back" href="../../../autoapi/mergeron/ext/proportions_tests/index.html#mergeron.ext.proportions_tests.propn_test_multinomial">[docs]</a>
 <span class="k">def</span> <span class="nf">propn_test_multinomial</span><span class="p">(</span>
     <span class="n">_counts</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">[</span><span class="n">TI</span><span class="p">]],</span> <span class="o">/</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MultinomialPropnsTest</span><span class="p">:</span>

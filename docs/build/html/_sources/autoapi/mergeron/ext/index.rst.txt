@@ -10,6 +10,7 @@ Submodules
 .. toctree::
    :maxdepth: 1
 
+   /autoapi/mergeron/ext/proportions_tests/index
    /autoapi/mergeron/ext/tol_colors/index
    /autoapi/mergeron/ext/xlsxw_helper/index
 
