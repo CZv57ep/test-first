@@ -1,10 +1,9 @@
 mergeron: Merger Policy Analysis using Python
 =============================================
 
-Visualize the sets of mergers conforming to concentration and diversion ratio bounds. Analyze intrinsic clearance rates and intrinsic enforcement rates under concentration, diversion ratio, GUPPI, CMCR, and IPR bounds using generated data with specified distributions of market shares, price-cost margins, firm counts, and prices, optionally imposing restrictions impled by statutory filing thresholds and/or Bertrand-Nash oligopoly with MNL demand. Download and analyze merger investigations data published by the U.S. Federal Trade Commission in various reports on extended merger investigations during 1996 to 2011.
+Analyze the sets of mergers conforming to concentration and diversion ratio bounds. Analyze intrinsic enforcement rates, and intrinsic clearance rates, under concentration, diversion ratio, GUPPI, CMCR, and IPR bounds using generated data with specified distributions of market shares, price-cost margins, firm counts, and prices, optionally imposing restrictions impled by statutory filing thresholds and/or Bertrand-Nash oligopoly with MNL demand. Download and analyze merger investigations data published by the U.S. Federal Trade Commission in various reports on extended merger investigations (Second Requests) during 1996 to 2011.
 
-Intrinsic clearance and enforcement rates are distinguished from *observed* clearance and enforcement rates in that the former do not reflect the effects of screening and deterrence as do the latter.
-
+Intrinsic enforcement rates and intrinsice clearance rates are distinguished from *observed* clearance and enforcement rates in that the former are derived from analyzing theorectical predictions regarding firm conduct against enforcement thresholds, treating enforcement policy as exogenous to firm conduct. Depending on the merger enforcement regime, or merger control regime, intrinsic enforcement rates may also not be the complement of intrinsic clearance rates, i.e, it is not necessarily true that the intrinsic clearance rate estimate for a given enforcement regime is 1 minus the intrinsic enforcement rate. In contrast, observed enforcement rates reflect the deterrent effects of merger enforcement on firm conduct as well as the effects of merger screening on the level of enforcement, and, ny definition, the observed clearance rate is 1 minus the observed enforement rate.
 
 Introduction
 ------------
@@ -23,7 +22,7 @@ Prices may be specified as symmetric or asymmetric, and in the latter case, the 
 
 The market sample may be restricted to mergers meeting the HSR filing requirement under two alternative approaches: in the one, the smaller of the two merging firms meets the HSR filing threshold for the smaller (acquired) firm. In the other, the :math:`n`-th firm's size matches the size requirement for the smaller merging firm (see, :class:`mergeron.gen.SSZConstants`). The second assumption avoids the unfortunate assumption in the first that, within the resulting sample, the larger merging firm be at least 10 times as large as the smaller merging firm, as a consequence of the full definition of the HSR filing requirement.
 
-The full specification of a market sample is given in a :class:`mergeron.gen.market_sample.MarketSample` object, including the above parameters. Data are drawn by invoking :meth:`mergeron.gen.market_sample.MarketSample.generate_sample` which adds a :attr:`data` property of class, :class:`mergeron.gen.MarketDataSample`. Enforcement or clearance counts are computed by invoking :meth:`mergeron.gen.market_sample.MarketSample.estimate_enf_counts`, which adds an :attr:`enf_counts` property of class :class:`mergeron.gen.UPPTestsCounts`. For fast, parallel generation of enforcement or clearance counts over large market data samples that ordinarily would exceed available limits on machine memory, the user can invoke the method :meth:`estimate_enf_counts` on a :class:`mergeron.gen.market_sample.MarketSample` object without first invoking :meth:`generate_sample`. Note, however, that this strategy discards the market sample in the interests of conserving memory and maintaining high performance (the user can specify that the market sample and enforcement statistics be stored to disk).
+The full specification of a market sample is given in a :class:`mergeron.gen.market_sample.MarketSample` object, including the above parameters. Data are drawn by invoking :meth:`mergeron.gen.market_sample.MarketSample.generate_sample` which adds a :attr:`data` property of class, :class:`mergeron.gen.MarketDataSample`. Enforcement or clearance counts are computed by invoking :meth:`mergeron.gen.market_sample.MarketSample.estimate_enf_counts`, which adds an :attr:`enf_counts` property of class :class:`mergeron.gen.UPPTestsCounts`. For fast, parallel generation of enforcement or clearance counts over large market data samples that ordinarily would exceed available limits on machine memory, the user can invoke the method :meth:`estimate_enf_counts` on a :class:`mergeron.gen.market_sample.MarketSample` object without first invoking :meth:`generate_sample`. Note, however, that this strategy does not retain the market sample in memory in the interests of conserving memory and maintaining high performance (the user can specify that the market sample and enforcement statistics be stored to permanent storage; when saving to current PCIe NVMe storage, the perfomance penalty is slight, but can be considerable if saving to SATA storage).
 
 Enforcement statistics based on FTC investigations data and test data are printed to screen or rendered to LaTex files (for processing into publication-quality tables) using methods provided in :mod:`mergeron.gen.enforcement_stats`.
 
@@ -35,24 +34,6 @@ This package includes  a class, :class:`mergeron.core.pseudorandom_numbers.Mulit
 
     import mergeron.core.pseudorandom_numbers as prng
 
-Also included are methods for estimating confidence intervals for proportions and for contrasts (differences) in proportions. Although coded from scratch using the source literature, the APIs implemented in the module included here are designed for consistency with the APIs in, :mod:`statsmodels.stats.proportion` from the package, :mod:`statsmodels` (https://pypi.org/project/statsmodels/). To access these directly:
-
-.. code-block:: python
-
-    import mergeron.core.proportions_tests as prci
-
-Module :mod:`mergeron.ext.xlsxw_helper` is useful for writing highly formatted output to spreadsheets with xlsx format. The class, :class:`mergeron.ext.xlsxw_helper.CFmt` and function, :func:`mergeron.ext.xlsxw_helper.array_to_sheet` are of particular interest, and can be accessed as :code:`xlh.CFmt` and :code:`xlh.array_to_sheet` with the following import:
-
-.. code-block:: python
-
-    import mergeron.ext.xlsxw_helper as xlsxw_helper
-
-A recent version of Paul Tol's python module, :mod:`tol_colors.py`, which provides high-contract color schemes for making displays with improved visibility for individuals with color-blindness, is redistributed within this package. Other than re-formatting and type annotation, the :mod:`mergeron.ext.tol_colors` module is re-distributed as downloaded from, https://personal.sron.nl/~pault/data/tol_colors.py. The :mod:`tol_colors.py` module is distributed under the Standard 3-clause BSD license. To access the :mod:`mergeron.ext.tol_colors` module directly:
-
-.. code-block:: python
-
-    import mergeron.ext.tol_colors as ptc
-
 Documentation for this package is in the form of the API Reference. Documentation for individual functions and classes is accessible within a python shell. For example:
 
 .. code-block:: python
@@ -61,6 +42,28 @@ Documentation for this package is in the form of the API Reference. Documentatio
 
     help(market_sample.MarketSample)
 
+''Extras'' Subpackage
+---------------------
+
+This module includes a small number of modules potentially useful to users, but which do not implement the principal functions of the package, and are hence considered ''extras''  or ''external'' modules. One of these modules is, in fact, repackaged here although published independently.
+
+On of the external modules provides methods for estimating confidence intervals for proportions and for contrasts (differences) in proportions. This module  improve is coded for conformance to the literature and to results from the corresponding modules in :code:`R`. Although written from scratch, the APIs implemented in the module included here are designed for consistency with the APIs in, :mod:`statsmodels.stats.proportion` from the package, :mod:`statsmodels` (https://pypi.org/project/statsmodels/). To access these directly:
+
+.. code-block:: python
+
+    import mergeron.ext.proportions_tests as prci
+
+Module :mod:`mergeron.ext.xlsxw_helper` is useful for writing highly formatted output to spreadsheets with xlsx format. The class, :class:`mergeron.ext.xlsxw_helper.CFmt` and function, :func:`mergeron.ext.xlsxw_helper.array_to_sheet` are of particular interest, and can be accessed as :code:`xlh.CFmt` and :code:`xlh.array_to_sheet` with the following import:
+
+.. code-block:: python
+
+    import mergeron.ext.xlsxw_helper as xlsxw_helper
+
+A recent version of Paul Tol's python module, :mod:`tol_colors.py`, which provides high-contrast color schemes for making displays with improved visibility for individuals with color-blindness, is redistributed within this package. Other than re-formatting and type annotation, the :mod:`mergeron.ext.tol_colors` module is re-distributed as downloaded from, https://personal.sron.nl/~pault/data/tol_colors.py. The :mod:`tol_colors.py` module is distributed under the Standard 3-clause BSD license. To access the :mod:`mergeron.ext.tol_colors` module directly:
+
+.. code-block:: python
+
+    import mergeron.ext.tol_colors as ptc
 
 .. image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
    :alt: Poetry
@@ -77,3 +80,4 @@ Documentation for this package is in the form of the API Reference. Documentatio
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :alt: License: MIT
    :target: https://opensource.org/licenses/MIT
+
