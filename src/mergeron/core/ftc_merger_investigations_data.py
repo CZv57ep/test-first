@@ -20,7 +20,7 @@ import msgpack  # type: ignore
 import msgpack_numpy as m  # type: ignore
 import numpy as np
 import re2 as re  # type: ignore
-import requests
+import urllib3
 from bs4 import BeautifulSoup
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
@@ -705,25 +705,32 @@ def _download_invdata(_dl_path: Path = FTCDATA_DIR) -> tuple[str, ...]:
         return _invdata_docnames
 
     _invdata_docnames_dl: tuple[str, ...] = ()
+    _u3pm = urllib3.PoolManager()
+    _chunk_size = 1024 * 1024
     for _invdata_homepage_url in _invdata_homepage_urls:
-        _invdata_soup = BeautifulSoup(
-            requests.get(_invdata_homepage_url, verify=True, timeout=60).text,
-            "html.parser",
-        )
-        _invdata_attrs = [
-            (_g.get("title", ""), _g.get("href", ""))
-            for _g in _invdata_soup.find_all("a")
-            if _g.get("title", "") and _g.get("href", "").endswith(".pdf")
-        ]
+        with _u3pm.request(
+            "GET", _invdata_homepage_url, preload_content=False
+        ) as _u3handle:
+            _invdata_soup = BeautifulSoup(_u3handle.data, "html.parser")
+            _invdata_attrs = [
+                (_g.get("title", ""), _g.get("href", ""))
+                for _g in _invdata_soup.find_all("a")
+                if _g.get("title", "") and _g.get("href", "").endswith(".pdf")
+            ]
         for _invdata_attr in _invdata_attrs:
             _invdata_docname, _invdata_link = _invdata_attr
             _invdata_docnames_dl += (_invdata_docname,)
-            with _dl_path.joinpath(_invdata_docname).open("wb") as _invdata_fh:
-                _invdata_fh.write(
-                    requests.get(
-                        f"https://www.ftc.gov/{_invdata_link}", verify=True, timeout=60
-                    ).content
-                )
+            with (
+                _u3pm.request(
+                    "GET", f"https://www.ftc.gov/{_invdata_link}", preload_content=False
+                ) as _urlopen_handle,
+                _dl_path.joinpath(_invdata_docname).open("wb") as _invdata_fh,
+            ):
+                while True:
+                    _data = _urlopen_handle.read(_chunk_size)
+                    if not _data:
+                        break
+                    _invdata_fh.write(_data)
 
     return _invdata_docnames_dl
 
