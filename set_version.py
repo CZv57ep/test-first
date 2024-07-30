@@ -30,8 +30,13 @@ if not re.search("nothing to commit", rc.stdout):
     )
 
 # Update README.rst from the docs version
-strip_sphinx_pat = re.compile(r":(attr|class|meth|mod):")
-Path("./README.rst").write_text(strip_sphinx_pat.sub(r":code:", Path("./docs/source/README.rst").read_text()))
+strip_sphinx_pat = re.compile(r":(attr|class|func|meth|mod):")
+(Path(__file__) / "README.rst").write_text(
+    strip_sphinx_pat.sub(
+        r":code:", (Path(__file__) / "docs" / "source" / "README.rst").read_text()
+    )
+)
+
 
 def _get_pkg_version() -> str:
     return run(  # noqa: S603
@@ -48,7 +53,7 @@ sem_ver = f"{tsn.year}.{tsn.toordinal()}.0"
 # Update pyproject.toml
 match args.update_level:
     case "patch":
-        run(["poetry", "version", "patch"], check=True)  # noqa: S607
+        run(["poetry", "version", "patch"], check=True)  # noqa: S603, S607
         sem_ver = _get_pkg_version()
     case "full":
         if compare(sem_ver, pkg_ver) <= 0:
