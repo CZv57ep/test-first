@@ -8,6 +8,8 @@ import pendulum
 import re2 as re  # type: ignore
 from semver import compare
 
+PKG_DIR = Path(__file__).parent
+
 # Set up the argument parser
 parser = argparse.ArgumentParser(
     description="Updates package version number, and commits and tags repository. User must specify `full` or `patch` level update."
@@ -31,9 +33,9 @@ if not re.search("nothing to commit", rc.stdout):
 
 # Update README.rst from the docs version
 strip_sphinx_pat = re.compile(r":(attr|class|func|meth|mod):")
-(Path(__file__) / "README.rst").write_text(
+(PKG_DIR / "README.rst").write_text(
     strip_sphinx_pat.sub(
-        r":code:", (Path(__file__) / "docs" / "source" / "README.rst").read_text()
+        r":code:", (PKG_DIR / "docs" / "source" / "README.rst").read_text()
     )
 )
 
