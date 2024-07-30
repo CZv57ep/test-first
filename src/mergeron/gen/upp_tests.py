@@ -11,7 +11,6 @@ from typing import Literal, TypeAlias, TypedDict
 
 import numpy as np
 import tables as ptb  # type: ignore
-from icecream import ic  # type: ignore
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 from numpy.typing import NDArray
@@ -277,7 +276,7 @@ def enf_cnts(
     try:
         _hhi_zone_post_ranged = esl.hhi_zone_post_ranger(_hhi_post)
     except ValueError as _err:
-        ic(_hhi_post)
+        print(_hhi_post)
         raise _err
 
     _stats_byconczone_sim = -1 * np.ones(_stats_rowlen + 1, np.int64)
