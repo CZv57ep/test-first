@@ -137,7 +137,7 @@ def _gen_market_shares_uniform(
     """
 
     _frmshr_array = np.empty((_s_size, 2), dtype=np.float64)
-    _dist_parms_mktshr: NDArray[np.float64] = (
+    _dist_parms_mktshr: NDArray[np.float64] = (  # type: ignore
         DIST_PARMS_DEFAULT if _dist_parms_mktshr is None else _dist_parms_mktshr
     )
     _mrng = MultithreadedRNG(
@@ -216,7 +216,7 @@ def _gen_market_shares_dirichlet_multisample(
 
     """
 
-    _firm_count_wts: NDArray[np.float64] = (
+    _firm_count_wts: NDArray[np.float64] = (  # type: ignore
         FCOUNT_WTS_DEFAULT if _firm_count_wts is None else _firm_count_wts
     )
 
@@ -225,7 +225,7 @@ def _gen_market_shares_dirichlet_multisample(
         *(
             _f
             for _f in zip(
-                2 + np.arange(len(_firm_count_wts)),
+                2 + np.arange(len(_firm_count_wts)),  # type: ignore
                 _firm_count_wts / _firm_count_wts.sum(),
                 strict=True,
             )

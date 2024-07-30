@@ -271,7 +271,7 @@ def shrratio_boundary_distance(
     # initial conditions
     _gbdry_points = [(_s_mid, _s_mid)]
     _s_1_pre, _s_2_pre = _s_mid, _s_mid
-    _s_2_oddval, _s_2_oddsum, _s_2_evnsum = True, 0, 0
+    _s_2_oddval, _s_2_oddsum, _s_2_evnsum = True, 0.0, 0.0
 
     # parameters for iteration
     _weights_base = (mpf("0.5"),) * 2
@@ -370,7 +370,7 @@ def shrratio_boundary_distance(
         # Area under boundary
         _gbdry_area_total = 2 * _gbd_prtlarea - mp.power(_s_mid, "2")
 
-    _gbdry_points = np.vstack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(
+    _gbdry_points = np.vstack((_gbdry_points, (mpf("0.0"), _s_intcpt))).astype(  # type: ignore
         np.float64
     )
     # Points defining boundary to point-of-symmetry
@@ -378,4 +378,3 @@ def shrratio_boundary_distance(
         np.vstack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbdry_area_total), prec),
     )
-

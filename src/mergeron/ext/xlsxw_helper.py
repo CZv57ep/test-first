@@ -600,13 +600,13 @@ def scalar_to_sheet(
             raise ValueError("Incorrect number of arguments.")
         _cell_addr = (_cell_addr_0,)
         _cell_val = _s2s_args[0]
-        _cell_fmt = _s2s_args[1] if len(_s2s_args) == 2 else None  # type: ignore
+        _cell_fmt = _s2s_args[1] if len(_s2s_args) == 2 else None
     elif isinstance(_cell_addr_0, int):
         if len(_s2s_args) not in (2, 3) or not isinstance(_s2s_args[0], int):
             raise ValueError("Incorrect/incomplete specification for Excel cell data.")
         _cell_addr = (_cell_addr_0, _s2s_args[0])
         _cell_val = _s2s_args[1]
-        _cell_fmt = _s2s_args[2] if len(_s2s_args) == 3 else None  # type: ignore
+        _cell_fmt = _s2s_args[2] if len(_s2s_args) == 3 else None
     else:
         raise ValueError("Incorrect/incomplete specification for Excel cell data.")
 
