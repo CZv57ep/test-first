@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.guidelines_boundary_functions_extra - mergeron 2024.739097.3</title>
+        <title>mergeron.core.guidelines_boundary_functions_extra - mergeron 2024.739097.4</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739097.3" class="md-header__button md-logo" aria-label="mergeron 2024.739097.3" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.4" class="md-header__button md-logo" aria-label="mergeron 2024.739097.4" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739097.3" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.3" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739097.4" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.4" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739097.3
+    mergeron 2024.739097.4
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -478,8 +478,8 @@
 
     <span class="n">_hhi_eqn</span> <span class="o">=</span> <span class="n">_s_2</span> <span class="o">-</span> <span class="mf">0.01</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_s_1</span><span class="p">)</span>
 
-    <span class="n">_hhi_bdry</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">_hhi_eqn</span><span class="p">,</span> <span class="n">_s_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
-    <span class="n">_s_nought</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">solve</span><span class="p">(</span><span class="n">_hhi_eqn</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">_s_2</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">_s_1</span><span class="p">}),</span> <span class="n">_s_1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+    <span class="n">_hhi_bdry</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">_hhi_eqn</span><span class="p">,</span> <span class="n">_s_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_s_nought</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">solve</span><span class="p">(</span><span class="n">_hhi_eqn</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">_s_2</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">_s_1</span><span class="p">}),</span> <span class="n">_s_1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="n">_hhi_bdry_area</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span>
         <span class="n">_s_nought</span>
@@ -544,7 +544,7 @@
                 <span class="o">-</span> <span class="p">(</span><span class="n">_s_1</span> <span class="o">+</span> <span class="n">_s_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">_delta_star</span>
             <span class="p">)</span>
 
-            <span class="n">_bdry_func</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">_bdry_eqn</span><span class="p">,</span> <span class="n">_s_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+            <span class="n">_bdry_func</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">_bdry_eqn</span><span class="p">,</span> <span class="n">_s_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">_s_naught</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="nb">float</span><span class="p">(</span><span class="n">solve</span><span class="p">(</span><span class="n">simplify</span><span class="p">(</span><span class="n">_bdry_eqn</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">_s_2</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">_s_1</span><span class="p">})),</span> <span class="n">_s_1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
                 <span class="k">if</span> <span class="n">recapture_form</span> <span class="o">==</span> <span class="s2">&quot;inside-out&quot;</span>
@@ -574,7 +574,7 @@
                 <span class="o">-</span> <span class="p">(</span><span class="n">_s_1</span> <span class="o">+</span> <span class="n">_s_2</span><span class="p">)</span> <span class="o">*</span> <span class="n">_d_star</span>
             <span class="p">)</span>
 
-            <span class="n">_bdry_func</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">_bdry_eqn</span><span class="p">,</span> <span class="n">_s_2</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+            <span class="n">_bdry_func</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">_bdry_eqn</span><span class="p">,</span> <span class="n">_s_2</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">_bdry_area</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
                 <span class="mi">2</span>
                 <span class="o">*</span> <span class="p">(</span>
@@ -602,7 +602,7 @@
                 <span class="o">-</span> <span class="n">_delta_star</span>
             <span class="p">)</span>
 
-            <span class="n">_bdry_func</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">_bdry_eqn</span><span class="p">,</span> <span class="n">_s_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+            <span class="n">_bdry_func</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">_bdry_eqn</span><span class="p">,</span> <span class="n">_s_2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">_bdry_area</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
                 <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="n">lambdify</span><span class="p">(</span><span class="n">_s_1</span><span class="p">,</span> <span class="n">_bdry_func</span><span class="p">,</span> <span class="s2">&quot;mpmath&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">_s_mid</span><span class="p">)))</span>
                 <span class="o">-</span> <span class="n">_s_mid</span><span class="o">**</span><span class="mi">2</span>
@@ -664,7 +664,7 @@
     <span class="c1"># initial conditions</span>
     <span class="n">_gbdry_points</span> <span class="o">=</span> <span class="p">[(</span><span class="n">_s_mid</span><span class="p">,</span> <span class="n">_s_mid</span><span class="p">)]</span>
     <span class="n">_s_1_pre</span><span class="p">,</span> <span class="n">_s_2_pre</span> <span class="o">=</span> <span class="n">_s_mid</span><span class="p">,</span> <span class="n">_s_mid</span>
-    <span class="n">_s_2_oddval</span><span class="p">,</span> <span class="n">_s_2_oddsum</span><span class="p">,</span> <span class="n">_s_2_evnsum</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">_s_2_oddval</span><span class="p">,</span> <span class="n">_s_2_oddsum</span><span class="p">,</span> <span class="n">_s_2_evnsum</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
 
     <span class="c1"># parameters for iteration</span>
     <span class="n">_weights_base</span> <span class="o">=</span> <span class="p">(</span><span class="n">mpf</span><span class="p">(</span><span class="s2">&quot;0.5&quot;</span><span class="p">),)</span> <span class="o">*</span> <span class="mi">2</span>
@@ -771,7 +771,6 @@
         <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">_gbdry_points</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">_gbdry_points</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="mi">1</span><span class="p">))),</span>
         <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">_gbdry_area_total</span><span class="p">),</span> <span class="n">prec</span><span class="p">),</span>
     <span class="p">)</span></div>
-
 
 </code></pre></div>
 

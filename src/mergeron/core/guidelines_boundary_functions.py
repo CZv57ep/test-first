@@ -315,7 +315,7 @@ def shrratio_boundary_wtd_avg(
     # initial conditions
     _gbdry_points = [(_s_mid, _s_mid)]
     _s_1_pre, _s_2_pre = _s_mid, _s_mid
-    _s_2_oddval, _s_2_oddsum, _s_2_evnsum = True, 0, 0
+    _s_2_oddval, _s_2_oddsum, _s_2_evnsum = True, 0.0, 0.0
 
     # parameters for iteration
     _gbd_step_sz = mp.power(10, -prec)

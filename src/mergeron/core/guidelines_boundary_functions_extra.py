@@ -91,8 +91,8 @@ def hhi_delta_boundary_qdtr(_dh_val: float = 0.01, /) -> GuidelinesBoundaryCalla
 
     _hhi_eqn = _s_2 - 0.01 / (2 * _s_1)
 
-    _hhi_bdry = solve(_hhi_eqn, _s_2)[0]  # type: ignore
-    _s_nought = float(solve(_hhi_eqn.subs({_s_2: 1 - _s_1}), _s_1)[0])  # type: ignore
+    _hhi_bdry = solve(_hhi_eqn, _s_2)[0]
+    _s_nought = float(solve(_hhi_eqn.subs({_s_2: 1 - _s_1}), _s_1)[0])
 
     _hhi_bdry_area = 2 * (
         _s_nought
@@ -154,7 +154,7 @@ def shrratio_boundary_qdtr_wtd_avg(
                 - (_s_1 + _s_2) * _delta_star
             )
 
-            _bdry_func = solve(_bdry_eqn, _s_2)[0]  # type: ignore
+            _bdry_func = solve(_bdry_eqn, _s_2)[0]
             _s_naught = (
                 float(solve(simplify(_bdry_eqn.subs({_s_2: 1 - _s_1})), _s_1)[0])  # type: ignore
                 if recapture_form == "inside-out"
@@ -184,7 +184,7 @@ def shrratio_boundary_qdtr_wtd_avg(
                 - (_s_1 + _s_2) * _d_star
             )
 
-            _bdry_func = solve(_bdry_eqn, _s_2)[1]  # type: ignore
+            _bdry_func = solve(_bdry_eqn, _s_2)[1]
             _bdry_area = float(
                 2
                 * (
@@ -212,7 +212,7 @@ def shrratio_boundary_qdtr_wtd_avg(
                 - _delta_star
             )
 
-            _bdry_func = solve(_bdry_eqn, _s_2)[0]  # type: ignore
+            _bdry_func = solve(_bdry_eqn, _s_2)[0]
             _bdry_area = float(
                 2 * (mp.quad(lambdify(_s_1, _bdry_func, "mpmath"), (0, _s_mid)))
                 - _s_mid**2
@@ -271,7 +271,7 @@ def shrratio_boundary_distance(
     # initial conditions
     _gbdry_points = [(_s_mid, _s_mid)]
     _s_1_pre, _s_2_pre = _s_mid, _s_mid
-    _s_2_oddval, _s_2_oddsum, _s_2_evnsum = True, 0, 0
+    _s_2_oddval, _s_2_oddsum, _s_2_evnsum = True, 0.0, 0.0
 
     # parameters for iteration
     _weights_base = (mpf("0.5"),) * 2
@@ -378,4 +378,3 @@ def shrratio_boundary_distance(
         np.vstack((np.flip(_gbdry_points, 0), np.flip(_gbdry_points[1:], 1))),
         round(float(_gbdry_area_total), prec),
     )
-

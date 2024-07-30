@@ -56,7 +56,7 @@ MGNDATA_ARCHIVE_PATH = DATA_DIR / "damodaran_margin_data_dict.msgpack"
 u3pm = urllib3.PoolManager()
 
 
-def mgn_data_getter(
+def mgn_data_getter(  # noqa: PLR0912
     _table_name: str = "margin",
     *,
     data_archive_path: Path | None = None,
