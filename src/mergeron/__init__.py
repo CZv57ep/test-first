@@ -7,7 +7,7 @@ import numpy as np
 
 _PKG_NAME: str = Path(__file__).parent.stem
 
-VERSION = "2024.739097.1"
+VERSION = "2024.739097.2"
 
 __version__ = VERSION
 
