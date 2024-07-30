@@ -42,10 +42,10 @@ Documentation for this package is in the form of the API Reference. Documentatio
 
     help(market_sample.MarketSample)
 
-''Extras'' Subpackage
+"Extras" Subpackage
 ---------------------
 
-This module includes a small number of modules potentially useful to users, but which do not implement the principal functions of the package, and are hence considered ''extras''  or ''external'' modules. One of these modules is, in fact, repackaged here although published independently.
+The "Extras" sub-package includes a small number of modules potentially useful to users, but which do not implement the principal functions of the package, and are hence considered "extras"  or "external" modules. One of these modules is, in fact, repackaged here although published independently.
 
 On of the external modules provides methods for estimating confidence intervals for proportions and for contrasts (differences) in proportions. This module  improve is coded for conformance to the literature and to results from the corresponding modules in :code:`R`. Although written from scratch, the APIs implemented in the module included here are designed for consistency with the APIs in, :mod:`statsmodels.stats.proportion` from the package, :mod:`statsmodels` (https://pypi.org/project/statsmodels/). To access these directly:
 
