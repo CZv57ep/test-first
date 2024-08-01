@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.ftc_merger_investigations_data - mergeron 2024.739099.0</title>
+        <title>mergeron.core.ftc_merger_investigations_data - mergeron 2024.739099.1</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739099.0" class="md-header__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739099.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.0
+    mergeron 2024.739099.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -393,9 +393,8 @@
 <span class="kn">import</span> <span class="nn">urllib3</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
 <span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_array_equal</span>
-<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">_PKG_NAME</span><span class="p">,</span> <span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">VERSION</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">_PKG_NAME</span><span class="p">,</span> <span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">ArrayBIGINT</span>  <span class="c1"># noqa: TID252</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
 
@@ -503,7 +502,7 @@
 
 <div class="viewcode-block" id="INVTableData.data_array">
 <a class="viewcode-back" href="../../../autoapi/mergeron/core/ftc_merger_investigations_data/index.html#mergeron.core.ftc_merger_investigations_data.INVTableData.data_array">[docs]</a>
-    <span class="n">data_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span></div>
+    <span class="n">data_array</span><span class="p">:</span> <span class="n">ArrayBIGINT</span></div>
 </div>
 
 
@@ -1003,12 +1002,12 @@
 
 <span class="k">def</span> <span class="nf">_process_table_blks_conc_type</span><span class="p">(</span>
     <span class="n">_table_blocks</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="o">/</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayBIGINT</span><span class="p">:</span>
     <span class="n">_conc_row_pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;((?:0|\d,\d</span><span class="si">{3}</span><span class="s2">) (?:- \d+,\d</span><span class="si">{3}</span><span class="s2">|\+)|TOTAL)&quot;</span><span class="p">)</span>
 
     <span class="n">_col_titles_array</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">CONC_DELTA_DICT</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="n">_col_totals</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_col_titles_array</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-    <span class="n">_invdata_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_col_totals</span><span class="p">:</span> <span class="n">ArrayBIGINT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_col_titles_array</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="n">_invdata_array</span><span class="p">:</span> <span class="n">ArrayBIGINT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">_tbl_blk</span> <span class="ow">in</span> <span class="n">_table_blocks</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">_conc_row_pat</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">_blk_str</span> <span class="o">:=</span> <span class="n">_tbl_blk</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]):</span>
@@ -1060,13 +1059,11 @@
 
 <span class="k">def</span> <span class="nf">_process_table_blks_cnt_type</span><span class="p">(</span>
     <span class="n">_table_blocks</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="o">/</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayBIGINT</span><span class="p">:</span>
     <span class="n">_cnt_row_pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\d+ (?:to \d+|\+)|TOTAL)&quot;</span><span class="p">)</span>
 
-    <span class="n">_invdata_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">_col_totals</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-        <span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span>
-    <span class="p">)</span>  <span class="c1"># &quot;enforced&quot;, &quot;closed&quot;, &quot;total&quot;</span>
+    <span class="n">_invdata_array</span><span class="p">:</span> <span class="n">ArrayBIGINT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_col_totals</span><span class="p">:</span> <span class="n">ArrayBIGINT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>  <span class="c1"># &quot;enforced&quot;, &quot;closed&quot;, &quot;total&quot;</span>
 
     <span class="k">for</span> <span class="n">_tbl_blk</span> <span class="ow">in</span> <span class="n">_table_blocks</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">_cnt_row_pat</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">_blk_str</span> <span class="o">:=</span> <span class="n">_tbl_blk</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]):</span>

@@ -124,7 +124,7 @@ Module Contents
 
 
    .. py:attribute:: coordinates
-      :type:  numpy.typing.NDArray[numpy.float64]
+      :type:  mergeron.ArrayDouble
 
       Market-share pairs as Cartesian coordinates of points on the concentration boundary.
 
@@ -200,7 +200,7 @@ Module Contents
 
 
    .. py:attribute:: coordinates
-      :type:  numpy.typing.NDArray[numpy.float64]
+      :type:  mergeron.ArrayDouble
 
       Market-share pairs as Cartesian coordinates of points on the diversion ratio boundary.
 

@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron - mergeron 2024.739099.0</title>
+        <title>mergeron - mergeron 2024.739099.1</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../index.html" title="mergeron 2024.739099.0" class="md-header__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="mergeron 2024.739099.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.0
+    mergeron 2024.739099.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -372,14 +372,16 @@
 
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeAlias</span><span class="p">,</span> <span class="n">TypeVar</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NBitBase</span><span class="p">,</span> <span class="n">NDArray</span>
 
 <span class="n">_PKG_NAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">stem</span>
 
 <div class="viewcode-block" id="VERSION">
 <a class="viewcode-back" href="../autoapi/mergeron/index.html#mergeron.VERSION">[docs]</a>
-<span class="n">VERSION</span> <span class="o">=</span> <span class="s2">&quot;2024.739099.0&quot;</span></div>
+<span class="n">VERSION</span> <span class="o">=</span> <span class="s2">&quot;2024.739099.1&quot;</span></div>
 
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
@@ -398,6 +400,39 @@
 
 
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TI">
+<a class="viewcode-back" href="../autoapi/mergeron/index.html#mergeron.TI">[docs]</a>
+<span class="n">TI</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TI&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">NBitBase</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ArrayINT">
+<a class="viewcode-back" href="../autoapi/mergeron/index.html#mergeron.ArrayINT">[docs]</a>
+<span class="n">ArrayINT</span> <span class="o">=</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">[</span><span class="n">TI</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="TF">
+<a class="viewcode-back" href="../autoapi/mergeron/index.html#mergeron.TF">[docs]</a>
+<span class="n">TF</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TF&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">NBitBase</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ArrayFloat">
+<a class="viewcode-back" href="../autoapi/mergeron/index.html#mergeron.ArrayFloat">[docs]</a>
+<span class="n">ArrayFloat</span> <span class="o">=</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">[</span><span class="n">TF</span><span class="p">]]</span></div>
+
+
+
+<div class="viewcode-block" id="ArrayBoolean">
+<a class="viewcode-back" href="../autoapi/mergeron/index.html#mergeron.ArrayBoolean">[docs]</a>
+<span class="n">ArrayBoolean</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ArrayDouble">
+<a class="viewcode-back" href="../autoapi/mergeron/index.html#mergeron.ArrayDouble">[docs]</a>
+<span class="n">ArrayDouble</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ArrayBIGINT">
+<a class="viewcode-back" href="../autoapi/mergeron/index.html#mergeron.ArrayBIGINT">[docs]</a>
+<span class="n">ArrayBIGINT</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span></div>
+
 
 
 <span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>

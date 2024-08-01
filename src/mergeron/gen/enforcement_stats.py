@@ -15,12 +15,19 @@ from typing import Literal
 import numpy as np
 import re2 as re  # type: ignore
 from jinja2 import Environment, FileSystemLoader, Template, select_autoescape
-from numpy.typing import NDArray
 from scipy.interpolate import interp1d  # type: ignore
+from scipy.stats import beta, norm  # type: ignore
 
-from .. import _PKG_NAME, DATA_DIR, VERSION  # noqa: TID252
+from .. import (  # noqa: TID252
+    _PKG_NAME,
+    DATA_DIR,
+    TI,
+    VERSION,
+    ArrayBIGINT,
+    ArrayDouble,
+    ArrayINT,
+)
 from ..core import ftc_merger_investigations_data as fid  # noqa: TID252
-from ..core.proportions_tests import propn_ci  # noqa: TID252
 from . import INVResolution
 
 __version__ = VERSION
@@ -293,7 +300,7 @@ def enf_stats_listing_by_group(
     _stats_group: StatsGrpSelector,
     _enf_spec: INVResolution,
     /,
-) -> NDArray[np.int64]:
+) -> ArrayBIGINT:
     if _stats_group == StatsGrpSelector.HD:
         raise ValueError(
             f"Clearance/enforcement statistics, '{_stats_group}' not valied here."
@@ -328,7 +335,7 @@ def enf_cnts_listing_byfirmcount(
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
     _enf_spec: INVResolution = INVResolution.CLRN,
     /,
-) -> NDArray[np.int64]:
+) -> ArrayBIGINT:
     if _data_period not in _data_array_dict:
         raise ValueError(
             f"Invalid value of data period, {f'"{_data_period}"'}."
@@ -364,7 +371,7 @@ def enf_cnts_listing_byhhianddelta(
     _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
     _enf_spec: INVResolution = INVResolution.CLRN,
     /,
-) -> NDArray[np.int64]:
+) -> ArrayBIGINT:
     if _data_period not in _data_array_dict:
         raise ValueError(
             f"Invalid value of data period, {f'"{_data_period}"'}."
@@ -419,7 +426,7 @@ def table_no_lku(
     return _tno
 
 
-def enf_cnts_byfirmcount(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
+def enf_cnts_byfirmcount(_cnts_array: ArrayBIGINT, /) -> ArrayBIGINT:
     _ndim_in = 1
     return np.vstack([
         np.concatenate([
@@ -430,7 +437,7 @@ def enf_cnts_byfirmcount(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]
     ])
 
 
-def enf_cnts_bydelta(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
+def enf_cnts_bydelta(_cnts_array: ArrayBIGINT, /) -> ArrayBIGINT:
     _ndim_in = 2
     return np.vstack([
         np.concatenate([
@@ -441,7 +448,7 @@ def enf_cnts_bydelta(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
     ])
 
 
-def enf_cnts_byconczone(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
+def enf_cnts_byconczone(_cnts_array: ArrayBIGINT, /) -> ArrayBIGINT:
     # Prepare to tag clearance stats by presumption zone
     _hhi_zone_post_ranged = hhi_zone_post_ranger(_cnts_array[:, 0] / 1e4)
     _hhi_delta_ranged = hhi_delta_ranger(_cnts_array[:, 1] / 1e4)
@@ -513,7 +520,7 @@ def enf_cnts_byconczone(_cnts_array: NDArray[np.int64], /) -> NDArray[np.int64]:
 
 
 def enf_stats_table_onedim(
-    _inparr: NDArray[np.float64 | np.int64],
+    _inparr: ArrayDouble | ArrayBIGINT | ArrayDouble | ArrayBIGINT,
     _totals_row: int | None = None,
     /,
     *,
@@ -568,7 +575,7 @@ def enf_stats_table_onedim(
 
 
 def enf_stats_table_byzone(
-    _inparr: NDArray[np.float64 | np.int64],
+    _inparr: ArrayDouble | ArrayBIGINT | ArrayDouble | ArrayBIGINT,
     _totals_row: int | None = None,
     /,
     *,
@@ -650,8 +657,8 @@ def enf_stats_table_byzone(
 
 
 def _stats_formatted_row(
-    _stats_row_cnt: NDArray[np.int64],
-    _stats_row_tot: NDArray[np.int64],
+    _stats_row_cnt: ArrayBIGINT,
+    _stats_row_tot: ArrayBIGINT,
     _return_type_sel: StatsReturnSelector,
     /,
 ) -> list[list[str]]:
@@ -660,7 +667,7 @@ def _stats_formatted_row(
     match _return_type_sel:
         case StatsReturnSelector.RIN:
             _stats_row_ci = np.array([
-                propn_ci(*g, method="Wilson")
+                _propn_ci(*g, method="Wilson")
                 for g in zip(_stats_row_cnt[1:], _stats_row_tot[1:], strict=True)
             ])
             return [
@@ -713,6 +720,109 @@ def stats_print_rows(
             print(_hdr, " | ", " | ".join(_enf_stats_dat_list[_idx]))
 
     print()
+
+
+def _propn_ci(
+    _npos: ArrayINT[TI] | int = 4,
+    _nobs: ArrayINT[TI] | int = 10,
+    /,
+    *,
+    alpha: float = 0.05,
+    method: Literal[
+        "Agresti-Coull", "Clopper-Pearson", "Exact", "Wilson", "Score"
+    ] = "Wilson",
+) -> tuple[
+    ArrayDouble | float, ArrayDouble | float, ArrayDouble | float, ArrayDouble | float
+]:
+    """Returns point estimates and confidence interval for a proportion
+
+    Methods "Clopper-Pearson" and "Exact" are synoymous [3]_.  Similarly,
+    "Wilson" and "Score" are synonyms here.
+
+    Parameters
+    ----------
+    _npos
+        Number of positives
+
+    _nobs
+        Number of observed values
+
+    alpha
+        Significance level
+
+    method
+        Method to use for estimating confidence interval
+
+    Returns
+    -------
+        Raw and estimated proportions, and bounds of the confidence interval
+
+
+    References
+    ----------
+
+    .. [3] Alan Agresti & Brent A. Coull (1998) Approximate is Better
+       than “Exact” for Interval Estimation of Binomial Proportions,
+       The American Statistician, 52:2, 119-126,
+       https://doi.org/10.1080/00031305.1998.10480550
+
+    """
+
+    for _f in _npos, _nobs:
+        if not isinstance(_f, int | np.integer):
+            raise ValueError(
+                f"Count, {_f!r} must have type that is a subtype of np.integer."
+            )
+
+    if not _nobs:
+        return (np.nan, np.nan, np.nan, np.nan)
+
+    _raw_phat: ArrayDouble | float = _npos / _nobs
+    _est_phat: ArrayDouble | float
+    _est_ci_l: ArrayDouble | float
+    _est_ci_u: ArrayDouble | float
+
+    match method:
+        case "Clopper-Pearson" | "Exact":
+            _est_ci_l, _est_ci_u = (
+                beta.ppf(*_f)
+                for _f in (
+                    (alpha / 2, _npos, _nobs - _npos + 1),
+                    (1 - alpha / 2, _npos + 1, _nobs - _npos),
+                )
+            )
+            _est_phat = 1 / 2 * (_est_ci_l + _est_ci_u)
+
+        case "Agresti-Coull":
+            _zsc = norm.ppf(1 - alpha / 2)
+            _zscsq = _zsc * _zsc
+            _adjmt = 4 if alpha == 0.05 else _zscsq
+            _est_phat = (_npos + _adjmt / 2) / (_nobs + _adjmt)
+            _est_ci_l, _est_ci_u = (
+                _est_phat + _g
+                for _g in [
+                    _f * _zsc * np.sqrt(_est_phat * (1 - _est_phat) / (_nobs + _adjmt))
+                    for _f in (-1, 1)
+                ]
+            )
+
+        case "Wilson" | "Score":
+            _zsc = norm.ppf(1 - alpha / 2)
+            _zscsq = _zsc * _zsc
+            _est_phat = (_npos + _zscsq / 2) / (_nobs + _zscsq)
+            _est_ci_l, _est_ci_u = (
+                _est_phat
+                + _f
+                * _zsc
+                * np.sqrt(_nobs * _raw_phat * (1 - _raw_phat) + _zscsq / 4)
+                / (_nobs + _zscsq)
+                for _f in (-1, 1)
+            )
+
+        case _:
+            raise ValueError(f"Method, {f'"{method}"'} not yet implemented.")
+
+    return _raw_phat, _est_phat, _est_ci_l, _est_ci_u
 
 
 def render_table_pdf(

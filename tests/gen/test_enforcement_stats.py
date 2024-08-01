@@ -22,7 +22,7 @@ invdata_array_dict = fid.construct_data(
     ),
 )
 def test_enf_stats(
-    _stats_group: esl.StatsGrpSelector, _test_val: NDArray[np.int64]
+    _stats_group: esl.StatsGrpSelector, _test_val: ArrayBIGINT
 ) -> None:
     _enf_spec = INVResolution.CLRN
     _enf_stats_cnts = esl.enf_stats_listing_by_group(

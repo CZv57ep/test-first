@@ -13,9 +13,8 @@ from typing import Literal
 
 import numpy as np
 from numpy.random import PCG64DXSM, Generator, SeedSequence
-from numpy.typing import NDArray
 
-from .. import VERSION  # noqa: TID252
+from .. import VERSION, ArrayDouble  # noqa: TID252
 
 __version__ = VERSION
 
@@ -134,13 +133,13 @@ class MultithreadedRNG:
 
     def __init__(
         self,
-        _out_array: NDArray[np.float64],
+        _out_array: ArrayDouble,
         /,
         *,
         dist_type: Literal[
             "Beta", "Dirichlet", "Gaussian", "Normal", "Random", "Uniform"
         ] = "Uniform",
-        dist_parms: NDArray[np.float64] | None = DIST_PARMS_DEFAULT,
+        dist_parms: ArrayDouble | None = DIST_PARMS_DEFAULT,
         seed_sequence: SeedSequence | None = None,
         nthreads: int = NTHREADS,
     ):
@@ -206,8 +205,8 @@ class MultithreadedRNG:
         def _fill(
             _rng: np.random.Generator,
             _dist_type: str,
-            _dist_parms: NDArray[np.float64],
-            _out: NDArray[np.float64],
+            _dist_parms: ArrayDouble,
+            _out: ArrayDouble,
             _first: int,
             _last: int,
             /,

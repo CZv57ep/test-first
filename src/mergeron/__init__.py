@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import enum
 from pathlib import Path
+from typing import TypeAlias, TypeVar
 
 import numpy as np
+from numpy.typing import NBitBase, NDArray
 
 _PKG_NAME: str = Path(__file__).parent.stem
 
-VERSION = "2024.739099.0"
+VERSION = "2024.739099.1"
 
 __version__ = VERSION
 
@@ -22,6 +24,18 @@ if not DATA_DIR.is_dir():
 
 
 np.set_printoptions(precision=18)
+
+
+TI = TypeVar("TI", bound=NBitBase)
+ArrayINT = NDArray[np.integer[TI]]
+TF = TypeVar("TF", bound=NBitBase)
+ArrayFloat = NDArray[np.floating[TF]]
+
+
+ArrayBoolean: TypeAlias = NDArray[np.bool_]
+
+ArrayDouble: TypeAlias = NDArray[np.float64]
+ArrayBIGINT: TypeAlias = NDArray[np.int64]
 
 
 @enum.unique

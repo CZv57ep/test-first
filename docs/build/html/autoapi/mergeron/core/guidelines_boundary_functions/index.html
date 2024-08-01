@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.guidelines_boundary_functions - mergeron 2024.739099.0</title>
+        <title>mergeron.core.guidelines_boundary_functions - mergeron 2024.739099.1</title>
       
     
     
@@ -77,7 +77,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../../index.html" title="mergeron 2024.739099.0" class="md-header__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -186,12 +186,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../../index.html" title="mergeron 2024.739099.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.0
+    mergeron 2024.739099.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -2274,7 +2274,7 @@
 <dd><p>Output of a Guidelines boundary function.</p>
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates">
-<span class="sig-name descname"><span class="pre">coordinates</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#GuidelinesBoundary.coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">coordinates</span></span><span class="p"> <span class="pre">:</span> </span><span class="desctype"><span class="pre">mergeron.ArrayDouble</span></span><a class="reference internal" href="../../../../_modules/mergeron/core/guidelines_boundary_functions.html#GuidelinesBoundary.coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates" title="Link to this definition">¶</a></dt>
 <dd><p>Market-share pairs as Cartesian coordinates of points on the boundary.</p>
 </dd></dl>
 
@@ -2629,9 +2629,9 @@ merging-firm margins.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="mergeron.core.guidelines_boundary_functions.lerp-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="mergeron.core.guidelines_boundary_functions.lerp._x1"><span class="sig-name descname">_x1</span><span class="p"> : </span><span class="desctype"><span class="desctype">int | float | mpmath.mpf | numpy.typing.NDArray[numpy.float64 | numpy.int64]</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp._x1" title="Permalink to this definition">¶</a></dt><dd><p>bounds <span class="math notranslate nohighlight">\(x_1, x_2\)</span> to interpolate between.</p>
+<dt id="mergeron.core.guidelines_boundary_functions.lerp._x1"><span class="sig-name descname">_x1</span><span class="p"> : </span><span class="desctype"><span class="desctype">int | float | mpmath.mpf | mergeron.ArrayDouble | mergeron.ArrayBIGINT</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp._x1" title="Permalink to this definition">¶</a></dt><dd><p>bounds <span class="math notranslate nohighlight">\(x_1, x_2\)</span> to interpolate between.</p>
 </dd>
-<dt id="mergeron.core.guidelines_boundary_functions.lerp._x2"><span class="sig-name descname">_x2</span><span class="p"> : </span><span class="desctype"><span class="desctype">int | float | mpmath.mpf | numpy.typing.NDArray[numpy.float64 | numpy.int64]</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp._x2" title="Permalink to this definition">¶</a></dt><dd><p>bounds <span class="math notranslate nohighlight">\(x_1, x_2\)</span> to interpolate between.</p>
+<dt id="mergeron.core.guidelines_boundary_functions.lerp._x2"><span class="sig-name descname">_x2</span><span class="p"> : </span><span class="desctype"><span class="desctype">int | float | mpmath.mpf | mergeron.ArrayDouble | mergeron.ArrayBIGINT</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp._x2" title="Permalink to this definition">¶</a></dt><dd><p>bounds <span class="math notranslate nohighlight">\(x_1, x_2\)</span> to interpolate between.</p>
 </dd>
 <dt id="mergeron.core.guidelines_boundary_functions.lerp._r"><span class="sig-name descname">_r</span><span class="p"> : </span><span class="desctype"><span class="desctype">float | mpmath.mpf</span></span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp._r" title="Permalink to this definition">¶</a></dt><dd><p>interpolation weight <span class="math notranslate nohighlight">\(r\)</span> assigned to <span class="math notranslate nohighlight">\(x_2\)</span></p>
 </dd>
@@ -2645,7 +2645,7 @@ merging-firm margins.</p>
 <dd class="field-odd"><p><strong>ValueError</strong> – If the interpolation weight is not in the interval, <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p>
 </dd>
 <dt class="field-even" id="mergeron.core.guidelines_boundary_functions.lerp-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.core.guidelines_boundary_functions.lerp-return-type" title="Permalink to this headline">¶</a></dt>
-<dd class="field-even"><p>float | mpmath.mpf | numpy.typing.NDArray[numpy.float64]</p>
+<dd class="field-even"><p>float | mpmath.mpf | mergeron.ArrayDouble</p>
 </dd>
 </dl>
 <p class="rubric">References</p>

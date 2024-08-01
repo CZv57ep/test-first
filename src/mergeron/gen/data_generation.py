@@ -10,9 +10,8 @@ from typing import NamedTuple
 
 import numpy as np
 from numpy.random import SeedSequence
-from numpy.typing import NDArray
 
-from .. import VERSION, RECConstants  # noqa: TID252
+from .. import VERSION, ArrayDouble, RECConstants  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
     FM2Constants,
@@ -227,10 +226,10 @@ def parse_seed_seq_list(
 def gen_divr_array(
     _recapture_form: RECConstants,
     _recapture_rate: float | None,
-    _frmshr_array: NDArray[np.float64],
-    _aggregate_purchase_prob: NDArray[np.float64] = EMPTY_ARRAY_DEFAULT,
+    _frmshr_array: ArrayDouble,
+    _aggregate_purchase_prob: ArrayDouble = EMPTY_ARRAY_DEFAULT,
     /,
-) -> NDArray[np.float64]:
+) -> ArrayDouble:
     """
     Given merging-firm shares and related parameters, return diverion ratios.
 
@@ -259,7 +258,7 @@ def gen_divr_array(
 
     """
 
-    _divr_array: NDArray[np.float64]
+    _divr_array: ArrayDouble
     if _recapture_form == RECConstants.FIXED:
         _divr_array = _recapture_rate * _frmshr_array[:, ::-1] / (1 - _frmshr_array)  # type: ignore
 

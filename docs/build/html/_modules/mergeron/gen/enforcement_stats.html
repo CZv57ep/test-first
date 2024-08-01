@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.gen.enforcement_stats - mergeron 2024.739099.0</title>
+        <title>mergeron.gen.enforcement_stats - mergeron 2024.739099.1</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739099.0" class="md-header__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739099.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.0
+    mergeron 2024.739099.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -385,12 +385,19 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">re2</span> <span class="k">as</span> <span class="nn">re</span>  <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">FileSystemLoader</span><span class="p">,</span> <span class="n">Template</span><span class="p">,</span> <span class="n">select_autoescape</span>
-<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">beta</span><span class="p">,</span> <span class="n">norm</span>  <span class="c1"># type: ignore</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">_PKG_NAME</span><span class="p">,</span> <span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">VERSION</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: TID252</span>
+    <span class="n">_PKG_NAME</span><span class="p">,</span>
+    <span class="n">DATA_DIR</span><span class="p">,</span>
+    <span class="n">TI</span><span class="p">,</span>
+    <span class="n">VERSION</span><span class="p">,</span>
+    <span class="n">ArrayBIGINT</span><span class="p">,</span>
+    <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">ArrayINT</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">ftc_merger_investigations_data</span> <span class="k">as</span> <span class="n">fid</span>  <span class="c1"># noqa: TID252</span>
-<span class="kn">from</span> <span class="nn">..core.proportions_tests</span> <span class="kn">import</span> <span class="n">propn_ci</span>  <span class="c1"># noqa: TID252</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">INVResolution</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
@@ -818,7 +825,7 @@
     <span class="n">_stats_group</span><span class="p">:</span> <span class="n">StatsGrpSelector</span><span class="p">,</span>
     <span class="n">_enf_spec</span><span class="p">:</span> <span class="n">INVResolution</span><span class="p">,</span>
     <span class="o">/</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayBIGINT</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">_stats_group</span> <span class="o">==</span> <span class="n">StatsGrpSelector</span><span class="o">.</span><span class="n">HD</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Clearance/enforcement statistics, &#39;</span><span class="si">{</span><span class="n">_stats_group</span><span class="si">}</span><span class="s2">&#39; not valied here.&quot;</span>
@@ -856,7 +863,7 @@
     <span class="n">_table_evid_cond</span><span class="p">:</span> <span class="n">EVIDENConstants</span> <span class="o">=</span> <span class="n">EVIDENConstants</span><span class="o">.</span><span class="n">UR</span><span class="p">,</span>
     <span class="n">_enf_spec</span><span class="p">:</span> <span class="n">INVResolution</span> <span class="o">=</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">CLRN</span><span class="p">,</span>
     <span class="o">/</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayBIGINT</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">_data_period</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_data_array_dict</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Invalid value of data period, </span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">_data_period</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="si">}</span><span class="s2">.&quot;</span>
@@ -895,7 +902,7 @@
     <span class="n">_table_evid_cond</span><span class="p">:</span> <span class="n">EVIDENConstants</span> <span class="o">=</span> <span class="n">EVIDENConstants</span><span class="o">.</span><span class="n">UR</span><span class="p">,</span>
     <span class="n">_enf_spec</span><span class="p">:</span> <span class="n">INVResolution</span> <span class="o">=</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">CLRN</span><span class="p">,</span>
     <span class="o">/</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayBIGINT</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">_data_period</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_data_array_dict</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Invalid value of data period, </span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">_data_period</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="si">}</span><span class="s2">.&quot;</span>
@@ -956,7 +963,7 @@
 
 <div class="viewcode-block" id="enf_cnts_byfirmcount">
 <a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_cnts_byfirmcount">[docs]</a>
-<span class="k">def</span> <span class="nf">enf_cnts_byfirmcount</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">enf_cnts_byfirmcount</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">:</span> <span class="n">ArrayBIGINT</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayBIGINT</span><span class="p">:</span>
     <span class="n">_ndim_in</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
         <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
@@ -970,7 +977,7 @@
 
 <div class="viewcode-block" id="enf_cnts_bydelta">
 <a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_cnts_bydelta">[docs]</a>
-<span class="k">def</span> <span class="nf">enf_cnts_bydelta</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">enf_cnts_bydelta</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">:</span> <span class="n">ArrayBIGINT</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayBIGINT</span><span class="p">:</span>
     <span class="n">_ndim_in</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span>
         <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
@@ -984,7 +991,7 @@
 
 <div class="viewcode-block" id="enf_cnts_byconczone">
 <a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_cnts_byconczone">[docs]</a>
-<span class="k">def</span> <span class="nf">enf_cnts_byconczone</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">enf_cnts_byconczone</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">:</span> <span class="n">ArrayBIGINT</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayBIGINT</span><span class="p">:</span>
     <span class="c1"># Prepare to tag clearance stats by presumption zone</span>
     <span class="n">_hhi_zone_post_ranged</span> <span class="o">=</span> <span class="n">hhi_zone_post_ranger</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e4</span><span class="p">)</span>
     <span class="n">_hhi_delta_ranged</span> <span class="o">=</span> <span class="n">hhi_delta_ranger</span><span class="p">(</span><span class="n">_cnts_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e4</span><span class="p">)</span>
@@ -1059,7 +1066,7 @@
 <div class="viewcode-block" id="enf_stats_table_onedim">
 <a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_table_onedim">[docs]</a>
 <span class="k">def</span> <span class="nf">enf_stats_table_onedim</span><span class="p">(</span>
-    <span class="n">_inparr</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span>
+    <span class="n">_inparr</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="n">ArrayBIGINT</span> <span class="o">|</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="n">ArrayBIGINT</span><span class="p">,</span>
     <span class="n">_totals_row</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">/</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -1117,7 +1124,7 @@
 <div class="viewcode-block" id="enf_stats_table_byzone">
 <a class="viewcode-back" href="../../../autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_table_byzone">[docs]</a>
 <span class="k">def</span> <span class="nf">enf_stats_table_byzone</span><span class="p">(</span>
-    <span class="n">_inparr</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span>
+    <span class="n">_inparr</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="n">ArrayBIGINT</span> <span class="o">|</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="n">ArrayBIGINT</span><span class="p">,</span>
     <span class="n">_totals_row</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">/</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -1200,8 +1207,8 @@
 
 
 <span class="k">def</span> <span class="nf">_stats_formatted_row</span><span class="p">(</span>
-    <span class="n">_stats_row_cnt</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span>
-    <span class="n">_stats_row_tot</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">],</span>
+    <span class="n">_stats_row_cnt</span><span class="p">:</span> <span class="n">ArrayBIGINT</span><span class="p">,</span>
+    <span class="n">_stats_row_tot</span><span class="p">:</span> <span class="n">ArrayBIGINT</span><span class="p">,</span>
     <span class="n">_return_type_sel</span><span class="p">:</span> <span class="n">StatsReturnSelector</span><span class="p">,</span>
     <span class="o">/</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
@@ -1210,7 +1217,7 @@
     <span class="k">match</span> <span class="n">_return_type_sel</span><span class="p">:</span>
         <span class="k">case</span> <span class="n">StatsReturnSelector</span><span class="o">.</span><span class="n">RIN</span><span class="p">:</span>
             <span class="n">_stats_row_ci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-                <span class="n">propn_ci</span><span class="p">(</span><span class="o">*</span><span class="n">g</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Wilson&quot;</span><span class="p">)</span>
+                <span class="n">_propn_ci</span><span class="p">(</span><span class="o">*</span><span class="n">g</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Wilson&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">_stats_row_cnt</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">_stats_row_tot</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="p">])</span>
             <span class="k">return</span> <span class="p">[</span>
@@ -1266,6 +1273,109 @@
 
     <span class="nb">print</span><span class="p">()</span></div>
 
+
+
+<span class="k">def</span> <span class="nf">_propn_ci</span><span class="p">(</span>
+    <span class="n">_npos</span><span class="p">:</span> <span class="n">ArrayINT</span><span class="p">[</span><span class="n">TI</span><span class="p">]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">_nobs</span><span class="p">:</span> <span class="n">ArrayINT</span><span class="p">[</span><span class="n">TI</span><span class="p">]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
+        <span class="s2">&quot;Agresti-Coull&quot;</span><span class="p">,</span> <span class="s2">&quot;Clopper-Pearson&quot;</span><span class="p">,</span> <span class="s2">&quot;Exact&quot;</span><span class="p">,</span> <span class="s2">&quot;Wilson&quot;</span><span class="p">,</span> <span class="s2">&quot;Score&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Wilson&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+    <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="nb">float</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns point estimates and confidence interval for a proportion</span>
+
+<span class="sd">    Methods &quot;Clopper-Pearson&quot; and &quot;Exact&quot; are synoymous [3]_.  Similarly,</span>
+<span class="sd">    &quot;Wilson&quot; and &quot;Score&quot; are synonyms here.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _npos</span>
+<span class="sd">        Number of positives</span>
+
+<span class="sd">    _nobs</span>
+<span class="sd">        Number of observed values</span>
+
+<span class="sd">    alpha</span>
+<span class="sd">        Significance level</span>
+
+<span class="sd">    method</span>
+<span class="sd">        Method to use for estimating confidence interval</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Raw and estimated proportions, and bounds of the confidence interval</span>
+
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    .. [3] Alan Agresti &amp; Brent A. Coull (1998) Approximate is Better</span>
+<span class="sd">       than “Exact” for Interval Estimation of Binomial Proportions,</span>
+<span class="sd">       The American Statistician, 52:2, 119-126,</span>
+<span class="sd">       https://doi.org/10.1080/00031305.1998.10480550</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">_npos</span><span class="p">,</span> <span class="n">_nobs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_f</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Count, </span><span class="si">{</span><span class="n">_f</span><span class="si">!r}</span><span class="s2"> must have type that is a subtype of np.integer.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_nobs</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="n">_raw_phat</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">_npos</span> <span class="o">/</span> <span class="n">_nobs</span>
+    <span class="n">_est_phat</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="nb">float</span>
+    <span class="n">_est_ci_l</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="nb">float</span>
+    <span class="n">_est_ci_u</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="nb">float</span>
+
+    <span class="k">match</span> <span class="n">method</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s2">&quot;Clopper-Pearson&quot;</span> <span class="o">|</span> <span class="s2">&quot;Exact&quot;</span><span class="p">:</span>
+            <span class="n">_est_ci_l</span><span class="p">,</span> <span class="n">_est_ci_u</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">beta</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="o">*</span><span class="n">_f</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_npos</span><span class="p">,</span> <span class="n">_nobs</span> <span class="o">-</span> <span class="n">_npos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">_npos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">_nobs</span> <span class="o">-</span> <span class="n">_npos</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">_est_phat</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">_est_ci_l</span> <span class="o">+</span> <span class="n">_est_ci_u</span><span class="p">)</span>
+
+        <span class="k">case</span> <span class="s2">&quot;Agresti-Coull&quot;</span><span class="p">:</span>
+            <span class="n">_zsc</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">_zscsq</span> <span class="o">=</span> <span class="n">_zsc</span> <span class="o">*</span> <span class="n">_zsc</span>
+            <span class="n">_adjmt</span> <span class="o">=</span> <span class="mi">4</span> <span class="k">if</span> <span class="n">alpha</span> <span class="o">==</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="n">_zscsq</span>
+            <span class="n">_est_phat</span> <span class="o">=</span> <span class="p">(</span><span class="n">_npos</span> <span class="o">+</span> <span class="n">_adjmt</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">_nobs</span> <span class="o">+</span> <span class="n">_adjmt</span><span class="p">)</span>
+            <span class="n">_est_ci_l</span><span class="p">,</span> <span class="n">_est_ci_u</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">_est_phat</span> <span class="o">+</span> <span class="n">_g</span>
+                <span class="k">for</span> <span class="n">_g</span> <span class="ow">in</span> <span class="p">[</span>
+                    <span class="n">_f</span> <span class="o">*</span> <span class="n">_zsc</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_est_phat</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_est_phat</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">_nobs</span> <span class="o">+</span> <span class="n">_adjmt</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="k">case</span> <span class="s2">&quot;Wilson&quot;</span> <span class="o">|</span> <span class="s2">&quot;Score&quot;</span><span class="p">:</span>
+            <span class="n">_zsc</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">_zscsq</span> <span class="o">=</span> <span class="n">_zsc</span> <span class="o">*</span> <span class="n">_zsc</span>
+            <span class="n">_est_phat</span> <span class="o">=</span> <span class="p">(</span><span class="n">_npos</span> <span class="o">+</span> <span class="n">_zscsq</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">_nobs</span> <span class="o">+</span> <span class="n">_zscsq</span><span class="p">)</span>
+            <span class="n">_est_ci_l</span><span class="p">,</span> <span class="n">_est_ci_u</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">_est_phat</span>
+                <span class="o">+</span> <span class="n">_f</span>
+                <span class="o">*</span> <span class="n">_zsc</span>
+                <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">_nobs</span> <span class="o">*</span> <span class="n">_raw_phat</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_raw_phat</span><span class="p">)</span> <span class="o">+</span> <span class="n">_zscsq</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+                <span class="o">/</span> <span class="p">(</span><span class="n">_nobs</span> <span class="o">+</span> <span class="n">_zscsq</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method, </span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="si">}</span><span class="s2"> not yet implemented.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_raw_phat</span><span class="p">,</span> <span class="n">_est_phat</span><span class="p">,</span> <span class="n">_est_ci_l</span><span class="p">,</span> <span class="n">_est_ci_u</span>
 
 
 <div class="viewcode-block" id="render_table_pdf">

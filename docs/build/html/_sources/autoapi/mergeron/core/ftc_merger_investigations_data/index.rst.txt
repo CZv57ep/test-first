@@ -65,7 +65,7 @@ Module Contents
 
 
    .. py:attribute:: data_array
-      :type:  numpy.typing.NDArray[numpy.int64]
+      :type:  mergeron.ArrayBIGINT
 
 
 .. py:data:: INVData

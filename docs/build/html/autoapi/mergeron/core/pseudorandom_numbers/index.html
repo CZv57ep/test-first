@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.pseudorandom_numbers - mergeron 2024.739099.0</title>
+        <title>mergeron.core.pseudorandom_numbers - mergeron 2024.739099.1</title>
       
     
     
@@ -77,7 +77,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../../index.html" title="mergeron 2024.739099.0" class="md-header__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -186,12 +186,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../../index.html" title="mergeron 2024.739099.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.0
+    mergeron 2024.739099.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1279,12 +1279,12 @@ before commencing multithreaded random number generation.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="mergeron.core.pseudorandom_numbers.MultithreadedRNG-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array"><span class="sig-name descname">_out_array</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.typing.NDArray[numpy.float64]</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array" title="Permalink to this definition">¶</a></dt><dd><p>The output array to which generated data are written.
+<dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array"><span class="sig-name descname">_out_array</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__._out_array" title="Permalink to this definition">¶</a></dt><dd><p>The output array to which generated data are written.
 Its dimensions define the size of the sample.</p>
 </dd>
 <dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type"><span class="sig-name descname">dist_type</span><span class="p"> : </span><span class="desctype"><span class="desctype">Literal['Beta', 'Dirichlet', 'Gaussian', 'Normal', 'Random', 'Uniform']</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_type" title="Permalink to this definition">¶</a></dt><dd><p>Distribution for the generated random numbers</p>
 </dd>
-<dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms"><span class="sig-name descname">dist_parms</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.typing.NDArray[numpy.float64] | None</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms" title="Permalink to this definition">¶</a></dt><dd><p>Parameters, if any, for tailoring random number generation</p>
+<dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms"><span class="sig-name descname">dist_parms</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble | None</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.dist_parms" title="Permalink to this definition">¶</a></dt><dd><p>Parameters, if any, for tailoring random number generation</p>
 </dd>
 <dt id="mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence"><span class="sig-name descname">seed_sequence</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence | None</span></span><a class="headerlink" href="#mergeron.core.pseudorandom_numbers.MultithreadedRNG.__init__.seed_sequence" title="Permalink to this definition">¶</a></dt><dd><p>SeedSequence object for generating repeatable draws.</p>
 </dd>

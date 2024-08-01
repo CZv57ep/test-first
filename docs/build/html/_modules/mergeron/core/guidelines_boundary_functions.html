@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.guidelines_boundary_functions - mergeron 2024.739099.0</title>
+        <title>mergeron.core.guidelines_boundary_functions - mergeron 2024.739099.1</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739099.0" class="md-header__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739099.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.0
+    mergeron 2024.739099.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -374,9 +374,8 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">mpmath</span> <span class="kn">import</span> <span class="n">mp</span><span class="p">,</span> <span class="n">mpf</span>  <span class="c1"># type: ignore</span>
-<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">VERSION</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">ArrayBIGINT</span><span class="p">,</span> <span class="n">ArrayDouble</span>  <span class="c1"># noqa: TID252</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
 
@@ -416,7 +415,7 @@
 
 <div class="viewcode-block" id="GuidelinesBoundary.coordinates">
 <a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundary_functions/index.html#mergeron.core.guidelines_boundary_functions.GuidelinesBoundary.coordinates">[docs]</a>
-    <span class="n">coordinates</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+    <span class="n">coordinates</span><span class="p">:</span> <span class="n">ArrayDouble</span></div>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Market-share pairs as Cartesian coordinates of points on the boundary.&quot;&quot;&quot;</span>
 
@@ -1141,11 +1140,11 @@
 <div class="viewcode-block" id="lerp">
 <a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundary_functions/index.html#mergeron.core.guidelines_boundary_functions.lerp">[docs]</a>
 <span class="k">def</span> <span class="nf">lerp</span><span class="p">(</span>
-    <span class="n">_x1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">mpf</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="n">_x2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">mpf</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">_x1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">mpf</span> <span class="o">|</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="n">ArrayBIGINT</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">_x2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">mpf</span> <span class="o">|</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="n">ArrayBIGINT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="n">_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">mpf</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span>
     <span class="o">/</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">mpf</span> <span class="o">|</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">mpf</span> <span class="o">|</span> <span class="n">ArrayDouble</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    From the function of the same name in the C++ standard [2]_</span>
 

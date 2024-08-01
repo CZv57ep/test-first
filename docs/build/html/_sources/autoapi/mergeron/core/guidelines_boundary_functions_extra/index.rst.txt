@@ -23,7 +23,7 @@ Module Contents
 .. py:class:: GuidelinesBoundaryCallable
 
    .. py:attribute:: boundary_function
-      :type:  collections.abc.Callable[[numpy.typing.NDArray[numpy.float64]], numpy.typing.NDArray[numpy.float64]]
+      :type:  collections.abc.Callable[[mergeron.ArrayDouble], mergeron.ArrayDouble]
 
 
    .. py:attribute:: area
