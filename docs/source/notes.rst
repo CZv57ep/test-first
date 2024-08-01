@@ -19,7 +19,3 @@ If you wish to use use the latest data from Prof. Damodaran, please do the follo
 #. delete the file ~/mergeron/damodaran_margin_data_dict.msgpack
 #. rerun your code
 
-Thanks also to Paul Tol, SRON Netherlands Institute for Space Research for permission to bundle :code:`tol_colors.py` within this package.
-
-
-
