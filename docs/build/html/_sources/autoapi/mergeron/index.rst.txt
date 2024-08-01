@@ -13,7 +13,6 @@ Subpackages
    /autoapi/mergeron/core/index
    /autoapi/mergeron/data/index
    /autoapi/mergeron/demo/index
-   /autoapi/mergeron/ext/index
    /autoapi/mergeron/gen/index
 
 

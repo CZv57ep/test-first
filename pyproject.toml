@@ -30,6 +30,11 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
 [tool.poetry.dependencies]
 # You may need to apply the fixes in, https://github.com/python-poetry/poetry/issues/3365
 # if poetry dependency resolution appears to hang (read the page at link to the end)
@@ -70,11 +75,6 @@ sphinx-autoapi = ">=3.0"
 sphinx-immaterial = ">=0.11"
 pipdeptree = ">=2.15.1"
 types-openpyxl = ">=3.0.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
 
 [tool.ruff]
 
