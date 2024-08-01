@@ -4,9 +4,8 @@ from typing import Any, Literal, TypedDict
 
 import numpy as np
 from mpmath import mp, mpf  # type: ignore
-from numpy.typing import NDArray
 
-from .. import VERSION  # noqa: TID252
+from .. import VERSION, ArrayBIGINT, ArrayDouble  # noqa: TID252
 
 __version__ = VERSION
 
@@ -27,7 +26,7 @@ class ShareRatioBoundaryKeywords(TypedDict, total=False):
 class GuidelinesBoundary:
     """Output of a Guidelines boundary function."""
 
-    coordinates: NDArray[np.float64]
+    coordinates: ArrayDouble
     """Market-share pairs as Cartesian coordinates of points on the boundary."""
 
     area: float
@@ -718,11 +717,11 @@ def _shrratio_boundary_intcpt(
 
 
 def lerp(
-    _x1: int | float | mpf | NDArray[np.float64 | np.int64] = 3,
-    _x2: int | float | mpf | NDArray[np.float64 | np.int64] = 1,
+    _x1: int | float | mpf | ArrayDouble | ArrayBIGINT = 3,
+    _x2: int | float | mpf | ArrayDouble | ArrayBIGINT = 1,
     _r: float | mpf = 0.25,
     /,
-) -> float | mpf | NDArray[np.float64]:
+) -> float | mpf | ArrayDouble:
     """
     From the function of the same name in the C++ standard [2]_
 

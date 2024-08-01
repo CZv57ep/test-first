@@ -9,9 +9,8 @@ from typing import Literal
 import numpy as np
 from attrs import evolve
 from numpy.random import SeedSequence
-from numpy.typing import NDArray
 
-from .. import VERSION, RECConstants  # noqa: TID252
+from .. import VERSION, ArrayBIGINT, ArrayDouble, RECConstants  # noqa: TID252
 from ..core.damodaran_margin_data import mgn_data_resampler  # noqa: TID252
 from ..core.pseudorandom_numbers import (  # noqa: TID252
     DIST_PARMS_DEFAULT,
@@ -112,7 +111,7 @@ def _gen_share_data(
 
 def _gen_market_shares_uniform(
     _s_size: int = 10**6,
-    _dist_parms_mktshr: NDArray[np.float64] | None = DIST_PARMS_DEFAULT,
+    _dist_parms_mktshr: ArrayDouble | None = DIST_PARMS_DEFAULT,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
     /,
@@ -137,7 +136,7 @@ def _gen_market_shares_uniform(
     """
 
     _frmshr_array = np.empty((_s_size, 2), dtype=np.float64)
-    _dist_parms_mktshr: NDArray[np.float64] = (
+    _dist_parms_mktshr: ArrayDouble = (
         DIST_PARMS_DEFAULT if _dist_parms_mktshr is None else _dist_parms_mktshr
     )
     _mrng = MultithreadedRNG(
@@ -163,7 +162,7 @@ def _gen_market_shares_uniform(
         _frmshr_array, ((0, 0), (0, 1)), "constant", constant_values=np.nan
     )
 
-    _fcounts: NDArray[np.int64] = np.ones((_s_size, 1), np.int64) * np.nan  # type: ignore
+    _fcounts: ArrayBIGINT = np.ones((_s_size, 1), np.int64) * np.nan  # type: ignore
     _nth_firm_share, _aggregate_purchase_prob = (
         np.nan * np.ones((_s_size, 1), np.float64) for _ in range(2)
     )
@@ -177,8 +176,8 @@ def _gen_market_shares_dirichlet_multisample(
     _s_size: int = 10**6,
     _recapture_form: RECConstants = RECConstants.INOUT,
     _dist_type_dir: SHRConstants = SHRConstants.DIR_FLAT,
-    _dist_parms_dir: NDArray[np.float64] | None = None,
-    _firm_count_wts: NDArray[np.float64] | None = None,
+    _dist_parms_dir: ArrayDouble | None = None,
+    _firm_count_wts: ArrayDouble | None = None,
     _fcount_rng_seed_seq: SeedSequence | None = None,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
@@ -216,7 +215,7 @@ def _gen_market_shares_dirichlet_multisample(
 
     """
 
-    _firm_count_wts: NDArray[np.float64] = (
+    _firm_count_wts: ArrayDouble = (
         FCOUNT_WTS_DEFAULT if _firm_count_wts is None else _firm_count_wts
     )
 
@@ -243,7 +242,7 @@ def _gen_market_shares_dirichlet_multisample(
 
     if _dist_type_dir == SHRConstants.DIR_COND:
 
-        def _gen_dir_alphas(_fcv: int) -> NDArray[np.float64]:
+        def _gen_dir_alphas(_fcv: int) -> ArrayDouble:
             _dat = [2.5] * 2
             if _fcv > len(_dat):
                 _dat += [1.0 / (_fcv - 2)] * (_fcv - 2)
@@ -251,7 +250,7 @@ def _gen_market_shares_dirichlet_multisample(
 
     else:
 
-        def _gen_dir_alphas(_fcv: int) -> NDArray[np.float64]:
+        def _gen_dir_alphas(_fcv: int) -> ArrayDouble:
             return np.array(_dir_alphas_full[:_fcv], dtype=np.float64)  # type: ignore
 
     _fcounts = prng(_fcount_rng_seed_seq).choice(
@@ -312,7 +311,7 @@ def _gen_market_shares_dirichlet_multisample(
 
 
 def _gen_market_shares_dirichlet(
-    _dir_alphas: NDArray[np.float64],
+    _dir_alphas: ArrayDouble,
     _s_size: int = 10**6,
     _recapture_form: RECConstants = RECConstants.INOUT,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
@@ -394,9 +393,9 @@ def _gen_market_shares_dirichlet(
 
 
 def _gen_margin_price_data(
-    _frmshr_array: NDArray[np.float64],
-    _nth_firm_share: NDArray[np.float64],
-    _aggregate_purchase_prob: NDArray[np.float64],
+    _frmshr_array: ArrayDouble,
+    _nth_firm_share: ArrayDouble,
+    _aggregate_purchase_prob: ArrayDouble,
     _pcm_spec: PCMSpec,
     _price_spec: PriceConstants,
     _hsr_filing_test_type: SSZConstants,
@@ -543,8 +542,8 @@ def _gen_margin_price_data(
 
 # marked for deletion
 def _gen_price_data(
-    _frmshr_array: NDArray[np.float64],
-    _nth_firm_share: NDArray[np.float64],
+    _frmshr_array: ArrayDouble,
+    _nth_firm_share: ArrayDouble,
     _price_spec: PriceConstants,
     _hsr_filing_test_type: SSZConstants,
     _seed_seq: SeedSequence | None = None,
@@ -630,9 +629,9 @@ def _gen_price_data(
 
 
 def _gen_margin_data(
-    _frmshr_array: NDArray[np.float64],
-    _price_array: NDArray[np.float64],
-    _aggregate_purchase_prob: NDArray[np.float64],
+    _frmshr_array: ArrayDouble,
+    _price_array: ArrayDouble,
+    _aggregate_purchase_prob: ArrayDouble,
     _pcm_spec: PCMSpec,
     _pcm_rng_seed_seq: SeedSequence,
     _nthreads: int = 16,
@@ -719,8 +718,8 @@ def _gen_margin_data(
 
 
 def _beta_located(
-    _mu: float | NDArray[np.float64], _sigma: float | NDArray[np.float64], /
-) -> NDArray[np.float64]:
+    _mu: float | ArrayDouble, _sigma: float | ArrayDouble, /
+) -> ArrayDouble:
     """
     Given mean and stddev, return shape parameters for corresponding Beta distribution
 
@@ -743,7 +742,7 @@ def _beta_located(
     return np.array([_mu * _mul, (1 - _mu) * _mul], dtype=np.float64)
 
 
-def beta_located_bound(_dist_parms: NDArray[np.float64], /) -> NDArray[np.float64]:
+def beta_located_bound(_dist_parms: ArrayDouble, /) -> ArrayDouble:
     R"""
     Return shape parameters for a non-standard beta, given the mean, stddev, range
 

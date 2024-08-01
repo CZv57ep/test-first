@@ -11,9 +11,15 @@ from typing import ClassVar, Protocol
 
 import numpy as np
 from attrs import Attribute, cmp_using, define, field, frozen, validators
-from numpy.typing import NDArray
 
-from .. import VERSION, RECConstants, UPPAggrSelector  # noqa: TID252
+from .. import (  # noqa: TID252
+    VERSION,
+    ArrayBIGINT,
+    ArrayBoolean,
+    ArrayDouble,
+    RECConstants,
+    UPPAggrSelector,
+)
 from ..core.pseudorandom_numbers import DIST_PARMS_DEFAULT  # noqa: TID252
 
 __version__ = VERSION
@@ -128,7 +134,7 @@ class ShareSpec:
     dist_type: SHRConstants
     """See :class:`SHRConstants`"""
 
-    dist_parms: NDArray[np.float64] | None = field(
+    dist_parms: ArrayDouble | None = field(
         default=None, eq=cmp_using(eq=np.array_equal)
     )
     """Parameters for tailoring market-share distribution
@@ -139,9 +145,9 @@ class ShareSpec:
     type of Dirichlet-distribution specified.
 
     """
-    firm_counts_weights: NDArray[np.float64 | np.int64] | None = field(
-        default=None, eq=cmp_using(eq=np.array_equal)
-    )
+    firm_counts_weights: (
+        ArrayDouble | ArrayBIGINT | ArrayDouble | ArrayBIGINT | None
+    ) = field(default=None, eq=cmp_using(eq=np.array_equal))
     """Relative or absolute frequencies of firm counts
 
 
@@ -193,7 +199,7 @@ class PCMSpec:
     dist_type: PCMConstants
     """See :class:`PCMConstants`"""
 
-    dist_parms: NDArray[np.float64] | None
+    dist_parms: ArrayDouble | None
     """Parameter specification for tailoring PCM distribution
 
     For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
@@ -356,39 +362,39 @@ class MarketSpec:
 class MarketDataSample:
     """Container for generated markets data sample."""
 
-    frmshr_array: NDArray[np.float64]
+    frmshr_array: ArrayDouble
     """Merging-firm shares (with two merging firms)"""
 
-    pcm_array: NDArray[np.float64]
+    pcm_array: ArrayDouble
     """Merging-firms' prices (normalized to 1, in default specification)"""
 
-    price_array: NDArray[np.float64]
+    price_array: ArrayDouble
     """Merging-firms' price-cost margins (PCM)"""
 
-    fcounts: NDArray[np.int64]
+    fcounts: ArrayBIGINT
     """Number of firms in market"""
 
-    aggregate_purchase_prob: NDArray[np.float64]
+    aggregate_purchase_prob: ArrayDouble
     """
     One (1) minus probability that the outside good is chosen
 
     Converts market shares to choice probabilities by multiplication.
     """
 
-    nth_firm_share: NDArray[np.float64]
+    nth_firm_share: ArrayDouble
     """Market-share of n-th firm
 
     Relevant for testing for draws the do or
     do not meet HSR filing thresholds.
     """
 
-    divr_array: NDArray[np.float64]
+    divr_array: ArrayDouble
     """Diversion ratio between the merging firms"""
 
-    hhi_post: NDArray[np.float64]
+    hhi_post: ArrayDouble
     """Post-merger change in Herfindahl-Hirschmann Index (HHI)"""
 
-    hhi_delta: NDArray[np.float64]
+    hhi_delta: ArrayDouble
     """Change in HHI from combination of merging firms"""
 
 
@@ -400,16 +406,16 @@ class ShareDataSample:
     and aggregate purchase probability.
     """
 
-    mktshr_array: NDArray[np.float64]
+    mktshr_array: ArrayDouble
     """All-firm shares (with two merging firms)"""
 
-    fcounts: NDArray[np.int64]
+    fcounts: ArrayBIGINT
     """All-firm-count for each draw"""
 
-    nth_firm_share: NDArray[np.float64]
+    nth_firm_share: ArrayDouble
     """Market-share of n-th firm"""
 
-    aggregate_purchase_prob: NDArray[np.float64]
+    aggregate_purchase_prob: ArrayDouble
     """Converts market shares to choice probabilities by multiplication."""
 
 
@@ -417,10 +423,10 @@ class ShareDataSample:
 class PriceDataSample:
     """Container for generated price array, and related."""
 
-    price_array: NDArray[np.float64]
+    price_array: ArrayDouble
     """Merging-firms' prices"""
 
-    hsr_filing_test: NDArray[np.bool_]
+    hsr_filing_test: ArrayBoolean
     """Flags draws as meeting HSR filing thresholds or not"""
 
 
@@ -428,10 +434,10 @@ class PriceDataSample:
 class MarginDataSample:
     """Container for generated margin array and related MNL test array."""
 
-    pcm_array: NDArray[np.float64]
+    pcm_array: ArrayDouble
     """Merging-firms' PCMs"""
 
-    mnl_test_array: NDArray[np.bool_]
+    mnl_test_array: ArrayBoolean
     """Flags infeasible observations as False and rest as True
 
     Applying restrictions from Bertrand-Nash oligopoly
@@ -476,18 +482,18 @@ class UPPTestsRaw:
     :func:`enforcement_stats.gen_upp_arrays`.
     """
 
-    guppi_test_simple: NDArray[np.bool_]
+    guppi_test_simple: ArrayBoolean
     """True if GUPPI estimate meets criterion"""
 
-    guppi_test_compound: NDArray[np.bool_]
+    guppi_test_compound: ArrayBoolean
     """True if both GUPPI estimate and diversion ratio estimate
     meet criterion
     """
 
-    cmcr_test: NDArray[np.bool_]
+    cmcr_test: ArrayBoolean
     """True if CMCR estimate meets criterion"""
 
-    ipr_test: NDArray[np.bool_]
+    ipr_test: ArrayBoolean
     """True if IPR (partial price-simulation) estimate meets criterion"""
 
 
@@ -498,9 +504,9 @@ class UPPTestsCounts:
     Resolution may be either :attr:`INVResolution.ENFT` or :attr:`INVResolution.CLRN`.
     """
 
-    by_firm_count: NDArray[np.int64]
-    by_delta: NDArray[np.int64]
-    by_conczone: NDArray[np.int64]
+    by_firm_count: ArrayBIGINT
+    by_delta: ArrayBIGINT
+    by_conczone: ArrayBIGINT
     """Zones are "unoncentrated", "moderately concentrated", and "highly concentrated"
     """
 

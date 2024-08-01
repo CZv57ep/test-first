@@ -43,11 +43,10 @@ import msgpack  # type:ignore
 import numpy as np
 import urllib3
 from numpy.random import PCG64DXSM, Generator, SeedSequence
-from numpy.typing import NDArray
 from scipy import stats  # type: ignore
 from xlrd import open_workbook  # type: ignore
 
-from .. import _PKG_NAME, DATA_DIR, VERSION  # noqa: TID252
+from .. import _PKG_NAME, DATA_DIR, VERSION, ArrayDouble  # noqa: TID252
 
 __version__ = VERSION
 
@@ -137,7 +136,7 @@ def mgn_data_getter(  # noqa: PLR0912
 
 def mgn_data_builder(
     _mgn_tbl_dict: Mapping[str, Mapping[str, float | int]] | None = None, /
-) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
+) -> tuple[ArrayDouble, ArrayDouble, ArrayDouble]:
     if _mgn_tbl_dict is None:
         _mgn_tbl_dict = mgn_data_getter()
 
@@ -190,7 +189,7 @@ def mgn_data_resampler(
     /,
     *,
     seed_sequence: SeedSequence | None = None,
-) -> NDArray[np.float64]:
+) -> ArrayDouble:
     """
     Generate draws from the empirical distribution bassed on Prof. Damodaran's margin data.
 

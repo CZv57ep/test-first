@@ -13,9 +13,19 @@ import numpy as np
 import tables as ptb  # type: ignore
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
-from numpy.typing import NDArray
 
-from .. import VERSION, RECConstants, UPPAggrSelector  # noqa: TID252
+from .. import (  # noqa: TID252
+    TF,
+    TI,
+    VERSION,
+    ArrayBIGINT,
+    ArrayBoolean,
+    ArrayDouble,
+    ArrayFloat,
+    ArrayINT,
+    RECConstants,
+    UPPAggrSelector,
+)
 from ..core import guidelines_boundaries as gbl  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
@@ -496,7 +506,11 @@ def save_data_to_hdf5(
 
 
 def save_array_to_hdf5(
-    _array_obj: NDArray[np.float64 | np.int64 | np.bool_],
+    _array_obj: ArrayFloat[TF]
+    | ArrayINT[TI]
+    | ArrayDouble
+    | ArrayBIGINT
+    | ArrayBoolean,
     _array_name: str,
     _h5_group: ptb.Group,
     _h5_file: ptb.File,

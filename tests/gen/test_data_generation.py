@@ -3,7 +3,7 @@ import gc
 import mergeron.core.pseudorandom_numbers as rmp
 import numpy as np
 import pytest
-from mergeron import RECConstants
+from mergeron import ArrayBIGINT, ArrayDouble, RECConstants
 from mergeron.gen import (
     FM2Constants,
     PCMConstants,
@@ -14,7 +14,6 @@ from mergeron.gen import (
 )
 from mergeron.gen.market_sample import MarketSample
 from numpy.testing import assert_array_equal
-from numpy.typing import NDArray
 
 FCOUNT_WTS_TEST = (_nr := np.arange(1, 6)[::-1]) / _nr.sum()
 
@@ -197,7 +196,7 @@ tvals_dict = {
 @pytest.mark.parametrize("_test_parms, _test_array", tuple(tvals_dict.items()))
 def test_gen_market_sample(
     _test_parms: tuple[SHRConstants, RECConstants, FM2Constants, SSZConstants],
-    _test_array: NDArray[np.float64],
+    _test_array: ArrayDouble,
     _tcount: int = 10**7,
     _nthreads: int = 16,
 ) -> None:
@@ -256,7 +255,7 @@ def _tfunc_sample_with_unrestricted_shares(
     _rng_seed_seq_tup: list[np.random.SeedSequence],
     _nthreads: int,
     /,
-) -> NDArray[np.float64 | np.float64]:
+) -> ArrayDouble | ArrayBIGINT:
     _mkt_sample.generate_sample(
         sample_size=_sample_size,
         seed_seq_list=_rng_seed_seq_tup,
@@ -276,7 +275,7 @@ def _tfunc_sample_with_dirichlet_shares(
     _rng_seed_seq_tup: list[np.random.SeedSequence],
     _nthreads: int,
     /,
-) -> NDArray[np.float64 | np.float64]:
+) -> ArrayDouble | ArrayBIGINT:
     _mkt_sample.generate_sample(
         sample_size=_sample_size,
         seed_seq_list=_rng_seed_seq_tup,

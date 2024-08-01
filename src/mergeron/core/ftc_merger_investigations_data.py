@@ -23,9 +23,8 @@ import re2 as re  # type: ignore
 import urllib3
 from bs4 import BeautifulSoup
 from numpy.testing import assert_array_equal
-from numpy.typing import NDArray
 
-from .. import _PKG_NAME, DATA_DIR, VERSION  # noqa: TID252
+from .. import _PKG_NAME, DATA_DIR, VERSION, ArrayBIGINT  # noqa: TID252
 
 __version__ = VERSION
 
@@ -93,7 +92,7 @@ CNT_FCOUNT_DICT = {
 class INVTableData(NamedTuple):
     industry_group: str
     additional_evidence: str
-    data_array: NDArray[np.int64]
+    data_array: ArrayBIGINT
 
 
 INVData: TypeAlias = Mapping[str, dict[str, dict[str, INVTableData]]]
@@ -585,12 +584,12 @@ def _identify_table_type(_tnstr: str = CONC_TABLE_ALL, /) -> tuple[str, int, str
 
 def _process_table_blks_conc_type(
     _table_blocks: Sequence[Sequence[str]], /
-) -> NDArray[np.int64]:
+) -> ArrayBIGINT:
     _conc_row_pat = re.compile(r"((?:0|\d,\d{3}) (?:- \d+,\d{3}|\+)|TOTAL)")
 
     _col_titles_array = tuple(CONC_DELTA_DICT.values())
-    _col_totals: NDArray[np.int64] = np.zeros(len(_col_titles_array), np.int64)
-    _invdata_array: NDArray[np.int64] = np.array(None)
+    _col_totals: ArrayBIGINT = np.zeros(len(_col_titles_array), np.int64)
+    _invdata_array: ArrayBIGINT = np.array(None)
 
     for _tbl_blk in _table_blocks:
         if _conc_row_pat.match(_blk_str := _tbl_blk[-3]):
@@ -642,13 +641,11 @@ def _process_table_blks_conc_type(
 
 def _process_table_blks_cnt_type(
     _table_blocks: Sequence[Sequence[str]], /
-) -> NDArray[np.int64]:
+) -> ArrayBIGINT:
     _cnt_row_pat = re.compile(r"(\d+ (?:to \d+|\+)|TOTAL)")
 
-    _invdata_array: NDArray[np.int64] = np.array(None)
-    _col_totals: NDArray[np.int64] = np.zeros(
-        3, np.int64
-    )  # "enforced", "closed", "total"
+    _invdata_array: ArrayBIGINT = np.array(None)
+    _col_totals: ArrayBIGINT = np.zeros(3, np.int64)  # "enforced", "closed", "total"
 
     for _tbl_blk in _table_blocks:
         if _cnt_row_pat.match(_blk_str := _tbl_blk[-3]):

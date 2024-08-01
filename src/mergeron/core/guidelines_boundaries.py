@@ -12,9 +12,8 @@ from typing import Literal, TypeAlias
 import numpy as np
 from attrs import Attribute, field, frozen, validators
 from mpmath import mp, mpf  # type: ignore
-from numpy.typing import NDArray
 
-from .. import VERSION, RECConstants, UPPAggrSelector  # noqa: TID252
+from .. import VERSION, ArrayDouble, RECConstants, UPPAggrSelector  # noqa: TID252
 from . import guidelines_boundary_functions as gbfn
 
 __version__ = VERSION
@@ -191,7 +190,7 @@ class ConcentrationBoundary:
         validator=(validators.instance_of(str), _concentration_measure_name_validator),
     )
 
-    coordinates: NDArray[np.float64] = field(init=False, kw_only=True)
+    coordinates: ArrayDouble = field(init=False, kw_only=True)
     """Market-share pairs as Cartesian coordinates of points on the concentration boundary."""
 
     area: float = field(init=False, kw_only=True)
@@ -321,7 +320,7 @@ class DiversionRatioBoundary:
 
     """
 
-    coordinates: NDArray[np.float64] = field(init=False, kw_only=True)
+    coordinates: ArrayDouble = field(init=False, kw_only=True)
     """Market-share pairs as Cartesian coordinates of points on the diversion ratio boundary."""
 
     area: float = field(init=False, kw_only=True)

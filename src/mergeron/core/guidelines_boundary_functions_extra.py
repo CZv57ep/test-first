@@ -13,11 +13,10 @@ from typing import Literal
 
 import numpy as np
 from mpmath import mp, mpf  # type: ignore
-from numpy.typing import NDArray
 from scipy.spatial.distance import minkowski as distance_function  # type: ignore
 from sympy import lambdify, simplify, solve, symbols  # type: ignore
 
-from .. import VERSION  # noqa: TID252
+from .. import VERSION, ArrayDouble  # noqa: TID252
 from .guidelines_boundary_functions import (
     GuidelinesBoundary,
     _shrratio_boundary_intcpt,
@@ -33,7 +32,7 @@ mp.trap_complex = True
 
 @dataclass(slots=True, frozen=True)
 class GuidelinesBoundaryCallable:
-    boundary_function: Callable[[NDArray[np.float64]], NDArray[np.float64]]
+    boundary_function: Callable[[ArrayDouble], ArrayDouble]
     area: float
     s_naught: float = 0
 
