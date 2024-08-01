@@ -42,29 +42,6 @@ Documentation for this package is in the form of the API Reference. Documentatio
 
     help(market_sample.MarketSample)
 
-"Extras" Subpackage
----------------------
-
-The "Extras" sub-package includes a small number of modules potentially useful to users, but which do not implement the principal functions of the package, and are hence considered "extras"  or "external" modules. One of these modules is, in fact, repackaged here although published independently.
-
-On of the external modules provides methods for estimating confidence intervals for proportions and for contrasts (differences) in proportions. This module  improve is coded for conformance to the literature and to results from the corresponding modules in :code:`R`. Although written from scratch, the APIs implemented in the module included here are designed for consistency with the APIs in, :mod:`statsmodels.stats.proportion` from the package, :mod:`statsmodels` (https://pypi.org/project/statsmodels/). To access these directly:
-
-.. code-block:: python
-
-    import mergeron.ext.proportions_tests as prci
-
-Module :mod:`mergeron.ext.xlsxw_helper` is useful for writing highly formatted output to spreadsheets with xlsx format. The class, :class:`mergeron.ext.xlsxw_helper.CFmt` and function, :func:`mergeron.ext.xlsxw_helper.array_to_sheet` are of particular interest, and can be accessed as :code:`xlh.CFmt` and :code:`xlh.array_to_sheet` with the following import:
-
-.. code-block:: python
-
-    import mergeron.ext.xlsxw_helper as xlsxw_helper
-
-A recent version of Paul Tol's python module, :mod:`tol_colors.py`, which provides high-contrast color schemes for making displays with improved visibility for individuals with color-blindness, is redistributed within this package. Other than re-formatting and type annotation, the :mod:`mergeron.ext.tol_colors` module is re-distributed as downloaded from, https://personal.sron.nl/~pault/data/tol_colors.py. The :mod:`tol_colors.py` module is distributed under the Standard 3-clause BSD license. To access the :mod:`mergeron.ext.tol_colors` module directly:
-
-.. code-block:: python
-
-    import mergeron.ext.tol_colors as ptc
-
 .. image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
    :alt: Poetry
    :target: https://python-poetry.org/

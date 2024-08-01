@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron 2024.739097.4</title>
+        <title>mergeron 2024.739099.0</title>
       
     
     
@@ -77,7 +77,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="#" title="mergeron 2024.739097.4" class="md-header__button md-logo" aria-label="mergeron 2024.739097.4" data-md-component="logo">
+    <a href="#" title="mergeron 2024.739099.0" class="md-header__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -186,12 +186,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="#" title="mergeron 2024.739097.4" class="md-nav__button md-logo" aria-label="mergeron 2024.739097.4" data-md-component="logo">
+    <a href="#" title="mergeron 2024.739099.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739097.4
+    mergeron 2024.739099.0
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -373,13 +373,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#extras-subpackage" class="md-nav__link">
-    <span class="md-ellipsis">“Extras” Subpackage</span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -416,20 +409,6 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">mergeron.core.market_sample</span> <span class="k">as</span> <span class="nn">market_sample</span>
 
 <span class="n">help</span><span class="p">(</span><span class="n">market_sample</span><span class="o">.</span><span class="n">MarketSample</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<h2 id="extras-subpackage">“Extras” Subpackage<a class="headerlink" href="#extras-subpackage" title="Link to this heading">¶</a></h2>
-<p>The “Extras” sub-package includes a small number of modules potentially useful to users, but which do not implement the principal functions of the package, and are hence considered “extras”  or “external” modules. One of these modules is, in fact, repackaged here although published independently.</p>
-<p>On of the external modules provides methods for estimating confidence intervals for proportions and for contrasts (differences) in proportions. This module  improve is coded for conformance to the literature and to results from the corresponding modules in <code class="code docutils literal notranslate"><span class="pre">R</span></code>. Although written from scratch, the APIs implemented in the module included here are designed for consistency with the APIs in, <code class="xref py py-mod docutils literal notranslate"><span class="pre">statsmodels.stats.proportion</span></code> from the package, <code class="xref py py-mod docutils literal notranslate"><span class="pre">statsmodels</span></code> (<a class="reference external" href="https://pypi.org/project/statsmodels/">https://pypi.org/project/statsmodels/</a>). To access these directly:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">mergeron.ext.proportions_tests</span> <span class="k">as</span> <span class="nn">prci</span>
-</code></pre></div>
-</div>
-<p>Module <code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.ext.xlsxw_helper</span></code> is useful for writing highly formatted output to spreadsheets with xlsx format. The class, <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.ext.xlsxw_helper.CFmt</span></code> and function, <code class="xref py py-func docutils literal notranslate"><span class="pre">mergeron.ext.xlsxw_helper.array_to_sheet()</span></code> are of particular interest, and can be accessed as <code class="code docutils literal notranslate"><span class="pre">xlh.CFmt</span></code> and <code class="code docutils literal notranslate"><span class="pre">xlh.array_to_sheet</span></code> with the following import:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">mergeron.ext.xlsxw_helper</span> <span class="k">as</span> <span class="nn">xlsxw_helper</span>
-</code></pre></div>
-</div>
-<p>A recent version of Paul Tol’s python module, <code class="xref py py-mod docutils literal notranslate"><span class="pre">tol_colors.py</span></code>, which provides high-contrast color schemes for making displays with improved visibility for individuals with color-blindness, is redistributed within this package. Other than re-formatting and type annotation, the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.ext.tol_colors</span></code> module is re-distributed as downloaded from, <a class="reference external" href="https://personal.sron.nl/~pault/data/tol_colors.py">https://personal.sron.nl/~pault/data/tol_colors.py</a>. The <code class="xref py py-mod docutils literal notranslate"><span class="pre">tol_colors.py</span></code> module is distributed under the Standard 3-clause BSD license. To access the <code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.ext.tol_colors</span></code> module directly:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">mergeron.ext.tol_colors</span> <span class="k">as</span> <span class="nn">ptc</span>
 </code></pre></div>
 </div>
 <a class="reference external image-reference" href="https://python-poetry.org/"><img alt="Poetry" src="https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json" />
