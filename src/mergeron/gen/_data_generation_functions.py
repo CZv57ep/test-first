@@ -148,7 +148,7 @@ def _gen_market_shares_uniform(
     )
     _mrng.fill()
     # Convert draws on U[0, 1] to Uniformly-distributed draws on simplex, s_1 + s_2 <= 1
-    _frmshr_array = np.sort(_frmshr_array, axis=1)
+    _frmshr_array.sort(axis=1)
     _frmshr_array = np.column_stack((
         _frmshr_array[:, 0],
         _frmshr_array[:, 1] - _frmshr_array[:, 0],
@@ -471,11 +471,6 @@ def _gen_margin_price_data(
                     1 + _m1_nr,
                 )
                 _mnl_test_array = (_pcm_array[:, [1]] >= 0) & (_pcm_array[:, [1]] <= 1)
-            else:
-                # Generate i.i.d. PCMs
-                # Construct price_array = 1/ (1 - pcm_array)
-                # Rgenerate MNL test
-                pass
 
             _margin_data = MarginDataSample(_pcm_array[:, :2], _mnl_test_array)
             del _price_array_here
