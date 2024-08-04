@@ -260,7 +260,7 @@ def enf_cnts(
         )
         _enf_cnts_sim_byfirmcount_array[0] = 2
 
-    # Clearance/enfrocement counts --- by delta
+    # Clearance/enforcement counts --- by delta
     _hhi_delta_ranged = esl.hhi_delta_ranger(_hhi_delta)
     _enf_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int64)
     for _hhi_delta_lim in esl.HHI_DELTA_KNOTS[:-1]:
@@ -282,7 +282,7 @@ def enf_cnts(
 
     _enf_cnts_sim_bydelta_array = _enf_cnts_sim_bydelta_array[1:]
 
-    # Clearance/enfrocement counts --- by zone
+    # Clearance/enforcement counts --- by zone
     try:
         _hhi_zone_post_ranged = esl.hhi_zone_post_ranger(_hhi_post)
     except ValueError as _err:
@@ -367,23 +367,11 @@ def gen_upp_test_arrays(
         out=_guppi_array,
     )
 
-    _cmcr_array = np.empty_like(_market_data.divr_array)
-    np.divide(
-        np.einsum("ij,ij->ij", _market_data.pcm_array, _market_data.divr_array),
-        np.einsum("ij,ij->ij", 1 - _market_data.pcm_array, 1 - _market_data.divr_array),
-        out=_cmcr_array,
-    )
-
     _ipr_array = np.empty_like(_market_data.divr_array)
-    np.divide(
-        np.einsum("ij,ij->ij", _market_data.pcm_array, _market_data.divr_array),
-        1 - _market_data.divr_array,
-        out=_ipr_array,
-    )
+    np.divide(_guppi_array, (1 - _market_data.divr_array[:, ::-1]), out=_ipr_array)
 
-    # This one needs further testing:
-    # _ipr_array_alt = np.empty_like(_market_data.divr_array)
-    # np.divide(_guppi_array, (1 - _market_data.divr_array[:, ::-1]), out=_ipr_array_alt)
+    _cmcr_array = np.empty_like(_market_data.divr_array)
+    np.divide(_ipr_array, 1 - _market_data.pcm_array, out=_cmcr_array)
 
     _test_measure_seq = (_market_data.divr_array, _guppi_array, _cmcr_array, _ipr_array)
 
