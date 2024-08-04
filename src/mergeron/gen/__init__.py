@@ -1,5 +1,5 @@
 """
-Defines constants and containers for industry data generation and testing
+Defines constants and containers for industry data generation and testing.
 
 """
 

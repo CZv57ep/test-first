@@ -121,7 +121,7 @@ if not (_out_path := DATA_DIR.joinpath(f"{_PKG_NAME}.cls")).is_file():
 
 
 if not (_DOTTEX := DATA_DIR / Rf"{_PKG_NAME}_TikZTableSettings.tex").is_file():
-    # Write to dottex
+    # Write to LaTeX table settings file
     with resources.as_file(
         resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates").joinpath(
             "setup_tikz_tables.tex"
@@ -667,7 +667,7 @@ def _stats_formatted_row(
     match _return_type_sel:
         case StatsReturnSelector.RIN:
             _stats_row_ci = np.array([
-                _propn_ci(*g, method="Wilson")
+                propn_ci(*g, method="Wilson")
                 for g in zip(_stats_row_cnt[1:], _stats_row_tot[1:], strict=True)
             ])
             return [
@@ -722,7 +722,7 @@ def stats_print_rows(
     print()
 
 
-def _propn_ci(
+def propn_ci(
     _npos: ArrayINT[TI] | int = 4,
     _nobs: ArrayINT[TI] | int = 10,
     /,

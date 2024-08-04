@@ -207,7 +207,6 @@ def test_gen_market_sample(
         _hsr_filing_test_type,
     ) = _test_parms
     # Reinitialize the seed sequence for each test run
-    #   (this makes the tests invariant to the order in which run)
     _rng_seed_seq_tup = rmp.gen_seed_seq_list_default(
         2 if _mktshr_dist_type_test == SHRConstants.UNI else 3
     )
@@ -222,7 +221,6 @@ def test_gen_market_sample(
         _fcount_weights = None
         _test_func = _tfunc_sample_with_unrestricted_shares
     else:
-        # np.arange(1, 6)[::-1] / np.arange(1, 6).sum()
         _fcount_weights = FCOUNT_WTS_TEST
         _shr_dist_parms = None
         _test_func = _tfunc_sample_with_dirichlet_shares
