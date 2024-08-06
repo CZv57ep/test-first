@@ -5,7 +5,7 @@ import mergeron.core.guidelines_boundaries as gbl
 import mergeron.core.guidelines_boundary_functions as gbfl
 import mergeron.core.guidelines_boundary_functions_extra as gbxfl
 import pytest
-from mergeron import RECConstants, UPPAggrSelector
+from mergeron import RECTypes, UPPAggrSelector
 from mpmath import mp, mpf  # type: ignore
 from numpy.testing import assert_almost_equal, assert_equal
 
@@ -158,13 +158,13 @@ def test_shrratio_boundary_max(_dhv: tuple[float, float], _tv: float) -> None:
 @pytest.mark.parametrize(
     "_gv, _mv, _rv, _recapture_form",
     (
-        (0.06, 1.00, 0.8, RECConstants.FIXED),
-        (0.06, 0.67, 0.8, RECConstants.FIXED),
-        (0.06, 0.30, 0.8, RECConstants.FIXED),
+        (0.06, 1.00, 0.8, RECTypes.FIXED),
+        (0.06, 0.67, 0.8, RECTypes.FIXED),
+        (0.06, 0.30, 0.8, RECTypes.FIXED),
     ),
 )
 def test_diversion_ratio_boundary_at_min(
-    _gv: float, _mv: float, _rv: float, _recapture_form: RECConstants
+    _gv: float, _mv: float, _rv: float, _recapture_form: RECTypes
 ) -> None:
     _test_area = gbl.DiversionRatioBoundary(
         gbl.critical_share_ratio(_gv, m_star=_mv, r_bar=1.00),
@@ -204,18 +204,18 @@ def test_shrratio_boundary_min(
 @pytest.mark.parametrize(
     "_tvl",
     (
-        (0.06, 1.0, UPPAggrSelector.OSA, RECConstants.FIXED, 0.05111),
-        (0.06, 0.67, UPPAggrSelector.OSA, RECConstants.FIXED, 0.07726),
-        (0.06, 0.3, UPPAggrSelector.OSA, RECConstants.FIXED, 0.17098),
-        (0.06, 1.0, UPPAggrSelector.CPA, RECConstants.FIXED, 0.00658),
-        (0.06, 0.67, UPPAggrSelector.CPA, RECConstants.FIXED, 0.01409),
-        (0.06, 0.3, UPPAggrSelector.CPA, RECConstants.FIXED, 0.0606),
-        (0.06, 1.0, UPPAggrSelector.AVG, RECConstants.FIXED, 0.0102),
-        (0.06, 0.67, UPPAggrSelector.AVG, RECConstants.FIXED, 0.02169),
-        (0.06, 0.3, UPPAggrSelector.AVG, RECConstants.FIXED, 0.09123),
-        (0.06, 1.0, UPPAggrSelector.AVG, RECConstants.INOUT, 0.01026),
-        (0.06, 0.67, UPPAggrSelector.AVG, RECConstants.INOUT, 0.02187),
-        (0.06, 0.3, UPPAggrSelector.AVG, RECConstants.INOUT, 0.09323),
+        (0.06, 1.0, UPPAggrSelector.OSA, RECTypes.FIXED, 0.05111),
+        (0.06, 0.67, UPPAggrSelector.OSA, RECTypes.FIXED, 0.07726),
+        (0.06, 0.3, UPPAggrSelector.OSA, RECTypes.FIXED, 0.17098),
+        (0.06, 1.0, UPPAggrSelector.CPA, RECTypes.FIXED, 0.00658),
+        (0.06, 0.67, UPPAggrSelector.CPA, RECTypes.FIXED, 0.01409),
+        (0.06, 0.3, UPPAggrSelector.CPA, RECTypes.FIXED, 0.0606),
+        (0.06, 1.0, UPPAggrSelector.AVG, RECTypes.FIXED, 0.0102),
+        (0.06, 0.67, UPPAggrSelector.AVG, RECTypes.FIXED, 0.02169),
+        (0.06, 0.3, UPPAggrSelector.AVG, RECTypes.FIXED, 0.09123),
+        (0.06, 1.0, UPPAggrSelector.AVG, RECTypes.INOUT, 0.01026),
+        (0.06, 0.67, UPPAggrSelector.AVG, RECTypes.INOUT, 0.02187),
+        (0.06, 0.3, UPPAggrSelector.AVG, RECTypes.INOUT, 0.09323),
     ),
 )
 def test_diversion_ratio_boundary(_tvl: tuple[float, float, str, str, float]) -> None:
