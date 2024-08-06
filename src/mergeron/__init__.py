@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 
 _PKG_NAME: str = Path(__file__).parent.stem
 
-VERSION = "2024.739099.2"
+VERSION = "2024.739104.0"
 
 __version__ = VERSION
 
