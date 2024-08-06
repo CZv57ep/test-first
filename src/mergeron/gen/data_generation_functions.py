@@ -100,7 +100,7 @@ def gen_share_data(
 
     # If recapture_form == "inside-out", recalculate _aggregate_purchase_prob
     _frmshr_array = _mkt_share_sample.mktshr_array[:, :2]
-    _r_bar = _share_spec.recapture_rate or 0.85
+    _r_bar = _share_spec.recapture_rate or 0.8
     if _recapture_form == RECTypes.INOUT:
         _mkt_share_sample = ShareDataSample(
             _mkt_share_sample.mktshr_array,
@@ -125,10 +125,10 @@ def gen_market_shares_uniform(
     ----------
     _s_size
         size of sample to be drawn
-    _r_bar
-        market recapture rate
+
     _mktshr_rng_seed_seq
         seed for rng, so results can be made replicable
+
     _nthreads
         number of threads for random number generation
 
@@ -197,18 +197,22 @@ def gen_market_shares_dirichlet_multimarket(
     ----------
     _s_size
         sample size to be drawn
-    _r_bar
-        market recapture rate
+
     _firm_count_wts
         firm count weights array for sample to be drawn
+
     _dist_type_dir
         Whether Dirichlet is Flat or Asymmetric
+
     _recapture_form
         r_1 = r_2 if "proportional", otherwise MNL-consistent
+
     _fcount_rng_seed_seq
         seed firm count rng, for replicable results
+
     _mktshr_rng_seed_seq
         seed market share rng, for replicable results
+
     _nthreads
         number of threads for parallelized random number generation
 
@@ -329,16 +333,18 @@ def gen_market_shares_dirichlet(
     ----------
     _dir_alphas
         Shape parameters for Dirichlet distribution
+
     _s_size
         sample size to be drawn
-    _r_bar
-        market recapture rate
+
     _recapture_form
         r_1 = r_2 if RECTypes.FIXED, otherwise MNL-consistent. If
         RECTypes.OUTIN; the number of columns in the output share array
         is len(_dir_alphas) - 1.
+
     _mktshr_rng_seed_seq
         seed market share rng, for replicable results
+
     _nthreads
         number of threads for parallelized random number generation
 

@@ -39,14 +39,32 @@ from .upp_tests import SaveData, enf_cnts, save_data_to_hdf5
 __version__ = VERSION
 
 
-class INVRESCntsArgs(TypedDict, total=False):
+class SamplingFunctionKWArgs(TypedDict, total=False):
     "Keyword arguments of function, :func:`MarketSample.sim_enf_cnts`"
 
     sample_size: int
-    seed_seq_list: list[SeedSequence] | None
+    """number of draws to generate"""
+
+    seed_seq_list: Sequence[SeedSequence] | None
+    """sequence of SeedSequences to ensure replicable data generation with
+    appropriately independent random streams
+
+    NOTES
+    -----
+
+    See, :func:`.data_generation_functions.parse_seed_seq_list` for more on
+    specification of this parameter.
+
+    """
+
     nthreads: int
+    """number of parallel threads to use"""
+
     save_data_to_file: SaveData
+    """optionally save data to HDF5 file"""
+
     saved_array_name_suffix: str
+    """optionally specify a suffix for the HDF5 array names"""
 
 
 @define
@@ -100,22 +118,13 @@ class MarketSample:
         sample_size: int = 10**6,
         seed_seq_list: Sequence[SeedSequence] | None = None,
         nthreads: int = 16,
+        save_data_to_file: SaveData = False,
+        saved_array_name_suffix: str = "",
     ) -> MarketDataSample:
         """
         Generate share, diversion ratio, price, and margin data for MarketSpec.
 
-
-        Parameters
-        ----------
-        _mkt_sample_spec
-            class specifying parameters for data generation, see :class:`mergeron.gen.MarketSpec`
-        sample_size
-            number of draws to generate
-        seed_seq_list
-            tuple of SeedSequences to ensure replicable data generation with
-            appropriately independent random streams
-        nthreads
-            optionally specify the number of CPU threads for the PRNG
+        see :attr:`SamplingFunctionKWArgs` for description of parameters
 
         Returns
         -------
@@ -273,9 +282,6 @@ class MarketSample:
         Parameters
         ----------
 
-        _mkt_sample_spec
-            Configuration to use for generating sample data to test
-
         _upp_test_parms
             Guidelines thresholds for testing UPP and related statistics
 
@@ -363,17 +369,8 @@ class MarketSample:
         _enf_parm_vec
             Guidelines thresholds to test against
 
-        _mkt_sample_spec
-            Configuration to use for generating sample data to test
-
         _sim_test_regime
             Configuration to use for testing
-
-        saved_array_name_suffix
-            Suffix to add to the array names in the HDF5 file
-
-        save_data_to_file
-            Whether to save data to an HDF5 file, and where to save it
 
         sample_size
             Number of draws to simulate
@@ -383,6 +380,12 @@ class MarketSample:
 
         nthreads
             Number of parallel processes to use
+
+        save_data_to_file
+            Whether to save data to an HDF5 file, and where to save it
+
+        saved_array_name_suffix
+            Suffix to add to the array names in the HDF5 file
 
         Returns
         -------
@@ -414,7 +417,7 @@ class MarketSample:
                 zip(*[g.spawn(_iter_count) for g in seed_seq_list], strict=True)  # type: ignore
             )
 
-        _sim_enf_cnts_kwargs: INVRESCntsArgs = INVRESCntsArgs({
+        _sim_enf_cnts_kwargs: SamplingFunctionKWArgs = SamplingFunctionKWArgs({
             "sample_size": _subsample_sz,
             "save_data_to_file": save_data_to_file,
             "nthreads": nthreads,
@@ -458,6 +461,7 @@ class MarketSample:
         seed_seq_list: list[SeedSequence] | None,
         nthreads: int,
         save_data_to_file: SaveData = False,
+        saved_array_name_suffix: str = "",
     ) -> None:
         """Estimate enforcement counts
 
@@ -485,18 +489,12 @@ class MarketSample:
         save_data_to_file
             Save data to given HDF5 file, at specified group node
 
+        saved_array_name_suffix
+            Suffix to add to the array names in the HDF5 file
+
         Returns
         -------
         None
-
-        Notes
-        -----
-        See documentation for :class:`mergeron.gen.MarketSpec` for details on specifying
-        how shares, margins, prices, and diversion ratios are generated, and whether to restrict
-        the sample to draws representing mergers that meet the HSR filing requirements. See
-        :class:`mergeron.gen.MarketDataSample` on the sample data generated; see,
-        :func:`mergeron.gen.data_generation.parse_seed_seq_list` on
-        the specification of :code:`seed_seq_list`.
 
         """
 
@@ -508,8 +506,13 @@ class MarketSample:
                 seed_seq_list=seed_seq_list,
                 nthreads=nthreads,
                 save_data_to_file=save_data_to_file,
+                saved_array_name_suffix=saved_array_name_suffix,
             )
         else:
             self.enf_counts = enf_cnts(self.data, _enf_parm_vec, _upp_test_regime)
             if save_data_to_file:
-                save_data_to_hdf5(self.enf_counts, save_data_to_file=save_data_to_file)
+                save_data_to_hdf5(
+                    self.enf_counts,
+                    save_data_to_file=save_data_to_file,
+                    saved_array_name_suffix=saved_array_name_suffix,
+                )

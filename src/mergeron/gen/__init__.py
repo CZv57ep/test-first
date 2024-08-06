@@ -425,23 +425,22 @@ class INVResolution(enum.StrEnum):
 
 @frozen
 class UPPTestRegime:
-    """Configuration for UPP tests
-
-    Parameters
-    ----------
-    resolution
-        Whether to test clearance, enforcement, or both.
-
-    guppi_aggregator
-        Aggregator for GUPPI test and DIVR test.
-    """
+    """Configuration for UPP tests."""
 
     resolution: INVResolution = field(
+        kw_only=False,
         default=INVResolution.ENFT,
         validator=validators.in_([INVResolution.CLRN, INVResolution.ENFT]),
     )
-    guppi_aggregator: UPPAggrSelector = UPPAggrSelector.MIN
-    divr_aggregator: UPPAggrSelector = UPPAggrSelector.MIN
+    """Whether to test clearance, enforcement, or both."""
+
+    guppi_aggregator: UPPAggrSelector = field(
+        kw_only=False, default=UPPAggrSelector.MIN
+    )
+    """Aggregator for GUPPI test."""
+
+    divr_aggregator: UPPAggrSelector = field(kw_only=False, default=UPPAggrSelector.MIN)
+    """Aggregator for diversion ratio test."""
 
 
 @dataclass(slots=True, frozen=True)
@@ -487,7 +486,7 @@ class UPPTestsCounts:
     with futher detail by HHI and ΔHHI for mergers in the "unconcentrated" and
     "moderately concentrated" zones. See
     :attr:`mergeron.gen.enforcement_stats.HMG_PRESUMPTION_ZONE_MAP` and
-    :attr:`mergeron.gen.enforcement_stats.ZONE_VALS`for more detail.
+    :attr:`mergeron.gen.enforcement_stats.ZONE_VALS` for more detail.
 
     """
 
