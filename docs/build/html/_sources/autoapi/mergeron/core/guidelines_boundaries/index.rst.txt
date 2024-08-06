@@ -158,17 +158,17 @@ Module Contents
 
 
    .. py:attribute:: recapture_form
-      :type:  mergeron.RECConstants | None
+      :type:  mergeron.RECTypes | None
 
       The form of the recapture rate.
 
-      When :attr:`mergeron.RECConstants.INOUT`, the recapture rate for
+      When :attr:`mergeron.RECTypes.INOUT`, the recapture rate for
       he product having the smaller market-share is assumed to equal the default,
       and the recapture rate for the product with the larger market-share is
       computed assuming MNL demand. Fixed recapture rates are specified as
-      :attr:`mergeron.RECConstants.FIXED`. (To specify that recapture rates be
+      :attr:`mergeron.RECTypes.FIXED`. (To specify that recapture rates be
       constructed from the generated purchase-probabilities for products in
-      the market and for the outside good, specify :attr:`mergeron.RECConstants.OUTIN`.)
+      the market and for the outside good, specify :attr:`mergeron.RECTypes.OUTIN`.)
 
       The GUPPI boundary is a continuum of diversion ratio boundaries conditional on
       price-cost margins, :math:`d_{ij} = g_i * p_i / (m_j * p_j)`,

@@ -11,19 +11,16 @@ from typing import Literal, TypeAlias, TypedDict
 
 import numpy as np
 import tables as ptb  # type: ignore
-from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 
-from .. import (  # noqa: TID252
-    TF,
-    TI,
+from .. import (  # noqa
     VERSION,
     ArrayBIGINT,
     ArrayBoolean,
     ArrayDouble,
     ArrayFloat,
     ArrayINT,
-    RECConstants,
+    RECTypes,
     UPPAggrSelector,
 )
 from ..core import guidelines_boundaries as gbl  # noqa: TID252
@@ -32,12 +29,10 @@ from . import (
     DataclassInstance,
     INVResolution,
     MarketDataSample,
-    MarketSpec,
     UPPTestRegime,
     UPPTestsCounts,
     UPPTestsRaw,
 )
-from . import data_generation as dgl
 from . import enforcement_stats as esl
 
 __version__ = VERSION
@@ -58,169 +53,37 @@ class INVRESCntsArgs(TypedDict, total=False):
     saved_array_name_suffix: str
 
 
-def sim_enf_cnts_ll(
-    _mkt_sample_spec: MarketSpec,
-    _enf_parm_vec: gbl.HMGThresholds,
-    _sim_test_regime: UPPTestRegime,
-    /,
-    *,
-    sample_size: int = 10**6,
-    seed_seq_list: list[SeedSequence] | None = None,
-    nthreads: int = 16,
-    save_data_to_file: SaveData = False,
-    saved_array_name_suffix: str = "",
-) -> UPPTestsCounts:
-    """A function to parallelize data-generation and testing
-
-    The parameters `_sim_enf_cnts_kwargs` are passed unaltered to
-    the parent function, `sim_enf_cnts()`, except that, if provided,
-    `seed_seq_list` is used to spawn a seed sequence for each thread,
-    to assure independent samples in each thread, and `nthreads` defines
-    the number of parallel processes used. The number of draws in
-    each thread may be tuned, by trial and error, to the amount of
-    memory (RAM) available.
-
-    Parameters
-    ----------
-
-    _enf_parm_vec
-        Guidelines thresholds to test against
-
-    _mkt_sample_spec
-        Configuration to use for generating sample data to test
-
-    _sim_test_regime
-        Configuration to use for testing
-
-    saved_array_name_suffix
-        Suffix to add to the array names in the HDF5 file
-
-    save_data_to_file
-        Whether to save data to an HDF5 file, and where to save it
-
-    sample_size
-        Number of draws to simulate
-
-    seed_seq_list
-        List of seed sequences, to assure independent samples in each thread
-
-    nthreads
-        Number of parallel processes to use
-
-    Returns
-    -------
-        Arrays of UPPTestCounts
-
-    """
-    _sample_sz = sample_size
-    _subsample_sz = 10**6
-    _iter_count = int(_sample_sz / _subsample_sz) if _subsample_sz < _sample_sz else 1
-    _thread_count = cpu_count()
-
-    if (
-        _mkt_sample_spec.share_spec.recapture_form != RECConstants.OUTIN
-        and _mkt_sample_spec.share_spec.recapture_rate != _enf_parm_vec.rec
-    ):
-        raise ValueError(
-            "{} {} {}".format(
-                f"Recapture rate from market sample spec, {_mkt_sample_spec.share_spec.recapture_rate}",
-                f"must match the value, {_enf_parm_vec.rec}",
-                "the guidelines thresholds vector.",
-            )
-        )
-
-    _rng_seed_seq_list = [None] * _iter_count
-    if seed_seq_list:
-        _rng_seed_seq_list = list(
-            zip(*[g.spawn(_iter_count) for g in seed_seq_list], strict=True)  # type: ignore
-        )
-
-    _sim_enf_cnts_kwargs: INVRESCntsArgs = INVRESCntsArgs({
-        "sample_size": _subsample_sz,
-        "save_data_to_file": save_data_to_file,
-        "nthreads": nthreads,
-    })
-
-    _res_list = Parallel(n_jobs=_thread_count, prefer="threads")(
-        delayed(sim_enf_cnts)(
-            _mkt_sample_spec,
-            _enf_parm_vec,
-            _sim_test_regime,
-            **_sim_enf_cnts_kwargs,
-            saved_array_name_suffix=f"{saved_array_name_suffix}_{_iter_id:0{2 + int(np.ceil(np.log10(_iter_count)))}d}",
-            seed_seq_list=_rng_seed_seq_list_ch,
-        )
-        for _iter_id, _rng_seed_seq_list_ch in enumerate(_rng_seed_seq_list)
-    )
-
-    _res_list_stacks = UPPTestsCounts(*[
-        np.stack([getattr(_j, _k) for _j in _res_list])
-        for _k in ("by_firm_count", "by_delta", "by_conczone")
-    ])
-    upp_test_results = UPPTestsCounts(*[
-        np.column_stack((
-            (_gv := getattr(_res_list_stacks, _g))[0, :, :_h],
-            np.einsum("ijk->jk", np.int64(1) * _gv[:, :, _h:]),
-        ))
-        for _g, _h in zip(
-            _res_list_stacks.__dataclass_fields__.keys(), [1, 1, 3], strict=True
-        )
-    ])
-    del _res_list, _res_list_stacks
-
-    return upp_test_results
-
-
-def sim_enf_cnts(
-    _mkt_sample_spec: MarketSpec,
-    _upp_test_parms: gbl.HMGThresholds,
-    _sim_test_regime: UPPTestRegime,
-    /,
-    *,
-    sample_size: int = 10**6,
-    seed_seq_list: list[SeedSequence] | None = None,
-    nthreads: int = 16,
-    save_data_to_file: SaveData = False,
-    saved_array_name_suffix: str = "",
-) -> UPPTestsCounts:
-    # Generate market data
-    _market_data_sample = dgl.gen_market_sample(
-        _mkt_sample_spec,
-        sample_size=sample_size,
-        seed_seq_list=seed_seq_list,
-        nthreads=nthreads,
-    )
-
-    _invalid_array_names = (
-        ("fcounts", "choice_prob_outgd", "nth_firm_share", "hhi_post")
-        if _mkt_sample_spec.share_spec.dist_type == "Uniform"
-        else ()
-    )
-
-    save_data_to_hdf5(
-        _market_data_sample,
-        saved_array_name_suffix=saved_array_name_suffix,
-        excluded_attrs=_invalid_array_names,
-        save_data_to_file=save_data_to_file,
-    )
-
-    _upp_test_arrays = enf_cnts(_market_data_sample, _upp_test_parms, _sim_test_regime)
-
-    save_data_to_hdf5(
-        _upp_test_arrays,
-        saved_array_name_suffix=saved_array_name_suffix,
-        save_data_to_file=save_data_to_file,
-    )
-
-    return _upp_test_arrays
-
-
 def enf_cnts(
     _market_data_sample: MarketDataSample,
     _upp_test_parms: gbl.HMGThresholds,
     _upp_test_regime: UPPTestRegime,
     /,
 ) -> UPPTestsCounts:
+    """Estimate enforcement and clearance counts from market data sample
+
+    Parameters
+    ----------
+    _market_data_sample
+        Market data sample
+
+    _upp_test_parms
+        Threshold values for various Guidelines criteria
+
+    _upp_test_regime
+        Specifies whether to analyze enforcement, clearance, or both
+        and the GUPPI and diversion ratio aggregators employed, with
+        default being to analyze enforcement based on the maximum
+        merging-firm GUPPI and maximum diversion ratio between the
+        merging firms
+
+    Returns
+    -------
+    UPPTestsCounts
+        Enforced and cleared counts
+
+    """
+
+    _enf_cnts_sim_array = -1 * np.ones((6, 2), np.int64)
     _upp_test_arrays = gen_upp_test_arrays(
         _market_data_sample, _upp_test_parms, _upp_test_regime
     )
@@ -231,12 +94,13 @@ def enf_cnts(
 
     _stats_rowlen = 6
     # Clearance/enforcement counts --- by firm count
-    _firm_counts_weights = np.unique(_fcounts)
-    if _firm_counts_weights is not None and np.all(_firm_counts_weights >= 0):
-        _max_firm_count = len(_firm_counts_weights)
+    _firm_counts_list = np.unique(_fcounts)
+    if _firm_counts_list is not None and np.all(_firm_counts_list >= 0):
+        # _max_firm_count = len(_firm_counts_list)
+        _max_firm_count = max(_firm_counts_list)
 
         _enf_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
-        for _firm_cnt in 2 + np.arange(_max_firm_count):
+        for _firm_cnt in 1 + np.arange(1, _max_firm_count):
             _firm_count_test = _fcounts == _firm_cnt
 
             _enf_cnts_sim_byfirmcount_array = np.vstack((
@@ -260,7 +124,7 @@ def enf_cnts(
         )
         _enf_cnts_sim_byfirmcount_array[0] = 2
 
-    # Clearance/enfrocement counts --- by delta
+    # Clearance/enforcement counts --- by delta
     _hhi_delta_ranged = esl.hhi_delta_ranger(_hhi_delta)
     _enf_cnts_sim_bydelta_array = -1 * np.ones(_stats_rowlen, np.int64)
     for _hhi_delta_lim in esl.HHI_DELTA_KNOTS[:-1]:
@@ -282,7 +146,7 @@ def enf_cnts(
 
     _enf_cnts_sim_bydelta_array = _enf_cnts_sim_bydelta_array[1:]
 
-    # Clearance/enfrocement counts --- by zone
+    # Clearance/enforcement counts --- by zone
     try:
         _hhi_zone_post_ranged = esl.hhi_zone_post_ranger(_hhi_post)
     except ValueError as _err:
@@ -353,12 +217,10 @@ def gen_upp_test_arrays(
         getattr(_upp_test_parms, _f) for _f in ("guppi", "divr", "cmcr", "ipr")
     )
 
-    _enf_resolution, _guppi_aggregator, _divr_aggregator = (
-        getattr(_sim_test_regime, _f)
-        for _f in ("resolution", "guppi_aggregator", "divr_aggregator")
+    _guppi_array, _ipr_array, _cmcr_array = (
+        np.empty_like(_market_data.price_array) for _ in range(3)
     )
 
-    _guppi_array = np.empty_like(_market_data.divr_array)
     np.einsum(
         "ij,ij,ij->ij",
         _market_data.divr_array,
@@ -367,30 +229,53 @@ def gen_upp_test_arrays(
         out=_guppi_array,
     )
 
-    _cmcr_array = np.empty_like(_market_data.divr_array)
-    np.divide(
-        np.einsum("ij,ij->ij", _market_data.pcm_array, _market_data.divr_array),
-        np.einsum("ij,ij->ij", 1 - _market_data.pcm_array, 1 - _market_data.divr_array),
-        out=_cmcr_array,
-    )
-
-    _ipr_array = np.empty_like(_market_data.divr_array)
     np.divide(
         np.einsum("ij,ij->ij", _market_data.pcm_array, _market_data.divr_array),
         1 - _market_data.divr_array,
         out=_ipr_array,
     )
 
-    # This one needs further testing:
-    # _ipr_array_alt = np.empty_like(_market_data.divr_array)
-    # np.divide(_guppi_array, (1 - _market_data.divr_array[:, ::-1]), out=_ipr_array_alt)
+    np.divide(_ipr_array, 1 - _market_data.pcm_array, out=_cmcr_array)
 
-    _test_measure_seq = (_market_data.divr_array, _guppi_array, _cmcr_array, _ipr_array)
+    (_divr_test_vector,) = _compute_test_value_seq(
+        (_market_data.divr_array,),
+        _market_data.frmshr_array,
+        _sim_test_regime.divr_aggregator,
+    )
 
+    (_guppi_test_vector, _cmcr_test_vector, _ipr_test_vector) = _compute_test_value_seq(
+        (_guppi_array, _cmcr_array, _ipr_array),
+        _market_data.frmshr_array,
+        _sim_test_regime.guppi_aggregator,
+    )
+    del _cmcr_array, _ipr_array, _guppi_array
+
+    if _sim_test_regime.resolution == INVResolution.ENFT:
+        _upp_test_arrays = UPPTestsRaw(
+            _guppi_test_vector >= _g_bar,
+            (_guppi_test_vector >= _g_bar) | (_divr_test_vector >= _divr_bar),
+            _cmcr_test_vector >= _cmcr_bar,
+            _ipr_test_vector >= _ipr_bar,
+        )
+    else:
+        _upp_test_arrays = UPPTestsRaw(
+            _guppi_test_vector < _g_bar,
+            (_guppi_test_vector < _g_bar) & (_divr_test_vector < _divr_bar),
+            _cmcr_test_vector < _cmcr_bar,
+            _ipr_test_vector < _ipr_bar,
+        )
+
+    return _upp_test_arrays
+
+
+def _compute_test_value_seq(
+    _test_measure_seq: tuple[ArrayDouble, ...],
+    _wt_array: ArrayDouble,
+    _aggregator: UPPAggrSelector,
+) -> tuple[ArrayDouble, ...]:
     _wt_array = (
-        _market_data.frmshr_array
-        / np.einsum("ij->i", _market_data.frmshr_array)[:, None]
-        if _guppi_aggregator
+        _wt_array / np.einsum("ij->i", _wt_array)[:, None]
+        if _aggregator
         in (
             UPPAggrSelector.CPA,
             UPPAggrSelector.CPD,
@@ -400,7 +285,7 @@ def gen_upp_test_arrays(
         else EMPTY_ARRAY_DEFAULT
     )
 
-    match _guppi_aggregator:
+    match _aggregator:
         case UPPAggrSelector.AVG:
             _test_value_seq = (
                 1 / 2 * np.einsum("ij->i", _g)[:, None] for _g in _test_measure_seq
@@ -440,30 +325,7 @@ def gen_upp_test_arrays(
             )
         case _:
             raise ValueError("GUPPI/diversion ratio aggregation method is invalid.")
-    del _cmcr_array, _guppi_array
-    (_divr_test_vector, _guppi_test_vector, _cmcr_test_vector, _ipr_test_vector) = (
-        _test_value_seq
-    )
-
-    if _divr_aggregator == UPPAggrSelector.MAX:
-        _divr_test_vector = _market_data.divr_array.max(axis=1, keepdims=True)
-
-    if _enf_resolution == INVResolution.ENFT:
-        _upp_test_arrays = UPPTestsRaw(
-            _guppi_test_vector >= _g_bar,
-            (_guppi_test_vector >= _g_bar) | (_divr_test_vector >= _divr_bar),
-            _cmcr_test_vector >= _cmcr_bar,
-            _ipr_test_vector >= _ipr_bar,
-        )
-    else:
-        _upp_test_arrays = UPPTestsRaw(
-            _guppi_test_vector < _g_bar,
-            (_guppi_test_vector < _g_bar) & (_divr_test_vector < _divr_bar),
-            _cmcr_test_vector < _cmcr_bar,
-            _ipr_test_vector < _ipr_bar,
-        )
-
-    return _upp_test_arrays
+    return tuple(_test_value_seq)
 
 
 def initialize_hd5(
@@ -506,11 +368,7 @@ def save_data_to_hdf5(
 
 
 def save_array_to_hdf5(
-    _array_obj: ArrayFloat[TF]
-    | ArrayINT[TI]
-    | ArrayDouble
-    | ArrayBIGINT
-    | ArrayBoolean,
+    _array_obj: ArrayFloat | ArrayINT | ArrayDouble | ArrayBIGINT | ArrayBoolean,
     _array_name: str,
     _h5_group: ptb.Group,
     _h5_file: ptb.File,

@@ -5,7 +5,8 @@ mergeron.gen
 
 .. autoapi-nested-parse::
 
-   Defines constants and containers for industry data generation and testing
+   Defines constants, specifications (classes with attributes defining varous parameters) and
+   containers for industry data generation and testing.
 
 
 
@@ -16,8 +17,8 @@ Submodules
    :maxdepth: 1
 
    /autoapi/mergeron/gen/data_generation/index
+   /autoapi/mergeron/gen/data_generation_functions/index
    /autoapi/mergeron/gen/enforcement_stats/index
-   /autoapi/mergeron/gen/market_sample/index
    /autoapi/mergeron/gen/upp_tests/index
 
 
@@ -32,7 +33,28 @@ Package Contents
 
 .. py:data:: FCOUNT_WTS_DEFAULT
 
-.. py:class:: PriceConstants
+.. py:class:: SeedSequenceData
+
+   Bases: :py:obj:`NamedTuple`
+
+
+   .. py:attribute:: mktshr_rng_seed_seq
+      :type:  numpy.random.SeedSequence
+
+
+   .. py:attribute:: pcm_rng_seed_seq
+      :type:  numpy.random.SeedSequence
+
+
+   .. py:attribute:: fcount_rng_seed_seq
+      :type:  numpy.random.SeedSequence | None
+
+
+   .. py:attribute:: pr_rng_seed_seq
+      :type:  numpy.random.SeedSequence | None
+
+
+.. py:class:: PriceSpec
 
    Bases: :py:obj:`tuple`\ [\ :py:obj:`bool`\ , :py:obj:`str | None`\ ], :py:obj:`enum.ReprEnum`
 
@@ -67,7 +89,7 @@ Package Contents
 
 
 
-.. py:class:: SHRConstants
+.. py:class:: SHRDistributions
 
    Bases: :py:obj:`enum.StrEnum`
 
@@ -129,27 +151,54 @@ Package Contents
    A key feature of market-share specification in this package is that
    the draws represent markets with multiple different firm-counts.
    Firm-counts are unspecified if the share distribution is
-   :attr:`mergeron.SHRConstants.UNI`, for Dirichlet-distributed market-shares,
+   :attr:`mergeron.SHRDistributions.UNI`, for Dirichlet-distributed market-shares,
    the default specification is that firm-counts  vary between
    2 and 7 firms with each value equally likely.
 
    .. rubric:: Notes
 
-   If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRConstants.UNI`,
+   If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRDistributions.UNI`,
    then it is infeasible that
-   :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECConstants.OUTIN`.
+   :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECTypes.OUTIN`.
    In other words, if firm-counts are unspecified, the recapture rate cannot be
    estimated using outside good choice probabilities.
 
    For a sample with explicit firm counts, market shares must
    be specified as having a supported Dirichlet distribution
-   (see :class:`mergeron.gen.SHRConstants`).
+   (see :class:`mergeron.gen.SHRDistributions`).
+
+
+   .. py:attribute:: dist_type
+      :type:  SHRDistributions
+
+      See :class:`SHRDistributions`
+
+
+   .. py:attribute:: dist_parms
+      :type:  mergeron.ArrayDouble | None
+
+      Parameters for tailoring market-share distribution
+
+      For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
+      for Dirichlet-type distributions, a vector of shape parameters of length
+      no less than the length of firm-count weights below; defaults depend on
+      type of Dirichlet-distribution specified.
+
+
+   .. py:attribute:: firm_counts_weights
+      :type:  mergeron.ArrayFloat | mergeron.ArrayINT | None
+
+      Relative or absolute frequencies of firm counts
+
+      Given frequencies are exogenous to generated market data sample;
+      for Dirichlet-type distributions, defaults to FCOUNT_WTS_DEFAULT, which specifies
+      firm-counts of 2 to 6 with weights in descending order from 5 to 1.
 
 
    .. py:attribute:: recapture_form
-      :type:  mergeron.RECConstants
+      :type:  mergeron.RECTypes
 
-      See :class:`mergeron.RECConstants`
+      See :class:`mergeron.RECTypes`
 
 
    .. py:attribute:: recapture_rate
@@ -158,7 +207,7 @@ Package Contents
       A value between 0 and 1, typically 0.8.
 
       :code:`None` if market share specification requires direct generation of
-      outside good choice probabilities (:attr:`mergeron.RECConstants.OUTIN`).
+      outside good choice probabilities (:attr:`mergeron.RECTypes.OUTIN`).
 
       The recapture rate is usually calibrated to the numbers-equivalent of the
       HHI threshold for the presumtion of harm from unilateral competitive effects
@@ -176,35 +225,7 @@ Package Contents
       presumptions no harm.)
 
 
-   .. py:attribute:: dist_type
-      :type:  SHRConstants
-
-      See :class:`SHRConstants`
-
-
-   .. py:attribute:: dist_parms
-      :type:  mergeron.ArrayDouble | None
-
-      Parameters for tailoring market-share distribution
-
-      For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
-      for Dirichlet-type distributions, a vector of shape parameters of length
-      no less than the length of firm-count weights below; defaults depend on
-      type of Dirichlet-distribution specified.
-
-
-   .. py:attribute:: firm_counts_weights
-      :type:  mergeron.ArrayDouble | mergeron.ArrayBIGINT | mergeron.ArrayDouble | mergeron.ArrayBIGINT | None
-
-      Relative or absolute frequencies of firm counts
-
-
-      Given frequencies are exogenous to generated market data sample;
-      for Dirichlet-type distributions, defaults to FCOUNT_WTS_DEFAULT, which specifies
-      firm-counts of 2 to 6 with weights in descending order from 5 to 1.
-
-
-.. py:class:: PCMConstants
+.. py:class:: PCMDistributions
 
    Bases: :py:obj:`enum.StrEnum`
 
@@ -271,16 +292,10 @@ Package Contents
 
 
 
-   .. py:attribute:: firm2_pcm_constraint
-      :type:  FM2Constants
-
-      See :class:`FM2Constants`
-
-
    .. py:attribute:: dist_type
-      :type:  PCMConstants
+      :type:  PCMDistributions
 
-      See :class:`PCMConstants`
+      See :class:`PCMDistributions`
 
 
    .. py:attribute:: dist_parms
@@ -292,6 +307,12 @@ Package Contents
       for Beta distribution, shape parameters, defaults to `(1, 1)`;
       for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;
       for empirical distribution based on Damodaran margin data, optional, ignored
+
+
+   .. py:attribute:: firm2_pcm_constraint
+      :type:  FM2Constants
+
+      See :class:`FM2Constants`
 
 
 .. py:class:: SSZConstants
@@ -343,35 +364,6 @@ Package Contents
 
 
       When initial set of draws is not restricted in any way.
-
-
-.. py:class:: MarketSpec
-
-   Parameter specification for market data generation.
-
-
-   .. py:attribute:: share_spec
-      :type:  ShareSpec
-
-      Market-share specification, see :class:`ShareSpec`
-
-
-   .. py:attribute:: pcm_spec
-      :type:  PCMSpec
-
-      Margin specification, see :class:`PCMSpec`
-
-
-   .. py:attribute:: price_spec
-      :type:  PriceConstants
-
-      Price specification, see :class:`PriceConstants`
-
-
-   .. py:attribute:: hsr_filing_test_type
-      :type:  SSZConstants
-
-      Method for modeling HSR filing threholds, see :class:`SSZConstants`
 
 
 .. py:class:: MarketDataSample
@@ -538,16 +530,25 @@ Package Contents
 
 .. py:class:: UPPTestRegime
 
+   Configuration for UPP tests.
+
+
    .. py:attribute:: resolution
       :type:  INVResolution
+
+      Whether to test clearance, enforcement, or both.
 
 
    .. py:attribute:: guppi_aggregator
       :type:  mergeron.UPPAggrSelector
 
+      Aggregator for GUPPI test.
+
 
    .. py:attribute:: divr_aggregator
-      :type:  mergeron.UPPAggrSelector | None
+      :type:  mergeron.UPPAggrSelector
+
+      Aggregator for diversion ratio test.
 
 
 .. py:class:: UPPTestsRaw
@@ -589,7 +590,11 @@ Package Contents
 
    Counts of markets resolved as specified
 
-   Resolution may be either :attr:`INVResolution.ENFT` or :attr:`INVResolution.CLRN`.
+   Resolution may be either :attr:`INVResolution.ENFT`,
+   :attr:`INVResolution.CLRN`, or :attr:`INVResolution.BOTH`.
+   In the case of :attr:`INVResolution.BOTH`, two colums of counts
+   are returned: one for each resolution.
+
 
 
    .. py:attribute:: by_firm_count
@@ -603,7 +608,11 @@ Package Contents
    .. py:attribute:: by_conczone
       :type:  mergeron.ArrayBIGINT
 
-      Zones are "unoncentrated", "moderately concentrated", and "highly concentrated"
+      Zones are "unoncentrated", "moderately concentrated", and "highly concentrated",
+      with futher detail by HHI and ΔHHI for mergers in the "unconcentrated" and
+      "moderately concentrated" zones. See
+      :attr:`mergeron.gen.enforcement_stats.HMG_PRESUMPTION_ZONE_MAP` and
+      :attr:`mergeron.gen.enforcement_stats.ZONE_VALS` for more detail.
 
 
 .. py:class:: DataclassInstance

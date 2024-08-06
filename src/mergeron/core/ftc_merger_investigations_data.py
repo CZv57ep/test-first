@@ -285,7 +285,7 @@ def _construct_new_period_data(
                 # Consistency here means that the number of investigations reported
                 # in each period is no less than the number reported in
                 # any prior period.Although the time periods for table 3.2 through 3.5
-                # are not the samein the data for 1996-2005 and 1996-2007 as in
+                # are not the same in the data for 1996-2005 and 1996-2007 as in
                 # the data for the other periods, they are nonetheless shorter than
                 # the period 1996-2011, and hence the counts reported for 1996-2011
                 # cannot be less than those reported in these prior periods. Note that
@@ -337,7 +337,8 @@ def _construct_new_period_data(
                     _invdata_cuml_array[:, -3:-1] - _invdata_base_array[:, -3:-1]  # type: ignore
                 )
 
-                # To examine the number of corrected values per table,
+                # # // spellchecker: disable
+                # To examine the number of corrected values per table,  // spellchecker: disable
                 # uncomment the statements below
                 # _invdata_array_bld_tbc = where(
                 #   _invdata_array_bld_enfcls < 0, _invdata_array_bld_enfcls, 0
@@ -347,6 +348,7 @@ def _construct_new_period_data(
                 #       f"{_data_period}, {_table_no}, {_invdata_ind_group}:",
                 #       abs(np.einsum('ij->', invdata_array_bld_tbc))
                 #       )
+                # #  // spellchecker: disable
 
                 # Enforce non-negativity
                 _invdata_array_bld_enfcls = np.stack((

@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import enum
 from pathlib import Path
-from typing import TypeAlias, TypeVar
+from typing import TypeAlias
 
 import numpy as np
-from numpy.typing import NBitBase, NDArray
+from numpy.typing import NDArray
 
 _PKG_NAME: str = Path(__file__).parent.stem
 
-VERSION = "2024.739099.1"
+VERSION = "2024.739104.1"
 
 __version__ = VERSION
 
@@ -22,24 +22,21 @@ If the subdirectory doesn't exist, it is created on package invocation.
 if not DATA_DIR.is_dir():
     DATA_DIR.mkdir(parents=False)
 
-
 np.set_printoptions(precision=18)
 
 
-TI = TypeVar("TI", bound=NBitBase)
-ArrayINT = NDArray[np.integer[TI]]
-TF = TypeVar("TF", bound=NBitBase)
-ArrayFloat = NDArray[np.floating[TF]]
+ArrayINT = NDArray[np.intp]
+ArrayFloat = NDArray[np.half | np.single | np.double]
 
 
 ArrayBoolean: TypeAlias = NDArray[np.bool_]
 
-ArrayDouble: TypeAlias = NDArray[np.float64]
+ArrayDouble: TypeAlias = NDArray[np.double]
 ArrayBIGINT: TypeAlias = NDArray[np.int64]
 
 
 @enum.unique
-class RECConstants(enum.StrEnum):
+class RECTypes(enum.StrEnum):
     """Recapture rate - derivation methods."""
 
     INOUT = "inside-out"

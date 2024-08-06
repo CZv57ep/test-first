@@ -1,5 +1,6 @@
 """
-Defines constants and containers for industry data generation and testing
+Defines constants, specifications (classes with attributes defining varous parameters) and
+containers for industry data generation and testing.
 
 """
 
@@ -7,17 +8,20 @@ from __future__ import annotations
 
 import enum
 from dataclasses import dataclass
-from typing import ClassVar, Protocol
+from typing import ClassVar, NamedTuple, Protocol
 
 import numpy as np
-from attrs import Attribute, cmp_using, define, field, frozen, validators
+from attrs import Attribute, cmp_using, field, frozen, validators
+from numpy.random import SeedSequence
 
 from .. import (  # noqa: TID252
     VERSION,
     ArrayBIGINT,
     ArrayBoolean,
     ArrayDouble,
-    RECConstants,
+    ArrayFloat,
+    ArrayINT,
+    RECTypes,
     UPPAggrSelector,
 )
 from ..core.pseudorandom_numbers import DIST_PARMS_DEFAULT  # noqa: TID252
@@ -31,8 +35,15 @@ FCOUNT_WTS_DEFAULT = np.divide(
 )
 
 
+class SeedSequenceData(NamedTuple):
+    mktshr_rng_seed_seq: SeedSequence
+    pcm_rng_seed_seq: SeedSequence
+    fcount_rng_seed_seq: SeedSequence | None
+    pr_rng_seed_seq: SeedSequence | None
+
+
 @enum.unique
-class PriceConstants(tuple[bool, str | None], enum.ReprEnum):
+class PriceSpec(tuple[bool, str | None], enum.ReprEnum):
     """Price specification.
 
     Whether prices are symmetric and, if not, the direction of correlation, if any.
@@ -46,7 +57,7 @@ class PriceConstants(tuple[bool, str | None], enum.ReprEnum):
 
 
 @enum.unique
-class SHRConstants(enum.StrEnum):
+class SHRDistributions(enum.StrEnum):
     """Market share distributions."""
 
     UNI = "Uniform"
@@ -80,39 +91,84 @@ class SHRConstants(enum.StrEnum):
     """
 
 
-@frozen
+@frozen(kw_only=False)
 class ShareSpec:
     """Market share specification
 
     A key feature of market-share specification in this package is that
     the draws represent markets with multiple different firm-counts.
     Firm-counts are unspecified if the share distribution is
-    :attr:`mergeron.SHRConstants.UNI`, for Dirichlet-distributed market-shares,
+    :attr:`mergeron.SHRDistributions.UNI`, for Dirichlet-distributed market-shares,
     the default specification is that firm-counts  vary between
     2 and 7 firms with each value equally likely.
 
     Notes
     -----
-    If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRConstants.UNI`,
+    If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRDistributions.UNI`,
     then it is infeasible that
-    :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECConstants.OUTIN`.
+    :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECTypes.OUTIN`.
     In other words, if firm-counts are unspecified, the recapture rate cannot be
     estimated using outside good choice probabilities.
 
     For a sample with explicit firm counts, market shares must
     be specified as having a supported Dirichlet distribution
-    (see :class:`mergeron.gen.SHRConstants`).
+    (see :class:`mergeron.gen.SHRDistributions`).
 
     """
 
-    recapture_form: RECConstants
-    """See :class:`mergeron.RECConstants`"""
+    dist_type: SHRDistributions
+    """See :class:`SHRDistributions`"""
 
-    recapture_rate: float | None
+    dist_parms: ArrayDouble | None = field(
+        default=None, eq=cmp_using(eq=np.array_equal)
+    )
+    """Parameters for tailoring market-share distribution
+
+    For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
+    for Dirichlet-type distributions, a vector of shape parameters of length
+    no less than the length of firm-count weights below; defaults depend on
+    type of Dirichlet-distribution specified.
+
+    """
+    firm_counts_weights: ArrayFloat | ArrayINT | None = field(
+        default=None, eq=cmp_using(eq=np.array_equal)
+    )
+    """Relative or absolute frequencies of firm counts
+
+    Given frequencies are exogenous to generated market data sample;
+    for Dirichlet-type distributions, defaults to FCOUNT_WTS_DEFAULT, which specifies
+    firm-counts of 2 to 6 with weights in descending order from 5 to 1.
+
+    """
+
+    @firm_counts_weights.validator
+    def _check_fcw(_i: ShareSpec, _a: Attribute[ArrayDouble], _v: ArrayDouble) -> None:
+        if _v is not None and _i.dist_type == SHRDistributions.UNI:
+            raise ValueError(
+                "Generated data for markets with specified firm-counts or "
+                "varying firm counts are not feasible for market shares "
+                "with Uniform distribution. Consider revising the "
+                r"distribution type to {SHRDistributions.DIR_FLAT}, which gives "
+                "uniformly distributed draws on the :math:`n+1` simplex "
+                "for firm-count, :math:`n`."
+            )
+
+    recapture_form: RECTypes = field(default=RECTypes.INOUT)
+    """See :class:`mergeron.RECTypes`"""
+
+    @recapture_form.validator
+    def _check_rf(_i: ShareSpec, _a: Attribute[RECTypes], _v: RECTypes) -> None:
+        if _v == RECTypes.OUTIN and _i.dist_type == SHRDistributions.UNI:
+            raise ValueError(
+                "Market share specification requires estimation of recapture rate from "
+                "generated data. Either delete recapture rate specification or set it to None."
+            )
+
+    recapture_rate: float | None = field(default=0.8)
     """A value between 0 and 1, typically 0.8.
 
     :code:`None` if market share specification requires direct generation of
-    outside good choice probabilities (:attr:`mergeron.RECConstants.OUTIN`).
+    outside good choice probabilities (:attr:`mergeron.RECTypes.OUTIN`).
 
     The recapture rate is usually calibrated to the numbers-equivalent of the
     HHI threshold for the presumtion of harm from unilateral competitive effects
@@ -131,35 +187,20 @@ class ShareSpec:
 
     """
 
-    dist_type: SHRConstants
-    """See :class:`SHRConstants`"""
-
-    dist_parms: ArrayDouble | None = field(
-        default=None, eq=cmp_using(eq=np.array_equal)
-    )
-    """Parameters for tailoring market-share distribution
-
-    For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
-    for Dirichlet-type distributions, a vector of shape parameters of length
-    no less than the length of firm-count weights below; defaults depend on
-    type of Dirichlet-distribution specified.
-
-    """
-    firm_counts_weights: (
-        ArrayDouble | ArrayBIGINT | ArrayDouble | ArrayBIGINT | None
-    ) = field(default=None, eq=cmp_using(eq=np.array_equal))
-    """Relative or absolute frequencies of firm counts
-
-
-    Given frequencies are exogenous to generated market data sample;
-    for Dirichlet-type distributions, defaults to FCOUNT_WTS_DEFAULT, which specifies
-    firm-counts of 2 to 6 with weights in descending order from 5 to 1.
-
-    """
+    @recapture_rate.validator
+    def _check_rr(_i: ShareSpec, _a: Attribute[float], _v: float) -> None:
+        if _v and not (0 < _v <= 1):
+            raise ValueError("Recapture rate must lie in the interval, [0, 1).")
+        elif _v is None and _i.recapture_form != RECTypes.OUTIN:
+            raise ValueError(
+                f"Recapture specification, {_i.recapture_form!r} requires that "
+                "the market sample specification inclues a recapture rate in the "
+                "interval [0, 1)."
+            )
 
 
 @enum.unique
-class PCMConstants(enum.StrEnum):
+class PCMDistributions(enum.StrEnum):
     """Margin distributions."""
 
     UNI = "Uniform"
@@ -193,13 +234,10 @@ class PCMSpec:
 
     """
 
-    firm2_pcm_constraint: FM2Constants
-    """See :class:`FM2Constants`"""
+    dist_type: PCMDistributions = field(kw_only=False, default=PCMDistributions.UNI)
+    """See :class:`PCMDistributions`"""
 
-    dist_type: PCMConstants
-    """See :class:`PCMConstants`"""
-
-    dist_parms: ArrayDouble | None
+    dist_parms: ArrayDouble | None = field(kw_only=False, default=None)
     """Parameter specification for tailoring PCM distribution
 
     For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;
@@ -208,6 +246,38 @@ class PCMSpec:
     for empirical distribution based on Damodaran margin data, optional, ignored
 
     """
+
+    @dist_parms.validator
+    def _check_dp(
+        _i: PCMSpec, _a: Attribute[ArrayDouble | None], _v: ArrayDouble | None
+    ) -> None:
+        if _i.dist_type.name.startswith("BETA"):
+            if _v is None:
+                pass
+            elif np.array_equal(_v, DIST_PARMS_DEFAULT):
+                raise ValueError(
+                    f"The distribution parameters, {DIST_PARMS_DEFAULT!r} "
+                    "are not valid with margin distribution, {_dist_type_pcm!r}"
+                )
+            elif (
+                _i.dist_type == PCMDistributions.BETA and len(_v) != len(("a", "b"))
+            ) or (
+                _i.dist_type == PCMDistributions.BETA_BND
+                and len(_v) != len(("mu", "sigma", "max", "min"))
+            ):
+                raise ValueError(
+                    f"Given number, {len(_v)} of parameters "
+                    f'for PCM with distribution, "{_i.dist_type}" is incorrect.'
+                )
+
+        elif _i.dist_type == PCMDistributions.EMPR and _v is not None:
+            raise ValueError(
+                f"Empirical distribution does not require additional parameters; "
+                f'"given value, {_v!r} is ignored."'
+            )
+
+    firm2_pcm_constraint: FM2Constants = field(kw_only=False, default=FM2Constants.IID)
+    """See :class:`FM2Constants`"""
 
 
 @enum.unique
@@ -251,111 +321,6 @@ class SSZConstants(float, enum.ReprEnum):
 
 
 # Validators for selected attributes of MarketSpec
-def _share_spec_validator(
-    _instance: MarketSpec, _attribute: Attribute[ShareSpec], _value: ShareSpec, /
-) -> None:
-    _r_bar = _value.recapture_rate
-    if _r_bar and not (0 < _r_bar <= 1):
-        raise ValueError("Recapture rate must lie in the interval, [0, 1).")
-
-    elif _r_bar and _value.recapture_form == RECConstants.OUTIN:
-        raise ValueError(
-            "Market share specification requires estimation of recapture rate from "
-            "generated data. Either delete recapture rate specification or set it to None."
-        )
-
-    if _value.dist_type == SHRConstants.UNI:
-        if _value.recapture_form == RECConstants.OUTIN:
-            raise ValueError(
-                f"Invalid recapture specification, {_value.recapture_form!r} "
-                "for market share specification with Uniform distribution. "
-                "Redefine the market-sample specification, modifying the ."
-                "market-share specification or the recapture specification."
-            )
-        elif _value.firm_counts_weights is not None:
-            raise ValueError(
-                "Generated data for markets with specified firm-counts or "
-                "varying firm counts are not feasible for market shares "
-                "with Uniform distribution. Consider revising the "
-                r"distribution type to {SHRConstants.DIR_FLAT}, which gives "
-                "uniformly distributed draws on the :math:`n+1` simplex "
-                "for firm-count, :math:`n`."
-            )
-    elif _value.recapture_form != RECConstants.OUTIN and (
-        _r_bar is None or not isinstance(_r_bar, float)
-    ):
-        raise ValueError(
-            f"Recapture specification, {_value.recapture_form!r} requires that "
-            "the market sample specification inclues a recapture rate."
-        )
-
-
-def _pcm_spec_validator(
-    _instance: MarketSpec, _attribute: Attribute[PCMSpec], _value: PCMSpec, /
-) -> None:
-    if (
-        _instance.share_spec.recapture_form == RECConstants.FIXED
-        and _value.firm2_pcm_constraint == FM2Constants.MNL
-    ):
-        raise ValueError(
-            "{} {} {}".format(
-                f'Specification of "recapture_form", "{_instance.share_spec.recapture_form}"',
-                "requires Firm 2 margin must have property, ",
-                f'"{FM2Constants.IID}" or "{FM2Constants.SYM}".',
-            )
-        )
-    elif _value.dist_type.name.startswith("BETA"):
-        if _value.dist_parms is None:
-            pass
-        elif np.array_equal(_value.dist_parms, DIST_PARMS_DEFAULT):
-            raise ValueError(
-                f"The distribution parameters, {DIST_PARMS_DEFAULT!r} "
-                "are not valid with margin distribution, {_dist_type_pcm!r}"
-            )
-        elif (
-            _value.dist_type == PCMConstants.BETA
-            and len(_value.dist_parms) != len(("max", "min"))
-        ) or (
-            _value.dist_type == PCMConstants.BETA_BND
-            and len(_value.dist_parms) != len(("mu", "sigma", "max", "min"))
-        ):
-            raise ValueError(
-                f"Given number, {len(_value.dist_parms)} of parameters "
-                f'for PCM with distribution, "{_value.dist_type}" is incorrect.'
-            )
-
-
-@define(slots=False)
-class MarketSpec:
-    """Parameter specification for market data generation."""
-
-    share_spec: ShareSpec = field(
-        kw_only=True,
-        default=ShareSpec(RECConstants.INOUT, 0.85, SHRConstants.UNI, None, None),
-        validator=[validators.instance_of(ShareSpec), _share_spec_validator],
-    )
-    """Market-share specification, see :class:`ShareSpec`"""
-
-    pcm_spec: PCMSpec = field(
-        kw_only=True,
-        default=PCMSpec(FM2Constants.IID, PCMConstants.UNI, None),
-        validator=[validators.instance_of(PCMSpec), _pcm_spec_validator],
-    )
-    """Margin specification, see :class:`PCMSpec`"""
-
-    price_spec: PriceConstants = field(
-        kw_only=True,
-        default=PriceConstants.SYM,
-        validator=validators.instance_of(PriceConstants),
-    )
-    """Price specification, see :class:`PriceConstants`"""
-
-    hsr_filing_test_type: SSZConstants = field(
-        kw_only=True,
-        default=SSZConstants.ONE,
-        validator=validators.instance_of(SSZConstants),
-    )
-    """Method for modeling HSR filing threholds, see :class:`SSZConstants`"""
 
 
 @dataclass(slots=True, frozen=True)
@@ -460,16 +425,22 @@ class INVResolution(enum.StrEnum):
 
 @frozen
 class UPPTestRegime:
+    """Configuration for UPP tests."""
+
     resolution: INVResolution = field(
-        default=INVResolution.ENFT, validator=validators.instance_of(INVResolution)
+        kw_only=False,
+        default=INVResolution.ENFT,
+        validator=validators.in_([INVResolution.CLRN, INVResolution.ENFT]),
     )
+    """Whether to test clearance, enforcement, or both."""
+
     guppi_aggregator: UPPAggrSelector = field(
-        default=UPPAggrSelector.MIN, validator=validators.instance_of(UPPAggrSelector)
+        kw_only=False, default=UPPAggrSelector.MIN
     )
-    divr_aggregator: UPPAggrSelector | None = field(
-        default=UPPAggrSelector.MIN,
-        validator=validators.instance_of((UPPAggrSelector, type(None))),
-    )
+    """Aggregator for GUPPI test."""
+
+    divr_aggregator: UPPAggrSelector = field(kw_only=False, default=UPPAggrSelector.MIN)
+    """Aggregator for diversion ratio test."""
 
 
 @dataclass(slots=True, frozen=True)
@@ -501,13 +472,22 @@ class UPPTestsRaw:
 class UPPTestsCounts:
     """Counts of markets resolved as specified
 
-    Resolution may be either :attr:`INVResolution.ENFT` or :attr:`INVResolution.CLRN`.
+    Resolution may be either :attr:`INVResolution.ENFT`,
+    :attr:`INVResolution.CLRN`, or :attr:`INVResolution.BOTH`.
+    In the case of :attr:`INVResolution.BOTH`, two colums of counts
+    are returned: one for each resolution.
+
     """
 
     by_firm_count: ArrayBIGINT
     by_delta: ArrayBIGINT
     by_conczone: ArrayBIGINT
-    """Zones are "unoncentrated", "moderately concentrated", and "highly concentrated"
+    """Zones are "unoncentrated", "moderately concentrated", and "highly concentrated",
+    with futher detail by HHI and ΔHHI for mergers in the "unconcentrated" and
+    "moderately concentrated" zones. See
+    :attr:`mergeron.gen.enforcement_stats.HMG_PRESUMPTION_ZONE_MAP` and
+    :attr:`mergeron.gen.enforcement_stats.ZONE_VALS` for more detail.
+
     """
 
 

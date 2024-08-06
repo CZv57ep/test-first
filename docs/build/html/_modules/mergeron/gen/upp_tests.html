@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.gen.upp_tests - mergeron 2024.739099.1</title>
+        <title>mergeron.gen.upp_tests - mergeron 2024.739104.1</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.1
+    mergeron 2024.739104.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -381,19 +381,16 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tables</span> <span class="k">as</span> <span class="nn">ptb</span>  <span class="c1"># type: ignore</span>
-<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">cpu_count</span><span class="p">,</span> <span class="n">delayed</span>  <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">SeedSequence</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: TID252</span>
-    <span class="n">TF</span><span class="p">,</span>
-    <span class="n">TI</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
     <span class="n">VERSION</span><span class="p">,</span>
     <span class="n">ArrayBIGINT</span><span class="p">,</span>
     <span class="n">ArrayBoolean</span><span class="p">,</span>
     <span class="n">ArrayDouble</span><span class="p">,</span>
     <span class="n">ArrayFloat</span><span class="p">,</span>
     <span class="n">ArrayINT</span><span class="p">,</span>
-    <span class="n">RECConstants</span><span class="p">,</span>
+    <span class="n">RECTypes</span><span class="p">,</span>
     <span class="n">UPPAggrSelector</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">guidelines_boundaries</span> <span class="k">as</span> <span class="n">gbl</span>  <span class="c1"># noqa: TID252</span>
@@ -402,12 +399,10 @@
     <span class="n">DataclassInstance</span><span class="p">,</span>
     <span class="n">INVResolution</span><span class="p">,</span>
     <span class="n">MarketDataSample</span><span class="p">,</span>
-    <span class="n">MarketSpec</span><span class="p">,</span>
     <span class="n">UPPTestRegime</span><span class="p">,</span>
     <span class="n">UPPTestsCounts</span><span class="p">,</span>
     <span class="n">UPPTestsRaw</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">data_generation</span> <span class="k">as</span> <span class="n">dgl</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">enforcement_stats</span> <span class="k">as</span> <span class="n">esl</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
@@ -449,169 +444,6 @@
 
 
 
-<div class="viewcode-block" id="sim_enf_cnts_ll">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll">[docs]</a>
-<span class="k">def</span> <span class="nf">sim_enf_cnts_ll</span><span class="p">(</span>
-    <span class="n">_mkt_sample_spec</span><span class="p">:</span> <span class="n">MarketSpec</span><span class="p">,</span>
-    <span class="n">_enf_parm_vec</span><span class="p">:</span> <span class="n">gbl</span><span class="o">.</span><span class="n">HMGThresholds</span><span class="p">,</span>
-    <span class="n">_sim_test_regime</span><span class="p">:</span> <span class="n">UPPTestRegime</span><span class="p">,</span>
-    <span class="o">/</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
-    <span class="n">seed_seq_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
-    <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">saved_array_name_suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UPPTestsCounts</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A function to parallelize data-generation and testing</span>
-
-<span class="sd">    The parameters `_sim_enf_cnts_kwargs` are passed unaltered to</span>
-<span class="sd">    the parent function, `sim_enf_cnts()`, except that, if provided,</span>
-<span class="sd">    `seed_seq_list` is used to spawn a seed sequence for each thread,</span>
-<span class="sd">    to assure independent samples in each thread, and `nthreads` defines</span>
-<span class="sd">    the number of parallel processes used. The number of draws in</span>
-<span class="sd">    each thread may be tuned, by trial and error, to the amount of</span>
-<span class="sd">    memory (RAM) available.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-
-<span class="sd">    _enf_parm_vec</span>
-<span class="sd">        Guidelines thresholds to test against</span>
-
-<span class="sd">    _mkt_sample_spec</span>
-<span class="sd">        Configuration to use for generating sample data to test</span>
-
-<span class="sd">    _sim_test_regime</span>
-<span class="sd">        Configuration to use for testing</span>
-
-<span class="sd">    saved_array_name_suffix</span>
-<span class="sd">        Suffix to add to the array names in the HDF5 file</span>
-
-<span class="sd">    save_data_to_file</span>
-<span class="sd">        Whether to save data to an HDF5 file, and where to save it</span>
-
-<span class="sd">    sample_size</span>
-<span class="sd">        Number of draws to simulate</span>
-
-<span class="sd">    seed_seq_list</span>
-<span class="sd">        List of seed sequences, to assure independent samples in each thread</span>
-
-<span class="sd">    nthreads</span>
-<span class="sd">        Number of parallel processes to use</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">        Arrays of UPPTestCounts</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_sample_sz</span> <span class="o">=</span> <span class="n">sample_size</span>
-    <span class="n">_subsample_sz</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
-    <span class="n">_iter_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_sample_sz</span> <span class="o">/</span> <span class="n">_subsample_sz</span><span class="p">)</span> <span class="k">if</span> <span class="n">_subsample_sz</span> <span class="o">&lt;</span> <span class="n">_sample_sz</span> <span class="k">else</span> <span class="mi">1</span>
-    <span class="n">_thread_count</span> <span class="o">=</span> <span class="n">cpu_count</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="p">(</span>
-        <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">!=</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">OUTIN</span>
-        <span class="ow">and</span> <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_rate</span> <span class="o">!=</span> <span class="n">_enf_parm_vec</span><span class="o">.</span><span class="n">rec</span>
-    <span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Recapture rate from market sample spec, </span><span class="si">{</span><span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s2">&quot;must match the value, </span><span class="si">{</span><span class="n">_enf_parm_vec</span><span class="o">.</span><span class="n">rec</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;the guidelines thresholds vector.&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-
-    <span class="n">_rng_seed_seq_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">_iter_count</span>
-    <span class="k">if</span> <span class="n">seed_seq_list</span><span class="p">:</span>
-        <span class="n">_rng_seed_seq_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">_iter_count</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">seed_seq_list</span><span class="p">],</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-        <span class="p">)</span>
-
-    <span class="n">_sim_enf_cnts_kwargs</span><span class="p">:</span> <span class="n">INVRESCntsArgs</span> <span class="o">=</span> <span class="n">INVRESCntsArgs</span><span class="p">({</span>
-        <span class="s2">&quot;sample_size&quot;</span><span class="p">:</span> <span class="n">_subsample_sz</span><span class="p">,</span>
-        <span class="s2">&quot;save_data_to_file&quot;</span><span class="p">:</span> <span class="n">save_data_to_file</span><span class="p">,</span>
-        <span class="s2">&quot;nthreads&quot;</span><span class="p">:</span> <span class="n">nthreads</span><span class="p">,</span>
-    <span class="p">})</span>
-
-    <span class="n">_res_list</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">_thread_count</span><span class="p">,</span> <span class="n">prefer</span><span class="o">=</span><span class="s2">&quot;threads&quot;</span><span class="p">)(</span>
-        <span class="n">delayed</span><span class="p">(</span><span class="n">sim_enf_cnts</span><span class="p">)(</span>
-            <span class="n">_mkt_sample_spec</span><span class="p">,</span>
-            <span class="n">_enf_parm_vec</span><span class="p">,</span>
-            <span class="n">_sim_test_regime</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">_sim_enf_cnts_kwargs</span><span class="p">,</span>
-            <span class="n">saved_array_name_suffix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">saved_array_name_suffix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">_iter_id</span><span class="si">:</span><span class="s2">0</span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">_iter_count</span><span class="p">)))</span><span class="si">}</span><span class="s2">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">seed_seq_list</span><span class="o">=</span><span class="n">_rng_seed_seq_list_ch</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">for</span> <span class="n">_iter_id</span><span class="p">,</span> <span class="n">_rng_seed_seq_list_ch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_rng_seed_seq_list</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="n">_res_list_stacks</span> <span class="o">=</span> <span class="n">UPPTestsCounts</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_j</span><span class="p">,</span> <span class="n">_k</span><span class="p">)</span> <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="n">_res_list</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">_k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;by_firm_count&quot;</span><span class="p">,</span> <span class="s2">&quot;by_delta&quot;</span><span class="p">,</span> <span class="s2">&quot;by_conczone&quot;</span><span class="p">)</span>
-    <span class="p">])</span>
-    <span class="n">upp_test_results</span> <span class="o">=</span> <span class="n">UPPTestsCounts</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span>
-            <span class="p">(</span><span class="n">_gv</span> <span class="o">:=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_res_list_stacks</span><span class="p">,</span> <span class="n">_g</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">_h</span><span class="p">],</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ijk-&gt;jk&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">_gv</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">_h</span><span class="p">:]),</span>
-        <span class="p">))</span>
-        <span class="k">for</span> <span class="n">_g</span><span class="p">,</span> <span class="n">_h</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-            <span class="n">_res_list_stacks</span><span class="o">.</span><span class="n">__dataclass_fields__</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
-    <span class="p">])</span>
-    <span class="k">del</span> <span class="n">_res_list</span><span class="p">,</span> <span class="n">_res_list_stacks</span>
-
-    <span class="k">return</span> <span class="n">upp_test_results</span></div>
-
-
-
-<div class="viewcode-block" id="sim_enf_cnts">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts">[docs]</a>
-<span class="k">def</span> <span class="nf">sim_enf_cnts</span><span class="p">(</span>
-    <span class="n">_mkt_sample_spec</span><span class="p">:</span> <span class="n">MarketSpec</span><span class="p">,</span>
-    <span class="n">_upp_test_parms</span><span class="p">:</span> <span class="n">gbl</span><span class="o">.</span><span class="n">HMGThresholds</span><span class="p">,</span>
-    <span class="n">_sim_test_regime</span><span class="p">:</span> <span class="n">UPPTestRegime</span><span class="p">,</span>
-    <span class="o">/</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
-    <span class="n">seed_seq_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
-    <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">saved_array_name_suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UPPTestsCounts</span><span class="p">:</span>
-    <span class="c1"># Generate market data</span>
-    <span class="n">_market_data_sample</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">gen_market_sample</span><span class="p">(</span>
-        <span class="n">_mkt_sample_spec</span><span class="p">,</span>
-        <span class="n">sample_size</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span>
-        <span class="n">seed_seq_list</span><span class="o">=</span><span class="n">seed_seq_list</span><span class="p">,</span>
-        <span class="n">nthreads</span><span class="o">=</span><span class="n">nthreads</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">_invalid_array_names</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s2">&quot;fcounts&quot;</span><span class="p">,</span> <span class="s2">&quot;choice_prob_outgd&quot;</span><span class="p">,</span> <span class="s2">&quot;nth_firm_share&quot;</span><span class="p">,</span> <span class="s2">&quot;hhi_post&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="s2">&quot;Uniform&quot;</span>
-        <span class="k">else</span> <span class="p">()</span>
-    <span class="p">)</span>
-
-    <span class="n">save_data_to_hdf5</span><span class="p">(</span>
-        <span class="n">_market_data_sample</span><span class="p">,</span>
-        <span class="n">saved_array_name_suffix</span><span class="o">=</span><span class="n">saved_array_name_suffix</span><span class="p">,</span>
-        <span class="n">excluded_attrs</span><span class="o">=</span><span class="n">_invalid_array_names</span><span class="p">,</span>
-        <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">_upp_test_arrays</span> <span class="o">=</span> <span class="n">enf_cnts</span><span class="p">(</span><span class="n">_market_data_sample</span><span class="p">,</span> <span class="n">_upp_test_parms</span><span class="p">,</span> <span class="n">_sim_test_regime</span><span class="p">)</span>
-
-    <span class="n">save_data_to_hdf5</span><span class="p">(</span>
-        <span class="n">_upp_test_arrays</span><span class="p">,</span>
-        <span class="n">saved_array_name_suffix</span><span class="o">=</span><span class="n">saved_array_name_suffix</span><span class="p">,</span>
-        <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">_upp_test_arrays</span></div>
-
-
-
 <div class="viewcode-block" id="enf_cnts">
 <a class="viewcode-back" href="../../../autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.enf_cnts">[docs]</a>
 <span class="k">def</span> <span class="nf">enf_cnts</span><span class="p">(</span>
@@ -620,6 +452,31 @@
     <span class="n">_upp_test_regime</span><span class="p">:</span> <span class="n">UPPTestRegime</span><span class="p">,</span>
     <span class="o">/</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UPPTestsCounts</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimate enforcement and clearance counts from market data sample</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _market_data_sample</span>
+<span class="sd">        Market data sample</span>
+
+<span class="sd">    _upp_test_parms</span>
+<span class="sd">        Threshold values for various Guidelines criteria</span>
+
+<span class="sd">    _upp_test_regime</span>
+<span class="sd">        Specifies whether to analyze enforcement, clearance, or both</span>
+<span class="sd">        and the GUPPI and diversion ratio aggregators employed, with</span>
+<span class="sd">        default being to analyze enforcement based on the maximum</span>
+<span class="sd">        merging-firm GUPPI and maximum diversion ratio between the</span>
+<span class="sd">        merging firms</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    UPPTestsCounts</span>
+<span class="sd">        Enforced and cleared counts</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_enf_cnts_sim_array</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
     <span class="n">_upp_test_arrays</span> <span class="o">=</span> <span class="n">gen_upp_test_arrays</span><span class="p">(</span>
         <span class="n">_market_data_sample</span><span class="p">,</span> <span class="n">_upp_test_parms</span><span class="p">,</span> <span class="n">_upp_test_regime</span>
     <span class="p">)</span>
@@ -630,12 +487,13 @@
 
     <span class="n">_stats_rowlen</span> <span class="o">=</span> <span class="mi">6</span>
     <span class="c1"># Clearance/enforcement counts --- by firm count</span>
-    <span class="n">_firm_counts_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">_fcounts</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">_firm_counts_weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">_firm_counts_weights</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="n">_max_firm_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">_firm_counts_weights</span><span class="p">)</span>
+    <span class="n">_firm_counts_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">_fcounts</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_firm_counts_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">_firm_counts_list</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># _max_firm_count = len(_firm_counts_list)</span>
+        <span class="n">_max_firm_count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_firm_counts_list</span><span class="p">)</span>
 
         <span class="n">_enf_cnts_sim_byfirmcount_array</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">_stats_rowlen</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">_firm_cnt</span> <span class="ow">in</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">_max_firm_count</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_firm_cnt</span> <span class="ow">in</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_max_firm_count</span><span class="p">):</span>
             <span class="n">_firm_count_test</span> <span class="o">=</span> <span class="n">_fcounts</span> <span class="o">==</span> <span class="n">_firm_cnt</span>
 
             <span class="n">_enf_cnts_sim_byfirmcount_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span>
@@ -659,7 +517,7 @@
         <span class="p">)</span>
         <span class="n">_enf_cnts_sim_byfirmcount_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
 
-    <span class="c1"># Clearance/enfrocement counts --- by delta</span>
+    <span class="c1"># Clearance/enforcement counts --- by delta</span>
     <span class="n">_hhi_delta_ranged</span> <span class="o">=</span> <span class="n">esl</span><span class="o">.</span><span class="n">hhi_delta_ranger</span><span class="p">(</span><span class="n">_hhi_delta</span><span class="p">)</span>
     <span class="n">_enf_cnts_sim_bydelta_array</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">_stats_rowlen</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">_hhi_delta_lim</span> <span class="ow">in</span> <span class="n">esl</span><span class="o">.</span><span class="n">HHI_DELTA_KNOTS</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
@@ -681,7 +539,7 @@
 
     <span class="n">_enf_cnts_sim_bydelta_array</span> <span class="o">=</span> <span class="n">_enf_cnts_sim_bydelta_array</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
-    <span class="c1"># Clearance/enfrocement counts --- by zone</span>
+    <span class="c1"># Clearance/enforcement counts --- by zone</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">_hhi_zone_post_ranged</span> <span class="o">=</span> <span class="n">esl</span><span class="o">.</span><span class="n">hhi_zone_post_ranger</span><span class="p">(</span><span class="n">_hhi_post</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">_err</span><span class="p">:</span>
@@ -755,12 +613,10 @@
         <span class="nb">getattr</span><span class="p">(</span><span class="n">_upp_test_parms</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;guppi&quot;</span><span class="p">,</span> <span class="s2">&quot;divr&quot;</span><span class="p">,</span> <span class="s2">&quot;cmcr&quot;</span><span class="p">,</span> <span class="s2">&quot;ipr&quot;</span><span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="n">_enf_resolution</span><span class="p">,</span> <span class="n">_guppi_aggregator</span><span class="p">,</span> <span class="n">_divr_aggregator</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">_sim_test_regime</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;resolution&quot;</span><span class="p">,</span> <span class="s2">&quot;guppi_aggregator&quot;</span><span class="p">,</span> <span class="s2">&quot;divr_aggregator&quot;</span><span class="p">)</span>
+    <span class="n">_guppi_array</span><span class="p">,</span> <span class="n">_ipr_array</span><span class="p">,</span> <span class="n">_cmcr_array</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">_market_data</span><span class="o">.</span><span class="n">price_array</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="n">_guppi_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
         <span class="s2">&quot;ij,ij,ij-&gt;ij&quot;</span><span class="p">,</span>
         <span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">,</span>
@@ -769,30 +625,54 @@
         <span class="n">out</span><span class="o">=</span><span class="n">_guppi_array</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">_cmcr_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">)</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;ij&quot;</span><span class="p">,</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">pcm_array</span><span class="p">,</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">),</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;ij&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">pcm_array</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">),</span>
-        <span class="n">out</span><span class="o">=</span><span class="n">_cmcr_array</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">_ipr_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;ij&quot;</span><span class="p">,</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">pcm_array</span><span class="p">,</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">),</span>
         <span class="mi">1</span> <span class="o">-</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">,</span>
         <span class="n">out</span><span class="o">=</span><span class="n">_ipr_array</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="c1"># This one needs further testing:</span>
-    <span class="c1"># _ipr_array_alt = np.empty_like(_market_data.divr_array)</span>
-    <span class="c1"># np.divide(_guppi_array, (1 - _market_data.divr_array[:, ::-1]), out=_ipr_array_alt)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">_ipr_array</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">pcm_array</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">_cmcr_array</span><span class="p">)</span>
 
-    <span class="n">_test_measure_seq</span> <span class="o">=</span> <span class="p">(</span><span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">,</span> <span class="n">_guppi_array</span><span class="p">,</span> <span class="n">_cmcr_array</span><span class="p">,</span> <span class="n">_ipr_array</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">_divr_test_vector</span><span class="p">,)</span> <span class="o">=</span> <span class="n">_compute_test_value_seq</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="p">,),</span>
+        <span class="n">_market_data</span><span class="o">.</span><span class="n">frmshr_array</span><span class="p">,</span>
+        <span class="n">_sim_test_regime</span><span class="o">.</span><span class="n">divr_aggregator</span><span class="p">,</span>
+    <span class="p">)</span>
 
+    <span class="p">(</span><span class="n">_guppi_test_vector</span><span class="p">,</span> <span class="n">_cmcr_test_vector</span><span class="p">,</span> <span class="n">_ipr_test_vector</span><span class="p">)</span> <span class="o">=</span> <span class="n">_compute_test_value_seq</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">_guppi_array</span><span class="p">,</span> <span class="n">_cmcr_array</span><span class="p">,</span> <span class="n">_ipr_array</span><span class="p">),</span>
+        <span class="n">_market_data</span><span class="o">.</span><span class="n">frmshr_array</span><span class="p">,</span>
+        <span class="n">_sim_test_regime</span><span class="o">.</span><span class="n">guppi_aggregator</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">del</span> <span class="n">_cmcr_array</span><span class="p">,</span> <span class="n">_ipr_array</span><span class="p">,</span> <span class="n">_guppi_array</span>
+
+    <span class="k">if</span> <span class="n">_sim_test_regime</span><span class="o">.</span><span class="n">resolution</span> <span class="o">==</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">ENFT</span><span class="p">:</span>
+        <span class="n">_upp_test_arrays</span> <span class="o">=</span> <span class="n">UPPTestsRaw</span><span class="p">(</span>
+            <span class="n">_guppi_test_vector</span> <span class="o">&gt;=</span> <span class="n">_g_bar</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_guppi_test_vector</span> <span class="o">&gt;=</span> <span class="n">_g_bar</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">_divr_test_vector</span> <span class="o">&gt;=</span> <span class="n">_divr_bar</span><span class="p">),</span>
+            <span class="n">_cmcr_test_vector</span> <span class="o">&gt;=</span> <span class="n">_cmcr_bar</span><span class="p">,</span>
+            <span class="n">_ipr_test_vector</span> <span class="o">&gt;=</span> <span class="n">_ipr_bar</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_upp_test_arrays</span> <span class="o">=</span> <span class="n">UPPTestsRaw</span><span class="p">(</span>
+            <span class="n">_guppi_test_vector</span> <span class="o">&lt;</span> <span class="n">_g_bar</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">_guppi_test_vector</span> <span class="o">&lt;</span> <span class="n">_g_bar</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">_divr_test_vector</span> <span class="o">&lt;</span> <span class="n">_divr_bar</span><span class="p">),</span>
+            <span class="n">_cmcr_test_vector</span> <span class="o">&lt;</span> <span class="n">_cmcr_bar</span><span class="p">,</span>
+            <span class="n">_ipr_test_vector</span> <span class="o">&lt;</span> <span class="n">_ipr_bar</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_upp_test_arrays</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_compute_test_value_seq</span><span class="p">(</span>
+    <span class="n">_test_measure_seq</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ArrayDouble</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">_wt_array</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">_aggregator</span><span class="p">:</span> <span class="n">UPPAggrSelector</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ArrayDouble</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
     <span class="n">_wt_array</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">_market_data</span><span class="o">.</span><span class="n">frmshr_array</span>
-        <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;i&quot;</span><span class="p">,</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">frmshr_array</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">_guppi_aggregator</span>
+        <span class="n">_wt_array</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;i&quot;</span><span class="p">,</span> <span class="n">_wt_array</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">_aggregator</span>
         <span class="ow">in</span> <span class="p">(</span>
             <span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">CPA</span><span class="p">,</span>
             <span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">CPD</span><span class="p">,</span>
@@ -802,7 +682,7 @@
         <span class="k">else</span> <span class="n">EMPTY_ARRAY_DEFAULT</span>
     <span class="p">)</span>
 
-    <span class="k">match</span> <span class="n">_guppi_aggregator</span><span class="p">:</span>
+    <span class="k">match</span> <span class="n">_aggregator</span><span class="p">:</span>
         <span class="k">case</span> <span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">AVG</span><span class="p">:</span>
             <span class="n">_test_value_seq</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;i&quot;</span><span class="p">,</span> <span class="n">_g</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="k">for</span> <span class="n">_g</span> <span class="ow">in</span> <span class="n">_test_measure_seq</span>
@@ -842,31 +722,7 @@
             <span class="p">)</span>
         <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;GUPPI/diversion ratio aggregation method is invalid.&quot;</span><span class="p">)</span>
-    <span class="k">del</span> <span class="n">_cmcr_array</span><span class="p">,</span> <span class="n">_guppi_array</span>
-    <span class="p">(</span><span class="n">_divr_test_vector</span><span class="p">,</span> <span class="n">_guppi_test_vector</span><span class="p">,</span> <span class="n">_cmcr_test_vector</span><span class="p">,</span> <span class="n">_ipr_test_vector</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">_test_value_seq</span>
-    <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">_divr_aggregator</span> <span class="o">==</span> <span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MAX</span><span class="p">:</span>
-        <span class="n">_divr_test_vector</span> <span class="o">=</span> <span class="n">_market_data</span><span class="o">.</span><span class="n">divr_array</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">_enf_resolution</span> <span class="o">==</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">ENFT</span><span class="p">:</span>
-        <span class="n">_upp_test_arrays</span> <span class="o">=</span> <span class="n">UPPTestsRaw</span><span class="p">(</span>
-            <span class="n">_guppi_test_vector</span> <span class="o">&gt;=</span> <span class="n">_g_bar</span><span class="p">,</span>
-            <span class="p">(</span><span class="n">_guppi_test_vector</span> <span class="o">&gt;=</span> <span class="n">_g_bar</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">_divr_test_vector</span> <span class="o">&gt;=</span> <span class="n">_divr_bar</span><span class="p">),</span>
-            <span class="n">_cmcr_test_vector</span> <span class="o">&gt;=</span> <span class="n">_cmcr_bar</span><span class="p">,</span>
-            <span class="n">_ipr_test_vector</span> <span class="o">&gt;=</span> <span class="n">_ipr_bar</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">_upp_test_arrays</span> <span class="o">=</span> <span class="n">UPPTestsRaw</span><span class="p">(</span>
-            <span class="n">_guppi_test_vector</span> <span class="o">&lt;</span> <span class="n">_g_bar</span><span class="p">,</span>
-            <span class="p">(</span><span class="n">_guppi_test_vector</span> <span class="o">&lt;</span> <span class="n">_g_bar</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">_divr_test_vector</span> <span class="o">&lt;</span> <span class="n">_divr_bar</span><span class="p">),</span>
-            <span class="n">_cmcr_test_vector</span> <span class="o">&lt;</span> <span class="n">_cmcr_bar</span><span class="p">,</span>
-            <span class="n">_ipr_test_vector</span> <span class="o">&lt;</span> <span class="n">_ipr_bar</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">_upp_test_arrays</span></div>
-
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_test_value_seq</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="initialize_hd5">
@@ -917,11 +773,7 @@
 <div class="viewcode-block" id="save_array_to_hdf5">
 <a class="viewcode-back" href="../../../autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.save_array_to_hdf5">[docs]</a>
 <span class="k">def</span> <span class="nf">save_array_to_hdf5</span><span class="p">(</span>
-    <span class="n">_array_obj</span><span class="p">:</span> <span class="n">ArrayFloat</span><span class="p">[</span><span class="n">TF</span><span class="p">]</span>
-    <span class="o">|</span> <span class="n">ArrayINT</span><span class="p">[</span><span class="n">TI</span><span class="p">]</span>
-    <span class="o">|</span> <span class="n">ArrayDouble</span>
-    <span class="o">|</span> <span class="n">ArrayBIGINT</span>
-    <span class="o">|</span> <span class="n">ArrayBoolean</span><span class="p">,</span>
+    <span class="n">_array_obj</span><span class="p">:</span> <span class="n">ArrayFloat</span> <span class="o">|</span> <span class="n">ArrayINT</span> <span class="o">|</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="n">ArrayBIGINT</span> <span class="o">|</span> <span class="n">ArrayBoolean</span><span class="p">,</span>
     <span class="n">_array_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">_h5_group</span><span class="p">:</span> <span class="n">ptb</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span>
     <span class="n">_h5_file</span><span class="p">:</span> <span class="n">ptb</span><span class="o">.</span><span class="n">File</span><span class="p">,</span>

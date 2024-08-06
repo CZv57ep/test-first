@@ -1,0 +1,1313 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.gen.data_generation_functions - mergeron 2024.739104.1</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.gen.data_generation_functions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739104.1
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../autoapi/mergeron/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1>Source code for mergeron.gen.data_generation_functions</h1><div class="highlight"><pre>
+<span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Non-public functions called in data_generation.py</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">evolve</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">SeedSequence</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">ArrayBIGINT</span><span class="p">,</span> <span class="n">ArrayDouble</span><span class="p">,</span> <span class="n">RECTypes</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..core.damodaran_margin_data</span> <span class="kn">import</span> <span class="n">mgn_data_resampler</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..core.pseudorandom_numbers</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: TID252</span>
+    <span class="n">DIST_PARMS_DEFAULT</span><span class="p">,</span>
+    <span class="n">MultithreadedRNG</span><span class="p">,</span>
+    <span class="n">prng</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">EMPTY_ARRAY_DEFAULT</span><span class="p">,</span>
+    <span class="n">FCOUNT_WTS_DEFAULT</span><span class="p">,</span>
+    <span class="n">FM2Constants</span><span class="p">,</span>
+    <span class="n">MarginDataSample</span><span class="p">,</span>
+    <span class="n">PCMDistributions</span><span class="p">,</span>
+    <span class="n">PCMSpec</span><span class="p">,</span>
+    <span class="n">PriceDataSample</span><span class="p">,</span>
+    <span class="n">PriceSpec</span><span class="p">,</span>
+    <span class="n">SeedSequenceData</span><span class="p">,</span>
+    <span class="n">ShareDataSample</span><span class="p">,</span>
+    <span class="n">ShareSpec</span><span class="p">,</span>
+    <span class="n">SHRDistributions</span><span class="p">,</span>
+    <span class="n">SSZConstants</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
+
+
+<div class="viewcode-block" id="gen_share_data">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_share_data">[docs]</a>
+<span class="k">def</span> <span class="nf">gen_share_data</span><span class="p">(</span>
+    <span class="n">_sample_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">_share_spec</span><span class="p">:</span> <span class="n">ShareSpec</span><span class="p">,</span>
+    <span class="n">_fcount_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_mktshr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span><span class="p">,</span>
+    <span class="n">_nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ShareDataSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function for generating share data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _share_spec</span>
+<span class="sd">        Class specifying parameters for generating market share data</span>
+<span class="sd">    _fcount_rng_seed_seq</span>
+<span class="sd">        Seed sequence for assuring independent and, optionally, redundant streams</span>
+<span class="sd">    _mktshr_rng_seed_seq</span>
+<span class="sd">        Seed sequence for assuring independent and, optionally, redundant streams</span>
+<span class="sd">    _nthreads</span>
+<span class="sd">        Must be specified for generating repeatable random streams</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Arrays representing shares, diversion ratios, etc. structured as a :ShareDataSample:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_recapture_form</span><span class="p">,</span> <span class="n">_dist_type_mktshr</span><span class="p">,</span> <span class="n">_dist_parms_mktshr</span><span class="p">,</span> <span class="n">_firm_count_prob_wts</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">_share_spec</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;recapture_form&quot;</span><span class="p">,</span> <span class="s2">&quot;dist_type&quot;</span><span class="p">,</span> <span class="s2">&quot;dist_parms&quot;</span><span class="p">,</span> <span class="s2">&quot;firm_counts_weights&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">_ssz</span> <span class="o">=</span> <span class="n">_sample_size</span>
+
+    <span class="k">if</span> <span class="n">_dist_type_mktshr</span> <span class="o">==</span> <span class="n">SHRDistributions</span><span class="o">.</span><span class="n">UNI</span><span class="p">:</span>
+        <span class="n">_mkt_share_sample</span> <span class="o">=</span> <span class="n">gen_market_shares_uniform</span><span class="p">(</span>
+            <span class="n">_ssz</span><span class="p">,</span> <span class="n">_dist_parms_mktshr</span><span class="p">,</span> <span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span> <span class="n">_nthreads</span>
+        <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">_dist_type_mktshr</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DIR_&quot;</span><span class="p">):</span>
+        <span class="n">_firm_count_prob_wts</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">_firm_count_prob_wts</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_firm_count_prob_wts</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">_mkt_share_sample</span> <span class="o">=</span> <span class="n">gen_market_shares_dirichlet_multimarket</span><span class="p">(</span>
+            <span class="n">_ssz</span><span class="p">,</span>
+            <span class="n">_recapture_form</span><span class="p">,</span>
+            <span class="n">_dist_type_mktshr</span><span class="p">,</span>
+            <span class="n">_dist_parms_mktshr</span><span class="p">,</span>
+            <span class="n">_firm_count_prob_wts</span><span class="p">,</span>
+            <span class="n">_fcount_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">_nthreads</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Unexpected type, &quot;</span><span class="si">{</span><span class="n">_dist_type_mktshr</span><span class="si">}</span><span class="s1">&quot; for share distribution.&#39;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># If recapture_form == &quot;inside-out&quot;, recalculate _aggregate_purchase_prob</span>
+    <span class="n">_frmshr_array</span> <span class="o">=</span> <span class="n">_mkt_share_sample</span><span class="o">.</span><span class="n">mktshr_array</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">_r_bar</span> <span class="o">=</span> <span class="n">_share_spec</span><span class="o">.</span><span class="n">recapture_rate</span> <span class="ow">or</span> <span class="mf">0.8</span>
+    <span class="k">if</span> <span class="n">_recapture_form</span> <span class="o">==</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">INOUT</span><span class="p">:</span>
+        <span class="n">_mkt_share_sample</span> <span class="o">=</span> <span class="n">ShareDataSample</span><span class="p">(</span>
+            <span class="n">_mkt_share_sample</span><span class="o">.</span><span class="n">mktshr_array</span><span class="p">,</span>
+            <span class="n">_mkt_share_sample</span><span class="o">.</span><span class="n">fcounts</span><span class="p">,</span>
+            <span class="n">_mkt_share_sample</span><span class="o">.</span><span class="n">nth_firm_share</span><span class="p">,</span>
+            <span class="n">_r_bar</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_r_bar</span><span class="p">)</span> <span class="o">*</span> <span class="n">_frmshr_array</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_mkt_share_sample</span></div>
+
+
+
+<div class="viewcode-block" id="gen_market_shares_uniform">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_uniform">[docs]</a>
+<span class="k">def</span> <span class="nf">gen_market_shares_uniform</span><span class="p">(</span>
+    <span class="n">_s_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">_dist_parms_mktshr</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">DIST_PARMS_DEFAULT</span><span class="p">,</span>
+    <span class="n">_mktshr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ShareDataSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate merging-firm shares from Uniform distribution on the 3-D simplex.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _s_size</span>
+<span class="sd">        size of sample to be drawn</span>
+
+<span class="sd">    _mktshr_rng_seed_seq</span>
+<span class="sd">        seed for rng, so results can be made replicable</span>
+
+<span class="sd">    _nthreads</span>
+<span class="sd">        number of threads for random number generation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        market shares and other market statistics for each draw (market)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_frmshr_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">_s_size</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">_dist_parms_mktshr</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">DIST_PARMS_DEFAULT</span> <span class="k">if</span> <span class="n">_dist_parms_mktshr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_dist_parms_mktshr</span>
+    <span class="p">)</span>
+    <span class="n">_mrng</span> <span class="o">=</span> <span class="n">MultithreadedRNG</span><span class="p">(</span>
+        <span class="n">_frmshr_array</span><span class="p">,</span>
+        <span class="n">dist_type</span><span class="o">=</span><span class="s2">&quot;Uniform&quot;</span><span class="p">,</span>
+        <span class="n">dist_parms</span><span class="o">=</span><span class="n">_dist_parms_mktshr</span><span class="p">,</span>
+        <span class="n">seed_sequence</span><span class="o">=</span><span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="o">=</span><span class="n">_nthreads</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_mrng</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
+    <span class="c1"># Convert draws on U[0, 1] to Uniformly-distributed draws on simplex, s_1 + s_2 &lt;= 1</span>
+    <span class="n">_frmshr_array</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">_frmshr_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span>
+        <span class="n">_frmshr_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">_frmshr_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">_frmshr_array</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">))</span>
+
+    <span class="c1"># Keep only share combinations representing feasible mergers</span>
+    <span class="n">_frmshr_array</span> <span class="o">=</span> <span class="n">_frmshr_array</span><span class="p">[</span><span class="n">_frmshr_array</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Let a third column have values of &quot;np.nan&quot;, so HHI calculations return &quot;np.nan&quot;</span>
+    <span class="n">_mktshr_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+        <span class="n">_frmshr_array</span><span class="p">,</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="n">constant_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="p">)</span>
+
+    <span class="n">_fcounts</span><span class="p">:</span> <span class="n">ArrayBIGINT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">_s_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>  <span class="c1"># type: ignore</span>
+    <span class="n">_nth_firm_share</span><span class="p">,</span> <span class="n">_aggregate_purchase_prob</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">_s_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ShareDataSample</span><span class="p">(</span>
+        <span class="n">_mktshr_array</span><span class="p">,</span> <span class="n">_fcounts</span><span class="p">,</span> <span class="n">_nth_firm_share</span><span class="p">,</span> <span class="n">_aggregate_purchase_prob</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="gen_market_shares_dirichlet_multimarket">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket">[docs]</a>
+<span class="k">def</span> <span class="nf">gen_market_shares_dirichlet_multimarket</span><span class="p">(</span>
+    <span class="n">_s_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">_recapture_form</span><span class="p">:</span> <span class="n">RECTypes</span> <span class="o">=</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">INOUT</span><span class="p">,</span>
+    <span class="n">_dist_type_dir</span><span class="p">:</span> <span class="n">SHRDistributions</span> <span class="o">=</span> <span class="n">SHRDistributions</span><span class="o">.</span><span class="n">DIR_FLAT</span><span class="p">,</span>
+    <span class="n">_dist_parms_dir</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_firm_count_wts</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_fcount_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_mktshr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ShareDataSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dirichlet-distributed shares with multiple firm-counts.</span>
+
+<span class="sd">    Firm-counts may be specified as having Uniform distribution over the range</span>
+<span class="sd">    of firm counts, or a set of probability weights may be specified. In the</span>
+<span class="sd">    latter case the proportion of draws for each firm-count matches the</span>
+<span class="sd">    specified probability weight.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _s_size</span>
+<span class="sd">        sample size to be drawn</span>
+
+<span class="sd">    _firm_count_wts</span>
+<span class="sd">        firm count weights array for sample to be drawn</span>
+
+<span class="sd">    _dist_type_dir</span>
+<span class="sd">        Whether Dirichlet is Flat or Asymmetric</span>
+
+<span class="sd">    _recapture_form</span>
+<span class="sd">        r_1 = r_2 if &quot;proportional&quot;, otherwise MNL-consistent</span>
+
+<span class="sd">    _fcount_rng_seed_seq</span>
+<span class="sd">        seed firm count rng, for replicable results</span>
+
+<span class="sd">    _mktshr_rng_seed_seq</span>
+<span class="sd">        seed market share rng, for replicable results</span>
+
+<span class="sd">    _nthreads</span>
+<span class="sd">        number of threads for parallelized random number generation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        array of market shares and other market statistics</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_firm_count_wts</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">FCOUNT_WTS_DEFAULT</span> <span class="k">if</span> <span class="n">_firm_count_wts</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_firm_count_wts</span>
+    <span class="p">)</span>
+
+    <span class="n">_min_choice_wt</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">0.03</span> <span class="k">if</span> <span class="n">_dist_type_dir</span> <span class="o">==</span> <span class="n">SHRDistributions</span><span class="o">.</span><span class="n">DIR_FLAT_CONSTR</span> <span class="k">else</span> <span class="mf">0.00</span>
+    <span class="p">)</span>
+    <span class="n">_fcount_keys</span><span class="p">,</span> <span class="n">_choice_wts</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="o">*</span><span class="p">(</span>
+            <span class="n">_f</span>
+            <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_firm_count_wts</span><span class="p">)),</span>
+                <span class="n">_firm_count_wts</span> <span class="o">/</span> <span class="n">_firm_count_wts</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+                <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">_f</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">_min_choice_wt</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">_choice_wts</span> <span class="o">=</span> <span class="n">_choice_wts</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">_choice_wts</span><span class="p">)</span>
+
+    <span class="n">_fc_max</span> <span class="o">=</span> <span class="n">_fcount_keys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">_dir_alphas_full</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">_fc_max</span> <span class="k">if</span> <span class="n">_dist_parms_dir</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_dist_parms_dir</span><span class="p">[:</span><span class="n">_fc_max</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">_dist_type_dir</span> <span class="o">==</span> <span class="n">SHRDistributions</span><span class="o">.</span><span class="n">DIR_ASYM</span><span class="p">:</span>
+        <span class="n">_dir_alphas_full</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">+</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="p">[</span><span class="mf">1.25</span><span class="p">]</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">_fc_max</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">_dist_type_dir</span> <span class="o">==</span> <span class="n">SHRDistributions</span><span class="o">.</span><span class="n">DIR_COND</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">_gen_dir_alphas</span><span class="p">(</span><span class="n">_fcv</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayDouble</span><span class="p">:</span>
+            <span class="n">_dat</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">_fcv</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">_dat</span><span class="p">):</span>
+                <span class="n">_dat</span> <span class="o">+=</span> <span class="p">[</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">_fcv</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">*</span> <span class="p">(</span><span class="n">_fcv</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_dat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">_gen_dir_alphas</span><span class="p">(</span><span class="n">_fcv</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayDouble</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_dir_alphas_full</span><span class="p">[:</span><span class="n">_fcv</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">_fcounts</span> <span class="o">=</span> <span class="n">prng</span><span class="p">(</span><span class="n">_fcount_rng_seed_seq</span><span class="p">)</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+        <span class="n">_fcount_keys</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">_s_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">_choice_wts</span>
+    <span class="p">)</span>
+
+    <span class="n">_mktshr_seed_seq_ch</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">_mktshr_rng_seed_seq</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_fcount_keys</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span> <span class="n">SeedSequence</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">SeedSequence</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_fcounts</span><span class="p">))</span>
+    <span class="p">)</span>
+
+    <span class="n">_aggregate_purchase_prob</span><span class="p">,</span> <span class="n">_nth_firm_share</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">_s_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">_mktshr_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">_s_size</span><span class="p">,</span> <span class="n">_fc_max</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_f_val</span><span class="p">,</span> <span class="n">_f_sseq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">_fcount_keys</span><span class="p">,</span> <span class="n">_mktshr_seed_seq_ch</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">_fcounts_match_rows</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">_fcounts</span> <span class="o">==</span> <span class="n">_f_val</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">_dir_alphas_test</span> <span class="o">=</span> <span class="n">_gen_dir_alphas</span><span class="p">(</span><span class="n">_f_val</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_mktshr_sample_f</span> <span class="o">=</span> <span class="n">gen_market_shares_dirichlet</span><span class="p">(</span>
+                <span class="n">_dir_alphas_test</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">_fcounts_match_rows</span><span class="p">),</span>
+                <span class="n">_recapture_form</span><span class="p">,</span>
+                <span class="n">_f_sseq</span><span class="p">,</span>
+                <span class="n">_nthreads</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">_err</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">_f_val</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">_fcounts_match_rows</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">_err</span>
+
+        <span class="c1"># Push data for present sample to parent</span>
+        <span class="n">_mktshr_array</span><span class="p">[</span><span class="n">_fcounts_match_rows</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+            <span class="n">_mktshr_sample_f</span><span class="o">.</span><span class="n">mktshr_array</span><span class="p">,</span>
+            <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">_fc_max</span> <span class="o">-</span> <span class="n">_mktshr_sample_f</span><span class="o">.</span><span class="n">mktshr_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span>
+            <span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">_aggregate_purchase_prob</span><span class="p">[</span><span class="n">_fcounts_match_rows</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">_mktshr_sample_f</span><span class="o">.</span><span class="n">aggregate_purchase_prob</span>
+        <span class="p">)</span>
+        <span class="n">_nth_firm_share</span><span class="p">[</span><span class="n">_fcounts_match_rows</span><span class="p">]</span> <span class="o">=</span> <span class="n">_mktshr_sample_f</span><span class="o">.</span><span class="n">nth_firm_share</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">_iss</span> <span class="o">:=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;&quot;</span><span class="p">,</span> <span class="n">_mktshr_array</span><span class="p">)))</span> <span class="o">!=</span> <span class="n">_s_size</span> <span class="ow">or</span> <span class="n">_iss</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span>
+        <span class="n">_mktshr_array</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;DATA GENERATION ERROR: </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">&quot;Generation of sample shares is inconsistent:&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;array of drawn shares must some to the number of draws&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;i.e., the sample size, which condition is not met.&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ShareDataSample</span><span class="p">(</span>
+        <span class="n">_mktshr_array</span><span class="p">,</span> <span class="n">_fcounts</span><span class="p">,</span> <span class="n">_nth_firm_share</span><span class="p">,</span> <span class="n">_aggregate_purchase_prob</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="gen_market_shares_dirichlet">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet">[docs]</a>
+<span class="k">def</span> <span class="nf">gen_market_shares_dirichlet</span><span class="p">(</span>
+    <span class="n">_dir_alphas</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">_s_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">_recapture_form</span><span class="p">:</span> <span class="n">RECTypes</span> <span class="o">=</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">INOUT</span><span class="p">,</span>
+    <span class="n">_mktshr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ShareDataSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dirichlet-distributed shares with fixed firm-count.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _dir_alphas</span>
+<span class="sd">        Shape parameters for Dirichlet distribution</span>
+
+<span class="sd">    _s_size</span>
+<span class="sd">        sample size to be drawn</span>
+
+<span class="sd">    _recapture_form</span>
+<span class="sd">        r_1 = r_2 if RECTypes.FIXED, otherwise MNL-consistent. If</span>
+<span class="sd">        RECTypes.OUTIN; the number of columns in the output share array</span>
+<span class="sd">        is len(_dir_alphas) - 1.</span>
+
+<span class="sd">    _mktshr_rng_seed_seq</span>
+<span class="sd">        seed market share rng, for replicable results</span>
+
+<span class="sd">    _nthreads</span>
+<span class="sd">        number of threads for parallelized random number generation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        array of market shares and other market statistics</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_dir_alphas</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">_dir_alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_dir_alphas</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">_recapture_form</span> <span class="o">==</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">OUTIN</span><span class="p">:</span>
+        <span class="n">_dir_alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">_dir_alphas</span><span class="p">,</span> <span class="n">_dir_alphas</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]))</span>
+
+    <span class="n">_mktshr_seed_seq_ch</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">_mktshr_rng_seed_seq</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span> <span class="n">SeedSequence</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">SeedSequence</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">_mktshr_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">_s_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">_dir_alphas</span><span class="p">)))</span>
+    <span class="n">_mrng</span> <span class="o">=</span> <span class="n">MultithreadedRNG</span><span class="p">(</span>
+        <span class="n">_mktshr_array</span><span class="p">,</span>
+        <span class="n">dist_type</span><span class="o">=</span><span class="s2">&quot;Dirichlet&quot;</span><span class="p">,</span>
+        <span class="n">dist_parms</span><span class="o">=</span><span class="n">_dir_alphas</span><span class="p">,</span>
+        <span class="n">seed_sequence</span><span class="o">=</span><span class="n">_mktshr_seed_seq_ch</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="o">=</span><span class="n">_nthreads</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_mrng</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">_iss</span> <span class="o">:=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;&quot;</span><span class="p">,</span> <span class="n">_mktshr_array</span><span class="p">)))</span> <span class="o">!=</span> <span class="n">_s_size</span> <span class="ow">or</span> <span class="n">_iss</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span>
+        <span class="n">_mktshr_array</span>
+    <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">_dir_alphas</span><span class="p">,</span> <span class="n">_iss</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">_s_size</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">_mktshr_array</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">_mktshr_array</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:,</span> <span class="p">:]))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;DATA GENERATION ERROR: </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">&quot;Generation of sample shares is inconsistent:&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;array of drawn shares must sum to the number of draws&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;i.e., the sample size, which condition is not met.&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="c1"># If recapture_form == &#39;inside_out&#39;, further calculations downstream</span>
+    <span class="n">_aggregate_purchase_prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">_s_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">_recapture_form</span> <span class="o">==</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">OUTIN</span><span class="p">:</span>
+        <span class="n">_aggregate_purchase_prob</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">_mktshr_array</span><span class="p">[:,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">_mktshr_array</span> <span class="o">=</span> <span class="n">_mktshr_array</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">_aggregate_purchase_prob</span>
+
+    <span class="k">return</span> <span class="n">ShareDataSample</span><span class="p">(</span>
+        <span class="n">_mktshr_array</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">_mktshr_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">_s_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">),</span>
+        <span class="n">_mktshr_array</span><span class="p">[:,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+        <span class="n">_aggregate_purchase_prob</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="gen_divr_array">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array">[docs]</a>
+<span class="k">def</span> <span class="nf">gen_divr_array</span><span class="p">(</span>
+    <span class="n">_recapture_form</span><span class="p">:</span> <span class="n">RECTypes</span><span class="p">,</span>
+    <span class="n">_recapture_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_frmshr_array</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">_aggregate_purchase_prob</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">=</span> <span class="n">EMPTY_ARRAY_DEFAULT</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayDouble</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given merging-firm shares and related parameters, return diverion ratios.</span>
+
+<span class="sd">    If recapture is specified as :attr:`mergeron.RECTypes.OUTIN`, then the</span>
+<span class="sd">    choice-probability for the outside good must be supplied.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _recapture_form</span>
+<span class="sd">        Enum specifying Fixed (proportional), Inside-out, or Outside-in</span>
+
+<span class="sd">    _recapture_rate</span>
+<span class="sd">        If recapture is proportional or inside-out, the recapture rate</span>
+<span class="sd">        for the firm with the smaller share.</span>
+
+<span class="sd">    _frmshr_array</span>
+<span class="sd">        Merging-firm shares.</span>
+
+<span class="sd">    _aggregate_purchase_prob</span>
+<span class="sd">        1 minus probability that the outside good is chosen; converts</span>
+<span class="sd">        market shares to choice probabilities by multiplication.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the firm with the smaller share does not have the larger</span>
+<span class="sd">        diversion ratio between the merging firms.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Merging-firm diversion ratios for mergers in the sample.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_divr_array</span><span class="p">:</span> <span class="n">ArrayDouble</span>
+    <span class="k">if</span> <span class="n">_recapture_form</span> <span class="o">==</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">FIXED</span><span class="p">:</span>
+        <span class="n">_divr_array</span> <span class="o">=</span> <span class="n">_recapture_rate</span> <span class="o">*</span> <span class="n">_frmshr_array</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_frmshr_array</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_purchprob_array</span> <span class="o">=</span> <span class="n">_aggregate_purchase_prob</span> <span class="o">*</span> <span class="n">_frmshr_array</span>
+        <span class="n">_divr_array</span> <span class="o">=</span> <span class="n">_purchprob_array</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_purchprob_array</span><span class="p">)</span>
+
+    <span class="n">_divr_assert_test</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;i&quot;</span><span class="p">,</span> <span class="n">_frmshr_array</span><span class="p">),</span> <span class="mi">15</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="o">|</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">_divr_array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">_divr_assert_test</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">&quot;Data construction fails tests:&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;the index of min(s_1, s_2) must equal&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;the index of max(d_12, d_21), for all draws.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;unless frmshr_array sums to 1.00.&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_divr_array</span></div>
+
+
+
+<div class="viewcode-block" id="gen_margin_price_data">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data">[docs]</a>
+<span class="k">def</span> <span class="nf">gen_margin_price_data</span><span class="p">(</span>
+    <span class="n">_frmshr_array</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">_nth_firm_share</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">_aggregate_purchase_prob</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">_pcm_spec</span><span class="p">:</span> <span class="n">PCMSpec</span><span class="p">,</span>
+    <span class="n">_price_spec</span><span class="p">:</span> <span class="n">PriceSpec</span><span class="p">,</span>
+    <span class="n">_hsr_filing_test_type</span><span class="p">:</span> <span class="n">SSZConstants</span><span class="p">,</span>
+    <span class="n">_pcm_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span><span class="p">,</span>
+    <span class="n">_pr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">MarginDataSample</span><span class="p">,</span> <span class="n">PriceDataSample</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate margin and price data for mergers in the sample.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _frmshr_array</span>
+<span class="sd">        Merging-firm shares; see :class:`mergeron.gen.ShareSpec`.</span>
+
+<span class="sd">    _nth_firm_share</span>
+<span class="sd">        Share of the nth firm in the sample.</span>
+
+<span class="sd">    _aggregate_purchase_prob</span>
+<span class="sd">        1 minus probability that the outside good is chosen; converts</span>
+<span class="sd">        market shares to choice probabilities by multiplication.</span>
+
+<span class="sd">    _pcm_spec</span>
+<span class="sd">        Enum specifying whether to use asymmetric or flat margins. see</span>
+<span class="sd">        :class:`mergeron.gen.PCMSpec`.</span>
+
+<span class="sd">    _price_spec</span>
+<span class="sd">        Enum specifying whether to use symmetric, positive, or negative</span>
+<span class="sd">        margins; see :class:`mergeron.gen.PriceSpec`.</span>
+
+<span class="sd">    _hsr_filing_test_type</span>
+<span class="sd">        Enum specifying restriction, if any, to impose on market data sample</span>
+<span class="sd">        to model HSR filing requirements; see :class:`mergeron.gen.SSZConstants`.</span>
+
+<span class="sd">    _pcm_rng_seed_seq</span>
+<span class="sd">        Seed sequence for generating margin data.</span>
+
+<span class="sd">    _pr_rng_seed_seq</span>
+<span class="sd">        Seed sequence for generating price data.</span>
+
+<span class="sd">    _nthreads</span>
+<span class="sd">        Number of threads to use in generating price data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Simulated margin- and price-data arrays for mergers in the sample.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_price_array</span><span class="p">,</span> <span class="n">_price_ratio_array</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">_pr_max_ratio</span> <span class="o">=</span> <span class="mf">5.0</span>
+    <span class="k">match</span> <span class="n">_price_spec</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">PriceSpec</span><span class="o">.</span><span class="n">SYM</span><span class="p">:</span>
+            <span class="n">_nth_firm_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">_frmshr_array</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">case</span> <span class="n">PriceSpec</span><span class="o">.</span><span class="n">POS</span><span class="p">:</span>
+            <span class="n">_price_array</span><span class="p">,</span> <span class="n">_nth_firm_price</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">_p</span> <span class="o">*</span> <span class="n">_pr_max_ratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">_p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">_nth_firm_share</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">case</span> <span class="n">PriceSpec</span><span class="o">.</span><span class="n">NEG</span><span class="p">:</span>
+            <span class="n">_price_array</span><span class="p">,</span> <span class="n">_nth_firm_price</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_p</span><span class="p">)</span> <span class="o">*</span> <span class="n">_pr_max_ratio</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">_p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">_nth_firm_share</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">case</span> <span class="n">PriceSpec</span><span class="o">.</span><span class="n">ZERO</span><span class="p">:</span>
+            <span class="n">_price_array_gen</span> <span class="o">=</span> <span class="n">prng</span><span class="p">(</span><span class="n">_pr_rng_seed_seq</span><span class="p">)</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+                <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">_pr_max_ratio</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_frmshr_array</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">_price_array</span> <span class="o">=</span> <span class="n">_price_array_gen</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">_nth_firm_price</span> <span class="o">=</span> <span class="n">_price_array_gen</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+            <span class="c1"># del _price_array_gen</span>
+        <span class="k">case</span> <span class="n">PriceSpec</span><span class="o">.</span><span class="n">CSY</span><span class="p">:</span>
+            <span class="c1"># TODO:</span>
+            <span class="c1"># evolve FM2Constraint (save running MNL test twice); evolve copy of _mkt_sample_spec=1q</span>
+            <span class="c1"># generate the margin data</span>
+            <span class="c1"># generate price and margin data</span>
+            <span class="n">_frmshr_array_plus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">_nth_firm_share</span><span class="p">))</span>
+            <span class="n">_pcm_spec_here</span> <span class="o">=</span> <span class="n">evolve</span><span class="p">(</span><span class="n">_pcm_spec</span><span class="p">,</span> <span class="n">firm2_pcm_constraint</span><span class="o">=</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">IID</span><span class="p">)</span>
+            <span class="n">_margin_data</span> <span class="o">=</span> <span class="n">_gen_margin_data</span><span class="p">(</span>
+                <span class="n">_frmshr_array_plus</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">_frmshr_array_plus</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+                <span class="n">_aggregate_purchase_prob</span><span class="p">,</span>
+                <span class="n">_pcm_spec_here</span><span class="p">,</span>
+                <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span>
+                <span class="n">_nthreads</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">_pcm_array</span><span class="p">,</span> <span class="n">_mnl_test_array</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">_margin_data</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;pcm_array&quot;</span><span class="p">,</span> <span class="s2">&quot;mnl_test_array&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="n">_price_array_here</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_pcm_array</span><span class="p">)</span>
+            <span class="n">_price_array</span> <span class="o">=</span> <span class="n">_price_array_here</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">_nth_firm_price</span> <span class="o">=</span> <span class="n">_price_array_here</span><span class="p">[:,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">_pcm_spec</span><span class="o">.</span><span class="n">firm2_pcm_constraint</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">MNL</span><span class="p">:</span>
+                <span class="c1"># Generate i.i.d. PCMs then take PCM0 and construct PCM1</span>
+                <span class="c1"># Regenerate MNL test</span>
+                <span class="n">_purchase_prob_array</span> <span class="o">=</span> <span class="n">_aggregate_purchase_prob</span> <span class="o">*</span> <span class="n">_frmshr_array</span>
+                <span class="n">_pcm_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="n">_m1_nr</span> <span class="o">:=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+                                <span class="s2">&quot;ij,ij,ij-&gt;ij&quot;</span><span class="p">,</span>
+                                <span class="n">_price_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                                <span class="n">_pcm_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                                <span class="mi">1</span> <span class="o">-</span> <span class="n">_purchase_prob_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                            <span class="p">),</span>
+                            <span class="mi">1</span> <span class="o">-</span> <span class="n">_purchase_prob_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                        <span class="p">)</span>
+                    <span class="p">),</span>
+                    <span class="mi">1</span> <span class="o">+</span> <span class="n">_m1_nr</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">_mnl_test_array</span> <span class="o">=</span> <span class="p">(</span><span class="n">_pcm_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">_pcm_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">_margin_data</span> <span class="o">=</span> <span class="n">MarginDataSample</span><span class="p">(</span><span class="n">_pcm_array</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">_mnl_test_array</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">_price_array_here</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Specitication of price distribution&quot;</span>
+                <span class="sa">f</span><span class="s1">&#39; &quot;</span><span class="si">{</span><span class="n">_price_spec</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot; is invalid.&#39;</span>
+            <span class="p">)</span>
+    <span class="k">if</span> <span class="n">_price_spec</span> <span class="o">!=</span> <span class="n">PriceSpec</span><span class="o">.</span><span class="n">CSY</span><span class="p">:</span>
+        <span class="n">_margin_data</span> <span class="o">=</span> <span class="n">_gen_margin_data</span><span class="p">(</span>
+            <span class="n">_frmshr_array</span><span class="p">,</span>
+            <span class="n">_price_array</span><span class="p">,</span>
+            <span class="n">_aggregate_purchase_prob</span><span class="p">,</span>
+            <span class="n">_pcm_spec</span><span class="p">,</span>
+            <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">_nthreads</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">_price_array</span> <span class="o">=</span> <span class="n">_price_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">_rev_array</span> <span class="o">=</span> <span class="n">_price_array</span> <span class="o">*</span> <span class="n">_frmshr_array</span>
+    <span class="n">_nth_firm_rev</span> <span class="o">=</span> <span class="n">_nth_firm_price</span> <span class="o">*</span> <span class="n">_nth_firm_share</span>
+
+    <span class="c1"># Although `_test_rev_ratio_inv` is not fixed at 10%,</span>
+    <span class="c1"># the ratio has not changed since inception of the HSR filing test,</span>
+    <span class="c1"># so we treat it as a constant of merger enforcement policy.</span>
+    <span class="n">_test_rev_ratio</span><span class="p">,</span> <span class="n">_test_rev_ratio_inv</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">10</span>
+
+    <span class="k">match</span> <span class="n">_hsr_filing_test_type</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">SSZConstants</span><span class="o">.</span><span class="n">HSR_TEN</span><span class="p">:</span>
+            <span class="c1"># See, https://www.ftc.gov/enforcement/premerger-notification-program/</span>
+            <span class="c1">#   -&gt; Procedures For Submitting Post-Consummation Filings</span>
+            <span class="c1">#    -&gt; Key Elements to Determine Whether a Post Consummation Filing is Required</span>
+            <span class="c1">#           under heading, &quot;Historical Thresholds&quot;</span>
+            <span class="c1"># Revenue ratio has been 10-to-1 since inception</span>
+            <span class="c1"># Thus, a simple form of the HSR filing test would impose a 10-to-1</span>
+            <span class="c1"># ratio restriction on the merging firms&#39; revenues</span>
+            <span class="n">_rev_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="n">_rev_array</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">_rev_array</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">_hsr_filing_test</span> <span class="o">=</span> <span class="n">_rev_ratio</span> <span class="o">&gt;=</span> <span class="n">_test_rev_ratio_inv</span>
+            <span class="c1"># del _rev_array, _rev_ratio</span>
+        <span class="k">case</span> <span class="n">SSZConstants</span><span class="o">.</span><span class="n">HSR_NTH</span><span class="p">:</span>
+            <span class="c1"># To get around the 10-to-1 ratio restriction, specify that the nth firm test:</span>
+            <span class="c1"># if the smaller merging firm matches or exceeds the n-th firm in size, and</span>
+            <span class="c1"># the larger merging firm has at least 10 times the size of the nth firm,</span>
+            <span class="c1"># the size test is considered met.</span>
+            <span class="c1"># Alternatively, if the smaller merging firm has 10% or greater share,</span>
+            <span class="c1"># the value of transaction test is considered met.</span>
+            <span class="n">_rev_ratio_to_nth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">_rev_array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">_nth_firm_rev</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="n">_hsr_filing_test</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+                    <span class="s2">&quot;ij-&gt;i&quot;</span><span class="p">,</span>
+                    <span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">_rev_ratio_to_nth</span> <span class="o">&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">_test_rev_ratio</span><span class="p">]),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">==</span> <span class="n">_rev_ratio_to_nth</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">_frmshr_array</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">_test_rev_ratio_inv</span><span class="p">)</span>
+
+            <span class="c1"># del _nth_firm_rev, _rev_ratio_to_nth</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="c1"># Otherwise, all draws meet the filing test</span>
+            <span class="n">_hsr_filing_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_frmshr_array</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_margin_data</span><span class="p">,</span> <span class="n">PriceDataSample</span><span class="p">(</span><span class="n">_price_array</span><span class="p">,</span> <span class="n">_hsr_filing_test</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_gen_margin_data</span><span class="p">(</span>
+    <span class="n">_frmshr_array</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">_price_array</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">_aggregate_purchase_prob</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
+    <span class="n">_pcm_spec</span><span class="p">:</span> <span class="n">PCMSpec</span><span class="p">,</span>
+    <span class="n">_pcm_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span><span class="p">,</span>
+    <span class="n">_nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MarginDataSample</span><span class="p">:</span>
+    <span class="n">_dist_type_pcm</span><span class="p">,</span> <span class="n">_dist_firm2_pcm</span><span class="p">,</span> <span class="n">_dist_parms_pcm</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">_pcm_spec</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dist_type&quot;</span><span class="p">,</span> <span class="s2">&quot;firm2_pcm_constraint&quot;</span><span class="p">,</span> <span class="s2">&quot;dist_parms&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">_dist_type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;Beta&quot;</span><span class="p">,</span> <span class="s2">&quot;Uniform&quot;</span><span class="p">]</span>
+    <span class="n">_pcm_array</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">_frmshr_array</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_pcm_spec</span><span class="o">.</span><span class="n">firm2_pcm_constraint</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">SYM</span>
+        <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">_beta_min</span><span class="p">,</span> <span class="n">_beta_max</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># placeholder</span>
+    <span class="k">if</span> <span class="n">_dist_type_pcm</span> <span class="o">==</span> <span class="n">PCMDistributions</span><span class="o">.</span><span class="n">EMPR</span><span class="p">:</span>
+        <span class="n">_pcm_array</span> <span class="o">=</span> <span class="n">mgn_data_resampler</span><span class="p">(</span>
+            <span class="n">_pcm_array</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">seed_sequence</span><span class="o">=</span><span class="n">_pcm_rng_seed_seq</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_dist_type</span> <span class="o">=</span> <span class="s2">&quot;Uniform&quot;</span> <span class="k">if</span> <span class="n">_dist_type_pcm</span> <span class="o">==</span> <span class="n">PCMDistributions</span><span class="o">.</span><span class="n">UNI</span> <span class="k">else</span> <span class="s2">&quot;Beta&quot;</span>
+        <span class="k">if</span> <span class="n">_dist_type_pcm</span> <span class="o">==</span> <span class="n">PCMDistributions</span><span class="o">.</span><span class="n">BETA</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_dist_parms_pcm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">_dist_parms_pcm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">_dist_type_pcm</span> <span class="o">==</span> <span class="n">PCMDistributions</span><span class="o">.</span><span class="n">BETA_BND</span><span class="p">:</span>  <span class="c1"># Bounded beta</span>
+            <span class="k">if</span> <span class="n">_dist_parms_pcm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">_dist_parms_pcm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+                <span class="n">_dist_parms</span> <span class="o">=</span> <span class="n">beta_located_bound</span><span class="p">(</span><span class="n">_dist_parms_pcm</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#  _dist_type_pcm == PCMDistributions.UNI</span>
+            <span class="n">_dist_parms</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">DIST_PARMS_DEFAULT</span> <span class="k">if</span> <span class="n">_dist_parms_pcm</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_dist_parms_pcm</span>
+            <span class="p">)</span>
+
+        <span class="n">_pcm_rng</span> <span class="o">=</span> <span class="n">MultithreadedRNG</span><span class="p">(</span>
+            <span class="n">_pcm_array</span><span class="p">,</span>
+            <span class="n">dist_type</span><span class="o">=</span><span class="n">_dist_type</span><span class="p">,</span>
+            <span class="n">dist_parms</span><span class="o">=</span><span class="n">_dist_parms</span><span class="p">,</span>
+            <span class="n">seed_sequence</span><span class="o">=</span><span class="n">_pcm_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">nthreads</span><span class="o">=</span><span class="n">_nthreads</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">_pcm_rng</span><span class="o">.</span><span class="n">fill</span><span class="p">()</span>
+        <span class="k">del</span> <span class="n">_pcm_rng</span>
+
+    <span class="k">if</span> <span class="n">_dist_type_pcm</span> <span class="o">==</span> <span class="n">PCMDistributions</span><span class="o">.</span><span class="n">BETA_BND</span><span class="p">:</span>
+        <span class="n">_beta_min</span><span class="p">,</span> <span class="n">_beta_max</span> <span class="o">=</span> <span class="n">_dist_parms_pcm</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="n">_pcm_array</span> <span class="o">=</span> <span class="p">(</span><span class="n">_beta_max</span> <span class="o">-</span> <span class="n">_beta_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">_pcm_array</span> <span class="o">+</span> <span class="n">_beta_min</span>
+        <span class="k">del</span> <span class="n">_beta_min</span><span class="p">,</span> <span class="n">_beta_max</span>
+
+    <span class="k">if</span> <span class="n">_dist_firm2_pcm</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">SYM</span><span class="p">:</span>
+        <span class="n">_pcm_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">_pcm_array</span><span class="p">,)</span> <span class="o">*</span> <span class="n">_frmshr_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">_dist_firm2_pcm</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">MNL</span><span class="p">:</span>
+        <span class="c1"># Impose FOCs from profit-maximization with MNL demand</span>
+        <span class="k">if</span> <span class="n">_dist_type_pcm</span> <span class="o">==</span> <span class="n">PCMDistributions</span><span class="o">.</span><span class="n">EMPR</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;NOTE: Estimated Firm 2 parameters will not be consistent with &quot;</span>
+                <span class="s2">&quot;the empirical distribution of margins in the source data. For &quot;</span>
+                <span class="s2">&quot;consistency, respecify pcm_spec.firm2_pcm_constraint = FM2Constants.IID.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">_purchase_prob_array</span> <span class="o">=</span> <span class="n">_aggregate_purchase_prob</span> <span class="o">*</span> <span class="n">_frmshr_array</span>
+
+        <span class="n">_pcm_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+                <span class="s2">&quot;ij,ij,ij-&gt;ij&quot;</span><span class="p">,</span>
+                <span class="n">_price_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                <span class="n">_pcm_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                <span class="mi">1</span> <span class="o">-</span> <span class="n">_purchase_prob_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+            <span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
+                <span class="s2">&quot;ij,ij-&gt;ij&quot;</span><span class="p">,</span> <span class="n">_price_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">_purchase_prob_array</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">_mnl_test_array</span> <span class="o">=</span> <span class="n">_pcm_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="fm">__ge__</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">_pcm_array</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="fm">__le__</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_mnl_test_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_pcm_array</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">MarginDataSample</span><span class="p">(</span><span class="n">_pcm_array</span><span class="p">,</span> <span class="n">_mnl_test_array</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_beta_located</span><span class="p">(</span>
+    <span class="n">_mu</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayDouble</span><span class="p">,</span> <span class="n">_sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayDouble</span><span class="p">,</span> <span class="o">/</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayDouble</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given mean and stddev, return shape parameters for corresponding Beta distribution</span>
+
+<span class="sd">    Solve the first two moments of the standard Beta to get the shape parameters.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _mu</span>
+<span class="sd">        mean</span>
+<span class="sd">    _sigma</span>
+<span class="sd">        standardd deviation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        shape parameters for Beta distribution</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_mul</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_mu</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">_sigma</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">_mu</span> <span class="o">*</span> <span class="n">_mul</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_mu</span><span class="p">)</span> <span class="o">*</span> <span class="n">_mul</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="beta_located_bound">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.beta_located_bound">[docs]</a>
+<span class="k">def</span> <span class="nf">beta_located_bound</span><span class="p">(</span><span class="n">_dist_parms</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayDouble</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">R</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return shape parameters for a non-standard beta, given the mean, stddev, range</span>
+
+
+<span class="sd">    Recover the r.v.s as</span>
+<span class="sd">    :math:`\min + (\max - \min) \cdot \symup{Β}(a, b)`,</span>
+<span class="sd">    with `a` and `b` calculated from the specified mean (:math:`\mu`) and</span>
+<span class="sd">    variance (:math:`\sigma`). [8]_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _dist_parms</span>
+<span class="sd">        vector of :math:`\mu`, :math:`\sigma`, :math:`\mathtt{\min}`, and :math:`\mathtt{\max}` values</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        shape parameters for Beta distribution</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    For example, ``beta_located_bound(np.array([0.5, 0.2887, 0.0, 1.0]))``.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [8] NIST, Beta Distribution. https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: RUF002</span>
+
+    <span class="n">_bmu</span><span class="p">,</span> <span class="n">_bsigma</span><span class="p">,</span> <span class="n">_bmin</span><span class="p">,</span> <span class="n">_bmax</span> <span class="o">=</span> <span class="n">_dist_parms</span>
+    <span class="k">return</span> <span class="n">_beta_located</span><span class="p">((</span><span class="n">_bmu</span> <span class="o">-</span> <span class="n">_bmin</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">_bmax</span> <span class="o">-</span> <span class="n">_bmin</span><span class="p">),</span> <span class="n">_bsigma</span> <span class="o">/</span> <span class="p">(</span><span class="n">_bmax</span> <span class="o">-</span> <span class="n">_bmin</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="parse_seed_seq_list">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.parse_seed_seq_list">[docs]</a>
+<span class="k">def</span> <span class="nf">parse_seed_seq_list</span><span class="p">(</span>
+    <span class="n">_sseq_list</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_mktshr_dist_type</span><span class="p">:</span> <span class="n">SHRDistributions</span><span class="p">,</span>
+    <span class="n">_price_spec</span><span class="p">:</span> <span class="n">PriceSpec</span><span class="p">,</span>
+    <span class="o">/</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SeedSequenceData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize RNG seed sequences to ensure independence of distinct random streams.</span>
+
+<span class="sd">    The tuple of SeedSequences, is parsed in the following order</span>
+<span class="sd">    for generating the relevant random variates:</span>
+<span class="sd">    1.) quantity shares</span>
+<span class="sd">    2.) price-cost margins</span>
+<span class="sd">    3.) firm-counts, if :code:`MarketSpec.share_spec.dist_type` is a Dirichlet distribution</span>
+<span class="sd">    4.) prices, if :code:`MarketSpec.price_spec ==`:attr:`mergeron.gen.PriceSpec.ZERO`.</span>
+
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _sseq_list</span>
+<span class="sd">        List of RNG seed sequences</span>
+
+<span class="sd">    _mktshr_dist_type</span>
+<span class="sd">        Market share distribution type</span>
+
+<span class="sd">    _price_spec</span>
+<span class="sd">        Price specification</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Seed sequence data</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_fcount_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_pr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">_price_spec</span> <span class="o">==</span> <span class="n">PriceSpec</span><span class="o">.</span><span class="n">ZERO</span><span class="p">:</span>
+        <span class="n">_sseq_list</span><span class="p">,</span> <span class="n">_pr_rng_seed_seq</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">_sseq_list</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">_sseq_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">_sseq_list</span>
+            <span class="k">else</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">SeedSequence</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">8</span><span class="p">))</span>
+        <span class="p">)</span>
+
+    <span class="n">_seed_count</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">_mktshr_dist_type</span> <span class="o">==</span> <span class="n">SHRDistributions</span><span class="o">.</span><span class="n">UNI</span> <span class="k">else</span> <span class="mi">3</span>
+
+    <span class="k">if</span> <span class="n">_sseq_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_sseq_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">_seed_count</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;seed sequence list must contain </span><span class="si">{</span><span class="n">_seed_count</span><span class="si">}</span><span class="s2"> seed sequences&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_sseq_list</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">SeedSequence</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_seed_count</span><span class="p">))</span>
+
+    <span class="p">(</span><span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span> <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span> <span class="n">_fcount_rng_seed_seq</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">_sseq_list</span> <span class="k">if</span> <span class="n">_seed_count</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="p">(</span><span class="o">*</span><span class="n">_sseq_list</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">SeedSequenceData</span><span class="p">(</span>
+        <span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span> <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span> <span class="n">_fcount_rng_seed_seq</span><span class="p">,</span> <span class="n">_pr_rng_seed_seq</span>
+    <span class="p">)</span></div>
+
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

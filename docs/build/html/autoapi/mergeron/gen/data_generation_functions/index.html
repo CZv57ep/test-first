@@ -1,0 +1,2201 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>mergeron.gen.data_generation_functions - mergeron 2024.739104.1</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx_immaterial_theme.3625f807144f53acf.min.css?v=fbfc4466" />
+        <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-contents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../index.html" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mergeron
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              mergeron.gen.data_generation_functions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../index.html" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+    </a>
+    mergeron 2024.739104.1
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">API Reference</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Reference</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1" type="checkbox" id="__nav_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html"><span class="md-ellipsis">mergeron</span></a>
+          
+            <label for="__nav_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1" type="checkbox" id="__nav_1_1_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../index.html#subpackages"><span class="md-ellipsis">Subpackages</span></a>
+          
+            <label for="__nav_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Subpackages" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Subpackages</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>core</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>data</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demo/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>demo</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_4" type="checkbox" id="__nav_1_1_1_4" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html"><span class="md-ellipsis">mergeron.<wbr>gen</span></a>
+          
+            <label for="__nav_1_1_1_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="mergeron.gen" data-md-level="4">
+        <label class="md-nav__title" for="__nav_1_1_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">mergeron.<wbr>gen</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1_1_4_1" type="checkbox" id="__nav_1_1_1_4_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../index.html#submodules"><span class="md-ellipsis">Submodules</span></a>
+          
+            <label for="__nav_1_1_1_4_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Submodules" data-md-level="5">
+        <label class="md-nav__title" for="__nav_1_1_1_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Submodules</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_generation/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions</span>
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_share_data (Python function) — Helper function for generating share data." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>share_<wbr>data</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_share_data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data._share_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_share_data._share_spec (Python parameter) — Class specifying parameters for generating market share data" class="md-ellipsis">_<wbr>share_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data._fcount_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_share_data._fcount_rng_seed_seq (Python parameter) — Seed sequence for assuring independent and, optionally, redundant streams" class="md-ellipsis">_<wbr>fcount_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data._mktshr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_share_data._mktshr_rng_seed_seq (Python parameter) — Seed sequence for assuring independent and, optionally, redundant streams" class="md-ellipsis">_<wbr>mktshr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_share_data._nthreads (Python parameter) — Must be specified for generating repeatable random streams" class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_uniform (Python function) — Generate merging-firm shares from Uniform distribution on the 3-D simplex." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>market_<wbr>shares_<wbr>uniform</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_market_shares_uniform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._s_size" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._s_size (Python parameter) — size of sample to be drawn" class="md-ellipsis">_<wbr>s_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._mktshr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._mktshr_rng_seed_seq (Python parameter) — seed for rng, so results can be made replicable" class="md-ellipsis">_<wbr>mktshr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._nthreads (Python parameter) — number of threads for random number generation" class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket (Python function) — Dirichlet-distributed shares with multiple firm-counts." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>market_<wbr>shares_<wbr>dirichlet_<wbr>multimarket</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._s_size" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._s_size (Python parameter) — sample size to be drawn" class="md-ellipsis">_<wbr>s_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._firm_count_wts" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._firm_count_wts (Python parameter) — firm count weights array for sample to be drawn" class="md-ellipsis">_<wbr>firm_<wbr>count_<wbr>wts</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_type_dir" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_type_dir (Python parameter) — Whether Dirichlet is Flat or Asymmetric" class="md-ellipsis">_<wbr>dist_<wbr>type_<wbr>dir</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._recapture_form (Python parameter) — r_1 = r_2 if &#34;proportional&#34;, otherwise MNL-consistent" class="md-ellipsis">_<wbr>recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._fcount_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._fcount_rng_seed_seq (Python parameter) — seed firm count rng, for replicable results" class="md-ellipsis">_<wbr>fcount_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._mktshr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._mktshr_rng_seed_seq (Python parameter) — seed market share rng, for replicable results" class="md-ellipsis">_<wbr>mktshr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._nthreads (Python parameter) — number of threads for parallelized random number generation" class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet (Python function) — Dirichlet-distributed shares with fixed firm-count." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>market_<wbr>shares_<wbr>dirichlet</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._dir_alphas" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._dir_alphas (Python parameter) — Shape parameters for Dirichlet distribution" class="md-ellipsis">_<wbr>dir_<wbr>alphas</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._s_size" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._s_size (Python parameter) — sample size to be drawn" class="md-ellipsis">_<wbr>s_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._recapture_form (Python parameter) — r_1 = r_2 if RECTypes.FIXED, otherwise MNL-consistent." class="md-ellipsis">_<wbr>recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._mktshr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._mktshr_rng_seed_seq (Python parameter) — seed market share rng, for replicable results" class="md-ellipsis">_<wbr>mktshr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._nthreads (Python parameter) — number of threads for parallelized random number generation" class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_divr_array (Python function) — Given merging-firm shares and related parameters, return diverion ratios." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>divr_<wbr>array</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_divr_array">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array._recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_divr_array._recapture_form (Python parameter) — Enum specifying Fixed (proportional), Inside-out, or Outside-in" class="md-ellipsis">_<wbr>recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array._recapture_rate" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_divr_array._recapture_rate (Python parameter) — If recapture is proportional or inside-out, the recapture rate for the firm with the smaller share." class="md-ellipsis">_<wbr>recapture_<wbr>rate</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array._frmshr_array" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_divr_array._frmshr_array (Python parameter) — Merging-firm shares." class="md-ellipsis">_<wbr>frmshr_<wbr>array</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array._aggregate_purchase_prob" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_divr_array._aggregate_purchase_prob (Python parameter) — 1 minus probability that the outside good is chosen; converts market shares to choice probabilities by multiplication." class="md-ellipsis">_<wbr>aggregate_<wbr>purchase_<wbr>prob</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array-raises" class="md-nav__link">
+    <span class="md-ellipsis">Raises</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data (Python function) — Generate margin and price data for mergers in the sample." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>margin_<wbr>price_<wbr>data</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_margin_price_data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._frmshr_array" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._frmshr_array (Python parameter) — Merging-firm shares; see mergeron.gen.ShareSpec." class="md-ellipsis">_<wbr>frmshr_<wbr>array</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._nth_firm_share" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._nth_firm_share (Python parameter) — Share of the nth firm in the sample." class="md-ellipsis">_<wbr>nth_<wbr>firm_<wbr>share</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._aggregate_purchase_prob" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._aggregate_purchase_prob (Python parameter) — 1 minus probability that the outside good is chosen; converts market shares to choice probabilities by multiplication." class="md-ellipsis">_<wbr>aggregate_<wbr>purchase_<wbr>prob</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_spec (Python parameter) — Enum specifying whether to use asymmetric or flat margins." class="md-ellipsis">_<wbr>pcm_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._price_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._price_spec (Python parameter) — Enum specifying whether to use symmetric, positive, or negative margins; see mergeron.gen.PriceSpec." class="md-ellipsis">_<wbr>price_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._hsr_filing_test_type" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._hsr_filing_test_type (Python parameter) — Enum specifying restriction, if any, to impose on market data sample to model HSR filing requirements; see mergeron.gen.SSZConstants." class="md-ellipsis">_<wbr>hsr_<wbr>filing_<wbr>test_<wbr>type</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_rng_seed_seq (Python parameter) — Seed sequence for generating margin data." class="md-ellipsis">_<wbr>pcm_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._pr_rng_seed_seq (Python parameter) — Seed sequence for generating price data." class="md-ellipsis">_<wbr>pr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._nthreads (Python parameter) — Number of threads to use in generating price data." class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.beta_located_bound (Python function) — Return shape parameters for a non-standard beta, given the mean, stddev, range" class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>beta_<wbr>located_<wbr>bound</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.beta_located_bound">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound._dist_parms" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.beta_located_bound._dist_parms (Python parameter) — vector of \mu, \sigma, \mathtt{\min}, and \mathtt{\max} values" class="md-ellipsis">_<wbr>dist_<wbr>parms</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.parse_seed_seq_list (Python function) — Initialize RNG seed sequences to ensure independence of distinct random streams." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>parse_<wbr>seed_<wbr>seq_<wbr>list</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.parse_seed_seq_list">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._sseq_list" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.parse_seed_seq_list._sseq_list (Python parameter) — List of RNG seed sequences" class="md-ellipsis">_<wbr>sseq_<wbr>list</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._mktshr_dist_type" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.parse_seed_seq_list._mktshr_dist_type (Python parameter) — Market share distribution type" class="md-ellipsis">_<wbr>mktshr_<wbr>dist_<wbr>type</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._price_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.parse_seed_seq_list._price_spec (Python parameter) — Price specification" class="md-ellipsis">_<wbr>price_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../enforcement_stats/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>enforcement_<wbr>stats</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../upp_tests/index.html" class="md-nav__link">
+        <span class="md-ellipsis">mergeron.<wbr>gen.<wbr>upp_<wbr>tests</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">License</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="License" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">License</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../license.html" class="md-nav__link">
+        <span class="md-ellipsis">License</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notes and Acknowlegements" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Notes and Acknowlegements</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../notes.html" class="md-nav__link">
+        <span class="md-ellipsis">Notes and Acknowlegements</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-contents" class="md-nav__link">
+    <span class="md-ellipsis">Module Contents</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_share_data (Python function) — Helper function for generating share data." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>share_<wbr>data</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_share_data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data._share_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_share_data._share_spec (Python parameter) — Class specifying parameters for generating market share data" class="md-ellipsis">_<wbr>share_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data._fcount_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_share_data._fcount_rng_seed_seq (Python parameter) — Seed sequence for assuring independent and, optionally, redundant streams" class="md-ellipsis">_<wbr>fcount_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data._mktshr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_share_data._mktshr_rng_seed_seq (Python parameter) — Seed sequence for assuring independent and, optionally, redundant streams" class="md-ellipsis">_<wbr>mktshr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_share_data._nthreads (Python parameter) — Must be specified for generating repeatable random streams" class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_share_data-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_uniform (Python function) — Generate merging-firm shares from Uniform distribution on the 3-D simplex." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>market_<wbr>shares_<wbr>uniform</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_market_shares_uniform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._s_size" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._s_size (Python parameter) — size of sample to be drawn" class="md-ellipsis">_<wbr>s_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._mktshr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._mktshr_rng_seed_seq (Python parameter) — seed for rng, so results can be made replicable" class="md-ellipsis">_<wbr>mktshr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._nthreads (Python parameter) — number of threads for random number generation" class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket (Python function) — Dirichlet-distributed shares with multiple firm-counts." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>market_<wbr>shares_<wbr>dirichlet_<wbr>multimarket</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._s_size" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._s_size (Python parameter) — sample size to be drawn" class="md-ellipsis">_<wbr>s_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._firm_count_wts" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._firm_count_wts (Python parameter) — firm count weights array for sample to be drawn" class="md-ellipsis">_<wbr>firm_<wbr>count_<wbr>wts</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_type_dir" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_type_dir (Python parameter) — Whether Dirichlet is Flat or Asymmetric" class="md-ellipsis">_<wbr>dist_<wbr>type_<wbr>dir</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._recapture_form (Python parameter) — r_1 = r_2 if &#34;proportional&#34;, otherwise MNL-consistent" class="md-ellipsis">_<wbr>recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._fcount_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._fcount_rng_seed_seq (Python parameter) — seed firm count rng, for replicable results" class="md-ellipsis">_<wbr>fcount_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._mktshr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._mktshr_rng_seed_seq (Python parameter) — seed market share rng, for replicable results" class="md-ellipsis">_<wbr>mktshr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._nthreads (Python parameter) — number of threads for parallelized random number generation" class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet (Python function) — Dirichlet-distributed shares with fixed firm-count." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>market_<wbr>shares_<wbr>dirichlet</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._dir_alphas" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._dir_alphas (Python parameter) — Shape parameters for Dirichlet distribution" class="md-ellipsis">_<wbr>dir_<wbr>alphas</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._s_size" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._s_size (Python parameter) — sample size to be drawn" class="md-ellipsis">_<wbr>s_<wbr>size</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._recapture_form (Python parameter) — r_1 = r_2 if RECTypes.FIXED, otherwise MNL-consistent." class="md-ellipsis">_<wbr>recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._mktshr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._mktshr_rng_seed_seq (Python parameter) — seed market share rng, for replicable results" class="md-ellipsis">_<wbr>mktshr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._nthreads (Python parameter) — number of threads for parallelized random number generation" class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_divr_array (Python function) — Given merging-firm shares and related parameters, return diverion ratios." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>divr_<wbr>array</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_divr_array">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array._recapture_form" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_divr_array._recapture_form (Python parameter) — Enum specifying Fixed (proportional), Inside-out, or Outside-in" class="md-ellipsis">_<wbr>recapture_<wbr>form</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array._recapture_rate" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_divr_array._recapture_rate (Python parameter) — If recapture is proportional or inside-out, the recapture rate for the firm with the smaller share." class="md-ellipsis">_<wbr>recapture_<wbr>rate</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array._frmshr_array" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_divr_array._frmshr_array (Python parameter) — Merging-firm shares." class="md-ellipsis">_<wbr>frmshr_<wbr>array</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array._aggregate_purchase_prob" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_divr_array._aggregate_purchase_prob (Python parameter) — 1 minus probability that the outside good is chosen; converts market shares to choice probabilities by multiplication." class="md-ellipsis">_<wbr>aggregate_<wbr>purchase_<wbr>prob</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array-raises" class="md-nav__link">
+    <span class="md-ellipsis">Raises</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_divr_array-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data (Python function) — Generate margin and price data for mergers in the sample." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>gen_<wbr>margin_<wbr>price_<wbr>data</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.gen_margin_price_data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._frmshr_array" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._frmshr_array (Python parameter) — Merging-firm shares; see mergeron.gen.ShareSpec." class="md-ellipsis">_<wbr>frmshr_<wbr>array</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._nth_firm_share" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._nth_firm_share (Python parameter) — Share of the nth firm in the sample." class="md-ellipsis">_<wbr>nth_<wbr>firm_<wbr>share</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._aggregate_purchase_prob" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._aggregate_purchase_prob (Python parameter) — 1 minus probability that the outside good is chosen; converts market shares to choice probabilities by multiplication." class="md-ellipsis">_<wbr>aggregate_<wbr>purchase_<wbr>prob</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_spec (Python parameter) — Enum specifying whether to use asymmetric or flat margins." class="md-ellipsis">_<wbr>pcm_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._price_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._price_spec (Python parameter) — Enum specifying whether to use symmetric, positive, or negative margins; see mergeron.gen.PriceSpec." class="md-ellipsis">_<wbr>price_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._hsr_filing_test_type" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._hsr_filing_test_type (Python parameter) — Enum specifying restriction, if any, to impose on market data sample to model HSR filing requirements; see mergeron.gen.SSZConstants." class="md-ellipsis">_<wbr>hsr_<wbr>filing_<wbr>test_<wbr>type</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_rng_seed_seq (Python parameter) — Seed sequence for generating margin data." class="md-ellipsis">_<wbr>pcm_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pr_rng_seed_seq" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._pr_rng_seed_seq (Python parameter) — Seed sequence for generating price data." class="md-ellipsis">_<wbr>pr_<wbr>rng_<wbr>seed_<wbr>seq</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data._nthreads" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.gen_margin_price_data._nthreads (Python parameter) — Number of threads to use in generating price data." class="md-ellipsis">_<wbr>nthreads</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.gen_margin_price_data-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.beta_located_bound (Python function) — Return shape parameters for a non-standard beta, given the mean, stddev, range" class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>beta_<wbr>located_<wbr>bound</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.beta_located_bound">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound._dist_parms" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.beta_located_bound._dist_parms (Python parameter) — vector of \mu, \sigma, \mathtt{\min}, and \mathtt{\max} values" class="md-ellipsis">_<wbr>dist_<wbr>parms</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.beta_located_bound-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list" class="md-nav__link">
+    <span aria-label="Python function" class="objinfo-icon objinfo-icon__procedure" title="Python function">F</span><span title="mergeron.gen.data_generation_functions.parse_seed_seq_list (Python function) — Initialize RNG seed sequences to ensure independence of distinct random streams." class="md-ellipsis">mergeron.<wbr>gen.<wbr>data_<wbr>generation_<wbr>functions.<wbr>parse_<wbr>seed_<wbr>seq_<wbr>list</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="mergeron.gen.data_generation_functions.parse_seed_seq_list">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._sseq_list" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.parse_seed_seq_list._sseq_list (Python parameter) — List of RNG seed sequences" class="md-ellipsis">_<wbr>sseq_<wbr>list</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._mktshr_dist_type" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.parse_seed_seq_list._mktshr_dist_type (Python parameter) — Market share distribution type" class="md-ellipsis">_<wbr>mktshr_<wbr>dist_<wbr>type</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._price_spec" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="mergeron.gen.data_generation_functions.parse_seed_seq_list._price_spec (Python parameter) — Price specification" class="md-ellipsis">_<wbr>price_<wbr>spec</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list-returns" class="md-nav__link">
+    <span class="md-ellipsis">Returns</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mergeron.gen.data_generation_functions.parse_seed_seq_list-return-type" class="md-nav__link">
+    <span class="md-ellipsis">Return type</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1 id="module-mergeron.gen.data_generation_functions"><span id="mergeron-gen-data-generation-functions"></span>mergeron.gen.data_generation_functions<a class="headerlink" href="#module-mergeron.gen.data_generation_functions" title="Link to this heading">¶</a></h1>
+<p>Non-public functions called in data_generation.py</p>
+<h2 id="module-contents">Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.data_generation_functions.gen_share_data">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.data_generation_functions.</span></span><span class="sig-name descname"><span class="pre">gen_share_data</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_share_data" title="mergeron.gen.data_generation_functions.gen_share_data._sample_size (Python parameter)"><span class="n"><span class="pre">_sample_size</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_share_data._share_spec" title="mergeron.gen.data_generation_functions.gen_share_data._share_spec (Python parameter) — Class specifying parameters for generating market share data"><span class="n"><span class="pre">_share_spec</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_share_data._fcount_rng_seed_seq" title="mergeron.gen.data_generation_functions.gen_share_data._fcount_rng_seed_seq (Python parameter) — Seed sequence for assuring independent and, optionally, redundant streams"><span class="n"><span class="pre">_fcount_rng_seed_seq</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_share_data._mktshr_rng_seed_seq" title="mergeron.gen.data_generation_functions.gen_share_data._mktshr_rng_seed_seq (Python parameter) — Seed sequence for assuring independent and, optionally, redundant streams"><span class="n"><span class="pre">_mktshr_rng_seed_seq</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_share_data._nthreads" title="mergeron.gen.data_generation_functions.gen_share_data._nthreads (Python parameter) — Must be specified for generating repeatable random streams"><span class="n"><span class="pre">_nthreads</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">16</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/data_generation_functions.html#gen_share_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_share_data" title="Link to this definition">¶</a></dt>
+<dd><p>Helper function for generating share data.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_share_data-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_share_data-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.data_generation_functions.gen_share_data._share_spec"><span class="sig-name descname">_share_spec</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.ShareSpec" title="mergeron.gen.ShareSpec (Python class) — Market share specification">mergeron.gen.ShareSpec</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_share_data._share_spec" title="Permalink to this definition">¶</a></dt><dd><p>Class specifying parameters for generating market share data</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_share_data._fcount_rng_seed_seq"><span class="sig-name descname">_fcount_rng_seed_seq</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence | None</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_share_data._fcount_rng_seed_seq" title="Permalink to this definition">¶</a></dt><dd><p>Seed sequence for assuring independent and, optionally, redundant streams</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_share_data._mktshr_rng_seed_seq"><span class="sig-name descname">_mktshr_rng_seed_seq</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_share_data._mktshr_rng_seed_seq" title="Permalink to this definition">¶</a></dt><dd><p>Seed sequence for assuring independent and, optionally, redundant streams</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_share_data._nthreads"><span class="sig-name descname">_nthreads</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_share_data._nthreads" title="Permalink to this definition">¶</a></dt><dd><p>Must be specified for generating repeatable random streams</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.gen.data_generation_functions.gen_share_data-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_share_data-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Arrays representing shares, diversion ratios, etc. structured as a :ShareDataSample:</p>
+</dd>
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_share_data-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_share_data-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../index.html#mergeron.gen.ShareDataSample" title="mergeron.gen.ShareDataSample (Python class) — Container for generated market shares.">mergeron.gen.ShareDataSample</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.data_generation_functions.gen_market_shares_uniform">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.data_generation_functions.</span></span><span class="sig-name descname"><span class="pre">gen_market_shares_uniform</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._s_size" title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._s_size (Python parameter) — size of sample to be drawn"><span class="n"><span class="pre">_s_size</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">10</span><span class="o">**</span><span class="mi">6</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform" title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._dist_parms_mktshr (Python parameter)"><span class="n"><span class="pre">_dist_parms_mktshr</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="n">DIST_PARMS_DEFAULT</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._mktshr_rng_seed_seq" title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._mktshr_rng_seed_seq (Python parameter) — seed for rng, so results can be made replicable"><span class="n"><span class="pre">_mktshr_rng_seed_seq</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._nthreads" title="mergeron.gen.data_generation_functions.gen_market_shares_uniform._nthreads (Python parameter) — number of threads for random number generation"><span class="n"><span class="pre">_nthreads</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">16</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/data_generation_functions.html#gen_market_shares_uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform" title="Link to this definition">¶</a></dt>
+<dd><p>Generate merging-firm shares from Uniform distribution on the 3-D simplex.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_market_shares_uniform-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_uniform._s_size"><span class="sig-name descname">_s_size</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._s_size" title="Permalink to this definition">¶</a></dt><dd><p>size of sample to be drawn</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_uniform._mktshr_rng_seed_seq"><span class="sig-name descname">_mktshr_rng_seed_seq</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence | None</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._mktshr_rng_seed_seq" title="Permalink to this definition">¶</a></dt><dd><p>seed for rng, so results can be made replicable</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_uniform._nthreads"><span class="sig-name descname">_nthreads</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform._nthreads" title="Permalink to this definition">¶</a></dt><dd><p>number of threads for random number generation</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.gen.data_generation_functions.gen_market_shares_uniform-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>market shares and other market statistics for each draw (market)</p>
+</dd>
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_market_shares_uniform-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_uniform-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../index.html#mergeron.gen.ShareDataSample" title="mergeron.gen.ShareDataSample (Python class) — Container for generated market shares.">mergeron.gen.ShareDataSample</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.data_generation_functions.</span></span><span class="sig-name descname"><span class="pre">gen_market_shares_dirichlet_multimarket</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._s_size" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._s_size (Python parameter) — sample size to be drawn"><span class="n"><span class="pre">_s_size</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">10</span><span class="o">**</span><span class="mi">6</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._recapture_form" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._recapture_form (Python parameter) — r_1 = r_2 if &quot;proportional&quot;, otherwise MNL-consistent"><span class="n"><span class="pre">_recapture_form</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="n">RECTypes</span><span class="o">.</span><span class="n">INOUT</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_type_dir" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_type_dir (Python parameter) — Whether Dirichlet is Flat or Asymmetric"><span class="n"><span class="pre">_dist_type_dir</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="n">SHRDistributions</span><span class="o">.</span><span class="n">DIR_FLAT</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_parms_dir (Python parameter)"><span class="n"><span class="pre">_dist_parms_dir</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._firm_count_wts" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._firm_count_wts (Python parameter) — firm count weights array for sample to be drawn"><span class="n"><span class="pre">_firm_count_wts</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._fcount_rng_seed_seq" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._fcount_rng_seed_seq (Python parameter) — seed firm count rng, for replicable results"><span class="n"><span class="pre">_fcount_rng_seed_seq</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._mktshr_rng_seed_seq" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._mktshr_rng_seed_seq (Python parameter) — seed market share rng, for replicable results"><span class="n"><span class="pre">_mktshr_rng_seed_seq</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._nthreads" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._nthreads (Python parameter) — number of threads for parallelized random number generation"><span class="n"><span class="pre">_nthreads</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">16</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/data_generation_functions.html#gen_market_shares_dirichlet_multimarket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket" title="Link to this definition">¶</a></dt>
+<dd><p>Dirichlet-distributed shares with multiple firm-counts.</p>
+<p>Firm-counts may be specified as having Uniform distribution over the range
+of firm counts, or a set of probability weights may be specified. In the
+latter case the proportion of draws for each firm-count matches the
+specified probability weight.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._s_size"><span class="sig-name descname">_s_size</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._s_size" title="Permalink to this definition">¶</a></dt><dd><p>sample size to be drawn</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._firm_count_wts"><span class="sig-name descname">_firm_count_wts</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble | None</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._firm_count_wts" title="Permalink to this definition">¶</a></dt><dd><p>firm count weights array for sample to be drawn</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_type_dir"><span class="sig-name descname">_dist_type_dir</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.SHRDistributions" title="mergeron.gen.SHRDistributions (Python class) — Bases: enum.StrEnum">mergeron.gen.SHRDistributions</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_type_dir" title="Permalink to this definition">¶</a></dt><dd><p>Whether Dirichlet is Flat or Asymmetric</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._recapture_form"><span class="sig-name descname">_recapture_form</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../../index.html#mergeron.RECTypes" title="mergeron.RECTypes (Python class) — Bases: enum.StrEnum">mergeron.RECTypes</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._recapture_form" title="Permalink to this definition">¶</a></dt><dd><p>r_1 = r_2 if “proportional”, otherwise MNL-consistent</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._fcount_rng_seed_seq"><span class="sig-name descname">_fcount_rng_seed_seq</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence | None</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._fcount_rng_seed_seq" title="Permalink to this definition">¶</a></dt><dd><p>seed firm count rng, for replicable results</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._mktshr_rng_seed_seq"><span class="sig-name descname">_mktshr_rng_seed_seq</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence | None</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._mktshr_rng_seed_seq" title="Permalink to this definition">¶</a></dt><dd><p>seed market share rng, for replicable results</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._nthreads"><span class="sig-name descname">_nthreads</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._nthreads" title="Permalink to this definition">¶</a></dt><dd><p>number of threads for parallelized random number generation</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>array of market shares and other market statistics</p>
+</dd>
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../index.html#mergeron.gen.ShareDataSample" title="mergeron.gen.ShareDataSample (Python class) — Container for generated market shares.">mergeron.gen.ShareDataSample</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.data_generation_functions.</span></span><span class="sig-name descname"><span class="pre">gen_market_shares_dirichlet</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._dir_alphas" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._dir_alphas (Python parameter) — Shape parameters for Dirichlet distribution"><span class="n"><span class="pre">_dir_alphas</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._s_size" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._s_size (Python parameter) — sample size to be drawn"><span class="n"><span class="pre">_s_size</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">10</span><span class="o">**</span><span class="mi">6</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._recapture_form" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._recapture_form (Python parameter) — r_1 = r_2 if RECTypes.FIXED, otherwise MNL-consistent."><span class="n"><span class="pre">_recapture_form</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="n">RECTypes</span><span class="o">.</span><span class="n">INOUT</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._mktshr_rng_seed_seq" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._mktshr_rng_seed_seq (Python parameter) — seed market share rng, for replicable results"><span class="n"><span class="pre">_mktshr_rng_seed_seq</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._nthreads" title="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._nthreads (Python parameter) — number of threads for parallelized random number generation"><span class="n"><span class="pre">_nthreads</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">16</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/data_generation_functions.html#gen_market_shares_dirichlet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet" title="Link to this definition">¶</a></dt>
+<dd><p>Dirichlet-distributed shares with fixed firm-count.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._dir_alphas"><span class="sig-name descname">_dir_alphas</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._dir_alphas" title="Permalink to this definition">¶</a></dt><dd><p>Shape parameters for Dirichlet distribution</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._s_size"><span class="sig-name descname">_s_size</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._s_size" title="Permalink to this definition">¶</a></dt><dd><p>sample size to be drawn</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._recapture_form"><span class="sig-name descname">_recapture_form</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../../index.html#mergeron.RECTypes" title="mergeron.RECTypes (Python class) — Bases: enum.StrEnum">mergeron.RECTypes</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._recapture_form" title="Permalink to this definition">¶</a></dt><dd><p>r_1 = r_2 if RECTypes.FIXED, otherwise MNL-consistent. If
+RECTypes.OUTIN; the number of columns in the output share array
+is len(_dir_alphas) - 1.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._mktshr_rng_seed_seq"><span class="sig-name descname">_mktshr_rng_seed_seq</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence | None</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._mktshr_rng_seed_seq" title="Permalink to this definition">¶</a></dt><dd><p>seed market share rng, for replicable results</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._nthreads"><span class="sig-name descname">_nthreads</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._nthreads" title="Permalink to this definition">¶</a></dt><dd><p>number of threads for parallelized random number generation</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>array of market shares and other market statistics</p>
+</dd>
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../index.html#mergeron.gen.ShareDataSample" title="mergeron.gen.ShareDataSample (Python class) — Container for generated market shares.">mergeron.gen.ShareDataSample</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.data_generation_functions.gen_divr_array">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.data_generation_functions.</span></span><span class="sig-name descname"><span class="pre">gen_divr_array</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_divr_array._recapture_form" title="mergeron.gen.data_generation_functions.gen_divr_array._recapture_form (Python parameter) — Enum specifying Fixed (proportional), Inside-out, or Outside-in"><span class="n"><span class="pre">_recapture_form</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_divr_array._recapture_rate" title="mergeron.gen.data_generation_functions.gen_divr_array._recapture_rate (Python parameter) — If recapture is proportional or inside-out, the recapture rate for the firm with the smaller share."><span class="n"><span class="pre">_recapture_rate</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_divr_array._frmshr_array" title="mergeron.gen.data_generation_functions.gen_divr_array._frmshr_array (Python parameter) — Merging-firm shares."><span class="n"><span class="pre">_frmshr_array</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_divr_array._aggregate_purchase_prob" title="mergeron.gen.data_generation_functions.gen_divr_array._aggregate_purchase_prob (Python parameter) — 1 minus probability that the outside good is chosen; converts market shares to choice probabilities by multiplication."><span class="n"><span class="pre">_aggregate_purchase_prob</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="n">EMPTY_ARRAY_DEFAULT</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/data_generation_functions.html#gen_divr_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_divr_array" title="Link to this definition">¶</a></dt>
+<dd><p>Given merging-firm shares and related parameters, return diverion ratios.</p>
+<p>If recapture is specified as <a class="reference internal" href="../../index.html#mergeron.RECTypes.OUTIN" title="mergeron.RECTypes.OUTIN (Python attribute)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mergeron.RECTypes.OUTIN</span></code></a>, then the
+choice-probability for the outside good must be supplied.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_divr_array-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_divr_array-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.data_generation_functions.gen_divr_array._recapture_form"><span class="sig-name descname">_recapture_form</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../../index.html#mergeron.RECTypes" title="mergeron.RECTypes (Python class) — Bases: enum.StrEnum">mergeron.RECTypes</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_divr_array._recapture_form" title="Permalink to this definition">¶</a></dt><dd><p>Enum specifying Fixed (proportional), Inside-out, or Outside-in</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_divr_array._recapture_rate"><span class="sig-name descname">_recapture_rate</span><span class="p"> : </span><span class="desctype"><span class="desctype">float | None</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_divr_array._recapture_rate" title="Permalink to this definition">¶</a></dt><dd><p>If recapture is proportional or inside-out, the recapture rate
+for the firm with the smaller share.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_divr_array._frmshr_array"><span class="sig-name descname">_frmshr_array</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_divr_array._frmshr_array" title="Permalink to this definition">¶</a></dt><dd><p>Merging-firm shares.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_divr_array._aggregate_purchase_prob"><span class="sig-name descname">_aggregate_purchase_prob</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_divr_array._aggregate_purchase_prob" title="Permalink to this definition">¶</a></dt><dd><p>1 minus probability that the outside good is chosen; converts
+market shares to choice probabilities by multiplication.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.gen.data_generation_functions.gen_divr_array-raises">Raises<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_divr_array-raises" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the firm with the smaller share does not have the larger
+diversion ratio between the merging firms.</p>
+</dd>
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_divr_array-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_divr_array-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p>Merging-firm diversion ratios for mergers in the sample.</p>
+</dd>
+<dt class="field-even" id="mergeron.gen.data_generation_functions.gen_divr_array-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_divr_array-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>mergeron.ArrayDouble</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.data_generation_functions.gen_margin_price_data">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.data_generation_functions.</span></span><span class="sig-name descname"><span class="pre">gen_margin_price_data</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._frmshr_array" title="mergeron.gen.data_generation_functions.gen_margin_price_data._frmshr_array (Python parameter) — Merging-firm shares; see mergeron.gen.ShareSpec."><span class="n"><span class="pre">_frmshr_array</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._nth_firm_share" title="mergeron.gen.data_generation_functions.gen_margin_price_data._nth_firm_share (Python parameter) — Share of the nth firm in the sample."><span class="n"><span class="pre">_nth_firm_share</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._aggregate_purchase_prob" title="mergeron.gen.data_generation_functions.gen_margin_price_data._aggregate_purchase_prob (Python parameter) — 1 minus probability that the outside good is chosen; converts market shares to choice probabilities by multiplication."><span class="n"><span class="pre">_aggregate_purchase_prob</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_spec" title="mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_spec (Python parameter) — Enum specifying whether to use asymmetric or flat margins."><span class="n"><span class="pre">_pcm_spec</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._price_spec" title="mergeron.gen.data_generation_functions.gen_margin_price_data._price_spec (Python parameter) — Enum specifying whether to use symmetric, positive, or negative margins; see mergeron.gen.PriceSpec."><span class="n"><span class="pre">_price_spec</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._hsr_filing_test_type" title="mergeron.gen.data_generation_functions.gen_margin_price_data._hsr_filing_test_type (Python parameter) — Enum specifying restriction, if any, to impose on market data sample to model HSR filing requirements; see mergeron.gen.SSZConstants."><span class="n"><span class="pre">_hsr_filing_test_type</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_rng_seed_seq" title="mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_rng_seed_seq (Python parameter) — Seed sequence for generating margin data."><span class="n"><span class="pre">_pcm_rng_seed_seq</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pr_rng_seed_seq" title="mergeron.gen.data_generation_functions.gen_margin_price_data._pr_rng_seed_seq (Python parameter) — Seed sequence for generating price data."><span class="n"><span class="pre">_pr_rng_seed_seq</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._nthreads" title="mergeron.gen.data_generation_functions.gen_margin_price_data._nthreads (Python parameter) — Number of threads to use in generating price data."><span class="n"><span class="pre">_nthreads</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">16</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/data_generation_functions.html#gen_margin_price_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data" title="Link to this definition">¶</a></dt>
+<dd><p>Generate margin and price data for mergers in the sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_margin_price_data-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.data_generation_functions.gen_margin_price_data._frmshr_array"><span class="sig-name descname">_frmshr_array</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._frmshr_array" title="Permalink to this definition">¶</a></dt><dd><p>Merging-firm shares; see <a class="reference internal" href="../index.html#mergeron.gen.ShareSpec" title="mergeron.gen.ShareSpec (Python class) — Market share specification"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.ShareSpec</span></code></a>.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_margin_price_data._nth_firm_share"><span class="sig-name descname">_nth_firm_share</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._nth_firm_share" title="Permalink to this definition">¶</a></dt><dd><p>Share of the nth firm in the sample.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_margin_price_data._aggregate_purchase_prob"><span class="sig-name descname">_aggregate_purchase_prob</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._aggregate_purchase_prob" title="Permalink to this definition">¶</a></dt><dd><p>1 minus probability that the outside good is chosen; converts
+market shares to choice probabilities by multiplication.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_spec"><span class="sig-name descname">_pcm_spec</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.PCMSpec" title="mergeron.gen.PCMSpec (Python class) — Price-cost margin (PCM) specification">mergeron.gen.PCMSpec</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_spec" title="Permalink to this definition">¶</a></dt><dd><p>Enum specifying whether to use asymmetric or flat margins. see
+<a class="reference internal" href="../index.html#mergeron.gen.PCMSpec" title="mergeron.gen.PCMSpec (Python class) — Price-cost margin (PCM) specification"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.PCMSpec</span></code></a>.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_margin_price_data._price_spec"><span class="sig-name descname">_price_spec</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.PriceSpec" title="mergeron.gen.PriceSpec (Python class) — Bases: tuple[bool, str | None], enum.ReprEnum">mergeron.gen.PriceSpec</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._price_spec" title="Permalink to this definition">¶</a></dt><dd><p>Enum specifying whether to use symmetric, positive, or negative
+margins; see <a class="reference internal" href="../index.html#mergeron.gen.PriceSpec" title="mergeron.gen.PriceSpec (Python class) — Bases: tuple[bool, str | None], enum.ReprEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.PriceSpec</span></code></a>.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_margin_price_data._hsr_filing_test_type"><span class="sig-name descname">_hsr_filing_test_type</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.SSZConstants" title="mergeron.gen.SSZConstants (Python class) — Bases: float, enum.ReprEnum">mergeron.gen.SSZConstants</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._hsr_filing_test_type" title="Permalink to this definition">¶</a></dt><dd><p>Enum specifying restriction, if any, to impose on market data sample
+to model HSR filing requirements; see <a class="reference internal" href="../index.html#mergeron.gen.SSZConstants" title="mergeron.gen.SSZConstants (Python class) — Bases: float, enum.ReprEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.SSZConstants</span></code></a>.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_rng_seed_seq"><span class="sig-name descname">_pcm_rng_seed_seq</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_rng_seed_seq" title="Permalink to this definition">¶</a></dt><dd><p>Seed sequence for generating margin data.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_margin_price_data._pr_rng_seed_seq"><span class="sig-name descname">_pr_rng_seed_seq</span><span class="p"> : </span><span class="desctype"><span class="desctype">numpy.random.SeedSequence | None</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._pr_rng_seed_seq" title="Permalink to this definition">¶</a></dt><dd><p>Seed sequence for generating price data.</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.gen_margin_price_data._nthreads"><span class="sig-name descname">_nthreads</span><span class="p"> : </span><span class="desctype"><span class="desctype">int</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data._nthreads" title="Permalink to this definition">¶</a></dt><dd><p>Number of threads to use in generating price data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.gen.data_generation_functions.gen_margin_price_data-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Simulated margin- and price-data arrays for mergers in the sample.</p>
+</dd>
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.gen_margin_price_data-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.gen_margin_price_data-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p>tuple[<a class="reference internal" href="../index.html#mergeron.gen.MarginDataSample" title="mergeron.gen.MarginDataSample (Python class) — Container for generated margin array and related MNL test array.">mergeron.gen.MarginDataSample</a>, <a class="reference internal" href="../index.html#mergeron.gen.PriceDataSample" title="mergeron.gen.PriceDataSample (Python class) — Container for generated price array, and related.">mergeron.gen.PriceDataSample</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.data_generation_functions.beta_located_bound">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.data_generation_functions.</span></span><span class="sig-name descname"><span class="pre">beta_located_bound</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.beta_located_bound._dist_parms" title="mergeron.gen.data_generation_functions.beta_located_bound._dist_parms (Python parameter) — vector of \mu, \sigma, \mathtt{\min}, and \mathtt{\max} values"><span class="n"><span class="pre">_dist_parms</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/data_generation_functions.html#beta_located_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.data_generation_functions.beta_located_bound" title="Link to this definition">¶</a></dt>
+<dd><p>Return shape parameters for a non-standard beta, given the mean, stddev, range</p>
+<p>Recover the r.v.s as
+<span class="math notranslate nohighlight">\(\min + (\max - \min) \cdot \symup{Β}(a, b)\)</span>,
+with <cite>a</cite> and <cite>b</cite> calculated from the specified mean (<span class="math notranslate nohighlight">\(\mu\)</span>) and
+variance (<span class="math notranslate nohighlight">\(\sigma\)</span>). <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a></p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.beta_located_bound-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.beta_located_bound-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.data_generation_functions.beta_located_bound._dist_parms"><span class="sig-name descname">_dist_parms</span><span class="p"> : </span><span class="desctype"><span class="desctype">mergeron.ArrayDouble</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.beta_located_bound._dist_parms" title="Permalink to this definition">¶</a></dt><dd><p>vector of <span class="math notranslate nohighlight">\(\mu\)</span>, <span class="math notranslate nohighlight">\(\sigma\)</span>, <span class="math notranslate nohighlight">\(\mathtt{\min}\)</span>, and <span class="math notranslate nohighlight">\(\mathtt{\max}\)</span> values</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.gen.data_generation_functions.beta_located_bound-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.beta_located_bound-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>shape parameters for Beta distribution</p>
+</dd>
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.beta_located_bound-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.beta_located_bound-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p>mergeron.ArrayDouble</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">beta_located_bound(np.array([0.5,</span> <span class="pre">0.2887,</span> <span class="pre">0.0,</span> <span class="pre">1.0]))</span></code>.</p>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">8</a><span class="fn-bracket">]</span></span>
+<p>NIST, Beta Distribution. <a class="reference external" href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm">https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm</a></p>
+</aside>
+</aside>
+</dd></dl>
+
+<dl class="py function objdesc">
+<dt class="sig sig-object highlight sig-wrap py" id="mergeron.gen.data_generation_functions.parse_seed_seq_list">
+<span class="sig-prename descclassname"><span class="pre">mergeron.gen.data_generation_functions.</span></span><span class="sig-name descname"><span class="pre">parse_seed_seq_list</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._sseq_list" title="mergeron.gen.data_generation_functions.parse_seed_seq_list._sseq_list (Python parameter) — List of RNG seed sequences"><span class="n"><span class="pre">_sseq_list</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._mktshr_dist_type" title="mergeron.gen.data_generation_functions.parse_seed_seq_list._mktshr_dist_type (Python parameter) — Market share distribution type"><span class="n"><span class="pre">_mktshr_dist_type</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._price_spec" title="mergeron.gen.data_generation_functions.parse_seed_seq_list._price_spec (Python parameter) — Price specification"><span class="n"><span class="pre">_price_spec</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">/</span></span></em></span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/mergeron/gen/data_generation_functions.html#parse_seed_seq_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize RNG seed sequences to ensure independence of distinct random streams.</p>
+<p>The tuple of SeedSequences, is parsed in the following order
+for generating the relevant random variates:
+1.) quantity shares
+2.) price-cost margins
+3.) firm-counts, if <code class="code docutils literal notranslate"><span class="pre">MarketSpec.share_spec.dist_type</span></code> is a Dirichlet distribution
+4.) prices, if <code class="code docutils literal notranslate"><span class="pre">MarketSpec.price_spec</span> <span class="pre">==</span></code><a class="reference internal" href="../index.html#mergeron.gen.PriceSpec.ZERO" title="mergeron.gen.PriceSpec.ZERO (Python attribute)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mergeron.gen.PriceSpec.ZERO</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.parse_seed_seq_list-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="mergeron.gen.data_generation_functions.parse_seed_seq_list._sseq_list"><span class="sig-name descname">_sseq_list</span><span class="p"> : </span><span class="desctype"><span class="desctype">collections.abc.Sequence[numpy.random.SeedSequence] | None</span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._sseq_list" title="Permalink to this definition">¶</a></dt><dd><p>List of RNG seed sequences</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.parse_seed_seq_list._mktshr_dist_type"><span class="sig-name descname">_mktshr_dist_type</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.SHRDistributions" title="mergeron.gen.SHRDistributions (Python class) — Bases: enum.StrEnum">mergeron.gen.SHRDistributions</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._mktshr_dist_type" title="Permalink to this definition">¶</a></dt><dd><p>Market share distribution type</p>
+</dd>
+<dt id="mergeron.gen.data_generation_functions.parse_seed_seq_list._price_spec"><span class="sig-name descname">_price_spec</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="../index.html#mergeron.gen.PriceSpec" title="mergeron.gen.PriceSpec (Python class) — Bases: tuple[bool, str | None], enum.ReprEnum">mergeron.gen.PriceSpec</a></span></span><a class="headerlink" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list._price_spec" title="Permalink to this definition">¶</a></dt><dd><p>Price specification</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even" id="mergeron.gen.data_generation_functions.parse_seed_seq_list-returns">Returns<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list-returns" title="Permalink to this headline">¶</a></dt>
+<dd class="field-even"><p>Seed sequence data</p>
+</dd>
+<dt class="field-odd" id="mergeron.gen.data_generation_functions.parse_seed_seq_list-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#mergeron.gen.data_generation_functions.parse_seed_seq_list-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../index.html#mergeron.gen.SeedSequenceData" title="mergeron.gen.SeedSequenceData (Python class) — Bases: NamedTuple">mergeron.gen.SeedSequenceData</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../data_generation/index.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: mergeron.gen.data_generation" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              mergeron.gen.data_generation
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../enforcement_stats/index.html" class="md-footer__link md-footer__link--next" aria-label="Next: mergeron.gen.enforcement_stats" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              mergeron.gen.enforcement_stats
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017--2024, S. Murthy Kambhampaty.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.4.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.top", "navigation.tracking", "toc.follow"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="../../../../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+        <script id="MathJax-script" src="../../../../_static/mathjax/tex-mml-chtml.js?v=cadf963e"></script>
+    
+  </body>
+</html>

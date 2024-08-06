@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.guidelines_boundary_functions - mergeron 2024.739099.1</title>
+        <title>mergeron.core.guidelines_boundary_functions - mergeron 2024.739104.1</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.1
+    mergeron 2024.739104.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1087,7 +1087,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># _r_val is not needed for max boundary, but is specified for consistency</span>
-    <span class="c1"># of function call with other shrratio_mgnsym_boundary functions</span>
+    <span class="c1"># of function call with other share-ratio boundary functions</span>
     <span class="k">del</span> <span class="n">_r_val</span>
     <span class="n">_delta_star</span> <span class="o">=</span> <span class="n">mpf</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_delta_star</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">_s_intcpt</span> <span class="o">=</span> <span class="n">_delta_star</span>
@@ -1312,9 +1312,9 @@
         <span class="n">mktshares_plot_flag</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">mktshares_axlbls_flag</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mpa</span><span class="o">.</span><span class="n">Axes</span><span class="p">:</span>
-        <span class="c1"># Set the width of axis gridlines, and tick marks:</span>
+        <span class="c1"># Set the width of axis grid lines, and tick marks:</span>
         <span class="c1"># both axes, both major and minor ticks</span>
-        <span class="c1"># Frame, grid, and facecolor</span>
+        <span class="c1"># Frame, grid, and face color</span>
         <span class="k">for</span> <span class="n">_spos0</span> <span class="ow">in</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">:</span>
             <span class="n">_ax1</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">_spos0</span><span class="p">]</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
             <span class="n">_ax1</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">_spos0</span><span class="p">]</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>

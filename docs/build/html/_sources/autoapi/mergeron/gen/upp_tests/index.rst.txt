@@ -52,33 +52,21 @@ Module Contents
       :type:  str
 
 
-.. py:function:: sim_enf_cnts_ll(_mkt_sample_spec, _enf_parm_vec, _sim_test_regime, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16, save_data_to_file = False, saved_array_name_suffix = '')
-
-   A function to parallelize data-generation and testing
-
-   The parameters `_sim_enf_cnts_kwargs` are passed unaltered to
-   the parent function, `sim_enf_cnts()`, except that, if provided,
-   `seed_seq_list` is used to spawn a seed sequence for each thread,
-   to assure independent samples in each thread, and `nthreads` defines
-   the number of parallel processes used. The number of draws in
-   each thread may be tuned, by trial and error, to the amount of
-   memory (RAM) available.
-
-   :param _enf_parm_vec: Guidelines thresholds to test against
-   :param _mkt_sample_spec: Configuration to use for generating sample data to test
-   :param _sim_test_regime: Configuration to use for testing
-   :param saved_array_name_suffix: Suffix to add to the array names in the HDF5 file
-   :param save_data_to_file: Whether to save data to an HDF5 file, and where to save it
-   :param sample_size: Number of draws to simulate
-   :param seed_seq_list: List of seed sequences, to assure independent samples in each thread
-   :param nthreads: Number of parallel processes to use
-
-   :returns: Arrays of UPPTestCounts
-
-
-.. py:function:: sim_enf_cnts(_mkt_sample_spec, _upp_test_parms, _sim_test_regime, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16, save_data_to_file = False, saved_array_name_suffix = '')
-
 .. py:function:: enf_cnts(_market_data_sample, _upp_test_parms, _upp_test_regime, /)
+
+   Estimate enforcement and clearance counts from market data sample
+
+   :param _market_data_sample: Market data sample
+   :param _upp_test_parms: Threshold values for various Guidelines criteria
+   :param _upp_test_regime: Specifies whether to analyze enforcement, clearance, or both
+                            and the GUPPI and diversion ratio aggregators employed, with
+                            default being to analyze enforcement based on the maximum
+                            merging-firm GUPPI and maximum diversion ratio between the
+                            merging firms
+
+   :returns: Enforced and cleared counts
+   :rtype: UPPTestsCounts
+
 
 .. py:function:: gen_upp_test_arrays(_market_data, _upp_test_parms, _sim_test_regime, /)
 

@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron 2024.739099.1</title>
+        <title>mergeron 2024.739104.1</title>
       
     
     
@@ -77,7 +77,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="#" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="#" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -186,12 +186,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="#" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="#" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.1
+    mergeron 2024.739104.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -392,13 +392,13 @@
 <p>Here, enforcement rates derived with merger enforcement as being exogenous to firm conduct are defined as intrinsic enforcement rates, and similarly intrinsic clearance rates. Depending on the merger enforcement regime, or merger control regime, intrinsic enforcement rates may also not be the complement of intrinsic clearance rates, i.e, it is not necessarily true that the intrinsic clearance rate estimate for a given enforcement regime is 1 minus the intrinsic enforcement rate. In contrast, observed enforcement rates reflect the deterrent effects of merger enforcement on firm conduct as well as the effects of merger screening on the level of enforcement; and, by definition, the observed clearance rate is 1 minus the observed enforcement rate.</p>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <p>Module <a class="reference internal" href="autoapi/mergeron/core/guidelines_boundaries/index.html#module-mergeron.core.guidelines_boundaries" title="mergeron.core.guidelines_boundaries (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.core.guidelines_boundaries</span></code></a> includes classes for specifying concentration bounds (<a class="reference internal" href="autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.ConcentrationBoundary" title="mergeron.core.guidelines_boundaries.ConcentrationBoundary (Python class) — Concentration parameters, boundary coordinates, and area under concentration boundary."><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.core.guidelines_boundaries.ConcentrationBoundary</span></code></a>) and diversion-ratio bounds (<a class="reference internal" href="autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary" title="mergeron.core.guidelines_boundaries.DiversionRatioBoundary (Python class) — Diversion ratio specification, boundary coordinates, and area under boundary."><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.core.guidelines_boundaries.DiversionRatioBoundary</span></code></a>), with automatic generation of boundary (as an array of share-pairs) and area. This module also includes a function for generating plots of concentration and diversion-ratio boundaries, and functions for mapping GUPPI standards to concentration (ΔHHI) standards, and vice-versa.</p>
-<p>Module <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#module-mergeron.gen.market_sample" title="mergeron.gen.market_sample (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.gen.market_sample</span></code></a> includes the <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample" title="mergeron.gen.market_sample.MarketSample (Python class) — Bases: mergeron.gen.MarketSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample</span></code></a> with methods for, (i) generating sample data under a rich specification of shares, diversion ratios, margins, prices, and HSR filing requirements, and (ii) for estimating enforcement or clearance rates under specified enforcement regimes given a method of aggregating diversion ratio or GUPPI estimates for the firms in a merger. Notably. share are generated not just for markets with a fixed number of firms, but for markets with multiple firm-count weights, which may be left unspecified or explicitly specified.</p>
+<p>Module <code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.gen.market_sample</span></code> includes the <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample</span></code> with methods for, (i) generating sample data under a rich specification of shares, diversion ratios, margins, prices, and HSR filing requirements, and (ii) for estimating enforcement or clearance rates under specified enforcement regimes given a method of aggregating diversion ratio or GUPPI estimates for the firms in a merger. Notably. share are generated not just for markets with a fixed number of firms, but for markets with multiple firm-count weights, which may be left unspecified or explicitly specified.</p>
 <p>Unless otherwise specified, merging-firm shares are drawn with uniform distribution over the space <span class="math notranslate nohighlight">\(s_1 + s_2 \leqslant 1\)</span> for an unspecified number of firms. Alternatively, shares may be drawn from the Dirichlet distribution, with specified shape parameters (see <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.ShareConstants</span></code>. When drawing shares from the Dirichlet distribution, the user passes, using <code class="xref py py-attr docutils literal notranslate"><span class="pre">mergeron.gen.MarketSpec.ShareSpec.firm_count_weights</span></code>, a vector of weights specifying the frequency distribution over sequential firm counts, e.g., <code class="code docutils literal notranslate"><span class="pre">[133,</span> <span class="pre">184,</span> <span class="pre">134,</span> <span class="pre">52,</span> <span class="pre">32,</span> <span class="pre">10,</span> <span class="pre">12,</span> <span class="pre">4,</span> <span class="pre">3]</span></code> to specify shares drawn from Dirichlet distributions with 2 to 10 pre-merger firms distributed as in data for FTC merger investigations during 1996–2003 (See, for example, Table 4.1 of <a class="reference external" href="https://www.ftc.gov/sites/default/files/documents/reports/horizontal-merger-investigation-data-fiscal-years-1996-2003/040831horizmergersdata96-03.pdf">FTC, Horizontal Merger Investigations Data, Fiscal Years 1996–2003 (Revised: August 31, 2004)</a>). If <code class="code docutils literal notranslate"><span class="pre">mergeron.gen.MarketSpec.ShareSpec.firm_count_weights</span></code> is not assigned a value when defining <code class="xref py py-attr docutils literal notranslate"><span class="pre">mergeron.gen.MarketSpec.ShareSpec</span></code> (which has type, <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec" title="mergeron.gen.ShareSpec (Python class) — Market share specification"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.ShareSpec</span></code></a>), the default values is used, with results in a sample of markets with 2 to 6 firms with equal relative frequency.</p>
-<p>Recapture rates can be specified as, “proportional”, “inside-out”, “outside-in” (see <a class="reference internal" href="autoapi/mergeron/index.html#mergeron.RECConstants" title="mergeron.RECConstants (Python class) — Bases: enum.StrEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.RECConstants</span></code></a>. The “inside-out” specification results in recapture ratios consistent with merging-firms’ in-market shares and a default recapture rate. The “outside-in” specification yields diversion ratios from purchase probabilities drawn at random for <span class="math notranslate nohighlight">\(N+1\)</span> goods, from which are derived market shares and recapture rates for the <span class="math notranslate nohighlight">\(N\)</span> goods in the putative market (see, <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.DiversionRatioSpec</span></code>). The “outside-in” specification is invalid when the distribution of markets over firm-count is unspecified, i.e., when <code class="code docutils literal notranslate"><span class="pre">mergeron.gen.MarketSpec.ShareSpec.dist_type</span> <span class="pre">==</span></code><code class="xref py py-attr docutils literal notranslate"><span class="pre">mergeron.gen.ShareConstants.UNI</span></code>.</p>
+<p>Recapture rates can be specified as, “proportional”, “inside-out”, “outside-in” (see <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.RECConstants</span></code>. The “inside-out” specification results in recapture ratios consistent with merging-firms’ in-market shares and a default recapture rate. The “outside-in” specification yields diversion ratios from purchase probabilities drawn at random for <span class="math notranslate nohighlight">\(N+1\)</span> goods, from which are derived market shares and recapture rates for the <span class="math notranslate nohighlight">\(N\)</span> goods in the putative market (see, <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.DiversionRatioSpec</span></code>). The “outside-in” specification is invalid when the distribution of markets over firm-count is unspecified, i.e., when <code class="code docutils literal notranslate"><span class="pre">mergeron.gen.MarketSpec.ShareSpec.dist_type</span> <span class="pre">==</span></code><code class="xref py py-attr docutils literal notranslate"><span class="pre">mergeron.gen.ShareConstants.UNI</span></code>.</p>
 <p>Price-cost-margins may be specified as having uniform distribution, Beta distribution (including a bounded Beta distribution with specified mean and variance), or an empirical distribution. The empirical margin distribution is based on resampling margin data published by Prof. Damodaran of NYU Stern School of Business (see Notes), using an estimated Gaussian KDE. The second merging firm’s margin may be specified as symmetric, i.i.d., or subject to equilibrium conditions for (profit-maximization in) Bertrand-Nash oligopoly with MNL demand (see, <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec" title="mergeron.gen.PCMSpec (Python class) — Price-cost margin (PCM) specification"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.PCMSpec</span></code></a>).</p>
-<p>Prices may be specified as symmetric or asymmetric, and in the latter case, the direction of correlation between merging firm prices, if any, can also be specified (see, <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.PriceSpec</span></code>).</p>
+<p>Prices may be specified as symmetric or asymmetric, and in the latter case, the direction of correlation between merging firm prices, if any, can also be specified (see, <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec" title="mergeron.gen.PriceSpec (Python class) — Bases: tuple[bool, str | None], enum.ReprEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.PriceSpec</span></code></a>).</p>
 <p>The market sample may be restricted to mergers meeting the HSR filing requirement under two alternative approaches: in the one, the smaller of the two merging firms meets the HSR filing threshold for the smaller (acquired) firm. In the other, the <span class="math notranslate nohighlight">\(n\)</span>-th firm’s size matches the size requirement for the smaller merging firm (see, <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants" title="mergeron.gen.SSZConstants (Python class) — Bases: float, enum.ReprEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.SSZConstants</span></code></a>). The second assumption avoids the unfortunate assumption in the first that, within the resulting sample, the larger merging firm be at least 10 times as large as the smaller merging firm, as a consequence of the full definition of the HSR filing requirement.</p>
-<p>The full specification of a market sample is given in a <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample" title="mergeron.gen.market_sample.MarketSample (Python class) — Bases: mergeron.gen.MarketSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample</span></code></a> object, including the above parameters. Data are drawn by invoking <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.generate_sample" title="mergeron.gen.market_sample.MarketSample.generate_sample (Python method) — Generate market data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample.generate_sample()</span></code></a> which adds a <code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code> property of class, <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample" title="mergeron.gen.MarketDataSample (Python class) — Container for generated markets data sample."><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.MarketDataSample</span></code></a>. Enforcement or clearance counts are computed by invoking <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts" title="mergeron.gen.market_sample.MarketSample.estimate_enf_counts (Python method) — Generate market data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample.estimate_enf_counts()</span></code></a>, which adds an <code class="xref py py-attr docutils literal notranslate"><span class="pre">enf_counts</span></code> property of class <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsCounts" title="mergeron.gen.UPPTestsCounts (Python class) — Counts of markets resolved as specified"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.UPPTestsCounts</span></code></a>. For fast, parallel generation of enforcement or clearance counts over large market data samples that ordinarily would exceed available limits on machine memory, the user can invoke the method <code class="xref py py-meth docutils literal notranslate"><span class="pre">estimate_enf_counts()</span></code> on a <a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample" title="mergeron.gen.market_sample.MarketSample (Python class) — Bases: mergeron.gen.MarketSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample</span></code></a> object without first invoking <code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_sample()</span></code>. Note, however, that this strategy does not retain the market sample in memory in the interests of conserving memory and maintaining high performance (the user can specify that the market sample and enforcement statistics be stored to permanent storage; when saving to current PCIe NVMe storage, the performance penalty is slight, but can be considerable if saving to SATA storage).</p>
+<p>The full specification of a market sample is given in a <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample</span></code> object, including the above parameters. Data are drawn by invoking <code class="xref py py-meth docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample.generate_sample()</span></code> which adds a <code class="xref py py-attr docutils literal notranslate"><span class="pre">data</span></code> property of class, <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample" title="mergeron.gen.MarketDataSample (Python class) — Container for generated markets data sample."><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.MarketDataSample</span></code></a>. Enforcement or clearance counts are computed by invoking <code class="xref py py-meth docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample.estimate_enf_counts()</span></code>, which adds an <code class="xref py py-attr docutils literal notranslate"><span class="pre">enf_counts</span></code> property of class <a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsCounts" title="mergeron.gen.UPPTestsCounts (Python class) — Counts of markets resolved as specified"><code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.UPPTestsCounts</span></code></a>. For fast, parallel generation of enforcement or clearance counts over large market data samples that ordinarily would exceed available limits on machine memory, the user can invoke the method <code class="xref py py-meth docutils literal notranslate"><span class="pre">estimate_enf_counts()</span></code> on a <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.gen.market_sample.MarketSample</span></code> object without first invoking <code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_sample()</span></code>. Note, however, that this strategy does not retain the market sample in memory in the interests of conserving memory and maintaining high performance (the user can specify that the market sample and enforcement statistics be stored to permanent storage; when saving to current PCIe NVMe storage, the performance penalty is slight, but can be considerable if saving to SATA storage).</p>
 <p>Enforcement statistics based on FTC investigations data and test data are printed to screen or rendered to LaTex files (for processing into publication-quality tables) using methods provided in <a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#module-mergeron.gen.enforcement_stats" title="mergeron.gen.enforcement_stats (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.gen.enforcement_stats</span></code></a>.</p>
 <p>Programs demonstrating the use of this package are included in the sub-package, <a class="reference internal" href="autoapi/mergeron/demo/index.html#module-mergeron.demo" title="mergeron.demo (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">mergeron.demo</span></code></a>.</p>
 <p>This package includes  a class, <code class="xref py py-class docutils literal notranslate"><span class="pre">mergeron.core.pseudorandom_numbers.MulithreadedRNG</span></code> for generating random numbers with selected continuous distribution over specified parameters, and with CPU multithreading on machines with multiple virtual, logical, or physical CPU cores. This class is an adaptation from the documentation of the <code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> package, from the discussion on <cite>multithreaded random-number generation &lt;https://numpy.org/doc/stable/reference/random/multithreading.html&gt;_</cite>; the version included here permits selection of the distribution with pre-tests to catch and inform on common errors. To access these directly:</p>
@@ -828,46 +828,178 @@
 <li class="toctree-l4"><a class="reference internal" href="autoapi/mergeron/gen/index.html#submodules">Submodules</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html">mergeron.gen.data_generation</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#module-contents">Module Contents</a><ul>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData">mergeron.gen.data_generation.SeedSequenceData</a><ul>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData.mktshr_rng_seed_seq">mktshr_rng_seed_seq</a></li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData.pcm_rng_seed_seq">pcm_rng_seed_seq</a></li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData.fcount_rng_seed_seq">fcount_rng_seed_seq</a></li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData.pr_rng_seed_seq">pr_rng_seed_seq</a></li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs">mergeron.gen.data_generation.SamplingFunctionKWArgs</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.sample_size">sample_size</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.seed_seq_list">seed_seq_list</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.nthreads">nthreads</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.save_data_to_file">save_data_to_file</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.saved_array_name_suffix">saved_array_name_suffix</a></li>
 </ul>
 </li>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_market_sample">mergeron.gen.data_generation.gen_market_sample</a><ul>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_market_sample-parameters">Parameters</a><ul>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_market_sample._mkt_sample_spec">_mkt_sample_spec</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_market_sample.sample_size">sample_size</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_market_sample.seed_seq_list">seed_seq_list</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_market_sample.nthreads">nthreads</a></li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample">mergeron.gen.data_generation.MarketSample</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.share_spec">share_spec</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.pcm_spec">pcm_spec</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.price_spec">price_spec</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.hsr_filing_test_type">hsr_filing_test_type</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.data">data</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.enf_counts">enf_counts</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.gen_market_sample">gen_market_sample</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.gen_market_sample-returns">Returns</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.gen_market_sample-return-type">Return type</a></li>
 </ul>
 </li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_market_sample-returns">Returns</a></li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_market_sample-return-type">Return type</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.generate_sample">generate_sample</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts">sim_enf_cnts</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts-parameters">Parameters</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts._upp_test_parms">_upp_test_parms</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts._sim_test_regime">_sim_test_regime</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts.sample_size">sample_size</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts.seed_seq_list">seed_seq_list</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts.nthreads">nthreads</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts.save_data_to_file">save_data_to_file</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts.saved_array_name_suffix">saved_array_name_suffix</a></li>
 </ul>
 </li>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.parse_seed_seq_list">mergeron.gen.data_generation.parse_seed_seq_list</a><ul>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.parse_seed_seq_list-parameters">Parameters</a><ul>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.parse_seed_seq_list._sseq_list">_sseq_list</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.parse_seed_seq_list._mktshr_dist_type">_mktshr_dist_type</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.parse_seed_seq_list._price_spec">_price_spec</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts-returns">Returns</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts-return-type">Return type</a></li>
 </ul>
 </li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.parse_seed_seq_list-returns">Returns</a></li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.parse_seed_seq_list-return-type">Return type</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll">sim_enf_cnts_ll</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll-parameters">Parameters</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll._enf_parm_vec">_enf_parm_vec</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll._sim_test_regime">_sim_test_regime</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll.sample_size">sample_size</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll.seed_seq_list">seed_seq_list</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll.nthreads">nthreads</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll.save_data_to_file">save_data_to_file</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll.saved_array_name_suffix">saved_array_name_suffix</a></li>
 </ul>
 </li>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_divr_array">mergeron.gen.data_generation.gen_divr_array</a><ul>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_divr_array-parameters">Parameters</a><ul>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_divr_array._recapture_form">_recapture_form</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_divr_array._recapture_rate">_recapture_rate</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_divr_array._frmshr_array">_frmshr_array</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_divr_array._aggregate_purchase_prob">_aggregate_purchase_prob</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll-returns">Returns</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll-return-type">Return type</a></li>
 </ul>
 </li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_divr_array-returns">Returns</a></li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_divr_array-return-type">Return type</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts">estimate_enf_counts</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts-parameters">Parameters</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts._enf_parm_vec">_enf_parm_vec</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts._upp_test_regime">_upp_test_regime</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts.sample_size">sample_size</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts.seed_seq_list">seed_seq_list</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts.nthreads">nthreads</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts.save_data_to_file">save_data_to_file</a></li>
+<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts.saved_array_name_suffix">saved_array_name_suffix</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts-return-type">Return type</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html">mergeron.gen.data_generation_functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_share_data">mergeron.gen.data_generation_functions.gen_share_data</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_share_data-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_share_data._share_spec">_share_spec</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_share_data._fcount_rng_seed_seq">_fcount_rng_seed_seq</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_share_data._mktshr_rng_seed_seq">_mktshr_rng_seed_seq</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_share_data._nthreads">_nthreads</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_share_data-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_share_data-return-type">Return type</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_uniform">mergeron.gen.data_generation_functions.gen_market_shares_uniform</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_uniform-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_uniform._s_size">_s_size</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_uniform._mktshr_rng_seed_seq">_mktshr_rng_seed_seq</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_uniform._nthreads">_nthreads</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_uniform-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_uniform-return-type">Return type</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket">mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._s_size">_s_size</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._firm_count_wts">_firm_count_wts</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._dist_type_dir">_dist_type_dir</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._recapture_form">_recapture_form</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._fcount_rng_seed_seq">_fcount_rng_seed_seq</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._mktshr_rng_seed_seq">_mktshr_rng_seed_seq</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket._nthreads">_nthreads</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet_multimarket-return-type">Return type</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet">mergeron.gen.data_generation_functions.gen_market_shares_dirichlet</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._dir_alphas">_dir_alphas</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._s_size">_s_size</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._recapture_form">_recapture_form</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._mktshr_rng_seed_seq">_mktshr_rng_seed_seq</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet._nthreads">_nthreads</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_market_shares_dirichlet-return-type">Return type</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array">mergeron.gen.data_generation_functions.gen_divr_array</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array._recapture_form">_recapture_form</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array._recapture_rate">_recapture_rate</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array._frmshr_array">_frmshr_array</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array._aggregate_purchase_prob">_aggregate_purchase_prob</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array-raises">Raises</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_divr_array-return-type">Return type</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data">mergeron.gen.data_generation_functions.gen_margin_price_data</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data._frmshr_array">_frmshr_array</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data._nth_firm_share">_nth_firm_share</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data._aggregate_purchase_prob">_aggregate_purchase_prob</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_spec">_pcm_spec</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data._price_spec">_price_spec</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data._hsr_filing_test_type">_hsr_filing_test_type</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data._pcm_rng_seed_seq">_pcm_rng_seed_seq</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data._pr_rng_seed_seq">_pr_rng_seed_seq</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data._nthreads">_nthreads</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.gen_margin_price_data-return-type">Return type</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.beta_located_bound">mergeron.gen.data_generation_functions.beta_located_bound</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.beta_located_bound-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.beta_located_bound._dist_parms">_dist_parms</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.beta_located_bound-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.beta_located_bound-return-type">Return type</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.parse_seed_seq_list">mergeron.gen.data_generation_functions.parse_seed_seq_list</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.parse_seed_seq_list-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.parse_seed_seq_list._sseq_list">_sseq_list</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.parse_seed_seq_list._mktshr_dist_type">_mktshr_dist_type</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.parse_seed_seq_list._price_spec">_price_spec</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.parse_seed_seq_list-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/data_generation_functions/index.html#mergeron.gen.data_generation_functions.parse_seed_seq_list-return-type">Return type</a></li>
 </ul>
 </li>
 </ul>
@@ -930,14 +1062,14 @@
 </li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.HHI_DELTA_KNOTS">mergeron.gen.enforcement_stats.HHI_DELTA_KNOTS</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.HHI_POST_ZONE_KNOTS">mergeron.gen.enforcement_stats.HHI_POST_ZONE_KNOTS</a></li>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.HMG_PRESUMPTION_ZONE_DICT">mergeron.gen.enforcement_stats.HMG_PRESUMPTION_ZONE_DICT</a></li>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_VALS">mergeron.gen.enforcement_stats.ZONE_VALS</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_STRINGS">mergeron.gen.enforcement_stats.ZONE_STRINGS</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_HHI">mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_HHI</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_DELTA">mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_DELTA</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_STRINGS_LATEX">mergeron.gen.enforcement_stats.ZONE_STRINGS_LATEX</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_HHI_LATEX">mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_HHI_LATEX</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_DELTA_LATEX">mergeron.gen.enforcement_stats.ZONE_DETAIL_STRINGS_DELTA_LATEX</a></li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.HMG_PRESUMPTION_ZONE_MAP">mergeron.gen.enforcement_stats.HMG_PRESUMPTION_ZONE_MAP</a></li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.ZONE_VALS">mergeron.gen.enforcement_stats.ZONE_VALS</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_output">mergeron.gen.enforcement_stats.enf_stats_output</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_listing_by_group">mergeron.gen.enforcement_stats.enf_stats_listing_by_group</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_cnts_listing_byfirmcount">mergeron.gen.enforcement_stats.enf_cnts_listing_byfirmcount</a></li>
@@ -949,40 +1081,19 @@
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_table_onedim">mergeron.gen.enforcement_stats.enf_stats_table_onedim</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.enf_stats_table_byzone">mergeron.gen.enforcement_stats.enf_stats_table_byzone</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.stats_print_rows">mergeron.gen.enforcement_stats.stats_print_rows</a></li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.propn_ci">mergeron.gen.enforcement_stats.propn_ci</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.propn_ci-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.propn_ci._npos">_npos</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.propn_ci._nobs">_nobs</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.propn_ci.alpha">alpha</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.propn_ci.method">method</a></li>
+</ul>
+</li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.propn_ci-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.propn_ci-return-type">Return type</a></li>
+</ul>
+</li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/enforcement_stats/index.html#mergeron.gen.enforcement_stats.render_table_pdf">mergeron.gen.enforcement_stats.render_table_pdf</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html">mergeron.gen.market_sample</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#module-contents">Module Contents</a><ul>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample">mergeron.gen.market_sample.MarketSample</a><ul>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.generate_sample">generate_sample</a><ul>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.generate_sample-parameters">Parameters</a><ul>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.generate_sample.sample_size">sample_size</a></li>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.generate_sample.seed_seq_list">seed_seq_list</a></li>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.generate_sample.nthreads">nthreads</a></li>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.generate_sample.save_data_to_file">save_data_to_file</a></li>
-</ul>
-</li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.generate_sample-return-type">Return type</a></li>
-</ul>
-</li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts">estimate_enf_counts</a><ul>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts-parameters">Parameters</a><ul>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts._enf_parm_vec">_enf_parm_vec</a></li>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts._upp_test_regime">_upp_test_regime</a></li>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts.sample_size">sample_size</a></li>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts.seed_seq_list">seed_seq_list</a></li>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts.nthreads">nthreads</a></li>
-<li class="toctree-l10"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts.save_data_to_file">save_data_to_file</a></li>
-</ul>
-</li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/market_sample/index.html#mergeron.gen.market_sample.MarketSample.estimate_enf_counts-return-type">Return type</a></li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -998,24 +1109,17 @@
 <li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.INVRESCntsArgs.saved_array_name_suffix">saved_array_name_suffix</a></li>
 </ul>
 </li>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll">mergeron.gen.upp_tests.sim_enf_cnts_ll</a><ul>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll-parameters">Parameters</a><ul>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll._enf_parm_vec">_enf_parm_vec</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll._mkt_sample_spec">_mkt_sample_spec</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll._sim_test_regime">_sim_test_regime</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll.saved_array_name_suffix">saved_array_name_suffix</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll.save_data_to_file">save_data_to_file</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll.sample_size">sample_size</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll.seed_seq_list">seed_seq_list</a></li>
-<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll.nthreads">nthreads</a></li>
+<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.enf_cnts">mergeron.gen.upp_tests.enf_cnts</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.enf_cnts-parameters">Parameters</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.enf_cnts._market_data_sample">_market_data_sample</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.enf_cnts._upp_test_parms">_upp_test_parms</a></li>
+<li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.enf_cnts._upp_test_regime">_upp_test_regime</a></li>
 </ul>
 </li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll-returns">Returns</a></li>
-<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts_ll-return-type">Return type</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.enf_cnts-returns">Returns</a></li>
+<li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.enf_cnts-return-type">Return type</a></li>
 </ul>
 </li>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.sim_enf_cnts">mergeron.gen.upp_tests.sim_enf_cnts</a></li>
-<li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.enf_cnts">mergeron.gen.upp_tests.enf_cnts</a></li>
 <li class="toctree-l7"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.gen_upp_test_arrays">mergeron.gen.upp_tests.gen_upp_test_arrays</a><ul>
 <li class="toctree-l8"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.gen_upp_test_arrays-parameters">Parameters</a><ul>
 <li class="toctree-l9"><a class="reference internal" href="autoapi/mergeron/gen/upp_tests/index.html#mergeron.gen.upp_tests.gen_upp_test_arrays._market_data">_market_data</a></li>
@@ -1037,35 +1141,42 @@
 <li class="toctree-l4"><a class="reference internal" href="autoapi/mergeron/gen/index.html#package-contents">Package Contents</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.EMPTY_ARRAY_DEFAULT">mergeron.gen.EMPTY_ARRAY_DEFAULT</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.FCOUNT_WTS_DEFAULT">mergeron.gen.FCOUNT_WTS_DEFAULT</a></li>
-<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants">mergeron.gen.PriceConstants</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.SYM">SYM</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.ZERO">ZERO</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.NEG">NEG</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.POS">POS</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.CSY">CSY</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData">mergeron.gen.SeedSequenceData</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData.mktshr_rng_seed_seq">mktshr_rng_seed_seq</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData.pcm_rng_seed_seq">pcm_rng_seed_seq</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData.fcount_rng_seed_seq">fcount_rng_seed_seq</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData.pr_rng_seed_seq">pr_rng_seed_seq</a></li>
 </ul>
 </li>
-<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants">mergeron.gen.SHRConstants</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.UNI">UNI</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_FLAT">DIR_FLAT</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_FLAT_CONSTR">DIR_FLAT_CONSTR</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_ASYM">DIR_ASYM</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_COND">DIR_COND</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec">mergeron.gen.PriceSpec</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.SYM">SYM</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.ZERO">ZERO</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.NEG">NEG</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.POS">POS</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.CSY">CSY</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions">mergeron.gen.SHRDistributions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.UNI">UNI</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.DIR_FLAT">DIR_FLAT</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.DIR_FLAT_CONSTR">DIR_FLAT_CONSTR</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.DIR_ASYM">DIR_ASYM</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.DIR_COND">DIR_COND</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec">mergeron.gen.ShareSpec</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.recapture_form">recapture_form</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.recapture_rate">recapture_rate</a></li>
 <li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.dist_type">dist_type</a></li>
 <li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.dist_parms">dist_parms</a></li>
 <li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.firm_counts_weights">firm_counts_weights</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.recapture_form">recapture_form</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.recapture_rate">recapture_rate</a></li>
 </ul>
 </li>
-<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants">mergeron.gen.PCMConstants</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.UNI">UNI</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.BETA">BETA</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.BETA_BND">BETA_BND</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.EMPR">EMPR</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions">mergeron.gen.PCMDistributions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions.UNI">UNI</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions.BETA">BETA</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions.BETA_BND">BETA_BND</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions.EMPR">EMPR</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.FM2Constants">mergeron.gen.FM2Constants</a><ul>
@@ -1075,9 +1186,9 @@
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec">mergeron.gen.PCMSpec</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.firm2_pcm_constraint">firm2_pcm_constraint</a></li>
 <li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.dist_type">dist_type</a></li>
 <li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.dist_parms">dist_parms</a></li>
+<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.firm2_pcm_constraint">firm2_pcm_constraint</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants">mergeron.gen.SSZConstants</a><ul>
@@ -1085,13 +1196,6 @@
 <li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants.HSR_TEN">HSR_TEN</a></li>
 <li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants.MNL_DEP">MNL_DEP</a></li>
 <li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.SSZConstants.ONE">ONE</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec">mergeron.gen.MarketSpec</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.share_spec">share_spec</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.pcm_spec">pcm_spec</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.price_spec">price_spec</a></li>
-<li class="toctree-l6"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.hsr_filing_test_type">hsr_filing_test_type</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/mergeron/gen/index.html#mergeron.gen.MarketDataSample">mergeron.gen.MarketDataSample</a><ul>
@@ -1158,17 +1262,15 @@
 <li class="toctree-l2"><a class="reference internal" href="autoapi/mergeron/index.html#package-contents">Package Contents</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.VERSION">mergeron.VERSION</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.DATA_DIR">mergeron.DATA_DIR</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.TI">mergeron.TI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.ArrayINT">mergeron.ArrayINT</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.TF">mergeron.TF</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.ArrayFloat">mergeron.ArrayFloat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.ArrayBoolean">mergeron.ArrayBoolean</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.ArrayDouble">mergeron.ArrayDouble</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.ArrayBIGINT">mergeron.ArrayBIGINT</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.RECConstants">mergeron.RECConstants</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.RECConstants.INOUT">INOUT</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.RECConstants.OUTIN">OUTIN</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.RECConstants.FIXED">FIXED</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.RECTypes">mergeron.RECTypes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.RECTypes.INOUT">INOUT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.RECTypes.OUTIN">OUTIN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.RECTypes.FIXED">FIXED</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/mergeron/index.html#mergeron.UPPAggrSelector">mergeron.UPPAggrSelector</a><ul>

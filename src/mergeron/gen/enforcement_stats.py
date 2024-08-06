@@ -21,7 +21,6 @@ from scipy.stats import beta, norm  # type: ignore
 from .. import (  # noqa: TID252
     _PKG_NAME,
     DATA_DIR,
-    TI,
     VERSION,
     ArrayBIGINT,
     ArrayDouble,
@@ -121,7 +120,7 @@ if not (_out_path := DATA_DIR.joinpath(f"{_PKG_NAME}.cls")).is_file():
 
 
 if not (_DOTTEX := DATA_DIR / Rf"{_PKG_NAME}_TikZTableSettings.tex").is_file():
-    # Write to dottex
+    # Write to LaTeX table settings file
     with resources.as_file(
         resources.files(f"{_PKG_NAME}.data.jinja2_LaTeX_templates").joinpath(
             "setup_tikz_tables.tex"
@@ -163,32 +162,6 @@ HHI_POST_ZONE_KNOTS = np.array([0, 1800, 2400, 10001], dtype=np.int64)
 hhi_delta_ranger, hhi_zone_post_ranger = (
     interp1d(_f / 1e4, _f, kind="previous", assume_sorted=True)
     for _f in (HHI_DELTA_KNOTS, HHI_POST_ZONE_KNOTS)
-)
-
-HMG_PRESUMPTION_ZONE_DICT = {
-    HHI_POST_ZONE_KNOTS[0]: {
-        HHI_DELTA_KNOTS[0]: (0, 0, 0),
-        HHI_DELTA_KNOTS[1]: (0, 0, 0),
-        HHI_DELTA_KNOTS[2]: (0, 0, 0),
-    },
-    HHI_POST_ZONE_KNOTS[1]: {
-        HHI_DELTA_KNOTS[0]: (0, 1, 1),
-        HHI_DELTA_KNOTS[1]: (1, 1, 2),
-        HHI_DELTA_KNOTS[2]: (1, 1, 2),
-    },
-    HHI_POST_ZONE_KNOTS[2]: {
-        HHI_DELTA_KNOTS[0]: (0, 2, 1),
-        HHI_DELTA_KNOTS[1]: (1, 2, 3),
-        HHI_DELTA_KNOTS[2]: (2, 2, 4),
-    },
-}
-
-ZONE_VALS = np.unique(
-    np.vstack([
-        tuple(HMG_PRESUMPTION_ZONE_DICT[_k].values())
-        for _k in HMG_PRESUMPTION_ZONE_DICT
-    ]),
-    axis=0,
 )
 
 ZONE_STRINGS = {
@@ -233,6 +206,31 @@ ZONE_DETAIL_STRINGS_DELTA_LATEX = {
     3: R"\Delta HHI \in \text{{[{}, {}) pts.}}".format(*HHI_DELTA_KNOTS[1:3]),
     4: Rf"\Delta HHI \geqslant \text{{{HHI_DELTA_KNOTS[2]} pts.}}",
 }
+
+HMG_PRESUMPTION_ZONE_MAP = {
+    HHI_POST_ZONE_KNOTS[0]: {
+        HHI_DELTA_KNOTS[0]: (0, 0, 0),
+        HHI_DELTA_KNOTS[1]: (0, 0, 0),
+        HHI_DELTA_KNOTS[2]: (0, 0, 0),
+    },
+    HHI_POST_ZONE_KNOTS[1]: {
+        HHI_DELTA_KNOTS[0]: (0, 1, 1),
+        HHI_DELTA_KNOTS[1]: (1, 1, 2),
+        HHI_DELTA_KNOTS[2]: (1, 1, 2),
+    },
+    HHI_POST_ZONE_KNOTS[2]: {
+        HHI_DELTA_KNOTS[0]: (0, 2, 1),
+        HHI_DELTA_KNOTS[1]: (1, 2, 3),
+        HHI_DELTA_KNOTS[2]: (2, 2, 4),
+    },
+}
+
+ZONE_VALS = np.unique(
+    np.vstack([
+        tuple(HMG_PRESUMPTION_ZONE_MAP[_k].values()) for _k in HMG_PRESUMPTION_ZONE_MAP
+    ]),
+    axis=0,
+)
 
 
 def enf_stats_output(
@@ -475,7 +473,7 @@ def enf_cnts_byconczone(_cnts_array: ArrayBIGINT, /) -> ArrayBIGINT:
                 else (_hhi_delta_ranged == _hhi_zone_delta_lim)
             )
 
-            _zone_val = HMG_PRESUMPTION_ZONE_DICT[_hhi_zone_post_lim][
+            _zone_val = HMG_PRESUMPTION_ZONE_MAP[_hhi_zone_post_lim][
                 _hhi_zone_delta_lim
             ]
 
@@ -667,7 +665,7 @@ def _stats_formatted_row(
     match _return_type_sel:
         case StatsReturnSelector.RIN:
             _stats_row_ci = np.array([
-                _propn_ci(*g, method="Wilson")
+                propn_ci(*g, method="Wilson")
                 for g in zip(_stats_row_cnt[1:], _stats_row_tot[1:], strict=True)
             ])
             return [
@@ -722,9 +720,9 @@ def stats_print_rows(
     print()
 
 
-def _propn_ci(
-    _npos: ArrayINT[TI] | int = 4,
-    _nobs: ArrayINT[TI] | int = 10,
+def propn_ci(
+    _npos: ArrayINT | int = 4,
+    _nobs: ArrayINT | int = 10,
     /,
     *,
     alpha: float = 0.05,

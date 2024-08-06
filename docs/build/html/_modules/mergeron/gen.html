@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.gen - mergeron 2024.739099.1</title>
+        <title>mergeron.gen - mergeron 2024.739104.1</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../index.html" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../index.html" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.1
+    mergeron 2024.739104.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -369,7 +369,8 @@
 
 <h1>Source code for mergeron.gen</h1><div class="highlight"><pre>
 <span></span><code><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Defines constants and containers for industry data generation and testing</span>
+<span class="sd">Defines constants, specifications (classes with attributes defining varous parameters) and</span>
+<span class="sd">containers for industry data generation and testing.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -377,17 +378,20 @@
 
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Protocol</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Protocol</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">Attribute</span><span class="p">,</span> <span class="n">cmp_using</span><span class="p">,</span> <span class="n">define</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">frozen</span><span class="p">,</span> <span class="n">validators</span>
+<span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">Attribute</span><span class="p">,</span> <span class="n">cmp_using</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">frozen</span><span class="p">,</span> <span class="n">validators</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">SeedSequence</span>
 
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: TID252</span>
     <span class="n">VERSION</span><span class="p">,</span>
     <span class="n">ArrayBIGINT</span><span class="p">,</span>
     <span class="n">ArrayBoolean</span><span class="p">,</span>
     <span class="n">ArrayDouble</span><span class="p">,</span>
-    <span class="n">RECConstants</span><span class="p">,</span>
+    <span class="n">ArrayFloat</span><span class="p">,</span>
+    <span class="n">ArrayINT</span><span class="p">,</span>
+    <span class="n">RECTypes</span><span class="p">,</span>
     <span class="n">UPPAggrSelector</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..core.pseudorandom_numbers</span> <span class="kn">import</span> <span class="n">DIST_PARMS_DEFAULT</span>  <span class="c1"># noqa: TID252</span>
@@ -407,58 +411,80 @@
 
 
 
+<div class="viewcode-block" id="SeedSequenceData">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData">[docs]</a>
+<span class="k">class</span> <span class="nc">SeedSequenceData</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="SeedSequenceData.mktshr_rng_seed_seq">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData.mktshr_rng_seed_seq">[docs]</a>
+    <span class="n">mktshr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span></div>
+
+<div class="viewcode-block" id="SeedSequenceData.pcm_rng_seed_seq">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData.pcm_rng_seed_seq">[docs]</a>
+    <span class="n">pcm_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span></div>
+
+<div class="viewcode-block" id="SeedSequenceData.fcount_rng_seed_seq">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData.fcount_rng_seed_seq">[docs]</a>
+    <span class="n">fcount_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="SeedSequenceData.pr_rng_seed_seq">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SeedSequenceData.pr_rng_seed_seq">[docs]</a>
+    <span class="n">pr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span></div>
+</div>
+
+
+
 <span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
-<div class="viewcode-block" id="PriceConstants">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants">[docs]</a>
-<span class="k">class</span> <span class="nc">PriceConstants</span><span class="p">(</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="n">enum</span><span class="o">.</span><span class="n">ReprEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="PriceSpec">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec">[docs]</a>
+<span class="k">class</span> <span class="nc">PriceSpec</span><span class="p">(</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="n">enum</span><span class="o">.</span><span class="n">ReprEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Price specification.</span>
 
 <span class="sd">    Whether prices are symmetric and, if not, the direction of correlation, if any.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PriceConstants.SYM">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.SYM">[docs]</a>
+<div class="viewcode-block" id="PriceSpec.SYM">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.SYM">[docs]</a>
     <span class="n">SYM</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PriceConstants.ZERO">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.ZERO">[docs]</a>
+<div class="viewcode-block" id="PriceSpec.ZERO">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.ZERO">[docs]</a>
     <span class="n">ZERO</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PriceConstants.NEG">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.NEG">[docs]</a>
+<div class="viewcode-block" id="PriceSpec.NEG">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.NEG">[docs]</a>
     <span class="n">NEG</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;negative share-correlation&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PriceConstants.POS">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.POS">[docs]</a>
+<div class="viewcode-block" id="PriceSpec.POS">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.POS">[docs]</a>
     <span class="n">POS</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;positive share-correlation&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PriceConstants.CSY">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceConstants.CSY">[docs]</a>
+<div class="viewcode-block" id="PriceSpec.CSY">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PriceSpec.CSY">[docs]</a>
     <span class="n">CSY</span> <span class="o">=</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;market-wide cost-symmetry&quot;</span><span class="p">)</span></div>
 </div>
 
 
 
 <span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
-<div class="viewcode-block" id="SHRConstants">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants">[docs]</a>
-<span class="k">class</span> <span class="nc">SHRConstants</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="SHRDistributions">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions">[docs]</a>
+<span class="k">class</span> <span class="nc">SHRDistributions</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Market share distributions.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SHRConstants.UNI">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.UNI">[docs]</a>
+<div class="viewcode-block" id="SHRDistributions.UNI">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.UNI">[docs]</a>
     <span class="n">UNI</span> <span class="o">=</span> <span class="s2">&quot;Uniform&quot;</span></div>
 
 <span class="w">    </span><span class="sa">R</span><span class="sd">&quot;&quot;&quot;Uniform distribution over :math:`s_1 + s_2 \leqslant 1`&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SHRConstants.DIR_FLAT">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_FLAT">[docs]</a>
+<div class="viewcode-block" id="SHRDistributions.DIR_FLAT">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.DIR_FLAT">[docs]</a>
     <span class="n">DIR_FLAT</span> <span class="o">=</span> <span class="s2">&quot;Flat Dirichlet&quot;</span></div>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Shape parameter for all merging-firm-shares is unity (1)&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SHRConstants.DIR_FLAT_CONSTR">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_FLAT_CONSTR">[docs]</a>
+<div class="viewcode-block" id="SHRDistributions.DIR_FLAT_CONSTR">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.DIR_FLAT_CONSTR">[docs]</a>
     <span class="n">DIR_FLAT_CONSTR</span> <span class="o">=</span> <span class="s2">&quot;Flat Dirichlet - Constrained&quot;</span></div>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Impose minimum probablility weight on each firm-count</span>
@@ -467,8 +493,8 @@
 <span class="sd">    are included for data generation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SHRConstants.DIR_ASYM">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_ASYM">[docs]</a>
+<div class="viewcode-block" id="SHRDistributions.DIR_ASYM">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.DIR_ASYM">[docs]</a>
     <span class="n">DIR_ASYM</span> <span class="o">=</span> <span class="s2">&quot;Asymmetric Dirichlet&quot;</span></div>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Share distribution for merging-firm shares has a higher peak share</span>
@@ -480,8 +506,8 @@
 <span class="sd">    of Dirichlet-distributed share-data generation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SHRConstants.DIR_COND">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRConstants.DIR_COND">[docs]</a>
+<div class="viewcode-block" id="SHRDistributions.DIR_COND">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.SHRDistributions.DIR_COND">[docs]</a>
     <span class="n">DIR_COND</span> <span class="o">=</span> <span class="s2">&quot;Conditional Dirichlet&quot;</span></div>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Shape parameters for non-merging firms is proportional</span>
@@ -492,7 +518,7 @@
 
 
 
-<span class="nd">@frozen</span>
+<span class="nd">@frozen</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <div class="viewcode-block" id="ShareSpec">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec">[docs]</a>
 <span class="k">class</span> <span class="nc">ShareSpec</span><span class="p">:</span>
@@ -501,38 +527,92 @@
 <span class="sd">    A key feature of market-share specification in this package is that</span>
 <span class="sd">    the draws represent markets with multiple different firm-counts.</span>
 <span class="sd">    Firm-counts are unspecified if the share distribution is</span>
-<span class="sd">    :attr:`mergeron.SHRConstants.UNI`, for Dirichlet-distributed market-shares,</span>
+<span class="sd">    :attr:`mergeron.SHRDistributions.UNI`, for Dirichlet-distributed market-shares,</span>
 <span class="sd">    the default specification is that firm-counts  vary between</span>
 <span class="sd">    2 and 7 firms with each value equally likely.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRConstants.UNI`,</span>
+<span class="sd">    If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRDistributions.UNI`,</span>
 <span class="sd">    then it is infeasible that</span>
-<span class="sd">    :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECConstants.OUTIN`.</span>
+<span class="sd">    :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECTypes.OUTIN`.</span>
 <span class="sd">    In other words, if firm-counts are unspecified, the recapture rate cannot be</span>
 <span class="sd">    estimated using outside good choice probabilities.</span>
 
 <span class="sd">    For a sample with explicit firm counts, market shares must</span>
 <span class="sd">    be specified as having a supported Dirichlet distribution</span>
-<span class="sd">    (see :class:`mergeron.gen.SHRConstants`).</span>
+<span class="sd">    (see :class:`mergeron.gen.SHRDistributions`).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
+<div class="viewcode-block" id="ShareSpec.dist_type">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.dist_type">[docs]</a>
+    <span class="n">dist_type</span><span class="p">:</span> <span class="n">SHRDistributions</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`SHRDistributions`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShareSpec.dist_parms">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.dist_parms">[docs]</a>
+    <span class="n">dist_parms</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="n">cmp_using</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters for tailoring market-share distribution</span>
+
+<span class="sd">    For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;</span>
+<span class="sd">    for Dirichlet-type distributions, a vector of shape parameters of length</span>
+<span class="sd">    no less than the length of firm-count weights below; defaults depend on</span>
+<span class="sd">    type of Dirichlet-distribution specified.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ShareSpec.firm_counts_weights">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.firm_counts_weights">[docs]</a>
+    <span class="n">firm_counts_weights</span><span class="p">:</span> <span class="n">ArrayFloat</span> <span class="o">|</span> <span class="n">ArrayINT</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="n">cmp_using</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Relative or absolute frequencies of firm counts</span>
+
+<span class="sd">    Given frequencies are exogenous to generated market data sample;</span>
+<span class="sd">    for Dirichlet-type distributions, defaults to FCOUNT_WTS_DEFAULT, which specifies</span>
+<span class="sd">    firm-counts of 2 to 6 with weights in descending order from 5 to 1.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@firm_counts_weights</span><span class="o">.</span><span class="n">validator</span>
+    <span class="k">def</span> <span class="nf">_check_fcw</span><span class="p">(</span><span class="n">_i</span><span class="p">:</span> <span class="n">ShareSpec</span><span class="p">,</span> <span class="n">_a</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">ArrayDouble</span><span class="p">],</span> <span class="n">_v</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_i</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">SHRDistributions</span><span class="o">.</span><span class="n">UNI</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Generated data for markets with specified firm-counts or &quot;</span>
+                <span class="s2">&quot;varying firm counts are not feasible for market shares &quot;</span>
+                <span class="s2">&quot;with Uniform distribution. Consider revising the &quot;</span>
+                <span class="sa">r</span><span class="s2">&quot;distribution type to </span><span class="si">{SHRDistributions.DIR_FLAT}</span><span class="s2">, which gives &quot;</span>
+                <span class="s2">&quot;uniformly distributed draws on the :math:`n+1` simplex &quot;</span>
+                <span class="s2">&quot;for firm-count, :math:`n`.&quot;</span>
+            <span class="p">)</span>
+
 <div class="viewcode-block" id="ShareSpec.recapture_form">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.recapture_form">[docs]</a>
-    <span class="n">recapture_form</span><span class="p">:</span> <span class="n">RECConstants</span></div>
+    <span class="n">recapture_form</span><span class="p">:</span> <span class="n">RECTypes</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">RECTypes</span><span class="o">.</span><span class="n">INOUT</span><span class="p">)</span></div>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`mergeron.RECConstants`&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`mergeron.RECTypes`&quot;&quot;&quot;</span>
+
+    <span class="nd">@recapture_form</span><span class="o">.</span><span class="n">validator</span>
+    <span class="k">def</span> <span class="nf">_check_rf</span><span class="p">(</span><span class="n">_i</span><span class="p">:</span> <span class="n">ShareSpec</span><span class="p">,</span> <span class="n">_a</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">RECTypes</span><span class="p">],</span> <span class="n">_v</span><span class="p">:</span> <span class="n">RECTypes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_v</span> <span class="o">==</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">OUTIN</span> <span class="ow">and</span> <span class="n">_i</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">SHRDistributions</span><span class="o">.</span><span class="n">UNI</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Market share specification requires estimation of recapture rate from &quot;</span>
+                <span class="s2">&quot;generated data. Either delete recapture rate specification or set it to None.&quot;</span>
+            <span class="p">)</span>
 
 <div class="viewcode-block" id="ShareSpec.recapture_rate">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.recapture_rate">[docs]</a>
-    <span class="n">recapture_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span></div>
+    <span class="n">recapture_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span></div>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A value between 0 and 1, typically 0.8.</span>
 
 <span class="sd">    :code:`None` if market share specification requires direct generation of</span>
-<span class="sd">    outside good choice probabilities (:attr:`mergeron.RECConstants.OUTIN`).</span>
+<span class="sd">    outside good choice probabilities (:attr:`mergeron.RECTypes.OUTIN`).</span>
 
 <span class="sd">    The recapture rate is usually calibrated to the numbers-equivalent of the</span>
 <span class="sd">    HHI threshold for the presumtion of harm from unilateral competitive effects</span>
@@ -551,63 +631,39 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ShareSpec.dist_type">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.dist_type">[docs]</a>
-    <span class="n">dist_type</span><span class="p">:</span> <span class="n">SHRConstants</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`SHRConstants`&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="ShareSpec.dist_parms">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.dist_parms">[docs]</a>
-    <span class="n">dist_parms</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="n">cmp_using</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">)</span>
-    <span class="p">)</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameters for tailoring market-share distribution</span>
-
-<span class="sd">    For Uniform distribution, bounds of the distribution; defaults to `(0, 1)`;</span>
-<span class="sd">    for Dirichlet-type distributions, a vector of shape parameters of length</span>
-<span class="sd">    no less than the length of firm-count weights below; defaults depend on</span>
-<span class="sd">    type of Dirichlet-distribution specified.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="ShareSpec.firm_counts_weights">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.firm_counts_weights">[docs]</a>
-    <span class="n">firm_counts_weights</span><span class="p">:</span> <span class="p">(</span>
-        <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="n">ArrayBIGINT</span> <span class="o">|</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="n">ArrayBIGINT</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="n">cmp_using</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">))</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Relative or absolute frequencies of firm counts</span>
-
-
-<span class="sd">    Given frequencies are exogenous to generated market data sample;</span>
-<span class="sd">    for Dirichlet-type distributions, defaults to FCOUNT_WTS_DEFAULT, which specifies</span>
-<span class="sd">    firm-counts of 2 to 6 with weights in descending order from 5 to 1.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span></div>
+    <span class="nd">@recapture_rate</span><span class="o">.</span><span class="n">validator</span>
+    <span class="k">def</span> <span class="nf">_check_rr</span><span class="p">(</span><span class="n">_i</span><span class="p">:</span> <span class="n">ShareSpec</span><span class="p">,</span> <span class="n">_a</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">_v</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_v</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">_v</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Recapture rate must lie in the interval, [0, 1).&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">_v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_i</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">!=</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">OUTIN</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Recapture specification, </span><span class="si">{</span><span class="n">_i</span><span class="o">.</span><span class="n">recapture_form</span><span class="si">!r}</span><span class="s2"> requires that &quot;</span>
+                <span class="s2">&quot;the market sample specification inclues a recapture rate in the &quot;</span>
+                <span class="s2">&quot;interval [0, 1).&quot;</span>
+            <span class="p">)</span></div>
 
 
 
 <span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
-<div class="viewcode-block" id="PCMConstants">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants">[docs]</a>
-<span class="k">class</span> <span class="nc">PCMConstants</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
+<div class="viewcode-block" id="PCMDistributions">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions">[docs]</a>
+<span class="k">class</span> <span class="nc">PCMDistributions</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">StrEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Margin distributions.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PCMConstants.UNI">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.UNI">[docs]</a>
+<div class="viewcode-block" id="PCMDistributions.UNI">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions.UNI">[docs]</a>
     <span class="n">UNI</span> <span class="o">=</span> <span class="s2">&quot;Uniform&quot;</span></div>
 
-<div class="viewcode-block" id="PCMConstants.BETA">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.BETA">[docs]</a>
+<div class="viewcode-block" id="PCMDistributions.BETA">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions.BETA">[docs]</a>
     <span class="n">BETA</span> <span class="o">=</span> <span class="s2">&quot;Beta&quot;</span></div>
 
-<div class="viewcode-block" id="PCMConstants.BETA_BND">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.BETA_BND">[docs]</a>
+<div class="viewcode-block" id="PCMDistributions.BETA_BND">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions.BETA_BND">[docs]</a>
     <span class="n">BETA_BND</span> <span class="o">=</span> <span class="s2">&quot;Bounded Beta&quot;</span></div>
 
-<div class="viewcode-block" id="PCMConstants.EMPR">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMConstants.EMPR">[docs]</a>
+<div class="viewcode-block" id="PCMDistributions.EMPR">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMDistributions.EMPR">[docs]</a>
     <span class="n">EMPR</span> <span class="o">=</span> <span class="s2">&quot;Damodaran margin data, resampled&quot;</span></div>
 </div>
 
@@ -652,21 +708,15 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PCMSpec.firm2_pcm_constraint">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.firm2_pcm_constraint">[docs]</a>
-    <span class="n">firm2_pcm_constraint</span><span class="p">:</span> <span class="n">FM2Constants</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`FM2Constants`&quot;&quot;&quot;</span>
-
 <div class="viewcode-block" id="PCMSpec.dist_type">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.dist_type">[docs]</a>
-    <span class="n">dist_type</span><span class="p">:</span> <span class="n">PCMConstants</span></div>
+    <span class="n">dist_type</span><span class="p">:</span> <span class="n">PCMDistributions</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">PCMDistributions</span><span class="o">.</span><span class="n">UNI</span><span class="p">)</span></div>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`PCMConstants`&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`PCMDistributions`&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PCMSpec.dist_parms">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.dist_parms">[docs]</a>
-    <span class="n">dist_parms</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="kc">None</span></div>
+    <span class="n">dist_parms</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameter specification for tailoring PCM distribution</span>
 
@@ -675,7 +725,42 @@
 <span class="sd">    for Bounded-Beta distribution, vector of (min, max, mean, std. deviation), non-optional;</span>
 <span class="sd">    for empirical distribution based on Damodaran margin data, optional, ignored</span>
 
-<span class="sd">    &quot;&quot;&quot;</span></div>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@dist_parms</span><span class="o">.</span><span class="n">validator</span>
+    <span class="k">def</span> <span class="nf">_check_dp</span><span class="p">(</span>
+        <span class="n">_i</span><span class="p">:</span> <span class="n">PCMSpec</span><span class="p">,</span> <span class="n">_a</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">ArrayDouble</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="n">_v</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_i</span><span class="o">.</span><span class="n">dist_type</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;BETA&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">_v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">_v</span><span class="p">,</span> <span class="n">DIST_PARMS_DEFAULT</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The distribution parameters, </span><span class="si">{</span><span class="n">DIST_PARMS_DEFAULT</span><span class="si">!r}</span><span class="s2"> &quot;</span>
+                    <span class="s2">&quot;are not valid with margin distribution, </span><span class="si">{_dist_type_pcm!r}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span>
+                <span class="n">_i</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">PCMDistributions</span><span class="o">.</span><span class="n">BETA</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">((</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">))</span>
+            <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">_i</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">PCMDistributions</span><span class="o">.</span><span class="n">BETA_BND</span>
+                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">((</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">))</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Given number, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">_v</span><span class="p">)</span><span class="si">}</span><span class="s2"> of parameters &quot;</span>
+                    <span class="sa">f</span><span class="s1">&#39;for PCM with distribution, &quot;</span><span class="si">{</span><span class="n">_i</span><span class="o">.</span><span class="n">dist_type</span><span class="si">}</span><span class="s1">&quot; is incorrect.&#39;</span>
+                <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">_i</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">PCMDistributions</span><span class="o">.</span><span class="n">EMPR</span> <span class="ow">and</span> <span class="n">_v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Empirical distribution does not require additional parameters; &quot;</span>
+                <span class="sa">f</span><span class="s1">&#39;&quot;given value, </span><span class="si">{</span><span class="n">_v</span><span class="si">!r}</span><span class="s1"> is ignored.&quot;&#39;</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="PCMSpec.firm2_pcm_constraint">
+<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.firm2_pcm_constraint">[docs]</a>
+    <span class="n">firm2_pcm_constraint</span><span class="p">:</span> <span class="n">FM2Constants</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">IID</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`FM2Constants`&quot;&quot;&quot;</span></div>
 
 
 
@@ -735,126 +820,6 @@
 
 
 <span class="c1"># Validators for selected attributes of MarketSpec</span>
-<span class="k">def</span> <span class="nf">_share_spec_validator</span><span class="p">(</span>
-    <span class="n">_instance</span><span class="p">:</span> <span class="n">MarketSpec</span><span class="p">,</span> <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">ShareSpec</span><span class="p">],</span> <span class="n">_value</span><span class="p">:</span> <span class="n">ShareSpec</span><span class="p">,</span> <span class="o">/</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">_r_bar</span> <span class="o">=</span> <span class="n">_value</span><span class="o">.</span><span class="n">recapture_rate</span>
-    <span class="k">if</span> <span class="n">_r_bar</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">_r_bar</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Recapture rate must lie in the interval, [0, 1).&quot;</span><span class="p">)</span>
-
-    <span class="k">elif</span> <span class="n">_r_bar</span> <span class="ow">and</span> <span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">==</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">OUTIN</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Market share specification requires estimation of recapture rate from &quot;</span>
-            <span class="s2">&quot;generated data. Either delete recapture rate specification or set it to None.&quot;</span>
-        <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">SHRConstants</span><span class="o">.</span><span class="n">UNI</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">==</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">OUTIN</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Invalid recapture specification, </span><span class="si">{</span><span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span><span class="si">!r}</span><span class="s2"> &quot;</span>
-                <span class="s2">&quot;for market share specification with Uniform distribution. &quot;</span>
-                <span class="s2">&quot;Redefine the market-sample specification, modifying the .&quot;</span>
-                <span class="s2">&quot;market-share specification or the recapture specification.&quot;</span>
-            <span class="p">)</span>
-        <span class="k">elif</span> <span class="n">_value</span><span class="o">.</span><span class="n">firm_counts_weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Generated data for markets with specified firm-counts or &quot;</span>
-                <span class="s2">&quot;varying firm counts are not feasible for market shares &quot;</span>
-                <span class="s2">&quot;with Uniform distribution. Consider revising the &quot;</span>
-                <span class="sa">r</span><span class="s2">&quot;distribution type to </span><span class="si">{SHRConstants.DIR_FLAT}</span><span class="s2">, which gives &quot;</span>
-                <span class="s2">&quot;uniformly distributed draws on the :math:`n+1` simplex &quot;</span>
-                <span class="s2">&quot;for firm-count, :math:`n`.&quot;</span>
-            <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">!=</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">OUTIN</span> <span class="ow">and</span> <span class="p">(</span>
-        <span class="n">_r_bar</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_r_bar</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-    <span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Recapture specification, </span><span class="si">{</span><span class="n">_value</span><span class="o">.</span><span class="n">recapture_form</span><span class="si">!r}</span><span class="s2"> requires that &quot;</span>
-            <span class="s2">&quot;the market sample specification inclues a recapture rate.&quot;</span>
-        <span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_pcm_spec_validator</span><span class="p">(</span>
-    <span class="n">_instance</span><span class="p">:</span> <span class="n">MarketSpec</span><span class="p">,</span> <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">PCMSpec</span><span class="p">],</span> <span class="n">_value</span><span class="p">:</span> <span class="n">PCMSpec</span><span class="p">,</span> <span class="o">/</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">if</span> <span class="p">(</span>
-        <span class="n">_instance</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">==</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">FIXED</span>
-        <span class="ow">and</span> <span class="n">_value</span><span class="o">.</span><span class="n">firm2_pcm_constraint</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">MNL</span>
-    <span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Specification of &quot;recapture_form&quot;, &quot;</span><span class="si">{</span><span class="n">_instance</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">,</span>
-                <span class="s2">&quot;requires Firm 2 margin must have property, &quot;</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">IID</span><span class="si">}</span><span class="s1">&quot; or &quot;</span><span class="si">{</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">SYM</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;BETA&quot;</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span><span class="p">,</span> <span class="n">DIST_PARMS_DEFAULT</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The distribution parameters, </span><span class="si">{</span><span class="n">DIST_PARMS_DEFAULT</span><span class="si">!r}</span><span class="s2"> &quot;</span>
-                <span class="s2">&quot;are not valid with margin distribution, </span><span class="si">{_dist_type_pcm!r}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
-        <span class="k">elif</span> <span class="p">(</span>
-            <span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">PCMConstants</span><span class="o">.</span><span class="n">BETA</span>
-            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">((</span><span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">))</span>
-        <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
-            <span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="n">PCMConstants</span><span class="o">.</span><span class="n">BETA_BND</span>
-            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">((</span><span class="s2">&quot;mu&quot;</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">))</span>
-        <span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Given number, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_parms</span><span class="p">)</span><span class="si">}</span><span class="s2"> of parameters &quot;</span>
-                <span class="sa">f</span><span class="s1">&#39;for PCM with distribution, &quot;</span><span class="si">{</span><span class="n">_value</span><span class="o">.</span><span class="n">dist_type</span><span class="si">}</span><span class="s1">&quot; is incorrect.&#39;</span>
-            <span class="p">)</span>
-
-
-<span class="nd">@define</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<div class="viewcode-block" id="MarketSpec">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec">[docs]</a>
-<span class="k">class</span> <span class="nc">MarketSpec</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameter specification for market data generation.&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="MarketSpec.share_spec">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.share_spec">[docs]</a>
-    <span class="n">share_spec</span><span class="p">:</span> <span class="n">ShareSpec</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">ShareSpec</span><span class="p">(</span><span class="n">RECConstants</span><span class="o">.</span><span class="n">INOUT</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="n">SHRConstants</span><span class="o">.</span><span class="n">UNI</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-        <span class="n">validator</span><span class="o">=</span><span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">ShareSpec</span><span class="p">),</span> <span class="n">_share_spec_validator</span><span class="p">],</span>
-    <span class="p">)</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Market-share specification, see :class:`ShareSpec`&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="MarketSpec.pcm_spec">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.pcm_spec">[docs]</a>
-    <span class="n">pcm_spec</span><span class="p">:</span> <span class="n">PCMSpec</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">PCMSpec</span><span class="p">(</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">IID</span><span class="p">,</span> <span class="n">PCMConstants</span><span class="o">.</span><span class="n">UNI</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-        <span class="n">validator</span><span class="o">=</span><span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">PCMSpec</span><span class="p">),</span> <span class="n">_pcm_spec_validator</span><span class="p">],</span>
-    <span class="p">)</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Margin specification, see :class:`PCMSpec`&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="MarketSpec.price_spec">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.price_spec">[docs]</a>
-    <span class="n">price_spec</span><span class="p">:</span> <span class="n">PriceConstants</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">PriceConstants</span><span class="o">.</span><span class="n">SYM</span><span class="p">,</span>
-        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">PriceConstants</span><span class="p">),</span>
-    <span class="p">)</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Price specification, see :class:`PriceConstants`&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="MarketSpec.hsr_filing_test_type">
-<a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.MarketSpec.hsr_filing_test_type">[docs]</a>
-    <span class="n">hsr_filing_test_type</span><span class="p">:</span> <span class="n">SSZConstants</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">SSZConstants</span><span class="o">.</span><span class="n">ONE</span><span class="p">,</span>
-        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">SSZConstants</span><span class="p">),</span>
-    <span class="p">)</span></div>
-
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Method for modeling HSR filing threholds, see :class:`SSZConstants`&quot;&quot;&quot;</span></div>
-
 
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1036,25 +1001,31 @@
 <div class="viewcode-block" id="UPPTestRegime">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestRegime">[docs]</a>
 <span class="k">class</span> <span class="nc">UPPTestRegime</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for UPP tests.&quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="UPPTestRegime.resolution">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestRegime.resolution">[docs]</a>
     <span class="n">resolution</span><span class="p">:</span> <span class="n">INVResolution</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">INVResolution</span><span class="o">.</span><span class="n">ENFT</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">INVResolution</span><span class="p">)</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">INVResolution</span><span class="o">.</span><span class="n">ENFT</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">in_</span><span class="p">([</span><span class="n">INVResolution</span><span class="o">.</span><span class="n">CLRN</span><span class="p">,</span> <span class="n">INVResolution</span><span class="o">.</span><span class="n">ENFT</span><span class="p">]),</span>
     <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to test clearance, enforcement, or both.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="UPPTestRegime.guppi_aggregator">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestRegime.guppi_aggregator">[docs]</a>
     <span class="n">guppi_aggregator</span><span class="p">:</span> <span class="n">UPPAggrSelector</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MIN</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">UPPAggrSelector</span><span class="p">)</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MIN</span>
     <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregator for GUPPI test.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="UPPTestRegime.divr_aggregator">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestRegime.divr_aggregator">[docs]</a>
-    <span class="n">divr_aggregator</span><span class="p">:</span> <span class="n">UPPAggrSelector</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MIN</span><span class="p">,</span>
-        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">((</span><span class="n">UPPAggrSelector</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))),</span>
-    <span class="p">)</span></div>
-</div>
+    <span class="n">divr_aggregator</span><span class="p">:</span> <span class="n">UPPAggrSelector</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">UPPAggrSelector</span><span class="o">.</span><span class="n">MIN</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregator for diversion ratio test.&quot;&quot;&quot;</span></div>
 
 
 
@@ -1104,7 +1075,11 @@
 <span class="k">class</span> <span class="nc">UPPTestsCounts</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Counts of markets resolved as specified</span>
 
-<span class="sd">    Resolution may be either :attr:`INVResolution.ENFT` or :attr:`INVResolution.CLRN`.</span>
+<span class="sd">    Resolution may be either :attr:`INVResolution.ENFT`,</span>
+<span class="sd">    :attr:`INVResolution.CLRN`, or :attr:`INVResolution.BOTH`.</span>
+<span class="sd">    In the case of :attr:`INVResolution.BOTH`, two colums of counts</span>
+<span class="sd">    are returned: one for each resolution.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="UPPTestsCounts.by_firm_count">
@@ -1119,7 +1094,12 @@
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.UPPTestsCounts.by_conczone">[docs]</a>
     <span class="n">by_conczone</span><span class="p">:</span> <span class="n">ArrayBIGINT</span></div>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Zones are &quot;unoncentrated&quot;, &quot;moderately concentrated&quot;, and &quot;highly concentrated&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Zones are &quot;unoncentrated&quot;, &quot;moderately concentrated&quot;, and &quot;highly concentrated&quot;,</span>
+<span class="sd">    with futher detail by HHI and ΔHHI for mergers in the &quot;unconcentrated&quot; and</span>
+<span class="sd">    &quot;moderately concentrated&quot; zones. See</span>
+<span class="sd">    :attr:`mergeron.gen.enforcement_stats.HMG_PRESUMPTION_ZONE_MAP` and</span>
+<span class="sd">    :attr:`mergeron.gen.enforcement_stats.ZONE_VALS` for more detail.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 

@@ -241,10 +241,6 @@ Module Contents
 
 .. py:data:: HHI_POST_ZONE_KNOTS
 
-.. py:data:: HMG_PRESUMPTION_ZONE_DICT
-
-.. py:data:: ZONE_VALS
-
 .. py:data:: ZONE_STRINGS
 
 .. py:data:: ZONE_DETAIL_STRINGS_HHI
@@ -256,6 +252,10 @@ Module Contents
 .. py:data:: ZONE_DETAIL_STRINGS_HHI_LATEX
 
 .. py:data:: ZONE_DETAIL_STRINGS_DELTA_LATEX
+
+.. py:data:: HMG_PRESUMPTION_ZONE_MAP
+
+.. py:data:: ZONE_VALS
 
 .. py:function:: enf_stats_output(_data_array_dict, _data_period = '1996-2003', _table_ind_group = INDGRPConstants.ALL, _table_evid_cond = EVIDENConstants.UR, _stats_group = StatsGrpSelector.FC, _enf_spec = INVResolution.CLRN, /, *, return_type_sel = StatsReturnSelector.RPT, sort_order = SortSelector.UCH, print_to_screen = True)
 
@@ -278,6 +278,28 @@ Module Contents
 .. py:function:: enf_stats_table_byzone(_inparr, _totals_row = None, /, *, return_type_sel = StatsReturnSelector.CNT, sort_order = SortSelector.UCH, print_format = 'text')
 
 .. py:function:: stats_print_rows(_enf_stats_hdr_list, _enf_stats_dat_list, print_format = 'text')
+
+.. py:function:: propn_ci(_npos = 4, _nobs = 10, /, *, alpha = 0.05, method = 'Wilson')
+
+   Returns point estimates and confidence interval for a proportion
+
+   Methods "Clopper-Pearson" and "Exact" are synoymous [3]_.  Similarly,
+   "Wilson" and "Score" are synonyms here.
+
+   :param _npos: Number of positives
+   :param _nobs: Number of observed values
+   :param alpha: Significance level
+   :param method: Method to use for estimating confidence interval
+
+   :returns: Raw and estimated proportions, and bounds of the confidence interval
+
+   .. rubric:: References
+
+   .. [3] Alan Agresti & Brent A. Coull (1998) Approximate is Better
+      than “Exact” for Interval Estimation of Binomial Proportions,
+      The American Statistician, 52:2, 119-126,
+      https://doi.org/10.1080/00031305.1998.10480550
+
 
 .. py:function:: render_table_pdf(_table_dottex_pathlist, _table_coll_path, /)
 

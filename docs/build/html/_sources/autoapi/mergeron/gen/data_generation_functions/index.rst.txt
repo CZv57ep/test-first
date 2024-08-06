@@ -1,0 +1,158 @@
+mergeron.gen.data_generation_functions
+======================================
+
+.. py:module:: mergeron.gen.data_generation_functions
+
+.. autoapi-nested-parse::
+
+   Non-public functions called in data_generation.py
+
+
+
+
+
+Module Contents
+---------------
+
+.. py:function:: gen_share_data(_sample_size, _share_spec, _fcount_rng_seed_seq, _mktshr_rng_seed_seq, _nthreads = 16, /)
+
+   Helper function for generating share data.
+
+   :param _share_spec: Class specifying parameters for generating market share data
+   :param _fcount_rng_seed_seq: Seed sequence for assuring independent and, optionally, redundant streams
+   :param _mktshr_rng_seed_seq: Seed sequence for assuring independent and, optionally, redundant streams
+   :param _nthreads: Must be specified for generating repeatable random streams
+
+   :returns: Arrays representing shares, diversion ratios, etc. structured as a :ShareDataSample:
+
+
+.. py:function:: gen_market_shares_uniform(_s_size = 10**6, _dist_parms_mktshr = DIST_PARMS_DEFAULT, _mktshr_rng_seed_seq = None, _nthreads = 16, /)
+
+   Generate merging-firm shares from Uniform distribution on the 3-D simplex.
+
+   :param _s_size: size of sample to be drawn
+   :param _mktshr_rng_seed_seq: seed for rng, so results can be made replicable
+   :param _nthreads: number of threads for random number generation
+
+   :returns: market shares and other market statistics for each draw (market)
+
+
+.. py:function:: gen_market_shares_dirichlet_multimarket(_s_size = 10**6, _recapture_form = RECTypes.INOUT, _dist_type_dir = SHRDistributions.DIR_FLAT, _dist_parms_dir = None, _firm_count_wts = None, _fcount_rng_seed_seq = None, _mktshr_rng_seed_seq = None, _nthreads = 16, /)
+
+   Dirichlet-distributed shares with multiple firm-counts.
+
+   Firm-counts may be specified as having Uniform distribution over the range
+   of firm counts, or a set of probability weights may be specified. In the
+   latter case the proportion of draws for each firm-count matches the
+   specified probability weight.
+
+   :param _s_size: sample size to be drawn
+   :param _firm_count_wts: firm count weights array for sample to be drawn
+   :param _dist_type_dir: Whether Dirichlet is Flat or Asymmetric
+   :param _recapture_form: r_1 = r_2 if "proportional", otherwise MNL-consistent
+   :param _fcount_rng_seed_seq: seed firm count rng, for replicable results
+   :param _mktshr_rng_seed_seq: seed market share rng, for replicable results
+   :param _nthreads: number of threads for parallelized random number generation
+
+   :returns: array of market shares and other market statistics
+
+
+.. py:function:: gen_market_shares_dirichlet(_dir_alphas, _s_size = 10**6, _recapture_form = RECTypes.INOUT, _mktshr_rng_seed_seq = None, _nthreads = 16, /)
+
+   Dirichlet-distributed shares with fixed firm-count.
+
+   :param _dir_alphas: Shape parameters for Dirichlet distribution
+   :param _s_size: sample size to be drawn
+   :param _recapture_form: r_1 = r_2 if RECTypes.FIXED, otherwise MNL-consistent. If
+                           RECTypes.OUTIN; the number of columns in the output share array
+                           is len(_dir_alphas) - 1.
+   :param _mktshr_rng_seed_seq: seed market share rng, for replicable results
+   :param _nthreads: number of threads for parallelized random number generation
+
+   :returns: array of market shares and other market statistics
+
+
+.. py:function:: gen_divr_array(_recapture_form, _recapture_rate, _frmshr_array, _aggregate_purchase_prob = EMPTY_ARRAY_DEFAULT, /)
+
+   Given merging-firm shares and related parameters, return diverion ratios.
+
+   If recapture is specified as :attr:`mergeron.RECTypes.OUTIN`, then the
+   choice-probability for the outside good must be supplied.
+
+   :param _recapture_form: Enum specifying Fixed (proportional), Inside-out, or Outside-in
+   :param _recapture_rate: If recapture is proportional or inside-out, the recapture rate
+                           for the firm with the smaller share.
+   :param _frmshr_array: Merging-firm shares.
+   :param _aggregate_purchase_prob: 1 minus probability that the outside good is chosen; converts
+                                    market shares to choice probabilities by multiplication.
+
+   :raises ValueError: If the firm with the smaller share does not have the larger
+       diversion ratio between the merging firms.
+
+   :returns: Merging-firm diversion ratios for mergers in the sample.
+
+
+.. py:function:: gen_margin_price_data(_frmshr_array, _nth_firm_share, _aggregate_purchase_prob, _pcm_spec, _price_spec, _hsr_filing_test_type, _pcm_rng_seed_seq, _pr_rng_seed_seq = None, _nthreads = 16, /)
+
+   Generate margin and price data for mergers in the sample.
+
+   :param _frmshr_array: Merging-firm shares; see :class:`mergeron.gen.ShareSpec`.
+   :param _nth_firm_share: Share of the nth firm in the sample.
+   :param _aggregate_purchase_prob: 1 minus probability that the outside good is chosen; converts
+                                    market shares to choice probabilities by multiplication.
+   :param _pcm_spec: Enum specifying whether to use asymmetric or flat margins. see
+                     :class:`mergeron.gen.PCMSpec`.
+   :param _price_spec: Enum specifying whether to use symmetric, positive, or negative
+                       margins; see :class:`mergeron.gen.PriceSpec`.
+   :param _hsr_filing_test_type: Enum specifying restriction, if any, to impose on market data sample
+                                 to model HSR filing requirements; see :class:`mergeron.gen.SSZConstants`.
+   :param _pcm_rng_seed_seq: Seed sequence for generating margin data.
+   :param _pr_rng_seed_seq: Seed sequence for generating price data.
+   :param _nthreads: Number of threads to use in generating price data.
+
+   :returns: Simulated margin- and price-data arrays for mergers in the sample.
+
+
+.. py:function:: beta_located_bound(_dist_parms, /)
+
+   Return shape parameters for a non-standard beta, given the mean, stddev, range
+
+
+   Recover the r.v.s as
+   :math:`\min + (\max - \min) \cdot \symup{Β}(a, b)`,
+   with `a` and `b` calculated from the specified mean (:math:`\mu`) and
+   variance (:math:`\sigma`). [8]_
+
+   :param _dist_parms: vector of :math:`\mu`, :math:`\sigma`, :math:`\mathtt{\min}`, and :math:`\mathtt{\max}` values
+
+   :returns: shape parameters for Beta distribution
+
+   .. rubric:: Notes
+
+   For example, ``beta_located_bound(np.array([0.5, 0.2887, 0.0, 1.0]))``.
+
+   .. rubric:: References
+
+   .. [8] NIST, Beta Distribution. https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm
+
+
+.. py:function:: parse_seed_seq_list(_sseq_list, _mktshr_dist_type, _price_spec, /)
+
+   Initialize RNG seed sequences to ensure independence of distinct random streams.
+
+   The tuple of SeedSequences, is parsed in the following order
+   for generating the relevant random variates:
+   1.) quantity shares
+   2.) price-cost margins
+   3.) firm-counts, if :code:`MarketSpec.share_spec.dist_type` is a Dirichlet distribution
+   4.) prices, if :code:`MarketSpec.price_spec ==`:attr:`mergeron.gen.PriceSpec.ZERO`.
+
+
+
+   :param _sseq_list: List of RNG seed sequences
+   :param _mktshr_dist_type: Market share distribution type
+   :param _price_spec: Price specification
+
+   :returns: Seed sequence data
+
+

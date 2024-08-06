@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.ftc_merger_investigations_data - mergeron 2024.739099.1</title>
+        <title>mergeron.core.ftc_merger_investigations_data - mergeron 2024.739104.1</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.1
+    mergeron 2024.739104.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -703,7 +703,7 @@
                 <span class="c1"># Consistency here means that the number of investigations reported</span>
                 <span class="c1"># in each period is no less than the number reported in</span>
                 <span class="c1"># any prior period.Although the time periods for table 3.2 through 3.5</span>
-                <span class="c1"># are not the samein the data for 1996-2005 and 1996-2007 as in</span>
+                <span class="c1"># are not the same in the data for 1996-2005 and 1996-2007 as in</span>
                 <span class="c1"># the data for the other periods, they are nonetheless shorter than</span>
                 <span class="c1"># the period 1996-2011, and hence the counts reported for 1996-2011</span>
                 <span class="c1"># cannot be less than those reported in these prior periods. Note that</span>
@@ -755,7 +755,8 @@
                     <span class="n">_invdata_cuml_array</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">_invdata_base_array</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
                 <span class="p">)</span>
 
-                <span class="c1"># To examine the number of corrected values per table,</span>
+                <span class="c1"># # // spellchecker: disable</span>
+                <span class="c1"># To examine the number of corrected values per table,  // spellchecker: disable</span>
                 <span class="c1"># uncomment the statements below</span>
                 <span class="c1"># _invdata_array_bld_tbc = where(</span>
                 <span class="c1">#   _invdata_array_bld_enfcls &lt; 0, _invdata_array_bld_enfcls, 0</span>
@@ -765,6 +766,7 @@
                 <span class="c1">#       f&quot;{_data_period}, {_table_no}, {_invdata_ind_group}:&quot;,</span>
                 <span class="c1">#       abs(np.einsum(&#39;ij-&gt;&#39;, invdata_array_bld_tbc))</span>
                 <span class="c1">#       )</span>
+                <span class="c1"># #  // spellchecker: disable</span>
 
                 <span class="c1"># Enforce non-negativity</span>
                 <span class="n">_invdata_array_bld_enfcls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span>

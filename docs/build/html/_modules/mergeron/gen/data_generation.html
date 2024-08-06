@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.gen.data_generation - mergeron 2024.739099.1</title>
+        <title>mergeron.gen.data_generation - mergeron 2024.739104.1</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-header__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739099.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739099.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739099.1
+    mergeron 2024.739104.1
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -369,311 +369,576 @@
 
 <h1>Source code for mergeron.gen.data_generation</h1><div class="highlight"><pre>
 <span></span><code><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Methods to generate market data, including shares price, marginsm, and diversion ratios</span>
-<span class="sd">for analyzing merger enforcement policy.</span>
+<span class="sd">Methods to generate data for analyzing merger enforcement policy.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypedDict</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">Attribute</span><span class="p">,</span> <span class="n">define</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">validators</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">cpu_count</span><span class="p">,</span> <span class="n">delayed</span>  <span class="c1"># type: ignore</span>
 <span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">SeedSequence</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">ArrayDouble</span><span class="p">,</span> <span class="n">RECConstants</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">RECTypes</span>  <span class="c1"># noqa: TID252  # noqa</span>
+<span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">guidelines_boundaries</span> <span class="k">as</span> <span class="n">gbl</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..core.guidelines_boundaries</span> <span class="kn">import</span> <span class="n">HMGThresholds</span>  <span class="c1"># noqa: TID252</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">EMPTY_ARRAY_DEFAULT</span><span class="p">,</span>
     <span class="n">FM2Constants</span><span class="p">,</span>
     <span class="n">MarketDataSample</span><span class="p">,</span>
-    <span class="n">MarketSpec</span><span class="p">,</span>
-    <span class="n">PriceConstants</span><span class="p">,</span>
-    <span class="n">SHRConstants</span><span class="p">,</span>
+    <span class="n">PCMDistributions</span><span class="p">,</span>
+    <span class="n">PCMSpec</span><span class="p">,</span>
+    <span class="n">PriceSpec</span><span class="p">,</span>
+    <span class="n">ShareSpec</span><span class="p">,</span>
+    <span class="n">SHRDistributions</span><span class="p">,</span>
     <span class="n">SSZConstants</span><span class="p">,</span>
+    <span class="n">UPPTestRegime</span><span class="p">,</span>
+    <span class="n">UPPTestsCounts</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">._data_generation_functions</span> <span class="kn">import</span> <span class="n">_gen_margin_price_data</span><span class="p">,</span> <span class="n">_gen_share_data</span>
+<span class="kn">from</span> <span class="nn">.data_generation_functions</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">gen_divr_array</span><span class="p">,</span>
+    <span class="n">gen_margin_price_data</span><span class="p">,</span>
+    <span class="n">gen_share_data</span><span class="p">,</span>
+    <span class="n">parse_seed_seq_list</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.upp_tests</span> <span class="kn">import</span> <span class="n">SaveData</span><span class="p">,</span> <span class="n">enf_cnts</span><span class="p">,</span> <span class="n">save_data_to_hdf5</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
 
 
-<div class="viewcode-block" id="SeedSequenceData">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData">[docs]</a>
-<span class="k">class</span> <span class="nc">SeedSequenceData</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
-<div class="viewcode-block" id="SeedSequenceData.mktshr_rng_seed_seq">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData.mktshr_rng_seed_seq">[docs]</a>
-    <span class="n">mktshr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span></div>
+<div class="viewcode-block" id="SamplingFunctionKWArgs">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs">[docs]</a>
+<span class="k">class</span> <span class="nc">SamplingFunctionKWArgs</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="s2">&quot;Keyword arguments of function, :func:`MarketSample.sim_enf_cnts`&quot;</span>
 
-<div class="viewcode-block" id="SeedSequenceData.pcm_rng_seed_seq">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData.pcm_rng_seed_seq">[docs]</a>
-    <span class="n">pcm_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span></div>
+<div class="viewcode-block" id="SamplingFunctionKWArgs.sample_size">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.sample_size">[docs]</a>
+    <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span></div>
 
-<div class="viewcode-block" id="SeedSequenceData.fcount_rng_seed_seq">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData.fcount_rng_seed_seq">[docs]</a>
-    <span class="n">fcount_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;number of draws to generate&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SeedSequenceData.pr_rng_seed_seq">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SeedSequenceData.pr_rng_seed_seq">[docs]</a>
-    <span class="n">pr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span></div>
-</div>
+<div class="viewcode-block" id="SamplingFunctionKWArgs.seed_seq_list">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.seed_seq_list">[docs]</a>
+    <span class="n">seed_seq_list</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></div>
 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;sequence of SeedSequences to ensure replicable data generation with</span>
+<span class="sd">    appropriately independent random streams</span>
 
+<span class="sd">    NOTES</span>
+<span class="sd">    -----</span>
 
-<div class="viewcode-block" id="gen_market_sample">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_market_sample">[docs]</a>
-<span class="k">def</span> <span class="nf">gen_market_sample</span><span class="p">(</span>
-    <span class="n">_mkt_sample_spec</span><span class="p">:</span> <span class="n">MarketSpec</span><span class="p">,</span>
-    <span class="o">/</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
-    <span class="n">seed_seq_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MarketDataSample</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate share, diversion ratio, price, and margin data for MarketSpec.</span>
-
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    _mkt_sample_spec</span>
-<span class="sd">        class specifying parameters for data generation, see :class:`mergeron.gen.MarketSpec`</span>
-<span class="sd">    sample_size</span>
-<span class="sd">        number of draws to generate</span>
-<span class="sd">    seed_seq_list</span>
-<span class="sd">        tuple of SeedSequences to ensure replicable data generation with</span>
-<span class="sd">        appropriately independent random streams</span>
-<span class="sd">    nthreads</span>
-<span class="sd">        optionally specify the number of CPU threads for the PRNG</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">        Merging firms&#39; shares, margins, etc. for each hypothetical  merger</span>
-<span class="sd">        in the sample</span>
+<span class="sd">    See, :func:`.data_generation_functions.parse_seed_seq_list` for more on</span>
+<span class="sd">    specification of this parameter.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_recapture_form</span> <span class="o">=</span> <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span>
-    <span class="n">_recapture_rate</span> <span class="o">=</span> <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_rate</span>
-    <span class="n">_dist_type_mktshr</span> <span class="o">=</span> <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">dist_type</span>
-    <span class="n">_dist_firm2_pcm</span> <span class="o">=</span> <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">pcm_spec</span><span class="o">.</span><span class="n">firm2_pcm_constraint</span>
-    <span class="n">_hsr_filing_test_type</span> <span class="o">=</span> <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">hsr_filing_test_type</span>
+<div class="viewcode-block" id="SamplingFunctionKWArgs.nthreads">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.nthreads">[docs]</a>
+    <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span></div>
 
-    <span class="p">(</span>
-        <span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span>
-        <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span>
-        <span class="n">_fcount_rng_seed_seq</span><span class="p">,</span>
-        <span class="n">_pr_rng_seed_seq</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">=</span> <span class="n">parse_seed_seq_list</span><span class="p">(</span>
-        <span class="n">seed_seq_list</span><span class="p">,</span> <span class="n">_dist_type_mktshr</span><span class="p">,</span> <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">price_spec</span>
-    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;number of parallel threads to use&quot;&quot;&quot;</span>
 
-    <span class="n">_shr_sample_size</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">sample_size</span>
-    <span class="c1"># Scale up sample size to offset discards based on specified criteria</span>
-    <span class="n">_shr_sample_size</span> <span class="o">*=</span> <span class="n">_hsr_filing_test_type</span>
-    <span class="k">if</span> <span class="n">_dist_firm2_pcm</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">MNL</span><span class="p">:</span>
-        <span class="n">_shr_sample_size</span> <span class="o">*=</span> <span class="n">SSZConstants</span><span class="o">.</span><span class="n">MNL_DEP</span>
-    <span class="n">_shr_sample_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_shr_sample_size</span><span class="p">)</span>
+<div class="viewcode-block" id="SamplingFunctionKWArgs.save_data_to_file">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.save_data_to_file">[docs]</a>
+    <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span></div>
 
-    <span class="c1"># Generate share data</span>
-    <span class="n">_mktshr_data</span> <span class="o">=</span> <span class="n">_gen_share_data</span><span class="p">(</span>
-        <span class="n">_shr_sample_size</span><span class="p">,</span>
-        <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">share_spec</span><span class="p">,</span>
-        <span class="n">_fcount_rng_seed_seq</span><span class="p">,</span>
-        <span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span>
-        <span class="n">nthreads</span><span class="p">,</span>
-    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;optionally save data to HDF5 file&quot;&quot;&quot;</span>
 
-    <span class="n">_mktshr_array</span><span class="p">,</span> <span class="n">_fcounts</span><span class="p">,</span> <span class="n">_aggregate_purchase_prob</span><span class="p">,</span> <span class="n">_nth_firm_share</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">_mktshr_data</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="s2">&quot;mktshr_array&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;fcounts&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;aggregate_purchase_prob&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;nth_firm_share&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
+<div class="viewcode-block" id="SamplingFunctionKWArgs.saved_array_name_suffix">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.SamplingFunctionKWArgs.saved_array_name_suffix">[docs]</a>
+    <span class="n">saved_array_name_suffix</span><span class="p">:</span> <span class="nb">str</span></div>
 
-    <span class="c1"># Generate merging-firm price and PCM data</span>
-    <span class="n">_margin_data</span><span class="p">,</span> <span class="n">_price_data</span> <span class="o">=</span> <span class="n">_gen_margin_price_data</span><span class="p">(</span>
-        <span class="n">_mktshr_array</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span>
-        <span class="n">_nth_firm_share</span><span class="p">,</span>
-        <span class="n">_aggregate_purchase_prob</span><span class="p">,</span>
-        <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">pcm_spec</span><span class="p">,</span>
-        <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">price_spec</span><span class="p">,</span>
-        <span class="n">_mkt_sample_spec</span><span class="o">.</span><span class="n">hsr_filing_test_type</span><span class="p">,</span>
-        <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span>
-        <span class="n">_pr_rng_seed_seq</span><span class="p">,</span>
-        <span class="n">nthreads</span><span class="p">,</span>
-    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;optionally specify a suffix for the HDF5 array names&quot;&quot;&quot;</span></div>
 
-    <span class="n">_price_array</span><span class="p">,</span> <span class="n">_hsr_filing_test</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">_price_data</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;price_array&quot;</span><span class="p">,</span> <span class="s2">&quot;hsr_filing_test&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
 
-    <span class="n">_pcm_array</span><span class="p">,</span> <span class="n">_mnl_test_rows</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">_margin_data</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;pcm_array&quot;</span><span class="p">,</span> <span class="s2">&quot;mnl_test_array&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
 
-    <span class="n">_mnl_test_rows</span> <span class="o">=</span> <span class="n">_mnl_test_rows</span> <span class="o">*</span> <span class="n">_hsr_filing_test</span>
-    <span class="n">_s_size</span> <span class="o">=</span> <span class="n">sample_size</span>  <span class="c1"># originally-specified sample size</span>
-    <span class="k">if</span> <span class="n">_dist_firm2_pcm</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">MNL</span><span class="p">:</span>
-        <span class="n">_mktshr_array</span> <span class="o">=</span> <span class="n">_mktshr_array</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
-        <span class="n">_pcm_array</span> <span class="o">=</span> <span class="n">_pcm_array</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
-        <span class="n">_price_array</span> <span class="o">=</span> <span class="n">_price_array</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
-        <span class="n">_fcounts</span> <span class="o">=</span> <span class="n">_fcounts</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
-        <span class="n">_aggregate_purchase_prob</span> <span class="o">=</span> <span class="n">_aggregate_purchase_prob</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
-        <span class="n">_nth_firm_share</span> <span class="o">=</span> <span class="n">_nth_firm_share</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
+<span class="nd">@define</span>
+<div class="viewcode-block" id="MarketSample">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample">[docs]</a>
+<span class="k">class</span> <span class="nc">MarketSample</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parameter specification for market data generation.&quot;&quot;&quot;</span>
 
-    <span class="c1"># Calculate diversion ratios</span>
-    <span class="n">_divr_array</span> <span class="o">=</span> <span class="n">gen_divr_array</span><span class="p">(</span>
-        <span class="n">_recapture_form</span><span class="p">,</span> <span class="n">_recapture_rate</span><span class="p">,</span> <span class="n">_mktshr_array</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">_aggregate_purchase_prob</span>
-    <span class="p">)</span>
-
-    <span class="k">del</span> <span class="n">_mnl_test_rows</span><span class="p">,</span> <span class="n">_s_size</span>
-
-    <span class="n">_frmshr_array</span> <span class="o">=</span> <span class="n">_mktshr_array</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">_hhi_delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;i&quot;</span><span class="p">,</span> <span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">_frmshr_array</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])[:,</span> <span class="kc">None</span><span class="p">]</span>
-
-    <span class="n">_hhi_post</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">_hhi_delta</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;i&quot;</span><span class="p">,</span> <span class="n">_mktshr_array</span><span class="p">,</span> <span class="n">_mktshr_array</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">MarketDataSample</span><span class="p">(</span>
-        <span class="n">_frmshr_array</span><span class="p">,</span>
-        <span class="n">_pcm_array</span><span class="p">,</span>
-        <span class="n">_price_array</span><span class="p">,</span>
-        <span class="n">_fcounts</span><span class="p">,</span>
-        <span class="n">_aggregate_purchase_prob</span><span class="p">,</span>
-        <span class="n">_nth_firm_share</span><span class="p">,</span>
-        <span class="n">_divr_array</span><span class="p">,</span>
-        <span class="n">_hhi_post</span><span class="p">,</span>
-        <span class="n">_hhi_delta</span><span class="p">,</span>
+<div class="viewcode-block" id="MarketSample.share_spec">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.share_spec">[docs]</a>
+    <span class="n">share_spec</span><span class="p">:</span> <span class="n">ShareSpec</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">ShareSpec</span><span class="p">(</span><span class="n">SHRDistributions</span><span class="o">.</span><span class="n">UNI</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">INOUT</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">ShareSpec</span><span class="p">),</span>
     <span class="p">)</span></div>
 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Market-share specification, see :class:`ShareSpec`&quot;&quot;&quot;</span>
 
-
-<div class="viewcode-block" id="parse_seed_seq_list">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.parse_seed_seq_list">[docs]</a>
-<span class="k">def</span> <span class="nf">parse_seed_seq_list</span><span class="p">(</span>
-    <span class="n">_sseq_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">_mktshr_dist_type</span><span class="p">:</span> <span class="n">SHRConstants</span><span class="p">,</span>
-    <span class="n">_price_spec</span><span class="p">:</span> <span class="n">PriceConstants</span><span class="p">,</span>
-    <span class="o">/</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SeedSequenceData</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize RNG seed sequences to ensure independence of distinct random streams.</span>
-
-<span class="sd">    The tuple of SeedSequences, is parsed in the following order</span>
-<span class="sd">    for generating the relevant random variates:</span>
-<span class="sd">    1.) quantity shares</span>
-<span class="sd">    2.) price-cost margins</span>
-<span class="sd">    3.) firm-counts, if :code:`MarketSpec.share_spec.dist_type` is a Dirichlet distribution</span>
-<span class="sd">    4.) prices, if :code:`MarketSpec.price_spec ==`:attr:`mergeron.gen.PriceConstants.ZERO`.</span>
-
-
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    _sseq_list</span>
-<span class="sd">        List of RNG seed sequences</span>
-
-<span class="sd">    _mktshr_dist_type</span>
-<span class="sd">        Market share distribution type</span>
-
-<span class="sd">    _price_spec</span>
-<span class="sd">        Price specification</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">        Seed sequence data</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_fcount_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">_pr_rng_seed_seq</span><span class="p">:</span> <span class="n">SeedSequence</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">if</span> <span class="n">_price_spec</span> <span class="o">==</span> <span class="n">PriceConstants</span><span class="o">.</span><span class="n">ZERO</span><span class="p">:</span>
-        <span class="n">_pr_rng_seed_seq</span> <span class="o">=</span> <span class="n">_sseq_list</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="k">if</span> <span class="n">_sseq_list</span> <span class="k">else</span> <span class="n">SeedSequence</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">_mktshr_dist_type</span> <span class="o">==</span> <span class="n">SHRConstants</span><span class="o">.</span><span class="n">UNI</span><span class="p">:</span>
-        <span class="n">_fcount_rng_seed_seq</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">_seed_count</span> <span class="o">=</span> <span class="mi">2</span>
-        <span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span> <span class="n">_pcm_rng_seed_seq</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">_sseq_list</span><span class="p">[:</span><span class="n">_seed_count</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">_sseq_list</span>
-            <span class="k">else</span> <span class="p">(</span><span class="n">SeedSequence</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_seed_count</span><span class="p">))</span>
-        <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">_seed_count</span> <span class="o">=</span> <span class="mi">3</span>
-        <span class="p">(</span><span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span> <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span> <span class="n">_fcount_rng_seed_seq</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">_sseq_list</span><span class="p">[:</span><span class="n">_seed_count</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">_sseq_list</span>
-            <span class="k">else</span> <span class="p">(</span><span class="n">SeedSequence</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_seed_count</span><span class="p">))</span>
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">SeedSequenceData</span><span class="p">(</span>
-        <span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span> <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span> <span class="n">_fcount_rng_seed_seq</span><span class="p">,</span> <span class="n">_pr_rng_seed_seq</span>
+<div class="viewcode-block" id="MarketSample.pcm_spec">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.pcm_spec">[docs]</a>
+    <span class="n">pcm_spec</span><span class="p">:</span> <span class="n">PCMSpec</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">PCMSpec</span><span class="p">(</span><span class="n">PCMDistributions</span><span class="o">.</span><span class="n">UNI</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">IID</span><span class="p">)</span>
     <span class="p">)</span></div>
 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Margin specification, see :class:`PCMSpec`&quot;&quot;&quot;</span>
+
+    <span class="nd">@pcm_spec</span><span class="o">.</span><span class="n">validator</span>
+    <span class="k">def</span> <span class="nf">_check_pcm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_a</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">PCMSpec</span><span class="p">],</span> <span class="n">_v</span><span class="p">:</span> <span class="n">PCMSpec</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">==</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">FIXED</span>
+            <span class="ow">and</span> <span class="n">_v</span><span class="o">.</span><span class="n">firm2_pcm_constraint</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">MNL</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Specification of &quot;recapture_form&quot;, &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span><span class="si">}</span><span class="s1">&quot; &#39;</span>
+                <span class="s2">&quot;requires Firm 2 margin must have property, &quot;</span>
+                <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">IID</span><span class="si">}</span><span class="s1">&quot; or &quot;</span><span class="si">{</span><span class="n">FM2Constants</span><span class="o">.</span><span class="n">SYM</span><span class="si">}</span><span class="s1">&quot;.&#39;</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="MarketSample.price_spec">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.price_spec">[docs]</a>
+    <span class="n">price_spec</span><span class="p">:</span> <span class="n">PriceSpec</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">PriceSpec</span><span class="o">.</span><span class="n">SYM</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">PriceSpec</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Price specification, see :class:`PriceSpec`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketSample.hsr_filing_test_type">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.hsr_filing_test_type">[docs]</a>
+    <span class="n">hsr_filing_test_type</span><span class="p">:</span> <span class="n">SSZConstants</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">SSZConstants</span><span class="o">.</span><span class="n">ONE</span><span class="p">,</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">(</span><span class="n">SSZConstants</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Method for modeling HSR filing threholds, see :class:`SSZConstants`&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MarketSample.data">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.data">[docs]</a>
+    <span class="n">data</span><span class="p">:</span> <span class="n">MarketDataSample</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="gen_divr_array">
-<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.gen_divr_array">[docs]</a>
-<span class="k">def</span> <span class="nf">gen_divr_array</span><span class="p">(</span>
-    <span class="n">_recapture_form</span><span class="p">:</span> <span class="n">RECConstants</span><span class="p">,</span>
-    <span class="n">_recapture_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">_frmshr_array</span><span class="p">:</span> <span class="n">ArrayDouble</span><span class="p">,</span>
-    <span class="n">_aggregate_purchase_prob</span><span class="p">:</span> <span class="n">ArrayDouble</span> <span class="o">=</span> <span class="n">EMPTY_ARRAY_DEFAULT</span><span class="p">,</span>
-    <span class="o">/</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayDouble</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Given merging-firm shares and related parameters, return diverion ratios.</span>
+<div class="viewcode-block" id="MarketSample.enf_counts">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.enf_counts">[docs]</a>
+    <span class="n">enf_counts</span><span class="p">:</span> <span class="n">UPPTestsCounts</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
-<span class="sd">    If recapture is specified as :attr:`mergeron.RECConstants.OUTIN`, then the</span>
-<span class="sd">    choice-probability for the outside good must be supplied.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    _recapture_form</span>
-<span class="sd">        Enum specifying Fixed (proportional), Inside-out, or Outside-in</span>
+<div class="viewcode-block" id="MarketSample.gen_market_sample">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.gen_market_sample">[docs]</a>
+    <span class="k">def</span> <span class="nf">gen_market_sample</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">/</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">seed_seq_list</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">saved_array_name_suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MarketDataSample</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate share, diversion ratio, price, and margin data for MarketSpec.</span>
 
-<span class="sd">    _recapture_rate</span>
-<span class="sd">        If recapture is proportional or inside-out, the recapture rate</span>
-<span class="sd">        for the firm with the smaller share.</span>
+<span class="sd">        see :attr:`SamplingFunctionKWArgs` for description of parameters</span>
 
-<span class="sd">    _frmshr_array</span>
-<span class="sd">        Merging-firm shares.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Merging firms&#39; shares, margins, etc. for each hypothetical  merger</span>
+<span class="sd">            in the sample</span>
 
-<span class="sd">    _aggregate_purchase_prob</span>
-<span class="sd">        1 minus probability that the outside good is chosen; converts</span>
-<span class="sd">        market shares to choice probabilities by multiplication.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">        Merging-firm diversion ratios for mergers in the sample.</span>
+        <span class="n">_recapture_form</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span>
+        <span class="n">_recapture_rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_rate</span>
+        <span class="n">_dist_type_mktshr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">dist_type</span>
+        <span class="n">_dist_firm2_pcm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pcm_spec</span><span class="o">.</span><span class="n">firm2_pcm_constraint</span>
+        <span class="n">_hsr_filing_test_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hsr_filing_test_type</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="p">(</span>
+            <span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">_fcount_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">_pr_rng_seed_seq</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="n">parse_seed_seq_list</span><span class="p">(</span><span class="n">seed_seq_list</span><span class="p">,</span> <span class="n">_dist_type_mktshr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">price_spec</span><span class="p">)</span>
 
-    <span class="n">_divr_array</span><span class="p">:</span> <span class="n">ArrayDouble</span>
-    <span class="k">if</span> <span class="n">_recapture_form</span> <span class="o">==</span> <span class="n">RECConstants</span><span class="o">.</span><span class="n">FIXED</span><span class="p">:</span>
-        <span class="n">_divr_array</span> <span class="o">=</span> <span class="n">_recapture_rate</span> <span class="o">*</span> <span class="n">_frmshr_array</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_frmshr_array</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">_shr_sample_size</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">sample_size</span>
+        <span class="c1"># Scale up sample size to offset discards based on specified criteria</span>
+        <span class="n">_shr_sample_size</span> <span class="o">*=</span> <span class="n">_hsr_filing_test_type</span>
+        <span class="k">if</span> <span class="n">_dist_firm2_pcm</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">MNL</span><span class="p">:</span>
+            <span class="n">_shr_sample_size</span> <span class="o">*=</span> <span class="n">SSZConstants</span><span class="o">.</span><span class="n">MNL_DEP</span>
+        <span class="n">_shr_sample_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_shr_sample_size</span><span class="p">)</span>
 
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">_purchprob_array</span> <span class="o">=</span> <span class="n">_aggregate_purchase_prob</span> <span class="o">*</span> <span class="n">_frmshr_array</span>
-        <span class="n">_divr_array</span> <span class="o">=</span> <span class="n">_purchprob_array</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">_purchprob_array</span><span class="p">)</span>
+        <span class="c1"># Generate share data</span>
+        <span class="n">_mktshr_data</span> <span class="o">=</span> <span class="n">gen_share_data</span><span class="p">(</span>
+            <span class="n">_shr_sample_size</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="p">,</span>
+            <span class="n">_fcount_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">_mktshr_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">nthreads</span><span class="p">,</span>
+        <span class="p">)</span>
 
-    <span class="n">_divr_assert_test</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;i&quot;</span><span class="p">,</span> <span class="n">_frmshr_array</span><span class="p">),</span> <span class="mi">15</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="o">|</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">_divr_array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-    <span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">_divr_assert_test</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="s2">&quot;Data construction fails tests:&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;the index of min(s_1, s_2) must equal&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;the index of max(d_12, d_21), for all draws.&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;unless frmshr_array sums to 1.00.&quot;</span><span class="p">,</span>
+        <span class="n">_mktshr_array</span><span class="p">,</span> <span class="n">_fcounts</span><span class="p">,</span> <span class="n">_aggregate_purchase_prob</span><span class="p">,</span> <span class="n">_nth_firm_share</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">_mktshr_data</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="s2">&quot;mktshr_array&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fcounts&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;aggregate_purchase_prob&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;nth_firm_share&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">_divr_array</span></div>
+        <span class="c1"># Generate merging-firm price and PCM data</span>
+        <span class="n">_margin_data</span><span class="p">,</span> <span class="n">_price_data</span> <span class="o">=</span> <span class="n">gen_margin_price_data</span><span class="p">(</span>
+            <span class="n">_mktshr_array</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">_nth_firm_share</span><span class="p">,</span>
+            <span class="n">_aggregate_purchase_prob</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pcm_spec</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">price_spec</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hsr_filing_test_type</span><span class="p">,</span>
+            <span class="n">_pcm_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">_pr_rng_seed_seq</span><span class="p">,</span>
+            <span class="n">nthreads</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">_price_array</span><span class="p">,</span> <span class="n">_hsr_filing_test</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">_price_data</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;price_array&quot;</span><span class="p">,</span> <span class="s2">&quot;hsr_filing_test&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">_pcm_array</span><span class="p">,</span> <span class="n">_mnl_test_rows</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">_margin_data</span><span class="p">,</span> <span class="n">_f</span><span class="p">)</span> <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;pcm_array&quot;</span><span class="p">,</span> <span class="s2">&quot;mnl_test_array&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">_mnl_test_rows</span> <span class="o">=</span> <span class="n">_mnl_test_rows</span> <span class="o">*</span> <span class="n">_hsr_filing_test</span>
+        <span class="n">_s_size</span> <span class="o">=</span> <span class="n">sample_size</span>  <span class="c1"># originally-specified sample size</span>
+        <span class="k">if</span> <span class="n">_dist_firm2_pcm</span> <span class="o">==</span> <span class="n">FM2Constants</span><span class="o">.</span><span class="n">MNL</span><span class="p">:</span>
+            <span class="n">_mktshr_array</span> <span class="o">=</span> <span class="n">_mktshr_array</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
+            <span class="n">_pcm_array</span> <span class="o">=</span> <span class="n">_pcm_array</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
+            <span class="n">_price_array</span> <span class="o">=</span> <span class="n">_price_array</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
+            <span class="n">_fcounts</span> <span class="o">=</span> <span class="n">_fcounts</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
+            <span class="n">_aggregate_purchase_prob</span> <span class="o">=</span> <span class="n">_aggregate_purchase_prob</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][</span>
+                <span class="p">:</span><span class="n">_s_size</span>
+            <span class="p">]</span>
+            <span class="n">_nth_firm_share</span> <span class="o">=</span> <span class="n">_nth_firm_share</span><span class="p">[</span><span class="n">_mnl_test_rows</span><span class="p">][:</span><span class="n">_s_size</span><span class="p">]</span>
+
+        <span class="c1"># Calculate diversion ratios</span>
+        <span class="n">_divr_array</span> <span class="o">=</span> <span class="n">gen_divr_array</span><span class="p">(</span>
+            <span class="n">_recapture_form</span><span class="p">,</span>
+            <span class="n">_recapture_rate</span><span class="p">,</span>
+            <span class="n">_mktshr_array</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">_aggregate_purchase_prob</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">del</span> <span class="n">_mnl_test_rows</span><span class="p">,</span> <span class="n">_s_size</span>
+
+        <span class="n">_frmshr_array</span> <span class="o">=</span> <span class="n">_mktshr_array</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">_hhi_delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;i&quot;</span><span class="p">,</span> <span class="n">_frmshr_array</span><span class="p">,</span> <span class="n">_frmshr_array</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span>
+            <span class="p">:,</span> <span class="kc">None</span>
+        <span class="p">]</span>
+
+        <span class="n">_hhi_post</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">_hhi_delta</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,ij-&gt;i&quot;</span><span class="p">,</span> <span class="n">_mktshr_array</span><span class="p">,</span> <span class="n">_mktshr_array</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">MarketDataSample</span><span class="p">(</span>
+            <span class="n">_frmshr_array</span><span class="p">,</span>
+            <span class="n">_pcm_array</span><span class="p">,</span>
+            <span class="n">_price_array</span><span class="p">,</span>
+            <span class="n">_fcounts</span><span class="p">,</span>
+            <span class="n">_aggregate_purchase_prob</span><span class="p">,</span>
+            <span class="n">_nth_firm_share</span><span class="p">,</span>
+            <span class="n">_divr_array</span><span class="p">,</span>
+            <span class="n">_hhi_post</span><span class="p">,</span>
+            <span class="n">_hhi_delta</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MarketSample.generate_sample">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.generate_sample">[docs]</a>
+    <span class="k">def</span> <span class="nf">generate_sample</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">/</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">seed_seq_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">saved_array_name_suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate market data&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_market_sample</span><span class="p">(</span>
+            <span class="n">sample_size</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span> <span class="n">seed_seq_list</span><span class="o">=</span><span class="n">seed_seq_list</span><span class="p">,</span> <span class="n">nthreads</span><span class="o">=</span><span class="n">nthreads</span>
+        <span class="p">)</span>
+
+        <span class="n">_invalid_array_names</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;fcounts&quot;</span><span class="p">,</span> <span class="s2">&quot;choice_prob_outgd&quot;</span><span class="p">,</span> <span class="s2">&quot;nth_firm_share&quot;</span><span class="p">,</span> <span class="s2">&quot;hhi_post&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="s2">&quot;Uniform&quot;</span>
+            <span class="k">else</span> <span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="n">save_data_to_hdf5</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">saved_array_name_suffix</span><span class="o">=</span><span class="n">saved_array_name_suffix</span><span class="p">,</span>
+            <span class="n">excluded_attrs</span><span class="o">=</span><span class="n">_invalid_array_names</span><span class="p">,</span>
+            <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MarketSample.sim_enf_cnts">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts">[docs]</a>
+    <span class="k">def</span> <span class="nf">sim_enf_cnts</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">_upp_test_parms</span><span class="p">:</span> <span class="n">gbl</span><span class="o">.</span><span class="n">HMGThresholds</span><span class="p">,</span>
+        <span class="n">_sim_test_regime</span><span class="p">:</span> <span class="n">UPPTestRegime</span><span class="p">,</span>
+        <span class="o">/</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">seed_seq_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">saved_array_name_suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UPPTestsCounts</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate market data and etstimate UPP test counts on same.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        _upp_test_parms</span>
+<span class="sd">            Guidelines thresholds for testing UPP and related statistics</span>
+
+<span class="sd">        _sim_test_regime</span>
+<span class="sd">            Configuration to use for testing; UPPTestsRegime object</span>
+<span class="sd">            specifying whether investigation results in enforcement, clearance,</span>
+<span class="sd">            or both; and aggregation methods used for GUPPI and diversion ratio</span>
+<span class="sd">            measures</span>
+
+<span class="sd">        sample_size</span>
+<span class="sd">            Number of draws to generate</span>
+
+<span class="sd">        seed_seq_list</span>
+<span class="sd">            List of seed sequences, to assure independent samples in each thread</span>
+
+<span class="sd">        nthreads</span>
+<span class="sd">            Number of parallel processes to use</span>
+
+<span class="sd">        save_data_to_file</span>
+<span class="sd">            Whether to save data to an HDF5 file, and where to save it</span>
+
+<span class="sd">        saved_array_name_suffix</span>
+<span class="sd">            Suffix to add to the array names in the HDF5 file</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            UPPTestCounts ojbect with  of test counts by firm count, ΔHHI and concentration zone</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_market_data_sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_market_sample</span><span class="p">(</span>
+            <span class="n">sample_size</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span> <span class="n">seed_seq_list</span><span class="o">=</span><span class="n">seed_seq_list</span><span class="p">,</span> <span class="n">nthreads</span><span class="o">=</span><span class="n">nthreads</span>
+        <span class="p">)</span>
+
+        <span class="n">_invalid_array_names</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;fcounts&quot;</span><span class="p">,</span> <span class="s2">&quot;choice_prob_outgd&quot;</span><span class="p">,</span> <span class="s2">&quot;nth_firm_share&quot;</span><span class="p">,</span> <span class="s2">&quot;hhi_post&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">dist_type</span> <span class="o">==</span> <span class="s2">&quot;Uniform&quot;</span>
+            <span class="k">else</span> <span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="n">save_data_to_hdf5</span><span class="p">(</span>
+            <span class="n">_market_data_sample</span><span class="p">,</span>
+            <span class="n">saved_array_name_suffix</span><span class="o">=</span><span class="n">saved_array_name_suffix</span><span class="p">,</span>
+            <span class="n">excluded_attrs</span><span class="o">=</span><span class="n">_invalid_array_names</span><span class="p">,</span>
+            <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">_upp_test_arrays</span> <span class="o">=</span> <span class="n">enf_cnts</span><span class="p">(</span>
+            <span class="n">_market_data_sample</span><span class="p">,</span> <span class="n">_upp_test_parms</span><span class="p">,</span> <span class="n">_sim_test_regime</span>
+        <span class="p">)</span>
+
+        <span class="n">save_data_to_hdf5</span><span class="p">(</span>
+            <span class="n">_upp_test_arrays</span><span class="p">,</span>
+            <span class="n">saved_array_name_suffix</span><span class="o">=</span><span class="n">saved_array_name_suffix</span><span class="p">,</span>
+            <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_upp_test_arrays</span></div>
+
+
+<div class="viewcode-block" id="MarketSample.sim_enf_cnts_ll">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.sim_enf_cnts_ll">[docs]</a>
+    <span class="k">def</span> <span class="nf">sim_enf_cnts_ll</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">_enf_parm_vec</span><span class="p">:</span> <span class="n">gbl</span><span class="o">.</span><span class="n">HMGThresholds</span><span class="p">,</span>
+        <span class="n">_sim_test_regime</span><span class="p">:</span> <span class="n">UPPTestRegime</span><span class="p">,</span>
+        <span class="o">/</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">seed_seq_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">saved_array_name_suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UPPTestsCounts</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A function to parallelize data-generation and testing</span>
+
+<span class="sd">        The parameters `_sim_enf_cnts_kwargs` are passed unaltered to</span>
+<span class="sd">        the parent function, `sim_enf_cnts()`, except that, if provided,</span>
+<span class="sd">        `seed_seq_list` is used to spawn a seed sequence for each thread,</span>
+<span class="sd">        to assure independent samples in each thread, and `nthreads` defines</span>
+<span class="sd">        the number of parallel processes used. The number of draws in</span>
+<span class="sd">        each thread may be tuned, by trial and error, to the amount of</span>
+<span class="sd">        memory (RAM) available.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        _enf_parm_vec</span>
+<span class="sd">            Guidelines thresholds to test against</span>
+
+<span class="sd">        _sim_test_regime</span>
+<span class="sd">            Configuration to use for testing</span>
+
+<span class="sd">        sample_size</span>
+<span class="sd">            Number of draws to simulate</span>
+
+<span class="sd">        seed_seq_list</span>
+<span class="sd">            List of seed sequences, to assure independent samples in each thread</span>
+
+<span class="sd">        nthreads</span>
+<span class="sd">            Number of parallel processes to use</span>
+
+<span class="sd">        save_data_to_file</span>
+<span class="sd">            Whether to save data to an HDF5 file, and where to save it</span>
+
+<span class="sd">        saved_array_name_suffix</span>
+<span class="sd">            Suffix to add to the array names in the HDF5 file</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            Arrays of UPPTestCounts</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_sample_sz</span> <span class="o">=</span> <span class="n">sample_size</span>
+        <span class="n">_subsample_sz</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
+        <span class="n">_iter_count</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">_sample_sz</span> <span class="o">/</span> <span class="n">_subsample_sz</span><span class="p">)</span> <span class="k">if</span> <span class="n">_subsample_sz</span> <span class="o">&lt;</span> <span class="n">_sample_sz</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">_thread_count</span> <span class="o">=</span> <span class="n">cpu_count</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_form</span> <span class="o">!=</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">OUTIN</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_rate</span> <span class="o">!=</span> <span class="n">_enf_parm_vec</span><span class="o">.</span><span class="n">rec</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Recapture rate from market sample spec, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">share_spec</span><span class="o">.</span><span class="n">recapture_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;must match the value, </span><span class="si">{</span><span class="n">_enf_parm_vec</span><span class="o">.</span><span class="n">rec</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;the guidelines thresholds vector.&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">_rng_seed_seq_list</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">_iter_count</span>
+        <span class="k">if</span> <span class="n">seed_seq_list</span><span class="p">:</span>
+            <span class="n">_rng_seed_seq_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">_iter_count</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">seed_seq_list</span><span class="p">],</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="p">)</span>
+
+        <span class="n">_sim_enf_cnts_kwargs</span><span class="p">:</span> <span class="n">SamplingFunctionKWArgs</span> <span class="o">=</span> <span class="n">SamplingFunctionKWArgs</span><span class="p">({</span>
+            <span class="s2">&quot;sample_size&quot;</span><span class="p">:</span> <span class="n">_subsample_sz</span><span class="p">,</span>
+            <span class="s2">&quot;save_data_to_file&quot;</span><span class="p">:</span> <span class="n">save_data_to_file</span><span class="p">,</span>
+            <span class="s2">&quot;nthreads&quot;</span><span class="p">:</span> <span class="n">nthreads</span><span class="p">,</span>
+        <span class="p">})</span>
+
+        <span class="n">_res_list</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">_thread_count</span><span class="p">,</span> <span class="n">prefer</span><span class="o">=</span><span class="s2">&quot;threads&quot;</span><span class="p">)(</span>
+            <span class="n">delayed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_enf_cnts</span><span class="p">)(</span>
+                <span class="n">_enf_parm_vec</span><span class="p">,</span>
+                <span class="n">_sim_test_regime</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">_sim_enf_cnts_kwargs</span><span class="p">,</span>
+                <span class="n">saved_array_name_suffix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">saved_array_name_suffix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">_iter_id</span><span class="si">:</span><span class="s2">0</span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">_iter_count</span><span class="p">)))</span><span class="si">}</span><span class="s2">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">seed_seq_list</span><span class="o">=</span><span class="n">_rng_seed_seq_list_ch</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">_iter_id</span><span class="p">,</span> <span class="n">_rng_seed_seq_list_ch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_rng_seed_seq_list</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">_res_list_stacks</span> <span class="o">=</span> <span class="n">UPPTestsCounts</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="nb">getattr</span><span class="p">(</span><span class="n">_j</span><span class="p">,</span> <span class="n">_k</span><span class="p">)</span> <span class="k">for</span> <span class="n">_j</span> <span class="ow">in</span> <span class="n">_res_list</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">_k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;by_firm_count&quot;</span><span class="p">,</span> <span class="s2">&quot;by_delta&quot;</span><span class="p">,</span> <span class="s2">&quot;by_conczone&quot;</span><span class="p">)</span>
+        <span class="p">])</span>
+        <span class="n">upp_test_results</span> <span class="o">=</span> <span class="n">UPPTestsCounts</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span>
+                <span class="p">(</span><span class="n">_gv</span> <span class="o">:=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_res_list_stacks</span><span class="p">,</span> <span class="n">_g</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">_h</span><span class="p">],</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ijk-&gt;jk&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">_gv</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">_h</span><span class="p">:]),</span>
+            <span class="p">))</span>
+            <span class="k">for</span> <span class="n">_g</span><span class="p">,</span> <span class="n">_h</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                <span class="n">_res_list_stacks</span><span class="o">.</span><span class="n">__dataclass_fields__</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="p">])</span>
+        <span class="k">del</span> <span class="n">_res_list</span><span class="p">,</span> <span class="n">_res_list_stacks</span>
+
+        <span class="k">return</span> <span class="n">upp_test_results</span></div>
+
+
+<div class="viewcode-block" id="MarketSample.estimate_enf_counts">
+<a class="viewcode-back" href="../../../autoapi/mergeron/gen/data_generation/index.html#mergeron.gen.data_generation.MarketSample.estimate_enf_counts">[docs]</a>
+    <span class="k">def</span> <span class="nf">estimate_enf_counts</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">_enf_parm_vec</span><span class="p">:</span> <span class="n">HMGThresholds</span><span class="p">,</span>
+        <span class="n">_upp_test_regime</span><span class="p">:</span> <span class="n">UPPTestRegime</span><span class="p">,</span>
+        <span class="o">/</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">sample_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">seed_seq_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">SeedSequence</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nthreads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">save_data_to_file</span><span class="p">:</span> <span class="n">SaveData</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">saved_array_name_suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Estimate enforcement counts</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        _enf_parm_vec</span>
+<span class="sd">            Threshold values for various Guidelines criteria</span>
+
+<span class="sd">        _upp_test_regime</span>
+<span class="sd">            Specifies whether to analyze enforcement, clearance, or both</span>
+<span class="sd">            and the GUPPI and diversion ratio aggregators employed, with</span>
+<span class="sd">            default being to analyze enforcement based on the maximum</span>
+<span class="sd">            merging-firm GUPPI and maximum diversion ratio between the</span>
+<span class="sd">            merging firms</span>
+
+<span class="sd">        sample_size</span>
+<span class="sd">            Size of the market sample drawn</span>
+
+<span class="sd">        seed_seq_list</span>
+<span class="sd">            List of :code:`numpy.random.SeedSequence` objects</span>
+
+<span class="sd">        nthreads</span>
+<span class="sd">            Number of threads to use</span>
+
+<span class="sd">        save_data_to_file</span>
+<span class="sd">            Save data to given HDF5 file, at specified group node</span>
+
+<span class="sd">        saved_array_name_suffix</span>
+<span class="sd">            Suffix to add to the array names in the HDF5 file</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enf_counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_enf_cnts_ll</span><span class="p">(</span>
+                <span class="n">_enf_parm_vec</span><span class="p">,</span>
+                <span class="n">_upp_test_regime</span><span class="p">,</span>
+                <span class="n">sample_size</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span>
+                <span class="n">seed_seq_list</span><span class="o">=</span><span class="n">seed_seq_list</span><span class="p">,</span>
+                <span class="n">nthreads</span><span class="o">=</span><span class="n">nthreads</span><span class="p">,</span>
+                <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
+                <span class="n">saved_array_name_suffix</span><span class="o">=</span><span class="n">saved_array_name_suffix</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enf_counts</span> <span class="o">=</span> <span class="n">enf_cnts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">_enf_parm_vec</span><span class="p">,</span> <span class="n">_upp_test_regime</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">save_data_to_file</span><span class="p">:</span>
+                <span class="n">save_data_to_hdf5</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">enf_counts</span><span class="p">,</span>
+                    <span class="n">save_data_to_file</span><span class="o">=</span><span class="n">save_data_to_file</span><span class="p">,</span>
+                    <span class="n">saved_array_name_suffix</span><span class="o">=</span><span class="n">saved_array_name_suffix</span><span class="p">,</span>
+                <span class="p">)</span></div>
+</div>
 
 </code></pre></div>
 

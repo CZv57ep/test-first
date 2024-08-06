@@ -5,10 +5,7 @@ mergeron.gen.data_generation
 
 .. autoapi-nested-parse::
 
-   Methods to generate market data, including shares price, marginsm, and diversion ratios
-   for analyzing merger enforcement policy.
-
-
+   Methods to generate data for analyzing merger enforcement policy.
 
 
 
@@ -17,76 +14,164 @@ mergeron.gen.data_generation
 Module Contents
 ---------------
 
-.. py:class:: SeedSequenceData
+.. py:class:: SamplingFunctionKWArgs
 
-   Bases: :py:obj:`NamedTuple`
-
-
-   .. py:attribute:: mktshr_rng_seed_seq
-      :type:  numpy.random.SeedSequence
+   Bases: :py:obj:`TypedDict`
 
 
-   .. py:attribute:: pcm_rng_seed_seq
-      :type:  numpy.random.SeedSequence
+   Keyword arguments of function, :func:`MarketSample.sim_enf_cnts`
 
 
-   .. py:attribute:: fcount_rng_seed_seq
-      :type:  numpy.random.SeedSequence | None
+   .. py:attribute:: sample_size
+      :type:  int
+
+      number of draws to generate
 
 
-   .. py:attribute:: pr_rng_seed_seq
-      :type:  numpy.random.SeedSequence | None
+   .. py:attribute:: seed_seq_list
+      :type:  collections.abc.Sequence[numpy.random.SeedSequence] | None
+
+      sequence of SeedSequences to ensure replicable data generation with
+      appropriately independent random streams
+
+      .. rubric:: Notes
+
+      See, :func:`.data_generation_functions.parse_seed_seq_list` for more on
+      specification of this parameter.
 
 
-.. py:function:: gen_market_sample(_mkt_sample_spec, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16)
+   .. py:attribute:: nthreads
+      :type:  int
 
-   Generate share, diversion ratio, price, and margin data for MarketSpec.
-
-
-   :param _mkt_sample_spec: class specifying parameters for data generation, see :class:`mergeron.gen.MarketSpec`
-   :param sample_size: number of draws to generate
-   :param seed_seq_list: tuple of SeedSequences to ensure replicable data generation with
-                         appropriately independent random streams
-   :param nthreads: optionally specify the number of CPU threads for the PRNG
-
-   :returns: Merging firms' shares, margins, etc. for each hypothetical  merger
-             in the sample
+      number of parallel threads to use
 
 
-.. py:function:: parse_seed_seq_list(_sseq_list, _mktshr_dist_type, _price_spec, /)
+   .. py:attribute:: save_data_to_file
+      :type:  mergeron.gen.upp_tests.SaveData
 
-   Initialize RNG seed sequences to ensure independence of distinct random streams.
-
-   The tuple of SeedSequences, is parsed in the following order
-   for generating the relevant random variates:
-   1.) quantity shares
-   2.) price-cost margins
-   3.) firm-counts, if :code:`MarketSpec.share_spec.dist_type` is a Dirichlet distribution
-   4.) prices, if :code:`MarketSpec.price_spec ==`:attr:`mergeron.gen.PriceConstants.ZERO`.
+      optionally save data to HDF5 file
 
 
+   .. py:attribute:: saved_array_name_suffix
+      :type:  str
 
-   :param _sseq_list: List of RNG seed sequences
-   :param _mktshr_dist_type: Market share distribution type
-   :param _price_spec: Price specification
-
-   :returns: Seed sequence data
+      optionally specify a suffix for the HDF5 array names
 
 
-.. py:function:: gen_divr_array(_recapture_form, _recapture_rate, _frmshr_array, _aggregate_purchase_prob = EMPTY_ARRAY_DEFAULT, /)
+.. py:class:: MarketSample
 
-   Given merging-firm shares and related parameters, return diverion ratios.
+   Parameter specification for market data generation.
 
-   If recapture is specified as :attr:`mergeron.RECConstants.OUTIN`, then the
-   choice-probability for the outside good must be supplied.
 
-   :param _recapture_form: Enum specifying Fixed (proportional), Inside-out, or Outside-in
-   :param _recapture_rate: If recapture is proportional or inside-out, the recapture rate
-                           for the firm with the smaller share.
-   :param _frmshr_array: Merging-firm shares.
-   :param _aggregate_purchase_prob: 1 minus probability that the outside good is chosen; converts
-                                    market shares to choice probabilities by multiplication.
+   .. py:attribute:: share_spec
+      :type:  mergeron.gen.ShareSpec
 
-   :returns: Merging-firm diversion ratios for mergers in the sample.
+      Market-share specification, see :class:`ShareSpec`
+
+
+   .. py:attribute:: pcm_spec
+      :type:  mergeron.gen.PCMSpec
+
+      Margin specification, see :class:`PCMSpec`
+
+
+   .. py:attribute:: price_spec
+      :type:  mergeron.gen.PriceSpec
+
+      Price specification, see :class:`PriceSpec`
+
+
+   .. py:attribute:: hsr_filing_test_type
+      :type:  mergeron.gen.SSZConstants
+
+      Method for modeling HSR filing threholds, see :class:`SSZConstants`
+
+
+   .. py:attribute:: data
+      :type:  mergeron.gen.MarketDataSample
+
+
+   .. py:attribute:: enf_counts
+      :type:  mergeron.gen.UPPTestsCounts
+
+
+   .. py:method:: gen_market_sample(/, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16, save_data_to_file = False, saved_array_name_suffix = '')
+
+      Generate share, diversion ratio, price, and margin data for MarketSpec.
+
+      see :attr:`SamplingFunctionKWArgs` for description of parameters
+
+      :returns: Merging firms' shares, margins, etc. for each hypothetical  merger
+                in the sample
+
+
+
+   .. py:method:: generate_sample(/, *, sample_size = 10**6, seed_seq_list, nthreads, save_data_to_file = False, saved_array_name_suffix = '')
+
+      Generate market data
+
+
+
+   .. py:method:: sim_enf_cnts(_upp_test_parms, _sim_test_regime, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16, save_data_to_file = False, saved_array_name_suffix = '')
+
+      Generate market data and etstimate UPP test counts on same.
+
+      :param _upp_test_parms: Guidelines thresholds for testing UPP and related statistics
+      :param _sim_test_regime: Configuration to use for testing; UPPTestsRegime object
+                               specifying whether investigation results in enforcement, clearance,
+                               or both; and aggregation methods used for GUPPI and diversion ratio
+                               measures
+      :param sample_size: Number of draws to generate
+      :param seed_seq_list: List of seed sequences, to assure independent samples in each thread
+      :param nthreads: Number of parallel processes to use
+      :param save_data_to_file: Whether to save data to an HDF5 file, and where to save it
+      :param saved_array_name_suffix: Suffix to add to the array names in the HDF5 file
+
+      :returns: UPPTestCounts ojbect with  of test counts by firm count, ΔHHI and concentration zone
+
+
+
+   .. py:method:: sim_enf_cnts_ll(_enf_parm_vec, _sim_test_regime, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16, save_data_to_file = False, saved_array_name_suffix = '')
+
+      A function to parallelize data-generation and testing
+
+      The parameters `_sim_enf_cnts_kwargs` are passed unaltered to
+      the parent function, `sim_enf_cnts()`, except that, if provided,
+      `seed_seq_list` is used to spawn a seed sequence for each thread,
+      to assure independent samples in each thread, and `nthreads` defines
+      the number of parallel processes used. The number of draws in
+      each thread may be tuned, by trial and error, to the amount of
+      memory (RAM) available.
+
+      :param _enf_parm_vec: Guidelines thresholds to test against
+      :param _sim_test_regime: Configuration to use for testing
+      :param sample_size: Number of draws to simulate
+      :param seed_seq_list: List of seed sequences, to assure independent samples in each thread
+      :param nthreads: Number of parallel processes to use
+      :param save_data_to_file: Whether to save data to an HDF5 file, and where to save it
+      :param saved_array_name_suffix: Suffix to add to the array names in the HDF5 file
+
+      :returns: Arrays of UPPTestCounts
+
+
+
+   .. py:method:: estimate_enf_counts(_enf_parm_vec, _upp_test_regime, /, *, sample_size = 10**6, seed_seq_list, nthreads, save_data_to_file = False, saved_array_name_suffix = '')
+
+      Estimate enforcement counts
+
+      :param _enf_parm_vec: Threshold values for various Guidelines criteria
+      :param _upp_test_regime: Specifies whether to analyze enforcement, clearance, or both
+                               and the GUPPI and diversion ratio aggregators employed, with
+                               default being to analyze enforcement based on the maximum
+                               merging-firm GUPPI and maximum diversion ratio between the
+                               merging firms
+      :param sample_size: Size of the market sample drawn
+      :param seed_seq_list: List of :code:`numpy.random.SeedSequence` objects
+      :param nthreads: Number of threads to use
+      :param save_data_to_file: Save data to given HDF5 file, at specified group node
+      :param saved_array_name_suffix: Suffix to add to the array names in the HDF5 file
+
+      :rtype: None
+
 
 

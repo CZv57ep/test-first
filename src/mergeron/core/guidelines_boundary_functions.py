@@ -667,7 +667,7 @@ def shrratio_boundary_max(
     """
 
     # _r_val is not needed for max boundary, but is specified for consistency
-    # of function call with other shrratio_mgnsym_boundary functions
+    # of function call with other share-ratio boundary functions
     del _r_val
     _delta_star = mpf(f"{_delta_star}")
     _s_intcpt = _delta_star
@@ -883,9 +883,9 @@ def boundary_plot(*, mktshares_plot_flag: bool = True) -> tuple[Any, ...]:
         mktshares_plot_flag: bool = False,
         mktshares_axlbls_flag: bool = False,
     ) -> mpa.Axes:
-        # Set the width of axis gridlines, and tick marks:
+        # Set the width of axis grid lines, and tick marks:
         # both axes, both major and minor ticks
-        # Frame, grid, and facecolor
+        # Frame, grid, and face color
         for _spos0 in "left", "bottom":
             _ax1.spines[_spos0].set_linewidth(0.5)
             _ax1.spines[_spos0].set_zorder(5)
