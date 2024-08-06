@@ -21,7 +21,6 @@ from scipy.stats import beta, norm  # type: ignore
 from .. import (  # noqa: TID252
     _PKG_NAME,
     DATA_DIR,
-    TI,
     VERSION,
     ArrayBIGINT,
     ArrayDouble,
@@ -165,32 +164,6 @@ hhi_delta_ranger, hhi_zone_post_ranger = (
     for _f in (HHI_DELTA_KNOTS, HHI_POST_ZONE_KNOTS)
 )
 
-HMG_PRESUMPTION_ZONE_DICT = {
-    HHI_POST_ZONE_KNOTS[0]: {
-        HHI_DELTA_KNOTS[0]: (0, 0, 0),
-        HHI_DELTA_KNOTS[1]: (0, 0, 0),
-        HHI_DELTA_KNOTS[2]: (0, 0, 0),
-    },
-    HHI_POST_ZONE_KNOTS[1]: {
-        HHI_DELTA_KNOTS[0]: (0, 1, 1),
-        HHI_DELTA_KNOTS[1]: (1, 1, 2),
-        HHI_DELTA_KNOTS[2]: (1, 1, 2),
-    },
-    HHI_POST_ZONE_KNOTS[2]: {
-        HHI_DELTA_KNOTS[0]: (0, 2, 1),
-        HHI_DELTA_KNOTS[1]: (1, 2, 3),
-        HHI_DELTA_KNOTS[2]: (2, 2, 4),
-    },
-}
-
-ZONE_VALS = np.unique(
-    np.vstack([
-        tuple(HMG_PRESUMPTION_ZONE_DICT[_k].values())
-        for _k in HMG_PRESUMPTION_ZONE_DICT
-    ]),
-    axis=0,
-)
-
 ZONE_STRINGS = {
     0: R"Green Zone (Safeharbor)",
     1: R"Yellow Zone",
@@ -233,6 +206,31 @@ ZONE_DETAIL_STRINGS_DELTA_LATEX = {
     3: R"\Delta HHI \in \text{{[{}, {}) pts.}}".format(*HHI_DELTA_KNOTS[1:3]),
     4: Rf"\Delta HHI \geqslant \text{{{HHI_DELTA_KNOTS[2]} pts.}}",
 }
+
+HMG_PRESUMPTION_ZONE_MAP = {
+    HHI_POST_ZONE_KNOTS[0]: {
+        HHI_DELTA_KNOTS[0]: (0, 0, 0),
+        HHI_DELTA_KNOTS[1]: (0, 0, 0),
+        HHI_DELTA_KNOTS[2]: (0, 0, 0),
+    },
+    HHI_POST_ZONE_KNOTS[1]: {
+        HHI_DELTA_KNOTS[0]: (0, 1, 1),
+        HHI_DELTA_KNOTS[1]: (1, 1, 2),
+        HHI_DELTA_KNOTS[2]: (1, 1, 2),
+    },
+    HHI_POST_ZONE_KNOTS[2]: {
+        HHI_DELTA_KNOTS[0]: (0, 2, 1),
+        HHI_DELTA_KNOTS[1]: (1, 2, 3),
+        HHI_DELTA_KNOTS[2]: (2, 2, 4),
+    },
+}
+
+ZONE_VALS = np.unique(
+    np.vstack([
+        tuple(HMG_PRESUMPTION_ZONE_MAP[_k].values()) for _k in HMG_PRESUMPTION_ZONE_MAP
+    ]),
+    axis=0,
+)
 
 
 def enf_stats_output(
@@ -475,7 +473,7 @@ def enf_cnts_byconczone(_cnts_array: ArrayBIGINT, /) -> ArrayBIGINT:
                 else (_hhi_delta_ranged == _hhi_zone_delta_lim)
             )
 
-            _zone_val = HMG_PRESUMPTION_ZONE_DICT[_hhi_zone_post_lim][
+            _zone_val = HMG_PRESUMPTION_ZONE_MAP[_hhi_zone_post_lim][
                 _hhi_zone_delta_lim
             ]
 
@@ -723,8 +721,8 @@ def stats_print_rows(
 
 
 def propn_ci(
-    _npos: ArrayINT[TI] | int = 4,
-    _nobs: ArrayINT[TI] | int = 10,
+    _npos: ArrayINT | int = 4,
+    _nobs: ArrayINT | int = 10,
     /,
     *,
     alpha: float = 0.05,

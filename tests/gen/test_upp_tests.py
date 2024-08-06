@@ -6,9 +6,10 @@ import mergeron.core.guidelines_boundaries as gbl
 import mergeron.core.pseudorandom_numbers as rmp
 import mergeron.gen.enforcement_stats as esl
 import numpy as np
-from mergeron import RECConstants, UPPAggrSelector
-from mergeron.gen import INVResolution, ShareSpec, SHRConstants, UPPTestRegime
-from mergeron.gen.market_sample import MarketSample
+import pytest
+from mergeron import ArrayBIGINT, RECTypes, UPPAggrSelector
+from mergeron.gen import INVResolution, ShareSpec, SHRDistributions, UPPTestRegime
+from mergeron.gen.data_generation import MarketSample
 
 stats_sim_byfirmcount_teststr = dedent(R"""
     {2 to 1} & 23,581,830 & 132,308 &     0 & 1,321 \\
@@ -60,111 +61,117 @@ stats_sim_bydelta_unrestricted_teststr = dedent(R"""
     """).lstrip()
 
 
-def test_clearance_rate_calcs() -> None:
-    _test_sel: UPPTestRegime = UPPTestRegime(
-        INVResolution.CLRN, UPPAggrSelector.MAX, None
+test_sel: UPPTestRegime = UPPTestRegime(
+    INVResolution.CLRN, UPPAggrSelector.MAX, UPPAggrSelector.MAX
+)
+
+mkt_sample = MarketSample(
+    share_spec=ShareSpec(
+        SHRDistributions.DIR_FLAT,
+        None,
+        np.array((133, 184, 134, 52, 32, 10, 12, 4, 3)),
+        RECTypes.FIXED,
+        0.8,
     )
+)
 
-    _mkt_sample = MarketSample(
-        share_spec=ShareSpec(
-            RECConstants.FIXED,
-            0.80,
-            SHRConstants.DIR_FLAT,
-            None,  # TODO: type-fix this, with None as default
-            np.array((133, 184, 134, 52, 32, 10, 12, 4, 3)),
-        )
+start_time = datetime.now()
+mkt_sample.estimate_enf_counts(
+    gbl.GuidelinesThresholds(2010).safeharbor,
+    test_sel,
+    sample_size=10**8,
+    seed_seq_list=rmp.gen_seed_seq_list_default(3),
+    nthreads=16,
+)
+total_duration = datetime.now() - start_time
+
+print(
+    f"Estimations completed in total duration of {total_duration / timedelta(seconds=1):.6f} secs."
+)
+
+return_type_sel = esl.StatsReturnSelector.CNT
+
+print()
+print(
+    f"Simulated {test_sel.resolution.capitalize()} stats by number of significant competitors:"
+)
+stats_hdr_list, stats_dat_list = esl.enf_stats_table_onedim(
+    mkt_sample.enf_counts.by_firm_count[:, :-1],
+    return_type_sel=return_type_sel,
+    print_format="LaTeX",
+)
+
+stats_byfirmcount_teststr_val = "".join([
+    "{} & {} {}".format(
+        stats_hdr_list[g], " & ".join(stats_dat_list[g]), esl.LTX_ARRAY_LINEEND
     )
+    for g in range(len(stats_hdr_list))
+])
+print(stats_byfirmcount_teststr_val)
+del stats_hdr_list, stats_dat_list
 
-    _start_time = datetime.now()
-    _mkt_sample.estimate_enf_counts(
-        gbl.GuidelinesThresholds(2010).safeharbor,
-        _test_sel,
-        sample_size=10**8,
-        seed_seq_list=rmp.gen_seed_seq_list_default(3),
-        nthreads=16,
+print()
+print(f"Simulated {test_sel.resolution.capitalize()} stats by range of ∆HHI")
+stats_hdr_list, stats_dat_list = esl.enf_stats_table_onedim(
+    mkt_sample.enf_counts.by_delta[:, :-1],
+    return_type_sel=return_type_sel,
+    sort_order=esl.SortSelector.REV,
+    print_format="LaTeX",
+)
+
+stats_bydelta_teststr_val = "".join([
+    "{} & {} {}".format(
+        stats_hdr_list[g], " & ".join(stats_dat_list[g]), esl.LTX_ARRAY_LINEEND
     )
-    # upp_tests_counts = utl.sim_enf_cnts_ll(
-    #     _mkt_sample_spec,
-    #     gbl.GuidelinesThresholds(2010).safeharbor,
-    #     seed_seq_list=rmp.gen_seed_seq_list_default(3),
-    #     sim_test_regime=_test_sel,
-    #     nthreads=16,
-    # )
-    _total_duration = datetime.now() - _start_time
+    for g in range(len(stats_hdr_list))
+])
+print(stats_bydelta_teststr_val)
+del stats_hdr_list, stats_dat_list
 
-    print(
-        f"Estimations completed in total duration of {_total_duration / timedelta(seconds=1):.6f} secs."
+print()
+print(
+    f"Merger {test_sel.resolution.capitalize()} stats by Merger Guidelines concentration presumptions"
+)
+stats_hdr_list, stats_dat_list = esl.enf_stats_table_byzone(
+    mkt_sample.enf_counts.by_conczone[:, :-1],
+    return_type_sel=return_type_sel,
+    sort_order=esl.SortSelector.REV,
+    print_format="LaTeX",
+)
+stats_byzone_teststr_val = "".join([
+    "{} & {} {}".format(
+        stats_hdr_list[g], " & ".join(stats_dat_list[g]), esl.LTX_ARRAY_LINEEND
     )
-
-    upp_tests_counts = _mkt_sample.enf_counts
-    _return_type_sel = esl.StatsReturnSelector.CNT
-    print()
-    print(
-        f"Simulated {_test_sel.resolution.capitalize()} stats by number of significant competitors:"
-    )
-    _stats_hdr_list, _stats_dat_list = esl.enf_stats_table_onedim(
-        upp_tests_counts.by_firm_count[:, :-1],
-        return_type_sel=_return_type_sel,
-        print_format="LaTeX",
-    )
-
-    _stats_byfirmcount_teststr_val = "".join([
-        "{} & {} {}".format(
-            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), esl.LTX_ARRAY_LINEEND
-        )
-        for g in range(len(_stats_hdr_list))
-    ])
-    print(_stats_byfirmcount_teststr_val)
-    if stats_sim_byfirmcount_teststr != _stats_byfirmcount_teststr_val:
-        raise AssertionError("Simulated vs. expected stats by firm count differ")
-    del _stats_hdr_list, _stats_dat_list
-
-    print()
-    print(f"Simulated {_test_sel.resolution.capitalize()} stats by range of ∆HHI")
-    _stats_hdr_list, _stats_dat_list = esl.enf_stats_table_onedim(
-        upp_tests_counts.by_delta[:, :-1],
-        return_type_sel=_return_type_sel,
-        sort_order=esl.SortSelector.REV,
-        print_format="LaTeX",
-    )
-
-    _stats_bydelta_teststr_val = "".join([
-        "{} & {} {}".format(
-            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), esl.LTX_ARRAY_LINEEND
-        )
-        for g in range(len(_stats_hdr_list))
-    ])
-    print(_stats_bydelta_teststr_val)
-    if stats_sim_bydelta_teststr != _stats_bydelta_teststr_val:
-        raise AssertionError("Simulated vs. expected stats by delta differ")
-    del _stats_hdr_list, _stats_dat_list
-
-    print()
-    print(
-        f"Merger {_test_sel.resolution.capitalize()} stats by Merger Guidelines concentration presumptions"
-    )
-    _stats_hdr_list, _stats_dat_list = esl.enf_stats_table_byzone(
-        upp_tests_counts.by_conczone[:, :-1],
-        return_type_sel=_return_type_sel,
-        sort_order=esl.SortSelector.REV,
-        print_format="LaTeX",
-    )
-    _stats_byzone_teststr_val = "".join([
-        "{} & {} {}".format(
-            _stats_hdr_list[g], " & ".join(_stats_dat_list[g]), esl.LTX_ARRAY_LINEEND
-        )
-        for g in range(len(_stats_hdr_list))
-    ])
-    print(_stats_byzone_teststr_val)
-    if stats_sim_byconczone_teststr != _stats_byzone_teststr_val:
-        raise AssertionError("Simulated vs. expected stats by zone differ")
-    del _stats_hdr_list, _stats_dat_list
-
-    # Repeatability test: all passed at this point
-    print("Tests ALL passed for generation of firm-count-weighted market data.")
-
-    gc.collect()
+    for g in range(len(stats_hdr_list))
+])
+print(stats_byzone_teststr_val)
+del stats_hdr_list, stats_dat_list
 
 
-if __name__ == "__main__":
-    test_clearance_rate_calcs()
+@pytest.mark.parametrize(
+    "_stats_group, _bench_val, _test_val",
+    (
+        (
+            esl.StatsGrpSelector.FC,
+            stats_sim_byfirmcount_teststr,
+            stats_byfirmcount_teststr_val,
+        ),
+        (esl.StatsGrpSelector.DL, stats_sim_bydelta_teststr, stats_bydelta_teststr_val),
+        (
+            esl.StatsGrpSelector.ZN,
+            stats_sim_byconczone_teststr,
+            stats_byzone_teststr_val,
+        ),
+    ),
+)
+def test_enf_counts(
+    _stats_group: esl.StatsGrpSelector, _bench_val: ArrayBIGINT, _test_val: ArrayBIGINT
+) -> None:
+    if _test_val != _bench_val:
+        raise AssertionError(f"Enformation counts differ for {_stats_group}")
+
+
+# Repeatability test: all passed at this point
+print("Tests ALL passed for generation of firm-count-weighted market data.")
+
+gc.collect()
