@@ -18,7 +18,7 @@ mergeron.gen.enforcement_stats
 Module Contents
 ---------------
 
-.. py:class:: INDGRPConstants
+.. py:class:: IndustryGroup
 
    Bases: :py:obj:`enum.StrEnum`
 
@@ -76,7 +76,7 @@ Module Contents
 
 
 
-.. py:class:: EVIDENConstants
+.. py:class:: OtherEvidence
 
    Bases: :py:obj:`enum.StrEnum`
 
@@ -257,15 +257,15 @@ Module Contents
 
 .. py:data:: ZONE_VALS
 
-.. py:function:: enf_stats_output(_data_array_dict, _data_period = '1996-2003', _table_ind_group = INDGRPConstants.ALL, _table_evid_cond = EVIDENConstants.UR, _stats_group = StatsGrpSelector.FC, _enf_spec = INVResolution.CLRN, /, *, return_type_sel = StatsReturnSelector.RPT, sort_order = SortSelector.UCH, print_to_screen = True)
+.. py:function:: enf_stats_output(_data_array_dict, _data_period = '1996-2003', _table_ind_group = IndustryGroup.ALL, _table_evid_cond = OtherEvidence.UR, _stats_group = StatsGrpSelector.FC, _enf_spec = INVResolution.CLRN, /, *, return_type_sel = StatsReturnSelector.RPT, sort_order = SortSelector.UCH, print_to_screen = True)
 
 .. py:function:: enf_stats_listing_by_group(_invdata_array_dict, _study_period, _table_ind_grp, _table_evid_cond, _stats_group, _enf_spec, /)
 
-.. py:function:: enf_cnts_listing_byfirmcount(_data_array_dict, _data_period = '1996-2003', _table_ind_group = INDGRPConstants.ALL, _table_evid_cond = EVIDENConstants.UR, _enf_spec = INVResolution.CLRN, /)
+.. py:function:: enf_cnts_listing_byfirmcount(_data_array_dict, _data_period = '1996-2003', _table_ind_group = IndustryGroup.ALL, _table_evid_cond = OtherEvidence.UR, _enf_spec = INVResolution.CLRN, /)
 
-.. py:function:: enf_cnts_listing_byhhianddelta(_data_array_dict, _data_period = '1996-2003', _table_ind_group = INDGRPConstants.ALL, _table_evid_cond = EVIDENConstants.UR, _enf_spec = INVResolution.CLRN, /)
+.. py:function:: enf_cnts_listing_byhhianddelta(_data_array_dict, _data_period = '1996-2003', _table_ind_group = IndustryGroup.ALL, _table_evid_cond = OtherEvidence.UR, _enf_spec = INVResolution.CLRN, /)
 
-.. py:function:: table_no_lku(_data_array_dict_sub, _table_ind_group = INDGRPConstants.ALL, _table_evid_cond = EVIDENConstants.UR, /)
+.. py:function:: table_no_lku(_data_array_dict_sub, _table_ind_group = IndustryGroup.ALL, _table_evid_cond = OtherEvidence.UR, /)
 
 .. py:function:: enf_cnts_byfirmcount(_cnts_array, /)
 

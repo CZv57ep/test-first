@@ -37,7 +37,7 @@ Module Contents
    :returns: market shares and other market statistics for each draw (market)
 
 
-.. py:function:: gen_market_shares_dirichlet_multimarket(_s_size = 10**6, _recapture_form = RECTypes.INOUT, _dist_type_dir = SHRDistributions.DIR_FLAT, _dist_parms_dir = None, _firm_count_wts = None, _fcount_rng_seed_seq = None, _mktshr_rng_seed_seq = None, _nthreads = 16, /)
+.. py:function:: gen_market_shares_dirichlet_multimarket(_s_size = 10**6, _recapture_form = RECForm.INOUT, _dist_type_dir = SHRDistribution.DIR_FLAT, _dist_parms_dir = None, _firm_count_wts = None, _fcount_rng_seed_seq = None, _mktshr_rng_seed_seq = None, _nthreads = 16, /)
 
    Dirichlet-distributed shares with multiple firm-counts.
 
@@ -57,14 +57,14 @@ Module Contents
    :returns: array of market shares and other market statistics
 
 
-.. py:function:: gen_market_shares_dirichlet(_dir_alphas, _s_size = 10**6, _recapture_form = RECTypes.INOUT, _mktshr_rng_seed_seq = None, _nthreads = 16, /)
+.. py:function:: gen_market_shares_dirichlet(_dir_alphas, _s_size = 10**6, _recapture_form = RECForm.INOUT, _mktshr_rng_seed_seq = None, _nthreads = 16, /)
 
    Dirichlet-distributed shares with fixed firm-count.
 
    :param _dir_alphas: Shape parameters for Dirichlet distribution
    :param _s_size: sample size to be drawn
-   :param _recapture_form: r_1 = r_2 if RECTypes.FIXED, otherwise MNL-consistent. If
-                           RECTypes.OUTIN; the number of columns in the output share array
+   :param _recapture_form: r_1 = r_2 if RECForm.FIXED, otherwise MNL-consistent. If
+                           RECForm.OUTIN; the number of columns in the output share array
                            is len(_dir_alphas) - 1.
    :param _mktshr_rng_seed_seq: seed market share rng, for replicable results
    :param _nthreads: number of threads for parallelized random number generation
@@ -76,7 +76,7 @@ Module Contents
 
    Given merging-firm shares and related parameters, return diverion ratios.
 
-   If recapture is specified as :attr:`mergeron.RECTypes.OUTIN`, then the
+   If recapture is specified as :attr:`mergeron.RECForm.OUTIN`, then the
    choice-probability for the outside good must be supplied.
 
    :param _recapture_form: Enum specifying Fixed (proportional), Inside-out, or Outside-in
@@ -105,7 +105,7 @@ Module Contents
    :param _price_spec: Enum specifying whether to use symmetric, positive, or negative
                        margins; see :class:`mergeron.gen.PriceSpec`.
    :param _hsr_filing_test_type: Enum specifying restriction, if any, to impose on market data sample
-                                 to model HSR filing requirements; see :class:`mergeron.gen.SSZConstants`.
+                                 to model HSR filing requirements; see :class:`mergeron.gen.SSZConstant`.
    :param _pcm_rng_seed_seq: Seed sequence for generating margin data.
    :param _pr_rng_seed_seq: Seed sequence for generating price data.
    :param _nthreads: Number of threads to use in generating price data.

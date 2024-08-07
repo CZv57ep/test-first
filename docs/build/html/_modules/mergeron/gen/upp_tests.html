@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.gen.upp_tests - mergeron 2024.739104.1</title>
+        <title>mergeron.gen.upp_tests - mergeron 2024.739105.0</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739105.0" class="md-header__button md-logo" aria-label="mergeron 2024.739105.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739105.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739105.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739104.1
+    mergeron 2024.739105.0
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -390,7 +390,7 @@
     <span class="n">ArrayDouble</span><span class="p">,</span>
     <span class="n">ArrayFloat</span><span class="p">,</span>
     <span class="n">ArrayINT</span><span class="p">,</span>
-    <span class="n">RECTypes</span><span class="p">,</span>
+    <span class="n">RECForm</span><span class="p">,</span>
     <span class="n">UPPAggrSelector</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">guidelines_boundaries</span> <span class="k">as</span> <span class="n">gbl</span>  <span class="c1"># noqa: TID252</span>
@@ -487,24 +487,23 @@
 
     <span class="n">_stats_rowlen</span> <span class="o">=</span> <span class="mi">6</span>
     <span class="c1"># Clearance/enforcement counts --- by firm count</span>
-    <span class="n">_firm_counts_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">_fcounts</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">_firm_counts_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">_firm_counts_list</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="c1"># _max_firm_count = len(_firm_counts_list)</span>
-        <span class="n">_max_firm_count</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_firm_counts_list</span><span class="p">)</span>
+    <span class="n">_firmcounts_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">_fcounts</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_firmcounts_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">_firmcounts_list</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">_max_firmcount</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_firmcounts_list</span><span class="p">)</span>
 
         <span class="n">_enf_cnts_sim_byfirmcount_array</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">_stats_rowlen</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">_firm_cnt</span> <span class="ow">in</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_max_firm_count</span><span class="p">):</span>
-            <span class="n">_firm_count_test</span> <span class="o">=</span> <span class="n">_fcounts</span> <span class="o">==</span> <span class="n">_firm_cnt</span>
+        <span class="k">for</span> <span class="n">_firmcount</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">_max_firmcount</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">_firmcount_test</span> <span class="o">=</span> <span class="n">_fcounts</span> <span class="o">==</span> <span class="n">_firmcount</span>
 
             <span class="n">_enf_cnts_sim_byfirmcount_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span>
                 <span class="n">_enf_cnts_sim_byfirmcount_array</span><span class="p">,</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-                    <span class="n">_firm_cnt</span><span class="p">,</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">_firm_count_test</span><span class="p">),</span>
+                    <span class="n">_firmcount</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij-&gt;&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">_firmcount_test</span><span class="p">),</span>
                     <span class="o">*</span><span class="p">[</span>
                         <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span>
                             <span class="s2">&quot;ij-&gt;&quot;</span><span class="p">,</span>
-                            <span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">_firm_count_test</span> <span class="o">&amp;</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_upp_test_arrays</span><span class="p">,</span> <span class="n">_f</span><span class="p">)),</span>
+                            <span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">_firmcount_test</span> <span class="o">&amp;</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_upp_test_arrays</span><span class="p">,</span> <span class="n">_f</span><span class="p">)),</span>
                         <span class="p">)</span>
                         <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">_upp_test_arrays</span><span class="o">.</span><span class="n">__dataclass_fields__</span>
                     <span class="p">],</span>

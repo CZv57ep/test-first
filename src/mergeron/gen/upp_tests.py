@@ -20,7 +20,7 @@ from .. import (  # noqa
     ArrayDouble,
     ArrayFloat,
     ArrayINT,
-    RECTypes,
+    RECForm,
     UPPAggrSelector,
 )
 from ..core import guidelines_boundaries as gbl  # noqa: TID252
@@ -94,24 +94,23 @@ def enf_cnts(
 
     _stats_rowlen = 6
     # Clearance/enforcement counts --- by firm count
-    _firm_counts_list = np.unique(_fcounts)
-    if _firm_counts_list is not None and np.all(_firm_counts_list >= 0):
-        # _max_firm_count = len(_firm_counts_list)
-        _max_firm_count = max(_firm_counts_list)
+    _firmcounts_list = np.unique(_fcounts)
+    if _firmcounts_list is not None and np.all(_firmcounts_list >= 0):
+        _max_firmcount = max(_firmcounts_list)
 
         _enf_cnts_sim_byfirmcount_array = -1 * np.ones(_stats_rowlen, np.int64)
-        for _firm_cnt in 1 + np.arange(1, _max_firm_count):
-            _firm_count_test = _fcounts == _firm_cnt
+        for _firmcount in np.arange(2, _max_firmcount + 1):
+            _firmcount_test = _fcounts == _firmcount
 
             _enf_cnts_sim_byfirmcount_array = np.vstack((
                 _enf_cnts_sim_byfirmcount_array,
                 np.array([
-                    _firm_cnt,
-                    np.einsum("ij->", 1 * _firm_count_test),
+                    _firmcount,
+                    np.einsum("ij->", 1 * _firmcount_test),
                     *[
                         np.einsum(
                             "ij->",
-                            1 * (_firm_count_test & getattr(_upp_test_arrays, _f)),
+                            1 * (_firmcount_test & getattr(_upp_test_arrays, _f)),
                         )
                         for _f in _upp_test_arrays.__dataclass_fields__
                     ],

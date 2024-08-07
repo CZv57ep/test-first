@@ -24,7 +24,7 @@ Package Contents
 ----------------
 
 .. py:data:: VERSION
-   :value: '2024.739104.1'
+   :value: '2024.739105.0'
 
 
 .. py:data:: DATA_DIR
@@ -53,7 +53,7 @@ Package Contents
    :value: NDArray[np.int64]
 
 
-.. py:class:: RECTypes
+.. py:class:: RECForm
 
    Bases: :py:obj:`enum.StrEnum`
 

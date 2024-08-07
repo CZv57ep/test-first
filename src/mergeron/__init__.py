@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 
 _PKG_NAME: str = Path(__file__).parent.stem
 
-VERSION = "2024.739104.1"
+VERSION = "2024.739105.0"
 
 __version__ = VERSION
 
@@ -36,7 +36,7 @@ ArrayBIGINT: TypeAlias = NDArray[np.int64]
 
 
 @enum.unique
-class RECTypes(enum.StrEnum):
+class RECForm(enum.StrEnum):
     """Recapture rate - derivation methods."""
 
     INOUT = "inside-out"

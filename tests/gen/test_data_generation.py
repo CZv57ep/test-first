@@ -3,14 +3,14 @@ import gc
 import mergeron.core.pseudorandom_numbers as rmp
 import numpy as np
 import pytest
-from mergeron import ArrayBIGINT, ArrayDouble, RECTypes
+from mergeron import ArrayBIGINT, ArrayDouble, RECForm
 from mergeron.gen import (
-    FM2Constants,
-    PCMDistributions,
+    FM2Constraint,
+    PCMDistribution,
     PCMSpec,
     ShareSpec,
-    SHRDistributions,
-    SSZConstants,
+    SHRDistribution,
+    SSZConstant,
 )
 from mergeron.gen.data_generation import MarketSample
 from numpy.testing import assert_array_equal
@@ -20,49 +20,49 @@ FCOUNT_WTS_TEST = (_nr := np.arange(1, 6)[::-1]) / _nr.sum()
 tvals_dict = {
     # Test with uniform distribution (unrestricted shares), proportional recapture spec
     (
-        SHRDistributions.UNI,
-        RECTypes.FIXED,
-        FM2Constants.IID,
-        SSZConstants.ONE,
+        SHRDistribution.UNI,
+        RECForm.FIXED,
+        FM2Constraint.IID,
+        SSZConstant.ONE,
     ): np.array([0.3333775494826034, 0.4000546725161907, 0.16666859164821712]),
     # Test with uniform distribution (unrestricted shares), inside-out recapture spec,
     # .i.i.d PCM values
     (
-        SHRDistributions.UNI,
-        RECTypes.INOUT,
-        FM2Constants.IID,
-        SSZConstants.ONE,
+        SHRDistribution.UNI,
+        RECForm.INOUT,
+        FM2Constraint.IID,
+        SSZConstant.ONE,
     ): np.array([0.3333775494826034, 0.37381043401375175, 0.16666859164821712]),
     # Test with uniform distribution (unrestricted shares), inside-out recapture spec,
     # MNL-consistent PCM values
     (
-        SHRDistributions.UNI,
-        RECTypes.INOUT,
-        FM2Constants.MNL,
-        SSZConstants.ONE,
+        SHRDistribution.UNI,
+        RECForm.INOUT,
+        FM2Constraint.MNL,
+        SSZConstant.ONE,
     ): np.array([0.32502286465475816, 0.36698399533280657, 0.16728195834397885]),
     # Test with uniform distribution (unrestricted shares), inside-out recapture spec,
     # MNL-consistent PCM values, HSR filing requirement, HSR_NTH
     (
-        SHRDistributions.UNI,
-        RECTypes.INOUT,
-        FM2Constants.MNL,
-        SSZConstants.HSR_NTH,
+        SHRDistribution.UNI,
+        RECForm.INOUT,
+        FM2Constraint.MNL,
+        SSZConstant.HSR_NTH,
     ): np.array([0.36108534380435764, 0.4382956913424839, 0.23160399474477694]),
     # Test with uniform distribution (unrestricted shares), inside-out recapture spec,
     # MNL-consistent PCM values, HSR filing requirement, HSR_TEN
     (
-        SHRDistributions.UNI,
-        RECTypes.INOUT,
-        FM2Constants.MNL,
-        SSZConstants.HSR_TEN,
+        SHRDistribution.UNI,
+        RECForm.INOUT,
+        FM2Constraint.MNL,
+        SSZConstant.HSR_TEN,
     ): np.array([0.3261562729493468, 0.38338158603482814, 0.19171295353191742]),
     # Test with flat dirichlet, proportional recapture spec, i.i.d. PCM values
     (
-        SHRDistributions.DIR_FLAT,
-        RECTypes.FIXED,
-        FM2Constants.IID,
-        SSZConstants.ONE,
+        SHRDistribution.DIR_FLAT,
+        RECForm.FIXED,
+        FM2Constraint.IID,
+        SSZConstant.ONE,
     ): np.array([
         0.34331471002492747,
         0.4639299532812615,
@@ -74,10 +74,10 @@ tvals_dict = {
     ]),
     # Test with flat dirichlet, inside-out recapture spec, i.i.d. PCM values
     (
-        SHRDistributions.DIR_FLAT,
-        RECTypes.INOUT,
-        FM2Constants.IID,
-        SSZConstants.ONE,
+        SHRDistribution.DIR_FLAT,
+        RECForm.INOUT,
+        FM2Constraint.IID,
+        SSZConstant.ONE,
     ): np.array([
         0.34331471002492747,
         0.40745812736302944,
@@ -89,10 +89,10 @@ tvals_dict = {
     ]),
     # Test with flat dirichlet, inside-out recapture spec, MNL-consistent PCM values
     (
-        SHRDistributions.DIR_FLAT,
-        RECTypes.INOUT,
-        FM2Constants.MNL,
-        SSZConstants.ONE,
+        SHRDistribution.DIR_FLAT,
+        RECForm.INOUT,
+        FM2Constraint.MNL,
+        SSZConstant.ONE,
     ): np.array([
         0.3292729603184209,
         0.3932420089295269,
@@ -104,10 +104,10 @@ tvals_dict = {
     ]),
     # Test with flat dirichlet, inside-out recapture spec, MNL-consistent PCM values, HSR_NTH
     (
-        SHRDistributions.DIR_FLAT,
-        RECTypes.INOUT,
-        FM2Constants.MNL,
-        SSZConstants.HSR_NTH,
+        SHRDistribution.DIR_FLAT,
+        RECForm.INOUT,
+        FM2Constraint.MNL,
+        SSZConstant.HSR_NTH,
     ): np.array([
         0.38718906493954947,
         0.49840474854399786,
@@ -119,10 +119,10 @@ tvals_dict = {
     ]),
     # Test with flat dirichlet, inside-out recapture spec, MNL-consistent PCM values, HSR_TEN
     (
-        SHRDistributions.DIR_FLAT,
-        RECTypes.INOUT,
-        FM2Constants.MNL,
-        SSZConstants.HSR_TEN,
+        SHRDistribution.DIR_FLAT,
+        RECForm.INOUT,
+        FM2Constraint.MNL,
+        SSZConstant.HSR_TEN,
     ): np.array([
         0.33118610799218917,
         0.41331161234454883,
@@ -134,10 +134,10 @@ tvals_dict = {
     ]),
     # Test with flat dirichlet, outside-in recapture spec, i.i.d PCM values
     (
-        SHRDistributions.DIR_FLAT,
-        RECTypes.OUTIN,
-        FM2Constants.IID,
-        SSZConstants.ONE,
+        SHRDistribution.DIR_FLAT,
+        RECForm.OUTIN,
+        FM2Constraint.IID,
+        SSZConstant.ONE,
     ): np.array([
         0.34332714606238723,
         0.34327732941767747,
@@ -149,10 +149,10 @@ tvals_dict = {
     ]),
     # Test with unweighted flat dirichlet, proportional recapture spec, i.i.d PCM values
     (
-        SHRDistributions.DIR_FLAT_CONSTR,
-        RECTypes.FIXED,
-        FM2Constants.IID,
-        SSZConstants.ONE,
+        SHRDistribution.DIR_FLAT_CONSTR,
+        RECForm.FIXED,
+        FM2Constraint.IID,
+        SSZConstant.ONE,
     ): np.array([
         0.34331471002492747,
         0.4639299532812615,
@@ -163,10 +163,10 @@ tvals_dict = {
         6.0,
     ]),
     (
-        SHRDistributions.DIR_ASYM,
-        RECTypes.FIXED,
-        FM2Constants.IID,
-        SSZConstants.ONE,
+        SHRDistribution.DIR_ASYM,
+        RECForm.FIXED,
+        FM2Constraint.IID,
+        SSZConstant.ONE,
     ): np.array([
         0.3433240778115128,
         0.46397739836107904,
@@ -177,10 +177,10 @@ tvals_dict = {
         6.0,
     ]),
     (
-        SHRDistributions.DIR_COND,
-        RECTypes.FIXED,
-        FM2Constants.IID,
-        SSZConstants.ONE,
+        SHRDistribution.DIR_COND,
+        RECForm.FIXED,
+        FM2Constraint.IID,
+        SSZConstant.ONE,
     ): np.array([
         0.4444223338483846,
         0.6475767300577249,
@@ -195,7 +195,7 @@ tvals_dict = {
 
 @pytest.mark.parametrize("_test_parms, _test_array", tuple(tvals_dict.items()))
 def test_gen_market_sample(
-    _test_parms: tuple[SHRDistributions, RECTypes, FM2Constants, SSZConstants],
+    _test_parms: tuple[SHRDistribution, RECForm, FM2Constraint, SSZConstant],
     _test_array: ArrayDouble,
     _tcount: int = 10**7,
     _nthreads: int = 16,
@@ -208,15 +208,15 @@ def test_gen_market_sample(
     ) = _test_parms
     # Reinitialize the seed sequence for each test run
     _rng_seed_seq_tup = rmp.gen_seed_seq_list_default(
-        2 if _mktshr_dist_type_test == SHRDistributions.UNI else 3
+        2 if _mktshr_dist_type_test == SHRDistribution.UNI else 3
     )
 
     _mkt_sample = MarketSample(
-        pcm_spec=PCMSpec(PCMDistributions.UNI, None, _pcm_dist_firm2_test)
+        pcm_spec=PCMSpec(PCMDistribution.UNI, None, _pcm_dist_firm2_test)
     )
     _mkt_sample.hsr_filing_test_type = _hsr_filing_test_type
 
-    if _mktshr_dist_type_test == SHRDistributions.UNI:
+    if _mktshr_dist_type_test == SHRDistribution.UNI:
         _shr_dist_parms = None
         _fcount_weights = None
         _test_func = _tfunc_sample_with_unrestricted_shares
@@ -230,7 +230,7 @@ def test_gen_market_sample(
         _shr_dist_parms,
         _fcount_weights,
         _recapture_form_test,
-        None if _recapture_form_test == RECTypes.OUTIN else 0.80,
+        None if _recapture_form_test == RECForm.OUTIN else 0.80,
     )
     _array_to_test = _test_func(_tcount, _mkt_sample, _rng_seed_seq_tup, _nthreads)
 
@@ -241,7 +241,7 @@ def test_gen_market_sample(
     )
 
     # assert_array_equal((0, 0), (0, 0))
-    # if _pcm_dist_firm2_test != FM2Constants.MNL:
+    # if _pcm_dist_firm2_test != FM2Constraint.MNL:
     assert_array_equal(_array_to_test, _test_array)
     del _mkt_sample
     gc.collect()
@@ -259,6 +259,7 @@ def _tfunc_sample_with_unrestricted_shares(
         seed_seq_list=_rng_seed_seq_tup,
         nthreads=_nthreads,
         save_data_to_file=False,
+        saved_array_name_suffix=f"{"_".join("_t" for _t in _test_parms)}",
     )
     return np.array([
         _mkt_sample.data.frmshr_array.mean(),
@@ -279,6 +280,7 @@ def _tfunc_sample_with_dirichlet_shares(
         seed_seq_list=_rng_seed_seq_tup,
         nthreads=_nthreads,
         save_data_to_file=False,
+        saved_array_name_suffix=f"{"_".join("_t" for _t in _test_parms)}",
     )
     return np.array((
         _mkt_sample.data.frmshr_array.mean(),

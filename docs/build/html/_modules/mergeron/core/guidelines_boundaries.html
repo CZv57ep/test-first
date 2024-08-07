@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.core.guidelines_boundaries - mergeron 2024.739104.1</title>
+        <title>mergeron.core.guidelines_boundaries - mergeron 2024.739105.0</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-header__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739105.0" class="md-header__button md-logo" aria-label="mergeron 2024.739105.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="mergeron 2024.739104.1" class="md-nav__button md-logo" aria-label="mergeron 2024.739104.1" data-md-component="logo">
+    <a href="../../../index.html" title="mergeron 2024.739105.0" class="md-nav__button md-logo" aria-label="mergeron 2024.739105.0" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739104.1
+    mergeron 2024.739105.0
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -383,7 +383,7 @@
 <span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">Attribute</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">frozen</span><span class="p">,</span> <span class="n">validators</span>
 <span class="kn">from</span> <span class="nn">mpmath</span> <span class="kn">import</span> <span class="n">mp</span><span class="p">,</span> <span class="n">mpf</span>  <span class="c1"># type: ignore</span>
 
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">ArrayDouble</span><span class="p">,</span> <span class="n">RECTypes</span><span class="p">,</span> <span class="n">UPPAggrSelector</span>  <span class="c1"># noqa: TID252</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">VERSION</span><span class="p">,</span> <span class="n">ArrayDouble</span><span class="p">,</span> <span class="n">RECForm</span><span class="p">,</span> <span class="n">UPPAggrSelector</span>  <span class="c1"># noqa: TID252</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">guidelines_boundary_functions</span> <span class="k">as</span> <span class="n">gbfn</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">VERSION</span>
@@ -653,14 +653,14 @@
 
 <span class="k">def</span> <span class="nf">_rec_spec_validator</span><span class="p">(</span>
     <span class="n">_instance</span><span class="p">:</span> <span class="n">DiversionRatioBoundary</span><span class="p">,</span>
-    <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">RECTypes</span><span class="p">],</span>
-    <span class="n">_value</span><span class="p">:</span> <span class="n">RECTypes</span><span class="p">,</span>
+    <span class="n">_attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">[</span><span class="n">RECForm</span><span class="p">],</span>
+    <span class="n">_value</span><span class="p">:</span> <span class="n">RECForm</span><span class="p">,</span>
     <span class="o">/</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">_value</span> <span class="o">==</span> <span class="n">RECTypes</span><span class="o">.</span><span class="n">OUTIN</span> <span class="ow">and</span> <span class="n">_instance</span><span class="o">.</span><span class="n">recapture_rate</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">_value</span> <span class="o">==</span> <span class="n">RECForm</span><span class="o">.</span><span class="n">OUTIN</span> <span class="ow">and</span> <span class="n">_instance</span><span class="o">.</span><span class="n">recapture_rate</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Invalid recapture specification, </span><span class="si">{</span><span class="n">_value</span><span class="si">!r}</span><span class="s2">. &quot;</span>
-            <span class="s2">&quot;You may consider specifying `mergeron.RECTypes.INOUT` here, and &quot;</span>
+            <span class="s2">&quot;You may consider specifying `mergeron.RECForm.INOUT` here, and &quot;</span>
             <span class="s1">&#39;assigning the default recapture rate as attribute, &quot;recapture_rate&quot; of &#39;</span>
             <span class="s2">&quot;this `DiversionRatioBoundarySpec` object.&quot;</span>
         <span class="p">)</span>
@@ -705,11 +705,11 @@
 
 <div class="viewcode-block" id="DiversionRatioBoundary.recapture_form">
 <a class="viewcode-back" href="../../../autoapi/mergeron/core/guidelines_boundaries/index.html#mergeron.core.guidelines_boundaries.DiversionRatioBoundary.recapture_form">[docs]</a>
-    <span class="n">recapture_form</span><span class="p">:</span> <span class="n">RECTypes</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+    <span class="n">recapture_form</span><span class="p">:</span> <span class="n">RECForm</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">RECTypes</span><span class="o">.</span><span class="n">INOUT</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">RECForm</span><span class="o">.</span><span class="n">INOUT</span><span class="p">,</span>
         <span class="n">validator</span><span class="o">=</span><span class="p">(</span>
-            <span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">RECTypes</span><span class="p">)),</span>
+            <span class="n">validators</span><span class="o">.</span><span class="n">instance_of</span><span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">RECForm</span><span class="p">)),</span>
             <span class="n">_rec_spec_validator</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span></div>
@@ -717,13 +717,13 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The form of the recapture rate.</span>
 
-<span class="sd">    When :attr:`mergeron.RECTypes.INOUT`, the recapture rate for</span>
+<span class="sd">    When :attr:`mergeron.RECForm.INOUT`, the recapture rate for</span>
 <span class="sd">    he product having the smaller market-share is assumed to equal the default,</span>
 <span class="sd">    and the recapture rate for the product with the larger market-share is</span>
 <span class="sd">    computed assuming MNL demand. Fixed recapture rates are specified as</span>
-<span class="sd">    :attr:`mergeron.RECTypes.FIXED`. (To specify that recapture rates be</span>
+<span class="sd">    :attr:`mergeron.RECForm.FIXED`. (To specify that recapture rates be</span>
 <span class="sd">    constructed from the generated purchase-probabilities for products in</span>
-<span class="sd">    the market and for the outside good, specify :attr:`mergeron.RECTypes.OUTIN`.)</span>
+<span class="sd">    the market and for the outside good, specify :attr:`mergeron.RECForm.OUTIN`.)</span>
 
 <span class="sd">    The GUPPI boundary is a continuum of diversion ratio boundaries conditional on</span>
 <span class="sd">    price-cost margins, :math:`d_{ij} = g_i * p_i / (m_j * p_j)`,</span>

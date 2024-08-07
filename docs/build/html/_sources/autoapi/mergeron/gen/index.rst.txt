@@ -89,7 +89,7 @@ Package Contents
 
 
 
-.. py:class:: SHRDistributions
+.. py:class:: SHRDistribution
 
    Bases: :py:obj:`enum.StrEnum`
 
@@ -151,27 +151,27 @@ Package Contents
    A key feature of market-share specification in this package is that
    the draws represent markets with multiple different firm-counts.
    Firm-counts are unspecified if the share distribution is
-   :attr:`mergeron.SHRDistributions.UNI`, for Dirichlet-distributed market-shares,
+   :attr:`mergeron.SHRDistribution.UNI`, for Dirichlet-distributed market-shares,
    the default specification is that firm-counts  vary between
    2 and 7 firms with each value equally likely.
 
    .. rubric:: Notes
 
-   If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRDistributions.UNI`,
+   If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRDistribution.UNI`,
    then it is infeasible that
-   :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECTypes.OUTIN`.
+   :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECForm.OUTIN`.
    In other words, if firm-counts are unspecified, the recapture rate cannot be
    estimated using outside good choice probabilities.
 
    For a sample with explicit firm counts, market shares must
    be specified as having a supported Dirichlet distribution
-   (see :class:`mergeron.gen.SHRDistributions`).
+   (see :class:`mergeron.gen.SHRDistribution`).
 
 
    .. py:attribute:: dist_type
-      :type:  SHRDistributions
+      :type:  SHRDistribution
 
-      See :class:`SHRDistributions`
+      See :class:`SHRDistribution`
 
 
    .. py:attribute:: dist_parms
@@ -196,9 +196,9 @@ Package Contents
 
 
    .. py:attribute:: recapture_form
-      :type:  mergeron.RECTypes
+      :type:  mergeron.RECForm
 
-      See :class:`mergeron.RECTypes`
+      See :class:`mergeron.RECForm`
 
 
    .. py:attribute:: recapture_rate
@@ -207,7 +207,7 @@ Package Contents
       A value between 0 and 1, typically 0.8.
 
       :code:`None` if market share specification requires direct generation of
-      outside good choice probabilities (:attr:`mergeron.RECTypes.OUTIN`).
+      outside good choice probabilities (:attr:`mergeron.RECForm.OUTIN`).
 
       The recapture rate is usually calibrated to the numbers-equivalent of the
       HHI threshold for the presumtion of harm from unilateral competitive effects
@@ -225,7 +225,7 @@ Package Contents
       presumptions no harm.)
 
 
-.. py:class:: PCMDistributions
+.. py:class:: PCMDistribution
 
    Bases: :py:obj:`enum.StrEnum`
 
@@ -253,7 +253,7 @@ Package Contents
 
 
 
-.. py:class:: FM2Constants
+.. py:class:: FM2Constraint
 
    Bases: :py:obj:`enum.StrEnum`
 
@@ -293,9 +293,9 @@ Package Contents
 
 
    .. py:attribute:: dist_type
-      :type:  PCMDistributions
+      :type:  PCMDistribution
 
-      See :class:`PCMDistributions`
+      See :class:`PCMDistribution`
 
 
    .. py:attribute:: dist_parms
@@ -310,12 +310,12 @@ Package Contents
 
 
    .. py:attribute:: firm2_pcm_constraint
-      :type:  FM2Constants
+      :type:  FM2Constraint
 
-      See :class:`FM2Constants`
+      See :class:`FM2Constraint`
 
 
-.. py:class:: SSZConstants
+.. py:class:: SSZConstant
 
    Bases: :py:obj:`float`, :py:obj:`enum.ReprEnum`
 

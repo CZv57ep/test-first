@@ -13,7 +13,7 @@ import numpy as np
 from attrs import Attribute, field, frozen, validators
 from mpmath import mp, mpf  # type: ignore
 
-from .. import VERSION, ArrayDouble, RECTypes, UPPAggrSelector  # noqa: TID252
+from .. import VERSION, ArrayDouble, RECForm, UPPAggrSelector  # noqa: TID252
 from . import guidelines_boundary_functions as gbfn
 
 __version__ = VERSION
@@ -223,14 +223,14 @@ def _divr_value_validator(
 
 def _rec_spec_validator(
     _instance: DiversionRatioBoundary,
-    _attribute: Attribute[RECTypes],
-    _value: RECTypes,
+    _attribute: Attribute[RECForm],
+    _value: RECForm,
     /,
 ) -> None:
-    if _value == RECTypes.OUTIN and _instance.recapture_rate:
+    if _value == RECForm.OUTIN and _instance.recapture_rate:
         raise ValueError(
             f"Invalid recapture specification, {_value!r}. "
-            "You may consider specifying `mergeron.RECTypes.INOUT` here, and "
+            "You may consider specifying `mergeron.RECForm.INOUT` here, and "
             'assigning the default recapture rate as attribute, "recapture_rate" of '
             "this `DiversionRatioBoundarySpec` object."
         )
@@ -265,24 +265,24 @@ class DiversionRatioBoundary:
         kw_only=False, default=0.85, validator=validators.instance_of(float)
     )
 
-    recapture_form: RECTypes | None = field(
+    recapture_form: RECForm | None = field(
         kw_only=True,
-        default=RECTypes.INOUT,
+        default=RECForm.INOUT,
         validator=(
-            validators.instance_of((type(None), RECTypes)),
+            validators.instance_of((type(None), RECForm)),
             _rec_spec_validator,
         ),
     )
     """
     The form of the recapture rate.
 
-    When :attr:`mergeron.RECTypes.INOUT`, the recapture rate for
+    When :attr:`mergeron.RECForm.INOUT`, the recapture rate for
     he product having the smaller market-share is assumed to equal the default,
     and the recapture rate for the product with the larger market-share is
     computed assuming MNL demand. Fixed recapture rates are specified as
-    :attr:`mergeron.RECTypes.FIXED`. (To specify that recapture rates be
+    :attr:`mergeron.RECForm.FIXED`. (To specify that recapture rates be
     constructed from the generated purchase-probabilities for products in
-    the market and for the outside good, specify :attr:`mergeron.RECTypes.OUTIN`.)
+    the market and for the outside good, specify :attr:`mergeron.RECForm.OUTIN`.)
 
     The GUPPI boundary is a continuum of diversion ratio boundaries conditional on
     price-cost margins, :math:`d_{ij} = g_i * p_i / (m_j * p_j)`,

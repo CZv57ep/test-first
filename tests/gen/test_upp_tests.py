@@ -7,8 +7,8 @@ import mergeron.core.pseudorandom_numbers as rmp
 import mergeron.gen.enforcement_stats as esl
 import numpy as np
 import pytest
-from mergeron import ArrayBIGINT, RECTypes, UPPAggrSelector
-from mergeron.gen import INVResolution, ShareSpec, SHRDistributions, UPPTestRegime
+from mergeron import ArrayBIGINT, RECForm, UPPAggrSelector
+from mergeron.gen import INVResolution, ShareSpec, SHRDistribution, UPPTestRegime
 from mergeron.gen.data_generation import MarketSample
 
 stats_sim_byfirmcount_teststr = dedent(R"""
@@ -67,10 +67,10 @@ test_sel: UPPTestRegime = UPPTestRegime(
 
 mkt_sample = MarketSample(
     share_spec=ShareSpec(
-        SHRDistributions.DIR_FLAT,
+        SHRDistribution.DIR_FLAT,
         None,
         np.array((133, 184, 134, 52, 32, 10, 12, 4, 3)),
-        RECTypes.FIXED,
+        RECForm.FIXED,
         0.8,
     )
 )

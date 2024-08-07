@@ -19,7 +19,7 @@ Module Contents
    Bases: :py:obj:`TypedDict`
 
 
-   Keyword arguments of function, :func:`MarketSample.sim_enf_cnts`
+   Keyword arguments of sampling methods defined below
 
 
    .. py:attribute:: sample_size
@@ -82,9 +82,9 @@ Module Contents
 
 
    .. py:attribute:: hsr_filing_test_type
-      :type:  mergeron.gen.SSZConstants
+      :type:  mergeron.gen.SSZConstant
 
-      Method for modeling HSR filing threholds, see :class:`SSZConstants`
+      Method for modeling HSR filing threholds, see :class:`SSZConstant`
 
 
    .. py:attribute:: data
@@ -99,16 +99,20 @@ Module Contents
 
       Generate share, diversion ratio, price, and margin data for MarketSpec.
 
-      see :attr:`SamplingFunctionKWArgs` for description of parameters
+      see :attr:`SamplingFunctionKWArgs` for description of keyord parameters
 
       :returns: Merging firms' shares, margins, etc. for each hypothetical  merger
                 in the sample
 
 
 
-   .. py:method:: generate_sample(/, *, sample_size = 10**6, seed_seq_list, nthreads, save_data_to_file = False, saved_array_name_suffix = '')
+   .. py:method:: generate_sample(/, *, sample_size, seed_seq_list, nthreads, save_data_to_file, saved_array_name_suffix)
 
-      Generate market data
+      Populate :attr:`data` with generated data
+
+      see :attr:`SamplingFunctionKWArgs` for description of keyord parameters
+
+      :rtype: None
 
 
 
@@ -151,13 +155,14 @@ Module Contents
       :param save_data_to_file: Whether to save data to an HDF5 file, and where to save it
       :param saved_array_name_suffix: Suffix to add to the array names in the HDF5 file
 
-      :returns: Arrays of UPPTestCounts
+      :returns: Arrays of enforcement counts or clearance counts by firm count,
+                ΔHHI and concentration zone
 
 
 
-   .. py:method:: estimate_enf_counts(_enf_parm_vec, _upp_test_regime, /, *, sample_size = 10**6, seed_seq_list, nthreads, save_data_to_file = False, saved_array_name_suffix = '')
+   .. py:method:: estimate_enf_counts(_enf_parm_vec, _upp_test_regime, /, *, sample_size = 10**6, seed_seq_list = None, nthreads = 16, save_data_to_file = False, saved_array_name_suffix = '')
 
-      Estimate enforcement counts
+      Populate :attr:`enf_counts` etimated test counts.
 
       :param _enf_parm_vec: Threshold values for various Guidelines criteria
       :param _upp_test_regime: Specifies whether to analyze enforcement, clearance, or both
@@ -165,10 +170,10 @@ Module Contents
                                default being to analyze enforcement based on the maximum
                                merging-firm GUPPI and maximum diversion ratio between the
                                merging firms
-      :param sample_size: Size of the market sample drawn
-      :param seed_seq_list: List of :code:`numpy.random.SeedSequence` objects
-      :param nthreads: Number of threads to use
-      :param save_data_to_file: Save data to given HDF5 file, at specified group node
+      :param sample_size: Number of draws to simulate
+      :param seed_seq_list: List of seed sequences, to assure independent samples in each thread
+      :param nthreads: Number of parallel processes to use
+      :param save_data_to_file: Whether to save data to an HDF5 file, and where to save it
       :param saved_array_name_suffix: Suffix to add to the array names in the HDF5 file
 
       :rtype: None

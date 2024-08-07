@@ -33,7 +33,7 @@ __version__ = VERSION
 
 
 @enum.unique
-class INDGRPConstants(enum.StrEnum):
+class IndustryGroup(enum.StrEnum):
     ALL = "All Markets"
     GRO = "Grocery Markets"
     OIL = "Oil Markets"
@@ -47,7 +47,7 @@ class INDGRPConstants(enum.StrEnum):
 
 
 @enum.unique
-class EVIDENConstants(enum.StrEnum):
+class OtherEvidence(enum.StrEnum):
     HD = "Hot Documents Identified"
     CC = "Strong Customer Complaints"
     NE = "No Entry Evidence"
@@ -236,8 +236,8 @@ ZONE_VALS = np.unique(
 def enf_stats_output(
     _data_array_dict: fid.INVData,
     _data_period: str = "1996-2003",
-    _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
-    _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
+    _table_ind_group: IndustryGroup = IndustryGroup.ALL,
+    _table_evid_cond: OtherEvidence = OtherEvidence.UR,
     _stats_group: StatsGrpSelector = StatsGrpSelector.FC,
     _enf_spec: INVResolution = INVResolution.CLRN,
     /,
@@ -293,8 +293,8 @@ def enf_stats_output(
 def enf_stats_listing_by_group(
     _invdata_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVTableData]]],
     _study_period: str,
-    _table_ind_grp: INDGRPConstants,
-    _table_evid_cond: EVIDENConstants,
+    _table_ind_grp: IndustryGroup,
+    _table_evid_cond: OtherEvidence,
     _stats_group: StatsGrpSelector,
     _enf_spec: INVResolution,
     /,
@@ -329,8 +329,8 @@ def enf_stats_listing_by_group(
 def enf_cnts_listing_byfirmcount(
     _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVTableData]]],
     _data_period: str = "1996-2003",
-    _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
-    _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
+    _table_ind_group: IndustryGroup = IndustryGroup.ALL,
+    _table_evid_cond: OtherEvidence = OtherEvidence.UR,
     _enf_spec: INVResolution = INVResolution.CLRN,
     /,
 ) -> ArrayBIGINT:
@@ -365,8 +365,8 @@ def enf_cnts_listing_byfirmcount(
 def enf_cnts_listing_byhhianddelta(
     _data_array_dict: Mapping[str, Mapping[str, Mapping[str, fid.INVTableData]]],
     _data_period: str = "1996-2003",
-    _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
-    _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
+    _table_ind_group: IndustryGroup = IndustryGroup.ALL,
+    _table_evid_cond: OtherEvidence = OtherEvidence.UR,
     _enf_spec: INVResolution = INVResolution.CLRN,
     /,
 ) -> ArrayBIGINT:
@@ -400,8 +400,8 @@ def enf_cnts_listing_byhhianddelta(
 
 def table_no_lku(
     _data_array_dict_sub: Mapping[str, fid.INVTableData],
-    _table_ind_group: INDGRPConstants = INDGRPConstants.ALL,
-    _table_evid_cond: EVIDENConstants = EVIDENConstants.UR,
+    _table_ind_group: IndustryGroup = IndustryGroup.ALL,
+    _table_evid_cond: OtherEvidence = OtherEvidence.UR,
     /,
 ) -> str:
     if _table_ind_group not in (

@@ -11,7 +11,7 @@ import numpy as np
 from attrs import evolve
 from numpy.random import SeedSequence
 
-from .. import VERSION, ArrayBIGINT, ArrayDouble, RECTypes  # noqa: TID252
+from .. import VERSION, ArrayBIGINT, ArrayDouble, RECForm  # noqa: TID252
 from ..core.damodaran_margin_data import mgn_data_resampler  # noqa: TID252
 from ..core.pseudorandom_numbers import (  # noqa: TID252
     DIST_PARMS_DEFAULT,
@@ -21,17 +21,17 @@ from ..core.pseudorandom_numbers import (  # noqa: TID252
 from . import (
     EMPTY_ARRAY_DEFAULT,
     FCOUNT_WTS_DEFAULT,
-    FM2Constants,
+    FM2Constraint,
     MarginDataSample,
-    PCMDistributions,
+    PCMDistribution,
     PCMSpec,
     PriceDataSample,
     PriceSpec,
     SeedSequenceData,
     ShareDataSample,
     ShareSpec,
-    SHRDistributions,
-    SSZConstants,
+    SHRDistribution,
+    SSZConstant,
 )
 
 __version__ = VERSION
@@ -71,7 +71,7 @@ def gen_share_data(
 
     _ssz = _sample_size
 
-    if _dist_type_mktshr == SHRDistributions.UNI:
+    if _dist_type_mktshr == SHRDistribution.UNI:
         _mkt_share_sample = gen_market_shares_uniform(
             _ssz, _dist_parms_mktshr, _mktshr_rng_seed_seq, _nthreads
         )
@@ -101,7 +101,7 @@ def gen_share_data(
     # If recapture_form == "inside-out", recalculate _aggregate_purchase_prob
     _frmshr_array = _mkt_share_sample.mktshr_array[:, :2]
     _r_bar = _share_spec.recapture_rate or 0.8
-    if _recapture_form == RECTypes.INOUT:
+    if _recapture_form == RECForm.INOUT:
         _mkt_share_sample = ShareDataSample(
             _mkt_share_sample.mktshr_array,
             _mkt_share_sample.fcounts,
@@ -177,8 +177,8 @@ def gen_market_shares_uniform(
 
 def gen_market_shares_dirichlet_multimarket(
     _s_size: int = 10**6,
-    _recapture_form: RECTypes = RECTypes.INOUT,
-    _dist_type_dir: SHRDistributions = SHRDistributions.DIR_FLAT,
+    _recapture_form: RECForm = RECForm.INOUT,
+    _dist_type_dir: SHRDistribution = SHRDistribution.DIR_FLAT,
     _dist_parms_dir: ArrayDouble | None = None,
     _firm_count_wts: ArrayDouble | None = None,
     _fcount_rng_seed_seq: SeedSequence | None = None,
@@ -227,7 +227,7 @@ def gen_market_shares_dirichlet_multimarket(
     )
 
     _min_choice_wt = (
-        0.03 if _dist_type_dir == SHRDistributions.DIR_FLAT_CONSTR else 0.00
+        0.03 if _dist_type_dir == SHRDistribution.DIR_FLAT_CONSTR else 0.00
     )
     _fcount_keys, _choice_wts = zip(
         *(
@@ -246,10 +246,10 @@ def gen_market_shares_dirichlet_multimarket(
     _dir_alphas_full = (
         [1.0] * _fc_max if _dist_parms_dir is None else _dist_parms_dir[:_fc_max]
     )
-    if _dist_type_dir == SHRDistributions.DIR_ASYM:
+    if _dist_type_dir == SHRDistribution.DIR_ASYM:
         _dir_alphas_full = [2.0] * 6 + [1.5] * 5 + [1.25] * min(7, _fc_max)
 
-    if _dist_type_dir == SHRDistributions.DIR_COND:
+    if _dist_type_dir == SHRDistribution.DIR_COND:
 
         def _gen_dir_alphas(_fcv: int) -> ArrayDouble:
             _dat = [2.5] * 2
@@ -322,7 +322,7 @@ def gen_market_shares_dirichlet_multimarket(
 def gen_market_shares_dirichlet(
     _dir_alphas: ArrayDouble,
     _s_size: int = 10**6,
-    _recapture_form: RECTypes = RECTypes.INOUT,
+    _recapture_form: RECForm = RECForm.INOUT,
     _mktshr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
     /,
@@ -338,8 +338,8 @@ def gen_market_shares_dirichlet(
         sample size to be drawn
 
     _recapture_form
-        r_1 = r_2 if RECTypes.FIXED, otherwise MNL-consistent. If
-        RECTypes.OUTIN; the number of columns in the output share array
+        r_1 = r_2 if RECForm.FIXED, otherwise MNL-consistent. If
+        RECForm.OUTIN; the number of columns in the output share array
         is len(_dir_alphas) - 1.
 
     _mktshr_rng_seed_seq
@@ -357,7 +357,7 @@ def gen_market_shares_dirichlet(
     if not isinstance(_dir_alphas, np.ndarray):
         _dir_alphas = np.array(_dir_alphas)
 
-    if _recapture_form == RECTypes.OUTIN:
+    if _recapture_form == RECForm.OUTIN:
         _dir_alphas = np.concatenate((_dir_alphas, _dir_alphas[-1:]))
 
     _mktshr_seed_seq_ch = (
@@ -391,7 +391,7 @@ def gen_market_shares_dirichlet(
 
     # If recapture_form == 'inside_out', further calculations downstream
     _aggregate_purchase_prob = np.nan * np.empty((_s_size, 1))
-    if _recapture_form == RECTypes.OUTIN:
+    if _recapture_form == RECForm.OUTIN:
         _aggregate_purchase_prob = 1 - _mktshr_array[:, [-1]]
         _mktshr_array = _mktshr_array[:, :-1] / _aggregate_purchase_prob
 
@@ -404,7 +404,7 @@ def gen_market_shares_dirichlet(
 
 
 def gen_divr_array(
-    _recapture_form: RECTypes,
+    _recapture_form: RECForm,
     _recapture_rate: float | None,
     _frmshr_array: ArrayDouble,
     _aggregate_purchase_prob: ArrayDouble = EMPTY_ARRAY_DEFAULT,
@@ -413,7 +413,7 @@ def gen_divr_array(
     """
     Given merging-firm shares and related parameters, return diverion ratios.
 
-    If recapture is specified as :attr:`mergeron.RECTypes.OUTIN`, then the
+    If recapture is specified as :attr:`mergeron.RECForm.OUTIN`, then the
     choice-probability for the outside good must be supplied.
 
     Parameters
@@ -445,7 +445,7 @@ def gen_divr_array(
     """
 
     _divr_array: ArrayDouble
-    if _recapture_form == RECTypes.FIXED:
+    if _recapture_form == RECForm.FIXED:
         _divr_array = _recapture_rate * _frmshr_array[:, ::-1] / (1 - _frmshr_array)  # type: ignore
 
     else:
@@ -475,7 +475,7 @@ def gen_margin_price_data(
     _aggregate_purchase_prob: ArrayDouble,
     _pcm_spec: PCMSpec,
     _price_spec: PriceSpec,
-    _hsr_filing_test_type: SSZConstants,
+    _hsr_filing_test_type: SSZConstant,
     _pcm_rng_seed_seq: SeedSequence,
     _pr_rng_seed_seq: SeedSequence | None = None,
     _nthreads: int = 16,
@@ -505,7 +505,7 @@ def gen_margin_price_data(
 
     _hsr_filing_test_type
         Enum specifying restriction, if any, to impose on market data sample
-        to model HSR filing requirements; see :class:`mergeron.gen.SSZConstants`.
+        to model HSR filing requirements; see :class:`mergeron.gen.SSZConstant`.
 
     _pcm_rng_seed_seq
         Seed sequence for generating margin data.
@@ -552,7 +552,7 @@ def gen_margin_price_data(
             # generate the margin data
             # generate price and margin data
             _frmshr_array_plus = np.hstack((_frmshr_array, _nth_firm_share))
-            _pcm_spec_here = evolve(_pcm_spec, firm2_pcm_constraint=FM2Constants.IID)
+            _pcm_spec_here = evolve(_pcm_spec, firm2_pcm_constraint=FM2Constraint.IID)
             _margin_data = _gen_margin_data(
                 _frmshr_array_plus,
                 np.ones_like(_frmshr_array_plus, np.float64),
@@ -569,7 +569,7 @@ def gen_margin_price_data(
             _price_array_here = 1 / (1 - _pcm_array)
             _price_array = _price_array_here[:, :2]
             _nth_firm_price = _price_array_here[:, [-1]]
-            if _pcm_spec.firm2_pcm_constraint == FM2Constants.MNL:
+            if _pcm_spec.firm2_pcm_constraint == FM2Constraint.MNL:
                 # Generate i.i.d. PCMs then take PCM0 and construct PCM1
                 # Regenerate MNL test
                 _purchase_prob_array = _aggregate_purchase_prob * _frmshr_array
@@ -616,7 +616,7 @@ def gen_margin_price_data(
     _test_rev_ratio, _test_rev_ratio_inv = 10, 1 / 10
 
     match _hsr_filing_test_type:
-        case SSZConstants.HSR_TEN:
+        case SSZConstant.HSR_TEN:
             # See, https://www.ftc.gov/enforcement/premerger-notification-program/
             #   -> Procedures For Submitting Post-Consummation Filings
             #    -> Key Elements to Determine Whether a Post Consummation Filing is Required
@@ -627,7 +627,7 @@ def gen_margin_price_data(
             _rev_ratio = (_rev_array.min(axis=1) / _rev_array.max(axis=1)).round(4)
             _hsr_filing_test = _rev_ratio >= _test_rev_ratio_inv
             # del _rev_array, _rev_ratio
-        case SSZConstants.HSR_NTH:
+        case SSZConstant.HSR_NTH:
             # To get around the 10-to-1 ratio restriction, specify that the nth firm test:
             # if the smaller merging firm matches or exceeds the n-th firm in size, and
             # the larger merging firm has at least 10 times the size of the nth firm,
@@ -642,12 +642,15 @@ def gen_margin_price_data(
                     dtype=np.int64,
                 )
                 == _rev_ratio_to_nth.shape[1]
-            ) | (_frmshr_array.min(axis=1) >= _test_rev_ratio_inv)
+            )
 
             # del _nth_firm_rev, _rev_ratio_to_nth
         case _:
             # Otherwise, all draws meet the filing test
             _hsr_filing_test = np.ones(len(_frmshr_array), dtype=bool)
+    _hsr_filing_test = _hsr_filing_test | (
+        _frmshr_array.min(axis=1) >= _test_rev_ratio_inv
+    )
 
     return _margin_data, PriceDataSample(_price_array, _hsr_filing_test)
 
@@ -669,28 +672,28 @@ def _gen_margin_data(
     _dist_type: Literal["Beta", "Uniform"]
     _pcm_array = (
         np.empty((len(_frmshr_array), 1), dtype=np.float64)
-        if _pcm_spec.firm2_pcm_constraint == FM2Constants.SYM
+        if _pcm_spec.firm2_pcm_constraint == FM2Constraint.SYM
         else np.empty_like(_frmshr_array, dtype=np.float64)
     )
 
     _beta_min, _beta_max = [None] * 2  # placeholder
-    if _dist_type_pcm == PCMDistributions.EMPR:
+    if _dist_type_pcm == PCMDistribution.EMPR:
         _pcm_array = mgn_data_resampler(
             _pcm_array.shape,  # type: ignore
             seed_sequence=_pcm_rng_seed_seq,
         )
     else:
-        _dist_type = "Uniform" if _dist_type_pcm == PCMDistributions.UNI else "Beta"
-        if _dist_type_pcm == PCMDistributions.BETA:
+        _dist_type = "Uniform" if _dist_type_pcm == PCMDistribution.UNI else "Beta"
+        if _dist_type_pcm == PCMDistribution.BETA:
             if _dist_parms_pcm is None:
                 _dist_parms_pcm = np.ones(2, np.float64)
 
-        elif _dist_type_pcm == PCMDistributions.BETA_BND:  # Bounded beta
+        elif _dist_type_pcm == PCMDistribution.BETA_BND:  # Bounded beta
             if _dist_parms_pcm is None:
                 _dist_parms_pcm = np.array([0, 1, 0, 1], np.float64)
                 _dist_parms = beta_located_bound(_dist_parms_pcm)
         else:
-            #  _dist_type_pcm == PCMDistributions.UNI
+            #  _dist_type_pcm == PCMDistribution.UNI
             _dist_parms = (
                 DIST_PARMS_DEFAULT if _dist_parms_pcm is None else _dist_parms_pcm
             )
@@ -705,20 +708,20 @@ def _gen_margin_data(
         _pcm_rng.fill()
         del _pcm_rng
 
-    if _dist_type_pcm == PCMDistributions.BETA_BND:
+    if _dist_type_pcm == PCMDistribution.BETA_BND:
         _beta_min, _beta_max = _dist_parms_pcm[2:]
         _pcm_array = (_beta_max - _beta_min) * _pcm_array + _beta_min
         del _beta_min, _beta_max
 
-    if _dist_firm2_pcm == FM2Constants.SYM:
+    if _dist_firm2_pcm == FM2Constraint.SYM:
         _pcm_array = np.column_stack((_pcm_array,) * _frmshr_array.shape[1])
-    if _dist_firm2_pcm == FM2Constants.MNL:
+    if _dist_firm2_pcm == FM2Constraint.MNL:
         # Impose FOCs from profit-maximization with MNL demand
-        if _dist_type_pcm == PCMDistributions.EMPR:
+        if _dist_type_pcm == PCMDistribution.EMPR:
             print(
                 "NOTE: Estimated Firm 2 parameters will not be consistent with "
                 "the empirical distribution of margins in the source data. For "
-                "consistency, respecify pcm_spec.firm2_pcm_constraint = FM2Constants.IID."
+                "consistency, respecify pcm_spec.firm2_pcm_constraint = FM2Constraint.IID."
             )
         _purchase_prob_array = _aggregate_purchase_prob * _frmshr_array
 
@@ -800,7 +803,7 @@ def beta_located_bound(_dist_parms: ArrayDouble, /) -> ArrayDouble:
 
 def parse_seed_seq_list(
     _sseq_list: Sequence[SeedSequence] | None,
-    _mktshr_dist_type: SHRDistributions,
+    _mktshr_dist_type: SHRDistribution,
     _price_spec: PriceSpec,
     /,
 ) -> SeedSequenceData:
@@ -841,7 +844,7 @@ def parse_seed_seq_list(
             else (None, SeedSequence(pool_size=8))
         )
 
-    _seed_count = 2 if _mktshr_dist_type == SHRDistributions.UNI else 3
+    _seed_count = 2 if _mktshr_dist_type == SHRDistribution.UNI else 3
 
     if _sseq_list:
         if len(_sseq_list) < _seed_count:
