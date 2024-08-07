@@ -40,7 +40,9 @@ strip_sphinx_pat = re.compile(r":(attr|class|func|meth|mod):")
 )
 (PKG_DIR / "README.rst").write_text(
     re.sub(
-        r":ref:`(?P<ref>.*?) (?:<.*?>)`", r"\g<ref>", (PKG_DIR / "docs" / "source" / "README.rst").read_text()
+        r":ref:`(?P<ref>.*?) (?:<.*?>)`",
+        r"\g<ref>",
+        (PKG_DIR / "README.rst").read_text(),
     )
 )
 # re.sub(r":ref:`(?P<ref>.*) (?:<.*>)`", r"\g<ref>", "See, for example, :ref:`Coate (2011) <coate2011>`.")
