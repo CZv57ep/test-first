@@ -24,7 +24,7 @@ Package Contents
 ----------------
 
 .. py:data:: VERSION
-   :value: '2024.739105.0'
+   :value: '2024.739105.2'
 
 
 .. py:data:: DATA_DIR
