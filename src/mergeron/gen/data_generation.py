@@ -13,18 +13,18 @@ from attrs import Attribute, define, field, validators
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 
-from .. import VERSION, RECTypes  # noqa: TID252  # noqa
+from .. import VERSION, RECForm  # noqa: TID252  # noqa
 from ..core import guidelines_boundaries as gbl  # noqa: TID252
 from ..core.guidelines_boundaries import HMGThresholds  # noqa: TID252
 from . import (
-    FM2Constants,
+    FM2Constraint,
     MarketDataSample,
-    PCMDistributions,
+    PCMDistribution,
     PCMSpec,
     PriceSpec,
     ShareSpec,
-    SHRDistributions,
-    SSZConstants,
+    SHRDistribution,
+    SSZConstant,
     UPPTestRegime,
     UPPTestsCounts,
 )
@@ -40,7 +40,7 @@ __version__ = VERSION
 
 
 class SamplingFunctionKWArgs(TypedDict, total=False):
-    "Keyword arguments of function, :func:`MarketSample.sim_enf_cnts`"
+    "Keyword arguments of sampling methods defined below"
 
     sample_size: int
     """number of draws to generate"""
@@ -73,26 +73,26 @@ class MarketSample:
 
     share_spec: ShareSpec = field(
         kw_only=True,
-        default=ShareSpec(SHRDistributions.UNI, None, None, RECTypes.INOUT, 0.8),
+        default=ShareSpec(SHRDistribution.UNI, None, None, RECForm.INOUT, 0.8),
         validator=validators.instance_of(ShareSpec),
     )
     """Market-share specification, see :class:`ShareSpec`"""
 
     pcm_spec: PCMSpec = field(
-        kw_only=True, default=PCMSpec(PCMDistributions.UNI, None, FM2Constants.IID)
+        kw_only=True, default=PCMSpec(PCMDistribution.UNI, None, FM2Constraint.IID)
     )
     """Margin specification, see :class:`PCMSpec`"""
 
     @pcm_spec.validator
     def _check_pcm(self, _a: Attribute[PCMSpec], _v: PCMSpec, /) -> None:
         if (
-            self.share_spec.recapture_form == RECTypes.FIXED
-            and _v.firm2_pcm_constraint == FM2Constants.MNL
+            self.share_spec.recapture_form == RECForm.FIXED
+            and _v.firm2_pcm_constraint == FM2Constraint.MNL
         ):
             raise ValueError(
                 f'Specification of "recapture_form", "{self.share_spec.recapture_form}" '
                 "requires Firm 2 margin must have property, "
-                f'"{FM2Constants.IID}" or "{FM2Constants.SYM}".'
+                f'"{FM2Constraint.IID}" or "{FM2Constraint.SYM}".'
             )
 
     price_spec: PriceSpec = field(
@@ -100,12 +100,12 @@ class MarketSample:
     )
     """Price specification, see :class:`PriceSpec`"""
 
-    hsr_filing_test_type: SSZConstants = field(
+    hsr_filing_test_type: SSZConstant = field(
         kw_only=True,
-        default=SSZConstants.ONE,
-        validator=validators.instance_of(SSZConstants),
+        default=SSZConstant.ONE,
+        validator=validators.instance_of(SSZConstant),
     )
-    """Method for modeling HSR filing threholds, see :class:`SSZConstants`"""
+    """Method for modeling HSR filing threholds, see :class:`SSZConstant`"""
 
     data: MarketDataSample = field(default=None)
 
@@ -124,7 +124,7 @@ class MarketSample:
         """
         Generate share, diversion ratio, price, and margin data for MarketSpec.
 
-        see :attr:`SamplingFunctionKWArgs` for description of parameters
+        see :attr:`SamplingFunctionKWArgs` for description of keyord parameters
 
         Returns
         -------
@@ -149,8 +149,8 @@ class MarketSample:
         _shr_sample_size = 1.0 * sample_size
         # Scale up sample size to offset discards based on specified criteria
         _shr_sample_size *= _hsr_filing_test_type
-        if _dist_firm2_pcm == FM2Constants.MNL:
-            _shr_sample_size *= SSZConstants.MNL_DEP
+        if _dist_firm2_pcm == FM2Constraint.MNL:
+            _shr_sample_size *= SSZConstant.MNL_DEP
         _shr_sample_size = int(_shr_sample_size)
 
         # Generate share data
@@ -195,7 +195,7 @@ class MarketSample:
 
         _mnl_test_rows = _mnl_test_rows * _hsr_filing_test
         _s_size = sample_size  # originally-specified sample size
-        if _dist_firm2_pcm == FM2Constants.MNL:
+        if _dist_firm2_pcm == FM2Constraint.MNL:
             _mktshr_array = _mktshr_array[_mnl_test_rows][:_s_size]
             _pcm_array = _pcm_array[_mnl_test_rows][:_s_size]
             _price_array = _price_array[_mnl_test_rows][:_s_size]
@@ -240,13 +240,21 @@ class MarketSample:
         self,
         /,
         *,
-        sample_size: int = 10**6,
-        seed_seq_list: list[SeedSequence] | None,
+        sample_size: int,
+        seed_seq_list: Sequence[SeedSequence],
         nthreads: int,
-        save_data_to_file: SaveData = False,
-        saved_array_name_suffix: str = "",
+        save_data_to_file: SaveData,
+        saved_array_name_suffix: str,
     ) -> None:
-        """Generate market data"""
+        """Populate :attr:`data` with generated data
+
+        see :attr:`SamplingFunctionKWArgs` for description of keyord parameters
+
+        Returns
+        -------
+        None
+
+        """
 
         self.data = self.gen_market_sample(
             sample_size=sample_size, seed_seq_list=seed_seq_list, nthreads=nthreads
@@ -389,7 +397,8 @@ class MarketSample:
 
         Returns
         -------
-            Arrays of UPPTestCounts
+            Arrays of enforcement counts or clearance counts by firm count,
+            ΔHHI and concentration zone
 
         """
         _sample_sz = sample_size
@@ -400,7 +409,7 @@ class MarketSample:
         _thread_count = cpu_count()
 
         if (
-            self.share_spec.recapture_form != RECTypes.OUTIN
+            self.share_spec.recapture_form != RECForm.OUTIN
             and self.share_spec.recapture_rate != _enf_parm_vec.rec
         ):
             raise ValueError(
@@ -458,12 +467,12 @@ class MarketSample:
         /,
         *,
         sample_size: int = 10**6,
-        seed_seq_list: list[SeedSequence] | None,
-        nthreads: int,
+        seed_seq_list: Sequence[SeedSequence] | None = None,
+        nthreads: int = 16,
         save_data_to_file: SaveData = False,
         saved_array_name_suffix: str = "",
     ) -> None:
-        """Estimate enforcement counts
+        """Populate :attr:`enf_counts` etimated test counts.
 
         Parameters
         ----------
@@ -478,16 +487,16 @@ class MarketSample:
             merging firms
 
         sample_size
-            Size of the market sample drawn
+            Number of draws to simulate
 
         seed_seq_list
-            List of :code:`numpy.random.SeedSequence` objects
+            List of seed sequences, to assure independent samples in each thread
 
         nthreads
-            Number of threads to use
+            Number of parallel processes to use
 
         save_data_to_file
-            Save data to given HDF5 file, at specified group node
+            Whether to save data to an HDF5 file, and where to save it
 
         saved_array_name_suffix
             Suffix to add to the array names in the HDF5 file

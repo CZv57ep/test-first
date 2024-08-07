@@ -36,7 +36,7 @@ ArrayBIGINT: TypeAlias = NDArray[np.int64]
 
 
 @enum.unique
-class RECTypes(enum.StrEnum):
+class RECForm(enum.StrEnum):
     """Recapture rate - derivation methods."""
 
     INOUT = "inside-out"

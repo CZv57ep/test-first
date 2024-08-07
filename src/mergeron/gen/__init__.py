@@ -21,7 +21,7 @@ from .. import (  # noqa: TID252
     ArrayDouble,
     ArrayFloat,
     ArrayINT,
-    RECTypes,
+    RECForm,
     UPPAggrSelector,
 )
 from ..core.pseudorandom_numbers import DIST_PARMS_DEFAULT  # noqa: TID252
@@ -57,7 +57,7 @@ class PriceSpec(tuple[bool, str | None], enum.ReprEnum):
 
 
 @enum.unique
-class SHRDistributions(enum.StrEnum):
+class SHRDistribution(enum.StrEnum):
     """Market share distributions."""
 
     UNI = "Uniform"
@@ -98,26 +98,26 @@ class ShareSpec:
     A key feature of market-share specification in this package is that
     the draws represent markets with multiple different firm-counts.
     Firm-counts are unspecified if the share distribution is
-    :attr:`mergeron.SHRDistributions.UNI`, for Dirichlet-distributed market-shares,
+    :attr:`mergeron.SHRDistribution.UNI`, for Dirichlet-distributed market-shares,
     the default specification is that firm-counts  vary between
     2 and 7 firms with each value equally likely.
 
     Notes
     -----
-    If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRDistributions.UNI`,
+    If :attr:`mergeron.gen.ShareSpec.dist_type`:code:` == `:attr:`mergeron.gen.SHRDistribution.UNI`,
     then it is infeasible that
-    :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECTypes.OUTIN`.
+    :attr:`mergeron.gen.ShareSpec.recapture_form`:code:` == `:attr:`mergeron.RECForm.OUTIN`.
     In other words, if firm-counts are unspecified, the recapture rate cannot be
     estimated using outside good choice probabilities.
 
     For a sample with explicit firm counts, market shares must
     be specified as having a supported Dirichlet distribution
-    (see :class:`mergeron.gen.SHRDistributions`).
+    (see :class:`mergeron.gen.SHRDistribution`).
 
     """
 
-    dist_type: SHRDistributions
-    """See :class:`SHRDistributions`"""
+    dist_type: SHRDistribution
+    """See :class:`SHRDistribution`"""
 
     dist_parms: ArrayDouble | None = field(
         default=None, eq=cmp_using(eq=np.array_equal)
@@ -143,22 +143,22 @@ class ShareSpec:
 
     @firm_counts_weights.validator
     def _check_fcw(_i: ShareSpec, _a: Attribute[ArrayDouble], _v: ArrayDouble) -> None:
-        if _v is not None and _i.dist_type == SHRDistributions.UNI:
+        if _v is not None and _i.dist_type == SHRDistribution.UNI:
             raise ValueError(
                 "Generated data for markets with specified firm-counts or "
                 "varying firm counts are not feasible for market shares "
                 "with Uniform distribution. Consider revising the "
-                r"distribution type to {SHRDistributions.DIR_FLAT}, which gives "
+                r"distribution type to {SHRDistribution.DIR_FLAT}, which gives "
                 "uniformly distributed draws on the :math:`n+1` simplex "
                 "for firm-count, :math:`n`."
             )
 
-    recapture_form: RECTypes = field(default=RECTypes.INOUT)
-    """See :class:`mergeron.RECTypes`"""
+    recapture_form: RECForm = field(default=RECForm.INOUT)
+    """See :class:`mergeron.RECForm`"""
 
     @recapture_form.validator
-    def _check_rf(_i: ShareSpec, _a: Attribute[RECTypes], _v: RECTypes) -> None:
-        if _v == RECTypes.OUTIN and _i.dist_type == SHRDistributions.UNI:
+    def _check_rf(_i: ShareSpec, _a: Attribute[RECForm], _v: RECForm) -> None:
+        if _v == RECForm.OUTIN and _i.dist_type == SHRDistribution.UNI:
             raise ValueError(
                 "Market share specification requires estimation of recapture rate from "
                 "generated data. Either delete recapture rate specification or set it to None."
@@ -168,7 +168,7 @@ class ShareSpec:
     """A value between 0 and 1, typically 0.8.
 
     :code:`None` if market share specification requires direct generation of
-    outside good choice probabilities (:attr:`mergeron.RECTypes.OUTIN`).
+    outside good choice probabilities (:attr:`mergeron.RECForm.OUTIN`).
 
     The recapture rate is usually calibrated to the numbers-equivalent of the
     HHI threshold for the presumtion of harm from unilateral competitive effects
@@ -191,7 +191,7 @@ class ShareSpec:
     def _check_rr(_i: ShareSpec, _a: Attribute[float], _v: float) -> None:
         if _v and not (0 < _v <= 1):
             raise ValueError("Recapture rate must lie in the interval, [0, 1).")
-        elif _v is None and _i.recapture_form != RECTypes.OUTIN:
+        elif _v is None and _i.recapture_form != RECForm.OUTIN:
             raise ValueError(
                 f"Recapture specification, {_i.recapture_form!r} requires that "
                 "the market sample specification inclues a recapture rate in the "
@@ -200,7 +200,7 @@ class ShareSpec:
 
 
 @enum.unique
-class PCMDistributions(enum.StrEnum):
+class PCMDistribution(enum.StrEnum):
     """Margin distributions."""
 
     UNI = "Uniform"
@@ -210,7 +210,7 @@ class PCMDistributions(enum.StrEnum):
 
 
 @enum.unique
-class FM2Constants(enum.StrEnum):
+class FM2Constraint(enum.StrEnum):
     """Firm 2 margins - derivation methods."""
 
     IID = "i.i.d"
@@ -234,8 +234,8 @@ class PCMSpec:
 
     """
 
-    dist_type: PCMDistributions = field(kw_only=False, default=PCMDistributions.UNI)
-    """See :class:`PCMDistributions`"""
+    dist_type: PCMDistribution = field(kw_only=False, default=PCMDistribution.UNI)
+    """See :class:`PCMDistribution`"""
 
     dist_parms: ArrayDouble | None = field(kw_only=False, default=None)
     """Parameter specification for tailoring PCM distribution
@@ -260,9 +260,9 @@ class PCMSpec:
                     "are not valid with margin distribution, {_dist_type_pcm!r}"
                 )
             elif (
-                _i.dist_type == PCMDistributions.BETA and len(_v) != len(("a", "b"))
+                _i.dist_type == PCMDistribution.BETA and len(_v) != len(("a", "b"))
             ) or (
-                _i.dist_type == PCMDistributions.BETA_BND
+                _i.dist_type == PCMDistribution.BETA_BND
                 and len(_v) != len(("mu", "sigma", "max", "min"))
             ):
                 raise ValueError(
@@ -270,18 +270,18 @@ class PCMSpec:
                     f'for PCM with distribution, "{_i.dist_type}" is incorrect.'
                 )
 
-        elif _i.dist_type == PCMDistributions.EMPR and _v is not None:
+        elif _i.dist_type == PCMDistribution.EMPR and _v is not None:
             raise ValueError(
                 f"Empirical distribution does not require additional parameters; "
                 f'"given value, {_v!r} is ignored."'
             )
 
-    firm2_pcm_constraint: FM2Constants = field(kw_only=False, default=FM2Constants.IID)
-    """See :class:`FM2Constants`"""
+    firm2_pcm_constraint: FM2Constraint = field(kw_only=False, default=FM2Constraint.IID)
+    """See :class:`FM2Constraint`"""
 
 
 @enum.unique
-class SSZConstants(float, enum.ReprEnum):
+class SSZConstant(float, enum.ReprEnum):
     """
     Scale factors to offset sample size reduction.
 

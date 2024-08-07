@@ -26,8 +26,8 @@ def test_enf_stats(_stats_group: esl.StatsGrpSelector, _test_val: ArrayBIGINT) -
     _enf_stats_cnts = esl.enf_stats_listing_by_group(
         invdata_array_dict,
         "1996-2003",
-        esl.INDGRPConstants.ALL,
-        esl.EVIDENConstants.UR,
+        esl.IndustryGroup.ALL,
+        esl.OtherEvidence.UR,
         _stats_group,
         _enf_spec,
     )[:, -2:]
@@ -38,7 +38,7 @@ def test_enf_stats(_stats_group: esl.StatsGrpSelector, _test_val: ArrayBIGINT) -
 enf_spec = INVResolution.CLRN
 # Test print functionality:
 for data_period in "1996-2003", "2004-2011":
-    for evid_class in esl.EVIDENConstants.UR, esl.EVIDENConstants.ED:
+    for evid_class in esl.OtherEvidence.UR, esl.OtherEvidence.ED:
         for stats_group in esl.StatsGrpSelector:
             if stats_group == esl.StatsGrpSelector.HD:
                 continue
@@ -47,7 +47,7 @@ for data_period in "1996-2003", "2004-2011":
                 (enf_stats_hdr_list, enf_stats_dat_list) = esl.enf_stats_output(
                     invdata_array_dict,
                     data_period,
-                    esl.INDGRPConstants.ALL,
+                    esl.IndustryGroup.ALL,
                     evid_class,
                     stats_group,
                     enf_spec,
