@@ -13,7 +13,7 @@ keywords = [
     "upward pricing pressure",
     "GUPPI",
 ]
-version = "2024.739105.3"
+version = "2024.739105.4"
 
 # Classifiers list: https://pypi.org/classifiers/
 classifiers = [
