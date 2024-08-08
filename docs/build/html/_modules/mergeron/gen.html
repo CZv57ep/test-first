@@ -13,7 +13,7 @@
     
     
       
-        <title>mergeron.gen - mergeron 2024.739105.2</title>
+        <title>mergeron.gen - mergeron 2024.739105.4</title>
       
     
     
@@ -72,7 +72,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="mergeron 2024.739105.2" class="md-header__button md-logo" aria-label="mergeron 2024.739105.2" data-md-component="logo">
+    <a href="../../index.html" title="mergeron 2024.739105.4" class="md-header__button md-logo" aria-label="mergeron 2024.739105.4" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -181,12 +181,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="mergeron 2024.739105.2" class="md-nav__button md-logo" aria-label="mergeron 2024.739105.2" data-md-component="logo">
+    <a href="../../index.html" title="mergeron 2024.739105.4" class="md-nav__button md-logo" aria-label="mergeron 2024.739105.4" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
     </a>
-    mergeron 2024.739105.2
+    mergeron 2024.739105.4
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -385,6 +385,7 @@
 <span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">SeedSequence</span>
 
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: TID252</span>
+    <span class="n">DEFAULT_REC_RATE</span><span class="p">,</span>
     <span class="n">VERSION</span><span class="p">,</span>
     <span class="n">ArrayBIGINT</span><span class="p">,</span>
     <span class="n">ArrayBoolean</span><span class="p">,</span>
@@ -607,9 +608,9 @@
 
 <div class="viewcode-block" id="ShareSpec.recapture_rate">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.ShareSpec.recapture_rate">[docs]</a>
-    <span class="n">recapture_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span></div>
+    <span class="n">recapture_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_REC_RATE</span><span class="p">)</span></div>
 
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A value between 0 and 1, typically 0.8.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A value between 0 and 1.</span>
 
 <span class="sd">    :code:`None` if market share specification requires direct generation of</span>
 <span class="sd">    outside good choice probabilities (:attr:`mergeron.RECForm.OUTIN`).</span>
@@ -758,7 +759,9 @@
 
 <div class="viewcode-block" id="PCMSpec.firm2_pcm_constraint">
 <a class="viewcode-back" href="../../autoapi/mergeron/gen/index.html#mergeron.gen.PCMSpec.firm2_pcm_constraint">[docs]</a>
-    <span class="n">firm2_pcm_constraint</span><span class="p">:</span> <span class="n">FM2Constraint</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">FM2Constraint</span><span class="o">.</span><span class="n">IID</span><span class="p">)</span></div>
+    <span class="n">firm2_pcm_constraint</span><span class="p">:</span> <span class="n">FM2Constraint</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">kw_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">FM2Constraint</span><span class="o">.</span><span class="n">IID</span>
+    <span class="p">)</span></div>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;See :class:`FM2Constraint`&quot;&quot;&quot;</span></div>
 

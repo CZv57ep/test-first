@@ -15,6 +15,7 @@ from attrs import Attribute, cmp_using, field, frozen, validators
 from numpy.random import SeedSequence
 
 from .. import (  # noqa: TID252
+    DEFAULT_REC_RATE,
     VERSION,
     ArrayBIGINT,
     ArrayBoolean,
@@ -164,8 +165,8 @@ class ShareSpec:
                 "generated data. Either delete recapture rate specification or set it to None."
             )
 
-    recapture_rate: float | None = field(default=0.8)
-    """A value between 0 and 1, typically 0.8.
+    recapture_rate: float | None = field(default=DEFAULT_REC_RATE)
+    """A value between 0 and 1.
 
     :code:`None` if market share specification requires direct generation of
     outside good choice probabilities (:attr:`mergeron.RECForm.OUTIN`).
@@ -276,7 +277,9 @@ class PCMSpec:
                 f'"given value, {_v!r} is ignored."'
             )
 
-    firm2_pcm_constraint: FM2Constraint = field(kw_only=False, default=FM2Constraint.IID)
+    firm2_pcm_constraint: FM2Constraint = field(
+        kw_only=False, default=FM2Constraint.IID
+    )
     """See :class:`FM2Constraint`"""
 
 

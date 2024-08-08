@@ -204,7 +204,7 @@ Package Contents
    .. py:attribute:: recapture_rate
       :type:  float | None
 
-      A value between 0 and 1, typically 0.8.
+      A value between 0 and 1.
 
       :code:`None` if market share specification requires direct generation of
       outside good choice probabilities (:attr:`mergeron.RECForm.OUTIN`).

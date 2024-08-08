@@ -24,7 +24,7 @@ Package Contents
 ----------------
 
 .. py:data:: VERSION
-   :value: '2024.739105.2'
+   :value: '2024.739105.4'
 
 
 .. py:data:: DATA_DIR
@@ -51,6 +51,10 @@ Package Contents
 .. py:data:: ArrayBIGINT
    :type:  TypeAlias
    :value: NDArray[np.int64]
+
+
+.. py:data:: DEFAULT_REC_RATE
+   :value: 0.85
 
 
 .. py:class:: RECForm

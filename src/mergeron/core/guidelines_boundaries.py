@@ -13,7 +13,13 @@ import numpy as np
 from attrs import Attribute, field, frozen, validators
 from mpmath import mp, mpf  # type: ignore
 
-from .. import VERSION, ArrayDouble, RECForm, UPPAggrSelector  # noqa: TID252
+from .. import (  # noqa: TID252
+    DEFAULT_REC_RATE,
+    VERSION,
+    ArrayDouble,
+    RECForm,
+    UPPAggrSelector,
+)
 from . import guidelines_boundary_functions as gbfn
 
 __version__ = VERSION
@@ -86,7 +92,7 @@ class GuidelinesThresholds:
     """
 
     def __attrs_post_init__(self, /) -> None:
-        # In the 2023 Guidlines, the agencies do not define a
+        # In the 2023 Guidelines, the agencies do not define a
         # negative presumption, or safeharbor. Practically speaking,
         # given resource constraints and loss aversion, it is likely
         # that staff only investigates mergers that meet the presumption;
@@ -128,7 +134,7 @@ class GuidelinesThresholds:
         )
 
         # imputed_presumption is relevant for 2010 Guidelines
-        # merger to symmettry in numbers-equivalent of post-merger HHI
+        # merger to symmetry in numbers-equivalent of post-merger HHI
         object.__setattr__(
             self,
             "imputed_presumption",
@@ -262,16 +268,13 @@ class DiversionRatioBoundary:
     )
 
     recapture_rate: float = field(
-        kw_only=False, default=0.85, validator=validators.instance_of(float)
+        kw_only=False, default=DEFAULT_REC_RATE, validator=validators.instance_of(float)
     )
 
     recapture_form: RECForm | None = field(
         kw_only=True,
         default=RECForm.INOUT,
-        validator=(
-            validators.instance_of((type(None), RECForm)),
-            _rec_spec_validator,
-        ),
+        validator=(validators.instance_of((type(None), RECForm)), _rec_spec_validator),
     )
     """
     The form of the recapture rate.
@@ -373,7 +376,11 @@ class DiversionRatioBoundary:
 
 
 def guppi_from_delta(
-    _delta_bound: float = 0.01, /, *, m_star: float = 1.00, r_bar: float = 0.8
+    _delta_bound: float = 0.01,
+    /,
+    *,
+    m_star: float = 1.00,
+    r_bar: float = DEFAULT_REC_RATE,
 ) -> float:
     """
     Translate ∆HHI bound to GUPPI bound.
@@ -431,7 +438,11 @@ def critical_share_ratio(
 
 
 def share_from_guppi(
-    _guppi_bound: float = 0.065, /, *, m_star: float = 1.00, r_bar: float = 0.8
+    _guppi_bound: float = 0.065,
+    /,
+    *,
+    m_star: float = 1.00,
+    r_bar: float = DEFAULT_REC_RATE,
 ) -> float:
     """
     Symmetric-firm share for given GUPPI, margin, and recapture rate.

@@ -59,7 +59,7 @@ Module Contents
    :returns: Callable to generate array of share-pairs, area under boundary.
 
 
-.. py:function:: shrratio_boundary_qdtr_wtd_avg(_delta_star = 0.075, _r_val = 0.85, /, *, weighting = 'own-share', recapture_form = 'inside-out')
+.. py:function:: shrratio_boundary_qdtr_wtd_avg(_delta_star = 0.075, _r_val = DEFAULT_REC_RATE, /, *, weighting = 'own-share', recapture_form = 'inside-out')
 
    Share combinations for the share-weighted average GUPPI boundary with symmetric
    merging-firm margins.
@@ -73,7 +73,7 @@ Module Contents
    :returns: Array of share-pairs, area under boundary.
 
 
-.. py:function:: shrratio_boundary_distance(_delta_star = 0.075, _r_val = 0.85, /, *, agg_method = 'arithmetic mean', weighting = 'own-share', recapture_form = 'inside-out', prec = 5)
+.. py:function:: shrratio_boundary_distance(_delta_star = 0.075, _r_val = DEFAULT_REC_RATE, /, *, agg_method = 'arithmetic mean', weighting = 'own-share', recapture_form = 'inside-out', prec = 5)
 
    Share combinations for the GUPPI boundaries using various aggregators with
    symmetric merging-firm margins.

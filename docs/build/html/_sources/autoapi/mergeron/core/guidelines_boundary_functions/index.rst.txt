@@ -124,7 +124,7 @@ Module Contents
    :returns: Array of share-pairs, area under boundary.
 
 
-.. py:function:: shrratio_boundary_wtd_avg(_delta_star = 0.075, _r_val = 0.85, /, *, agg_method = 'arithmetic mean', weighting = 'own-share', recapture_form = 'inside-out', prec = 5)
+.. py:function:: shrratio_boundary_wtd_avg(_delta_star = 0.075, _r_val = DEFAULT_REC_RATE, /, *, agg_method = 'arithmetic mean', weighting = 'own-share', recapture_form = 'inside-out', prec = 5)
 
    Share combinations on the share-weighted average diversion ratio boundary.
 
@@ -200,7 +200,7 @@ Module Contents
        )
 
 
-.. py:function:: shrratio_boundary_xact_avg(_delta_star = 0.075, _r_val = 0.85, /, *, recapture_form = 'inside-out', prec = 5)
+.. py:function:: shrratio_boundary_xact_avg(_delta_star = 0.075, _r_val = DEFAULT_REC_RATE, /, *, recapture_form = 'inside-out', prec = 5)
 
    Share combinations for the simple average GUPPI boundary with symmetric
    merging-firm margins.
@@ -247,7 +247,7 @@ Module Contents
    :returns: Array of share-pairs, area under boundary, area under boundary.
 
 
-.. py:function:: shrratio_boundary_min(_delta_star = 0.075, _r_val = 0.85, /, *, recapture_form = 'inside-out', prec = 10)
+.. py:function:: shrratio_boundary_min(_delta_star = 0.075, _r_val = DEFAULT_REC_RATE, /, *, recapture_form = 'inside-out', prec = 10)
 
    Share combinations on the minimum GUPPI boundary, with symmetric
    merging-firm margins.
@@ -268,7 +268,7 @@ Module Contents
    :returns: Array of share-pairs, area under boundary.
 
 
-.. py:function:: shrratio_boundary_max(_delta_star = 0.075, _r_val = 0.85, /, *, prec = 10)
+.. py:function:: shrratio_boundary_max(_delta_star = 0.075, _r_val = DEFAULT_REC_RATE, /, *, prec = 10)
 
    Share combinations on the minimum GUPPI boundary with symmetric
    merging-firm margins.

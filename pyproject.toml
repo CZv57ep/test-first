@@ -13,7 +13,7 @@ keywords = [
     "upward pricing pressure",
     "GUPPI",
 ]
-version = "2024.739105.2"
+version = "2024.739105.4"
 
 # Classifiers list: https://pypi.org/classifiers/
 classifiers = [
@@ -68,8 +68,8 @@ pendulum = ">=3.0.0"
 ruff = ">=0.5"
 poetry-plugin-export = "^1.8.0"
 pytest = ">=8.0"
+Sphinx = ">=7.2, <8.0"
 semver = ">=3.0"
-sphinx = ">=7.2"
 sphinx-autodoc-typehints = ">=2.0.0"
 sphinx-autoapi = ">=3.0"
 sphinx-immaterial = ">=0.11"

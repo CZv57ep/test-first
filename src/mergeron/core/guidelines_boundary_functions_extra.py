@@ -16,7 +16,7 @@ from mpmath import mp, mpf  # type: ignore
 from scipy.spatial.distance import minkowski as distance_function  # type: ignore
 from sympy import lambdify, simplify, solve, symbols  # type: ignore
 
-from .. import VERSION, ArrayDouble  # noqa: TID252
+from .. import DEFAULT_REC_RATE, VERSION, ArrayDouble  # noqa: TID252
 from .guidelines_boundary_functions import (
     GuidelinesBoundary,
     _shrratio_boundary_intcpt,
@@ -105,7 +105,7 @@ def hhi_delta_boundary_qdtr(_dh_val: float = 0.01, /) -> GuidelinesBoundaryCalla
 
 def shrratio_boundary_qdtr_wtd_avg(
     _delta_star: float = 0.075,
-    _r_val: float = 0.85,
+    _r_val: float = DEFAULT_REC_RATE,
     /,
     *,
     weighting: Literal["own-share", "cross-product-share"] | None = "own-share",
@@ -224,7 +224,7 @@ def shrratio_boundary_qdtr_wtd_avg(
 
 def shrratio_boundary_distance(
     _delta_star: float = 0.075,
-    _r_val: float = 0.85,
+    _r_val: float = DEFAULT_REC_RATE,
     /,
     *,
     agg_method: Literal["arithmetic mean", "distance"] = "arithmetic mean",

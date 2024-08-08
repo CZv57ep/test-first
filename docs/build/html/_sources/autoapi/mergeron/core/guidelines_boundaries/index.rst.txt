@@ -211,7 +211,7 @@ Module Contents
       Area under the diversion ratio boundary.
 
 
-.. py:function:: guppi_from_delta(_delta_bound = 0.01, /, *, m_star = 1.0, r_bar = 0.8)
+.. py:function:: guppi_from_delta(_delta_bound = 0.01, /, *, m_star = 1.0, r_bar = DEFAULT_REC_RATE)
 
    Translate ∆HHI bound to GUPPI bound.
 
@@ -234,7 +234,7 @@ Module Contents
              for given margin and recapture rate.
 
 
-.. py:function:: share_from_guppi(_guppi_bound = 0.065, /, *, m_star = 1.0, r_bar = 0.8)
+.. py:function:: share_from_guppi(_guppi_bound = 0.065, /, *, m_star = 1.0, r_bar = DEFAULT_REC_RATE)
 
    Symmetric-firm share for given GUPPI, margin, and recapture rate.
 

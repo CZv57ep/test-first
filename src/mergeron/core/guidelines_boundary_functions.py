@@ -5,7 +5,7 @@ from typing import Any, Literal, TypedDict
 import numpy as np
 from mpmath import mp, mpf  # type: ignore
 
-from .. import VERSION, ArrayBIGINT, ArrayDouble  # noqa: TID252
+from .. import DEFAULT_REC_RATE, VERSION, ArrayBIGINT, ArrayDouble  # noqa: TID252
 
 __version__ = VERSION
 
@@ -211,7 +211,7 @@ def hhi_post_contrib_boundary(
 
 def shrratio_boundary_wtd_avg(
     _delta_star: float = 0.075,
-    _r_val: float = 0.85,
+    _r_val: float = DEFAULT_REC_RATE,
     /,
     *,
     agg_method: Literal[
@@ -420,7 +420,7 @@ def shrratio_boundary_wtd_avg(
 
 def shrratio_boundary_xact_avg(
     _delta_star: float = 0.075,
-    _r_val: float = 0.85,
+    _r_val: float = DEFAULT_REC_RATE,
     /,
     *,
     recapture_form: Literal["inside-out", "proportional"] = "inside-out",
@@ -579,7 +579,7 @@ def shrratio_boundary_xact_avg(
 
 def shrratio_boundary_min(
     _delta_star: float = 0.075,
-    _r_val: float = 0.85,
+    _r_val: float = DEFAULT_REC_RATE,
     /,
     *,
     recapture_form: str = "inside-out",
@@ -645,7 +645,7 @@ def shrratio_boundary_min(
 
 
 def shrratio_boundary_max(
-    _delta_star: float = 0.075, _r_val: float = 0.85, /, *, prec: int = 10
+    _delta_star: float = 0.075, _r_val: float = DEFAULT_REC_RATE, /, *, prec: int = 10
 ) -> GuidelinesBoundary:
     """
     Share combinations on the minimum GUPPI boundary with symmetric
