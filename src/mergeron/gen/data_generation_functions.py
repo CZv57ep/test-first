@@ -11,7 +11,13 @@ import numpy as np
 from attrs import evolve
 from numpy.random import SeedSequence
 
-from .. import VERSION, ArrayBIGINT, ArrayDouble, RECForm  # noqa: TID252
+from .. import (  # noqa: TID252
+    DEFAULT_REC_RATE,
+    VERSION,
+    ArrayBIGINT,
+    ArrayDouble,
+    RECForm,
+)
 from ..core.damodaran_margin_data import mgn_data_resampler  # noqa: TID252
 from ..core.pseudorandom_numbers import (  # noqa: TID252
     DIST_PARMS_DEFAULT,
@@ -100,7 +106,7 @@ def gen_share_data(
 
     # If recapture_form == "inside-out", recalculate _aggregate_purchase_prob
     _frmshr_array = _mkt_share_sample.mktshr_array[:, :2]
-    _r_bar = _share_spec.recapture_rate or 0.8
+    _r_bar = _share_spec.recapture_rate or DEFAULT_REC_RATE
     if _recapture_form == RECForm.INOUT:
         _mkt_share_sample = ShareDataSample(
             _mkt_share_sample.mktshr_array,
@@ -226,9 +232,7 @@ def gen_market_shares_dirichlet_multimarket(
         FCOUNT_WTS_DEFAULT if _firm_count_wts is None else _firm_count_wts
     )
 
-    _min_choice_wt = (
-        0.03 if _dist_type_dir == SHRDistribution.DIR_FLAT_CONSTR else 0.00
-    )
+    _min_choice_wt = 0.03 if _dist_type_dir == SHRDistribution.DIR_FLAT_CONSTR else 0.00
     _fcount_keys, _choice_wts = zip(
         *(
             _f

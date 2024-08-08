@@ -13,7 +13,7 @@ from attrs import Attribute, define, field, validators
 from joblib import Parallel, cpu_count, delayed  # type: ignore
 from numpy.random import SeedSequence
 
-from .. import VERSION, RECForm  # noqa: TID252  # noqa
+from .. import DEFAULT_REC_RATE, VERSION, RECForm  # noqa: TID252  # noqa
 from ..core import guidelines_boundaries as gbl  # noqa: TID252
 from ..core.guidelines_boundaries import HMGThresholds  # noqa: TID252
 from . import (
@@ -73,7 +73,9 @@ class MarketSample:
 
     share_spec: ShareSpec = field(
         kw_only=True,
-        default=ShareSpec(SHRDistribution.UNI, None, None, RECForm.INOUT, 0.8),
+        default=ShareSpec(
+            SHRDistribution.UNI, None, None, RECForm.INOUT, DEFAULT_REC_RATE
+        ),
         validator=validators.instance_of(ShareSpec),
     )
     """Market-share specification, see :class:`ShareSpec`"""

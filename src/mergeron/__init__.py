@@ -34,6 +34,8 @@ ArrayBoolean: TypeAlias = NDArray[np.bool_]
 ArrayDouble: TypeAlias = NDArray[np.double]
 ArrayBIGINT: TypeAlias = NDArray[np.int64]
 
+DEFAULT_REC_RATE = 0.85
+
 
 @enum.unique
 class RECForm(enum.StrEnum):
